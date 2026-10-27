@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
+  ClientOnly,
   Outlet,
   Link,
   createRootRouteWithContext,
@@ -161,7 +162,7 @@ function RootComponent() {
         <AuthProvider>
           {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
           <TotpProvider>
-            <ConexionContenido><Outlet /></ConexionContenido>
+            <ConexionContenido><ClientOnly><Outlet /></ClientOnly></ConexionContenido>
           </TotpProvider>
           <Toaster position="top-center" />
           <TecladoVisible />
