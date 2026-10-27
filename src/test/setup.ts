@@ -1,5 +1,12 @@
 import "@testing-library/jest-dom/vitest";
 
+// Radix measures its hidden checkbox input when mounted inside a form.
+globalThis.ResizeObserver = class {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+};
+
 Object.defineProperty(window, "scrollTo", {
   writable: true,
   value: () => {},

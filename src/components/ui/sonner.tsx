@@ -5,8 +5,10 @@ type ToasterProps = React.ComponentProps<typeof Sonner>;
 const Toaster = ({ ...props }: ToasterProps) => {
   return (
     <Sonner
+      containerAriaLabel="Notificaciones"
       className="toaster group"
       toastOptions={{
+        closeButtonAriaLabel: "Cerrar aviso",
         classNames: {
           toast:
             "group toast group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:border-border group-[.toaster]:shadow-lg",

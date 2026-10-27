@@ -10,33 +10,491 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ActivarRouteImport } from './routes/activar'
+import { Route as AjustesRouteImport } from './routes/ajustes'
+import { Route as AvisoPrivacidadRouteImport } from './routes/aviso-privacidad'
+import { Route as BajaRouteImport } from './routes/baja'
+import { Route as CajaRouteImport } from './routes/caja'
+import { Route as CanjearRouteImport } from './routes/canjear'
+import { Route as ClientesRouteImport } from './routes/clientes'
+import { Route as ConfirmarAltaRouteImport } from './routes/confirmar-alta'
+import { Route as CorteRouteImport } from './routes/corte'
+import { Route as EliminarCuentaRouteImport } from './routes/eliminar-cuenta'
+import { Route as EmpleadosRouteImport } from './routes/empleados'
+import { Route as HistorialRouteImport } from './routes/historial'
+import { Route as InvitacionRouteImport } from './routes/invitacion'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as NegocioRouteImport } from './routes/negocio'
+import { Route as PanelRouteImport } from './routes/panel'
+import { Route as ReclamacionesRouteImport } from './routes/reclamaciones'
+import { Route as RecuperarRouteImport } from './routes/recuperar'
+import { Route as ReferidosRouteImport } from './routes/referidos'
+import { Route as RestablecerPinRouteImport } from './routes/restablecer-pin'
+import { Route as StaffRouteImport } from './routes/staff'
+import { Route as ValidacionesRouteImport } from './routes/validaciones'
+import { Route as NegocioIndexRouteImport } from './routes/negocio.index'
+import { Route as NegocioAsistenteRouteImport } from './routes/negocio.asistente'
+import { Route as NegocioHorariosRouteImport } from './routes/negocio.horarios'
+import { Route as NegocioMarcaRouteImport } from './routes/negocio.marca'
+import { Route as NegocioMembresiaRouteImport } from './routes/negocio.membresia'
+import { Route as NegocioMonederoRouteImport } from './routes/negocio.monedero'
+import { Route as NegocioMovimientosRouteImport } from './routes/negocio.movimientos'
+import { Route as NegocioPinPosRouteImport } from './routes/negocio.pin-pos'
+import { Route as NegocioReclamacionesRouteImport } from './routes/negocio.reclamaciones'
+import { Route as NegocioReferidosRouteImport } from './routes/negocio.referidos'
+import { Route as NegocioReportesRouteImport } from './routes/negocio.reportes'
+import { Route as NegocioSolicitudesRouteImport } from './routes/negocio.solicitudes'
+import { Route as PagoSimuladoIdRouteImport } from './routes/pago-simulado.$id'
+import { Route as MembresiaPagoIdRouteImport } from './routes/membresia.pago.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ActivarRoute = ActivarRouteImport.update({
+  id: '/activar',
+  path: '/activar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AjustesRoute = AjustesRouteImport.update({
+  id: '/ajustes',
+  path: '/ajustes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AvisoPrivacidadRoute = AvisoPrivacidadRouteImport.update({
+  id: '/aviso-privacidad',
+  path: '/aviso-privacidad',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BajaRoute = BajaRouteImport.update({
+  id: '/baja',
+  path: '/baja',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CajaRoute = CajaRouteImport.update({
+  id: '/caja',
+  path: '/caja',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CanjearRoute = CanjearRouteImport.update({
+  id: '/canjear',
+  path: '/canjear',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClientesRoute = ClientesRouteImport.update({
+  id: '/clientes',
+  path: '/clientes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConfirmarAltaRoute = ConfirmarAltaRouteImport.update({
+  id: '/confirmar-alta',
+  path: '/confirmar-alta',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CorteRoute = CorteRouteImport.update({
+  id: '/corte',
+  path: '/corte',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EliminarCuentaRoute = EliminarCuentaRouteImport.update({
+  id: '/eliminar-cuenta',
+  path: '/eliminar-cuenta',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EmpleadosRoute = EmpleadosRouteImport.update({
+  id: '/empleados',
+  path: '/empleados',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HistorialRoute = HistorialRouteImport.update({
+  id: '/historial',
+  path: '/historial',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InvitacionRoute = InvitacionRouteImport.update({
+  id: '/invitacion',
+  path: '/invitacion',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NegocioRoute = NegocioRouteImport.update({
+  id: '/negocio',
+  path: '/negocio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PanelRoute = PanelRouteImport.update({
+  id: '/panel',
+  path: '/panel',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReclamacionesRoute = ReclamacionesRouteImport.update({
+  id: '/reclamaciones',
+  path: '/reclamaciones',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RecuperarRoute = RecuperarRouteImport.update({
+  id: '/recuperar',
+  path: '/recuperar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReferidosRoute = ReferidosRouteImport.update({
+  id: '/referidos',
+  path: '/referidos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RestablecerPinRoute = RestablecerPinRouteImport.update({
+  id: '/restablecer-pin',
+  path: '/restablecer-pin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StaffRoute = StaffRouteImport.update({
+  id: '/staff',
+  path: '/staff',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ValidacionesRoute = ValidacionesRouteImport.update({
+  id: '/validaciones',
+  path: '/validaciones',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NegocioIndexRoute = NegocioIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => NegocioRoute,
+} as any)
+const NegocioAsistenteRoute = NegocioAsistenteRouteImport.update({
+  id: '/asistente',
+  path: '/asistente',
+  getParentRoute: () => NegocioRoute,
+} as any)
+const NegocioHorariosRoute = NegocioHorariosRouteImport.update({
+  id: '/horarios',
+  path: '/horarios',
+  getParentRoute: () => NegocioRoute,
+} as any)
+const NegocioMarcaRoute = NegocioMarcaRouteImport.update({
+  id: '/marca',
+  path: '/marca',
+  getParentRoute: () => NegocioRoute,
+} as any)
+const NegocioMembresiaRoute = NegocioMembresiaRouteImport.update({
+  id: '/membresia',
+  path: '/membresia',
+  getParentRoute: () => NegocioRoute,
+} as any)
+const NegocioMonederoRoute = NegocioMonederoRouteImport.update({
+  id: '/monedero',
+  path: '/monedero',
+  getParentRoute: () => NegocioRoute,
+} as any)
+const NegocioMovimientosRoute = NegocioMovimientosRouteImport.update({
+  id: '/movimientos',
+  path: '/movimientos',
+  getParentRoute: () => NegocioRoute,
+} as any)
+const NegocioPinPosRoute = NegocioPinPosRouteImport.update({
+  id: '/pin-pos',
+  path: '/pin-pos',
+  getParentRoute: () => NegocioRoute,
+} as any)
+const NegocioReclamacionesRoute = NegocioReclamacionesRouteImport.update({
+  id: '/reclamaciones',
+  path: '/reclamaciones',
+  getParentRoute: () => NegocioRoute,
+} as any)
+const NegocioReferidosRoute = NegocioReferidosRouteImport.update({
+  id: '/referidos',
+  path: '/referidos',
+  getParentRoute: () => NegocioRoute,
+} as any)
+const NegocioReportesRoute = NegocioReportesRouteImport.update({
+  id: '/reportes',
+  path: '/reportes',
+  getParentRoute: () => NegocioRoute,
+} as any)
+const NegocioSolicitudesRoute = NegocioSolicitudesRouteImport.update({
+  id: '/solicitudes',
+  path: '/solicitudes',
+  getParentRoute: () => NegocioRoute,
+} as any)
+const PagoSimuladoIdRoute = PagoSimuladoIdRouteImport.update({
+  id: '/pago-simulado/$id',
+  path: '/pago-simulado/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MembresiaPagoIdRoute = MembresiaPagoIdRouteImport.update({
+  id: '/membresia/pago/$id',
+  path: '/membresia/pago/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/activar': typeof ActivarRoute
+  '/ajustes': typeof AjustesRoute
+  '/aviso-privacidad': typeof AvisoPrivacidadRoute
+  '/baja': typeof BajaRoute
+  '/caja': typeof CajaRoute
+  '/canjear': typeof CanjearRoute
+  '/clientes': typeof ClientesRoute
+  '/confirmar-alta': typeof ConfirmarAltaRoute
+  '/corte': typeof CorteRoute
+  '/eliminar-cuenta': typeof EliminarCuentaRoute
+  '/empleados': typeof EmpleadosRoute
+  '/historial': typeof HistorialRoute
+  '/invitacion': typeof InvitacionRoute
+  '/login': typeof LoginRoute
+  '/negocio': typeof NegocioRouteWithChildren
+  '/panel': typeof PanelRoute
+  '/reclamaciones': typeof ReclamacionesRoute
+  '/recuperar': typeof RecuperarRoute
+  '/referidos': typeof ReferidosRoute
+  '/restablecer-pin': typeof RestablecerPinRoute
+  '/staff': typeof StaffRoute
+  '/validaciones': typeof ValidacionesRoute
+  '/negocio/asistente': typeof NegocioAsistenteRoute
+  '/negocio/horarios': typeof NegocioHorariosRoute
+  '/negocio/marca': typeof NegocioMarcaRoute
+  '/negocio/membresia': typeof NegocioMembresiaRoute
+  '/negocio/monedero': typeof NegocioMonederoRoute
+  '/negocio/movimientos': typeof NegocioMovimientosRoute
+  '/negocio/pin-pos': typeof NegocioPinPosRoute
+  '/negocio/reclamaciones': typeof NegocioReclamacionesRoute
+  '/negocio/referidos': typeof NegocioReferidosRoute
+  '/negocio/reportes': typeof NegocioReportesRoute
+  '/negocio/solicitudes': typeof NegocioSolicitudesRoute
+  '/pago-simulado/$id': typeof PagoSimuladoIdRoute
+  '/negocio/': typeof NegocioIndexRoute
+  '/membresia/pago/$id': typeof MembresiaPagoIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/activar': typeof ActivarRoute
+  '/ajustes': typeof AjustesRoute
+  '/aviso-privacidad': typeof AvisoPrivacidadRoute
+  '/baja': typeof BajaRoute
+  '/caja': typeof CajaRoute
+  '/canjear': typeof CanjearRoute
+  '/clientes': typeof ClientesRoute
+  '/confirmar-alta': typeof ConfirmarAltaRoute
+  '/corte': typeof CorteRoute
+  '/eliminar-cuenta': typeof EliminarCuentaRoute
+  '/empleados': typeof EmpleadosRoute
+  '/historial': typeof HistorialRoute
+  '/invitacion': typeof InvitacionRoute
+  '/login': typeof LoginRoute
+  '/panel': typeof PanelRoute
+  '/reclamaciones': typeof ReclamacionesRoute
+  '/recuperar': typeof RecuperarRoute
+  '/referidos': typeof ReferidosRoute
+  '/restablecer-pin': typeof RestablecerPinRoute
+  '/staff': typeof StaffRoute
+  '/validaciones': typeof ValidacionesRoute
+  '/negocio/asistente': typeof NegocioAsistenteRoute
+  '/negocio/horarios': typeof NegocioHorariosRoute
+  '/negocio/marca': typeof NegocioMarcaRoute
+  '/negocio/membresia': typeof NegocioMembresiaRoute
+  '/negocio/monedero': typeof NegocioMonederoRoute
+  '/negocio/movimientos': typeof NegocioMovimientosRoute
+  '/negocio/pin-pos': typeof NegocioPinPosRoute
+  '/negocio/reclamaciones': typeof NegocioReclamacionesRoute
+  '/negocio/referidos': typeof NegocioReferidosRoute
+  '/negocio/reportes': typeof NegocioReportesRoute
+  '/negocio/solicitudes': typeof NegocioSolicitudesRoute
+  '/pago-simulado/$id': typeof PagoSimuladoIdRoute
+  '/negocio': typeof NegocioIndexRoute
+  '/membresia/pago/$id': typeof MembresiaPagoIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/activar': typeof ActivarRoute
+  '/ajustes': typeof AjustesRoute
+  '/aviso-privacidad': typeof AvisoPrivacidadRoute
+  '/baja': typeof BajaRoute
+  '/caja': typeof CajaRoute
+  '/canjear': typeof CanjearRoute
+  '/clientes': typeof ClientesRoute
+  '/confirmar-alta': typeof ConfirmarAltaRoute
+  '/corte': typeof CorteRoute
+  '/eliminar-cuenta': typeof EliminarCuentaRoute
+  '/empleados': typeof EmpleadosRoute
+  '/historial': typeof HistorialRoute
+  '/invitacion': typeof InvitacionRoute
+  '/login': typeof LoginRoute
+  '/negocio': typeof NegocioRouteWithChildren
+  '/panel': typeof PanelRoute
+  '/reclamaciones': typeof ReclamacionesRoute
+  '/recuperar': typeof RecuperarRoute
+  '/referidos': typeof ReferidosRoute
+  '/restablecer-pin': typeof RestablecerPinRoute
+  '/staff': typeof StaffRoute
+  '/validaciones': typeof ValidacionesRoute
+  '/negocio/asistente': typeof NegocioAsistenteRoute
+  '/negocio/horarios': typeof NegocioHorariosRoute
+  '/negocio/marca': typeof NegocioMarcaRoute
+  '/negocio/membresia': typeof NegocioMembresiaRoute
+  '/negocio/monedero': typeof NegocioMonederoRoute
+  '/negocio/movimientos': typeof NegocioMovimientosRoute
+  '/negocio/pin-pos': typeof NegocioPinPosRoute
+  '/negocio/reclamaciones': typeof NegocioReclamacionesRoute
+  '/negocio/referidos': typeof NegocioReferidosRoute
+  '/negocio/reportes': typeof NegocioReportesRoute
+  '/negocio/solicitudes': typeof NegocioSolicitudesRoute
+  '/pago-simulado/$id': typeof PagoSimuladoIdRoute
+  '/negocio/': typeof NegocioIndexRoute
+  '/membresia/pago/$id': typeof MembresiaPagoIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/activar'
+    | '/ajustes'
+    | '/aviso-privacidad'
+    | '/baja'
+    | '/caja'
+    | '/canjear'
+    | '/clientes'
+    | '/confirmar-alta'
+    | '/corte'
+    | '/eliminar-cuenta'
+    | '/empleados'
+    | '/historial'
+    | '/invitacion'
+    | '/login'
+    | '/negocio'
+    | '/panel'
+    | '/reclamaciones'
+    | '/recuperar'
+    | '/referidos'
+    | '/restablecer-pin'
+    | '/staff'
+    | '/validaciones'
+    | '/negocio/asistente'
+    | '/negocio/horarios'
+    | '/negocio/marca'
+    | '/negocio/membresia'
+    | '/negocio/monedero'
+    | '/negocio/movimientos'
+    | '/negocio/pin-pos'
+    | '/negocio/reclamaciones'
+    | '/negocio/referidos'
+    | '/negocio/reportes'
+    | '/negocio/solicitudes'
+    | '/pago-simulado/$id'
+    | '/negocio/'
+    | '/membresia/pago/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/activar'
+    | '/ajustes'
+    | '/aviso-privacidad'
+    | '/baja'
+    | '/caja'
+    | '/canjear'
+    | '/clientes'
+    | '/confirmar-alta'
+    | '/corte'
+    | '/eliminar-cuenta'
+    | '/empleados'
+    | '/historial'
+    | '/invitacion'
+    | '/login'
+    | '/panel'
+    | '/reclamaciones'
+    | '/recuperar'
+    | '/referidos'
+    | '/restablecer-pin'
+    | '/staff'
+    | '/validaciones'
+    | '/negocio/asistente'
+    | '/negocio/horarios'
+    | '/negocio/marca'
+    | '/negocio/membresia'
+    | '/negocio/monedero'
+    | '/negocio/movimientos'
+    | '/negocio/pin-pos'
+    | '/negocio/reclamaciones'
+    | '/negocio/referidos'
+    | '/negocio/reportes'
+    | '/negocio/solicitudes'
+    | '/pago-simulado/$id'
+    | '/negocio'
+    | '/membresia/pago/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/activar'
+    | '/ajustes'
+    | '/aviso-privacidad'
+    | '/baja'
+    | '/caja'
+    | '/canjear'
+    | '/clientes'
+    | '/confirmar-alta'
+    | '/corte'
+    | '/eliminar-cuenta'
+    | '/empleados'
+    | '/historial'
+    | '/invitacion'
+    | '/login'
+    | '/negocio'
+    | '/panel'
+    | '/reclamaciones'
+    | '/recuperar'
+    | '/referidos'
+    | '/restablecer-pin'
+    | '/staff'
+    | '/validaciones'
+    | '/negocio/asistente'
+    | '/negocio/horarios'
+    | '/negocio/marca'
+    | '/negocio/membresia'
+    | '/negocio/monedero'
+    | '/negocio/movimientos'
+    | '/negocio/pin-pos'
+    | '/negocio/reclamaciones'
+    | '/negocio/referidos'
+    | '/negocio/reportes'
+    | '/negocio/solicitudes'
+    | '/pago-simulado/$id'
+    | '/negocio/'
+    | '/membresia/pago/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ActivarRoute: typeof ActivarRoute
+  AjustesRoute: typeof AjustesRoute
+  AvisoPrivacidadRoute: typeof AvisoPrivacidadRoute
+  BajaRoute: typeof BajaRoute
+  CajaRoute: typeof CajaRoute
+  CanjearRoute: typeof CanjearRoute
+  ClientesRoute: typeof ClientesRoute
+  ConfirmarAltaRoute: typeof ConfirmarAltaRoute
+  CorteRoute: typeof CorteRoute
+  EliminarCuentaRoute: typeof EliminarCuentaRoute
+  EmpleadosRoute: typeof EmpleadosRoute
+  HistorialRoute: typeof HistorialRoute
+  InvitacionRoute: typeof InvitacionRoute
+  LoginRoute: typeof LoginRoute
+  NegocioRoute: typeof NegocioRouteWithChildren
+  PanelRoute: typeof PanelRoute
+  ReclamacionesRoute: typeof ReclamacionesRoute
+  RecuperarRoute: typeof RecuperarRoute
+  ReferidosRoute: typeof ReferidosRoute
+  RestablecerPinRoute: typeof RestablecerPinRoute
+  StaffRoute: typeof StaffRoute
+  ValidacionesRoute: typeof ValidacionesRoute
+  PagoSimuladoIdRoute: typeof PagoSimuladoIdRoute
+  MembresiaPagoIdRoute: typeof MembresiaPagoIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +506,320 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/activar': {
+      id: '/activar'
+      path: '/activar'
+      fullPath: '/activar'
+      preLoaderRoute: typeof ActivarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ajustes': {
+      id: '/ajustes'
+      path: '/ajustes'
+      fullPath: '/ajustes'
+      preLoaderRoute: typeof AjustesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/aviso-privacidad': {
+      id: '/aviso-privacidad'
+      path: '/aviso-privacidad'
+      fullPath: '/aviso-privacidad'
+      preLoaderRoute: typeof AvisoPrivacidadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/baja': {
+      id: '/baja'
+      path: '/baja'
+      fullPath: '/baja'
+      preLoaderRoute: typeof BajaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/caja': {
+      id: '/caja'
+      path: '/caja'
+      fullPath: '/caja'
+      preLoaderRoute: typeof CajaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/canjear': {
+      id: '/canjear'
+      path: '/canjear'
+      fullPath: '/canjear'
+      preLoaderRoute: typeof CanjearRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/clientes': {
+      id: '/clientes'
+      path: '/clientes'
+      fullPath: '/clientes'
+      preLoaderRoute: typeof ClientesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/confirmar-alta': {
+      id: '/confirmar-alta'
+      path: '/confirmar-alta'
+      fullPath: '/confirmar-alta'
+      preLoaderRoute: typeof ConfirmarAltaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/corte': {
+      id: '/corte'
+      path: '/corte'
+      fullPath: '/corte'
+      preLoaderRoute: typeof CorteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/eliminar-cuenta': {
+      id: '/eliminar-cuenta'
+      path: '/eliminar-cuenta'
+      fullPath: '/eliminar-cuenta'
+      preLoaderRoute: typeof EliminarCuentaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/empleados': {
+      id: '/empleados'
+      path: '/empleados'
+      fullPath: '/empleados'
+      preLoaderRoute: typeof EmpleadosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/historial': {
+      id: '/historial'
+      path: '/historial'
+      fullPath: '/historial'
+      preLoaderRoute: typeof HistorialRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/invitacion': {
+      id: '/invitacion'
+      path: '/invitacion'
+      fullPath: '/invitacion'
+      preLoaderRoute: typeof InvitacionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/negocio': {
+      id: '/negocio'
+      path: '/negocio'
+      fullPath: '/negocio'
+      preLoaderRoute: typeof NegocioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/panel': {
+      id: '/panel'
+      path: '/panel'
+      fullPath: '/panel'
+      preLoaderRoute: typeof PanelRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reclamaciones': {
+      id: '/reclamaciones'
+      path: '/reclamaciones'
+      fullPath: '/reclamaciones'
+      preLoaderRoute: typeof ReclamacionesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/recuperar': {
+      id: '/recuperar'
+      path: '/recuperar'
+      fullPath: '/recuperar'
+      preLoaderRoute: typeof RecuperarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/referidos': {
+      id: '/referidos'
+      path: '/referidos'
+      fullPath: '/referidos'
+      preLoaderRoute: typeof ReferidosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/restablecer-pin': {
+      id: '/restablecer-pin'
+      path: '/restablecer-pin'
+      fullPath: '/restablecer-pin'
+      preLoaderRoute: typeof RestablecerPinRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/staff': {
+      id: '/staff'
+      path: '/staff'
+      fullPath: '/staff'
+      preLoaderRoute: typeof StaffRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/validaciones': {
+      id: '/validaciones'
+      path: '/validaciones'
+      fullPath: '/validaciones'
+      preLoaderRoute: typeof ValidacionesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/negocio/': {
+      id: '/negocio/'
+      path: '/'
+      fullPath: '/negocio/'
+      preLoaderRoute: typeof NegocioIndexRouteImport
+      parentRoute: typeof NegocioRoute
+    }
+    '/negocio/asistente': {
+      id: '/negocio/asistente'
+      path: '/asistente'
+      fullPath: '/negocio/asistente'
+      preLoaderRoute: typeof NegocioAsistenteRouteImport
+      parentRoute: typeof NegocioRoute
+    }
+    '/negocio/horarios': {
+      id: '/negocio/horarios'
+      path: '/horarios'
+      fullPath: '/negocio/horarios'
+      preLoaderRoute: typeof NegocioHorariosRouteImport
+      parentRoute: typeof NegocioRoute
+    }
+    '/negocio/marca': {
+      id: '/negocio/marca'
+      path: '/marca'
+      fullPath: '/negocio/marca'
+      preLoaderRoute: typeof NegocioMarcaRouteImport
+      parentRoute: typeof NegocioRoute
+    }
+    '/negocio/membresia': {
+      id: '/negocio/membresia'
+      path: '/membresia'
+      fullPath: '/negocio/membresia'
+      preLoaderRoute: typeof NegocioMembresiaRouteImport
+      parentRoute: typeof NegocioRoute
+    }
+    '/negocio/monedero': {
+      id: '/negocio/monedero'
+      path: '/monedero'
+      fullPath: '/negocio/monedero'
+      preLoaderRoute: typeof NegocioMonederoRouteImport
+      parentRoute: typeof NegocioRoute
+    }
+    '/negocio/movimientos': {
+      id: '/negocio/movimientos'
+      path: '/movimientos'
+      fullPath: '/negocio/movimientos'
+      preLoaderRoute: typeof NegocioMovimientosRouteImport
+      parentRoute: typeof NegocioRoute
+    }
+    '/negocio/pin-pos': {
+      id: '/negocio/pin-pos'
+      path: '/pin-pos'
+      fullPath: '/negocio/pin-pos'
+      preLoaderRoute: typeof NegocioPinPosRouteImport
+      parentRoute: typeof NegocioRoute
+    }
+    '/negocio/reclamaciones': {
+      id: '/negocio/reclamaciones'
+      path: '/reclamaciones'
+      fullPath: '/negocio/reclamaciones'
+      preLoaderRoute: typeof NegocioReclamacionesRouteImport
+      parentRoute: typeof NegocioRoute
+    }
+    '/negocio/referidos': {
+      id: '/negocio/referidos'
+      path: '/referidos'
+      fullPath: '/negocio/referidos'
+      preLoaderRoute: typeof NegocioReferidosRouteImport
+      parentRoute: typeof NegocioRoute
+    }
+    '/negocio/reportes': {
+      id: '/negocio/reportes'
+      path: '/reportes'
+      fullPath: '/negocio/reportes'
+      preLoaderRoute: typeof NegocioReportesRouteImport
+      parentRoute: typeof NegocioRoute
+    }
+    '/negocio/solicitudes': {
+      id: '/negocio/solicitudes'
+      path: '/solicitudes'
+      fullPath: '/negocio/solicitudes'
+      preLoaderRoute: typeof NegocioSolicitudesRouteImport
+      parentRoute: typeof NegocioRoute
+    }
+    '/pago-simulado/$id': {
+      id: '/pago-simulado/$id'
+      path: '/pago-simulado/$id'
+      fullPath: '/pago-simulado/$id'
+      preLoaderRoute: typeof PagoSimuladoIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/membresia/pago/$id': {
+      id: '/membresia/pago/$id'
+      path: '/membresia/pago/$id'
+      fullPath: '/membresia/pago/$id'
+      preLoaderRoute: typeof MembresiaPagoIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
+interface NegocioRouteChildren {
+  NegocioAsistenteRoute: typeof NegocioAsistenteRoute
+  NegocioHorariosRoute: typeof NegocioHorariosRoute
+  NegocioMarcaRoute: typeof NegocioMarcaRoute
+  NegocioMembresiaRoute: typeof NegocioMembresiaRoute
+  NegocioMonederoRoute: typeof NegocioMonederoRoute
+  NegocioMovimientosRoute: typeof NegocioMovimientosRoute
+  NegocioPinPosRoute: typeof NegocioPinPosRoute
+  NegocioReclamacionesRoute: typeof NegocioReclamacionesRoute
+  NegocioReferidosRoute: typeof NegocioReferidosRoute
+  NegocioReportesRoute: typeof NegocioReportesRoute
+  NegocioSolicitudesRoute: typeof NegocioSolicitudesRoute
+  NegocioIndexRoute: typeof NegocioIndexRoute
+}
+
+const NegocioRouteChildren: NegocioRouteChildren = {
+  NegocioAsistenteRoute: NegocioAsistenteRoute,
+  NegocioHorariosRoute: NegocioHorariosRoute,
+  NegocioMarcaRoute: NegocioMarcaRoute,
+  NegocioMembresiaRoute: NegocioMembresiaRoute,
+  NegocioMonederoRoute: NegocioMonederoRoute,
+  NegocioMovimientosRoute: NegocioMovimientosRoute,
+  NegocioPinPosRoute: NegocioPinPosRoute,
+  NegocioReclamacionesRoute: NegocioReclamacionesRoute,
+  NegocioReferidosRoute: NegocioReferidosRoute,
+  NegocioReportesRoute: NegocioReportesRoute,
+  NegocioSolicitudesRoute: NegocioSolicitudesRoute,
+  NegocioIndexRoute: NegocioIndexRoute,
+}
+
+const NegocioRouteWithChildren =
+  NegocioRoute._addFileChildren(NegocioRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ActivarRoute: ActivarRoute,
+  AjustesRoute: AjustesRoute,
+  AvisoPrivacidadRoute: AvisoPrivacidadRoute,
+  BajaRoute: BajaRoute,
+  CajaRoute: CajaRoute,
+  CanjearRoute: CanjearRoute,
+  ClientesRoute: ClientesRoute,
+  ConfirmarAltaRoute: ConfirmarAltaRoute,
+  CorteRoute: CorteRoute,
+  EliminarCuentaRoute: EliminarCuentaRoute,
+  EmpleadosRoute: EmpleadosRoute,
+  HistorialRoute: HistorialRoute,
+  InvitacionRoute: InvitacionRoute,
+  LoginRoute: LoginRoute,
+  NegocioRoute: NegocioRouteWithChildren,
+  PanelRoute: PanelRoute,
+  ReclamacionesRoute: ReclamacionesRoute,
+  RecuperarRoute: RecuperarRoute,
+  ReferidosRoute: ReferidosRoute,
+  RestablecerPinRoute: RestablecerPinRoute,
+  StaffRoute: StaffRoute,
+  ValidacionesRoute: ValidacionesRoute,
+  PagoSimuladoIdRoute: PagoSimuladoIdRoute,
+  MembresiaPagoIdRoute: MembresiaPagoIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
