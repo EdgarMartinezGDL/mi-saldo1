@@ -1,3 +1,8 @@
+# P19
+- [x] Ficha del negocio, franja de Inicio y contacto en Datos y marca, solo frontend
+- [x] 215 pruebas pasan (23 de P19), compilación correcta; Chromium simulado a 1280×1800 y 400×860 verifica guardado, validación, Inicio → ficha, enlaces, vacío y reintento sin errores
+- [ ] Recorrido real con Carla y Diego: POST /api/auth/refrescar devuelve 404 y redirige a login; requiere API externa y sesiones válidas
+
 # P16d
 - [x] Cambiar únicamente el texto del selector a Archivados y los dos textos indicados de la prueba
 - [x] Las 11 pruebas P16 pasan y compilación correcta

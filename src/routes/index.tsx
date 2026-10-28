@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Gift, History, Search, TriangleAlert } from "lucide-react";
+import { ArrowRight, ChevronRight, Gift, History, Search, TriangleAlert } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { AppShell } from "@/components/app-shell";
@@ -9,8 +9,8 @@ import { Cargando, RequiereSesion } from "@/components/requiere-sesion";
 import { Button } from "@/components/ui/button";
 import { ApiError } from "@/lib/api/client";
 import { useQuery } from "@tanstack/react-query";
-import { perfil, referidos, resumen, type Perfil, type Resumen } from "@/lib/api/cliente";
-import { pesos, textoCaducidad } from "@/lib/api/formato";
+import { fichaNegocio, perfil, referidos, resumen, type Perfil, type Resumen } from "@/lib/api/cliente";
+import { pesos, textoCaducidad, textoEstadoHorario } from "@/lib/api/formato";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/")({
@@ -41,6 +41,7 @@ export const Route = createFileRoute("/")({
 function ClienteInicio() {
   const { sesion } = useAuth();
   const { updateBusiness } = useMiSaldo();
+  const ficha = useQuery({ queryKey: ["cliente-ficha-negocio", sesion?.contexto.negocio_id], queryFn: fichaNegocio, enabled: !!sesion, retry: false });
   const refs = useQuery({ queryKey: ["cliente-referidos"], queryFn: referidos, enabled: !!sesion, retry: false });
   const hayReferidos = !!refs.data && (refs.data.programa !== null || refs.data.recomendados.length > 0);
   const [datos, setDatos] = useState<Resumen | null>(null);
@@ -97,6 +98,15 @@ function ClienteInicio() {
             {datos.negocio.nombre_comercial}
           </span>
         </div>
+
+        {ficha.data && !ficha.isError && !ficha.isPending && (
+          <Link to="/mi-negocio" className="flex items-center gap-3 rounded-xl bg-card p-3 ring-1 ring-border"
+            aria-label={`${textoEstadoHorario(ficha.data)}. Ver horario y ubicación de ${ficha.data.nombre_comercial}`}>
+            <span aria-hidden="true" className={cn("size-2.5 shrink-0 rounded-full", ficha.data.abierto_ahora === true ? "bg-success" : "bg-muted-foreground")} />
+            <span className="min-w-0 text-sm font-medium">{textoEstadoHorario(ficha.data)}</span>
+            <span className="ml-auto flex min-w-0 items-center gap-1 text-sm text-muted-foreground">Ver horario y ubicación<ChevronRight className="size-4 shrink-0" /></span>
+          </Link>
+        )}
 
         {m && (
           <section className="relative overflow-hidden rounded-2xl bg-primary p-5 text-primary-foreground ring-1 ring-black/5 sm:p-6">

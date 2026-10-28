@@ -1,6 +1,6 @@
 import { api } from "./client";
 import { query } from "./formato";
-import type { ClienteCaja, ConfiguracionCaja } from "./caja";
+import type { ClienteCaja, ConfiguracionCaja, ConfiguracionNegocio } from "./caja";
 
 export interface Dashboard {
   periodo: { desde: string; hasta: string; jornadas: number; zona_horaria: string; en_curso: boolean };
@@ -131,8 +131,8 @@ export const reenviarInvitacion = (id: string) =>
 export const bajaEmpleado = (id: string) =>
   api<{ dado_de_baja: true; sesiones_revocadas: number }>(`/api/empleados/${encodeURIComponent(id)}`, { method: "DELETE" });
 
-export type NegocioConfig = ConfiguracionCaja["negocio"];
-export const actualizarNegocio = (body: { nombre_comercial: string; giro: string | null; logo_url: string | null; tema_id: 1 | 2 | 3 }) =>
+export type NegocioConfig = ConfiguracionCaja["negocio"] & Pick<ConfiguracionNegocio["negocio"], "direccion" | "telefono_contacto" | "telefono_es_whatsapp">;
+export const actualizarNegocio = (body: { nombre_comercial: string; giro: string | null; logo_url: string | null; tema_id: 1 | 2 | 3; direccion?: string | null; telefono_contacto?: string | null; telefono_es_whatsapp?: boolean }) =>
   api<NegocioConfig>("/api/negocio", { method: "PUT", body });
 export const actualizarMonedero = (body: { factor_cashback: string; vigencia_dias: number | null }) =>
   api<{ factor_cashback: number; vigencia_dias: number | null; advertencias: string[] }>("/api/negocio/monedero", { method: "PUT", body });
