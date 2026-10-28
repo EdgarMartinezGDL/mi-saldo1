@@ -24,6 +24,7 @@ import { Route as EmpleadosRouteImport } from './routes/empleados'
 import { Route as HistorialRouteImport } from './routes/historial'
 import { Route as InvitacionRouteImport } from './routes/invitacion'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as MiNegocioRouteImport } from './routes/mi-negocio'
 import { Route as NegocioRouteImport } from './routes/negocio'
 import { Route as PanelRouteImport } from './routes/panel'
 import { Route as ReclamacionesRouteImport } from './routes/reclamaciones'
@@ -120,6 +121,11 @@ const InvitacionRoute = InvitacionRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MiNegocioRoute = MiNegocioRouteImport.update({
+  id: '/mi-negocio',
+  path: '/mi-negocio',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NegocioRoute = NegocioRouteImport.update({
@@ -249,6 +255,7 @@ export interface FileRoutesByFullPath {
   '/historial': typeof HistorialRoute
   '/invitacion': typeof InvitacionRoute
   '/login': typeof LoginRoute
+  '/mi-negocio': typeof MiNegocioRoute
   '/negocio': typeof NegocioRouteWithChildren
   '/panel': typeof PanelRoute
   '/reclamaciones': typeof ReclamacionesRoute
@@ -288,6 +295,7 @@ export interface FileRoutesByTo {
   '/historial': typeof HistorialRoute
   '/invitacion': typeof InvitacionRoute
   '/login': typeof LoginRoute
+  '/mi-negocio': typeof MiNegocioRoute
   '/panel': typeof PanelRoute
   '/reclamaciones': typeof ReclamacionesRoute
   '/recuperar': typeof RecuperarRoute
@@ -327,6 +335,7 @@ export interface FileRoutesById {
   '/historial': typeof HistorialRoute
   '/invitacion': typeof InvitacionRoute
   '/login': typeof LoginRoute
+  '/mi-negocio': typeof MiNegocioRoute
   '/negocio': typeof NegocioRouteWithChildren
   '/panel': typeof PanelRoute
   '/reclamaciones': typeof ReclamacionesRoute
@@ -368,6 +377,7 @@ export interface FileRouteTypes {
     | '/historial'
     | '/invitacion'
     | '/login'
+    | '/mi-negocio'
     | '/negocio'
     | '/panel'
     | '/reclamaciones'
@@ -407,6 +417,7 @@ export interface FileRouteTypes {
     | '/historial'
     | '/invitacion'
     | '/login'
+    | '/mi-negocio'
     | '/panel'
     | '/reclamaciones'
     | '/recuperar'
@@ -445,6 +456,7 @@ export interface FileRouteTypes {
     | '/historial'
     | '/invitacion'
     | '/login'
+    | '/mi-negocio'
     | '/negocio'
     | '/panel'
     | '/reclamaciones'
@@ -485,6 +497,7 @@ export interface RootRouteChildren {
   HistorialRoute: typeof HistorialRoute
   InvitacionRoute: typeof InvitacionRoute
   LoginRoute: typeof LoginRoute
+  MiNegocioRoute: typeof MiNegocioRoute
   NegocioRoute: typeof NegocioRouteWithChildren
   PanelRoute: typeof PanelRoute
   ReclamacionesRoute: typeof ReclamacionesRoute
@@ -602,6 +615,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mi-negocio': {
+      id: '/mi-negocio'
+      path: '/mi-negocio'
+      fullPath: '/mi-negocio'
+      preLoaderRoute: typeof MiNegocioRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/negocio': {
@@ -810,6 +830,7 @@ const rootRouteChildren: RootRouteChildren = {
   HistorialRoute: HistorialRoute,
   InvitacionRoute: InvitacionRoute,
   LoginRoute: LoginRoute,
+  MiNegocioRoute: MiNegocioRoute,
   NegocioRoute: NegocioRouteWithChildren,
   PanelRoute: PanelRoute,
   ReclamacionesRoute: ReclamacionesRoute,
