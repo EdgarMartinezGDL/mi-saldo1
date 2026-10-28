@@ -58,3 +58,25 @@ export const query = (params: Record<string, string | number | boolean | null | 
   const s = q.toString();
   return s ? `?${s}` : "";
 };
+
+export const DIAS_SEMANA = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+
+/** Server-computed opening status → one short line. Never recompute on the device. */
+export function textoEstadoHorario(f: {
+  horario_publicado: boolean;
+  abierto_ahora: boolean | null;
+  cierra_a: string | null;
+  abre_proximo: { dia_semana: number; hora: string; en_dias: number } | null;
+}): string {
+  if (!f.horario_publicado) return "Horario no disponible";
+  if (f.abierto_ahora) return `Abierto · cierra a las ${f.cierra_a}`;
+  const a = f.abre_proximo;
+  if (!a) return "Cerrado";
+  if (a.en_dias === 0) return `Cerrado · abre hoy a las ${a.hora}`;
+  if (a.en_dias === 1) return `Cerrado · abre mañana a las ${a.hora}`;
+  return `Cerrado · abre el ${DIAS_SEMANA[a.dia_semana]?.toLowerCase()} a las ${a.hora}`;
+}
+
+/** "Cómo llegar": Google Maps search by text (no coordinates). */
+export const enlaceMapa = (nombre: string, direccion: string) =>
+  `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${nombre}, ${direccion}`)}`;

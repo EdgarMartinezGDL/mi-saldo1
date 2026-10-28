@@ -9,6 +9,7 @@ import { BotonesEdicion, useModoEdicion, VistaLectura } from "@/components/secci
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import type { ConfiguracionNegocio } from "@/lib/api/caja";
 import { actualizarNegocio } from "@/lib/api/dueno";
 
@@ -37,7 +38,7 @@ const TEMAS = [
   { id: 3 as const, value: "personalizado" as const, label: "Personalizado", icon: Palette },
 ];
 
-type Valores = { nombre: string; giro: string; logo: string; tema: 1 | 2 | 3 };
+type Valores = { nombre: string; giro: string; logo: string; tema: 1 | 2 | 3; direccion: string; telefono: string; whatsapp: boolean };
 
 function Marca({ cfg }: { cfg: ConfiguracionNegocio }) {
   const invalidarAsistente = useInvalidarAsistente();
@@ -48,6 +49,9 @@ function Marca({ cfg }: { cfg: ConfiguracionNegocio }) {
     giro: cfg.negocio.giro ?? "",
     logo: cfg.negocio.logo_url ?? "",
     tema: (cfg.negocio.tema_id ?? 2) as 1 | 2 | 3,
+    direccion: cfg.negocio.direccion ?? "",
+    telefono: cfg.negocio.telefono_contacto ?? "",
+    whatsapp: cfg.negocio.telefono_es_whatsapp ?? false,
   };
   const { editando, valores, set, editar: editarBase, cancelar: cancelarBase, terminar, guardado, cambiado, ref } = useModoEdicion(inicial);
   const [ocupado, setOcupado] = useState(false);
@@ -82,14 +86,22 @@ function Marca({ cfg }: { cfg: ConfiguracionNegocio }) {
       toast.error("El logotipo debe ser un enlace que empiece con https://");
       return;
     }
+    if (valores.telefono.trim() && !valores.telefono.trim().startsWith("+")) {
+      toast.error("El teléfono debe empezar con + y la lada del país, por ejemplo +52 33 1234 5678");
+      return;
+    }
     setOcupado(true);
     try {
-      const n = await actualizarNegocio({ nombre_comercial: valores.nombre.trim(), giro: valores.giro.trim() || null, logo_url: valores.logo.trim() || null, tema_id: valores.tema });
+      const n = await actualizarNegocio({ nombre_comercial: valores.nombre.trim(), giro: valores.giro.trim() || null, logo_url: valores.logo.trim() || null, tema_id: valores.tema,
+        direccion: valores.direccion.trim() || null,
+        telefono_contacto: valores.telefono.trim() || null,
+        telefono_es_whatsapp: !!valores.telefono.trim() && valores.whatsapp,
+      });
       invalidarAsistente();
       updateBusiness({ name: n.nombre_comercial, logo: n.logo_url });
       actualizar((c) => ({ ...c, negocio: { ...c.negocio, ...n, giro: valores.giro.trim() || null, tema_id: valores.tema } }));
       toast.success("Datos del negocio guardados");
-      terminar({ nombre: valores.nombre.trim(), giro: valores.giro.trim(), logo: valores.logo.trim(), tema: valores.tema });
+      terminar({ nombre: valores.nombre.trim(), giro: valores.giro.trim(), logo: valores.logo.trim(), tema: valores.tema, direccion: n.direccion ?? "", telefono: n.telefono_contacto ?? "", whatsapp: n.telefono_es_whatsapp });
     } catch (e) {
       mostrarError(e);
     } finally {
@@ -124,6 +136,25 @@ function Marca({ cfg }: { cfg: ConfiguracionNegocio }) {
               <div className="flex flex-col gap-2">
                 <Label htmlFor="giro" className="text-base">Giro</Label>
                 <Input id="giro" value={valores.giro} maxLength={100} onChange={(e) => set("giro", e.target.value)} placeholder="Cafetería" className="h-14 text-base" />
+              </div>
+            </div>
+            <div className="flex flex-col gap-4">
+              <div>
+                <p className="text-base font-medium">Para tus clientes</p>
+                <p className="text-sm text-muted-foreground">Tus clientes ven estos datos en la app, junto con tu horario.</p>
+              </div>
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="direccion" className="text-base">Dirección</Label>
+                <Input id="direccion" maxLength={300} placeholder="Calle, número, colonia y ciudad" className="h-14 text-base" value={valores.direccion} onChange={(e) => set("direccion", e.target.value)} />
+              </div>
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="telefono-negocio" className="text-base">Teléfono del negocio</Label>
+                <Input id="telefono-negocio" type="tel" inputMode="tel" placeholder="+52 33 1234 5678" className="h-14 text-base" value={valores.telefono} onChange={(e) => set("telefono", e.target.value)} />
+                <p className="text-sm text-muted-foreground">Con lada internacional (+52 …). No se usa para avisos ni para entrar a la app.</p>
+              </div>
+              <div className="flex items-center gap-3">
+                <Switch id="telefono-whatsapp" checked={valores.whatsapp} disabled={!valores.telefono.trim()} onCheckedChange={(v) => set("whatsapp", v)} />
+                <Label htmlFor="telefono-whatsapp" className="text-base">Este número tiene WhatsApp</Label>
               </div>
             </div>
             <div>
@@ -183,6 +214,8 @@ function Marca({ cfg }: { cfg: ConfiguracionNegocio }) {
               { etiqueta: "Nombre del negocio", valor: guardado.nombre },
               { etiqueta: "Giro", valor: guardado.giro || "—" },
               { etiqueta: "Tema visual", valor: temaLabel },
+              { etiqueta: "Dirección", valor: guardado.direccion || "—" },
+              { etiqueta: "Teléfono del negocio", valor: guardado.telefono ? (guardado.whatsapp ? `${guardado.telefono} (WhatsApp)` : guardado.telefono) : "—" },
             ]}
           >
             <div className="flex items-center gap-4">

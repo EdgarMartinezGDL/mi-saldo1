@@ -1,3 +1,8 @@
+# P19
+- [ ] Ficha del negocio, franja de Inicio y contacto en Datos y marca, solo frontend
+- [ ] Pruebas P19 y revisión en Chromium a escritorio y 400×860
+- [ ] Recorrido real con Carla y Diego: requiere API externa y sesiones válidas
+
 # P16d
 - [x] Cambiar únicamente el texto del selector a Archivados y los dos textos indicados de la prueba
 - [x] Las 11 pruebas P16 pasan y compilación correcta

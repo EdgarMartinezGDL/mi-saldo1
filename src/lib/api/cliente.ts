@@ -2,6 +2,26 @@ import { api } from "./client";
 import { query, type Caducidad } from "./formato";
 import { escritorCopia, terminarCopia } from "@/lib/sin-conexion-sesion";
 
+export interface FichaNegocio {
+  negocio_id: string;
+  nombre_comercial: string;
+  giro: string | null;
+  logo_url: string | null;
+  tema_id: 1 | 2 | 3;
+  zona_horaria: string;
+  direccion: string | null;
+  telefono_contacto: string | null;
+  telefono_es_whatsapp: boolean;
+  horarios: Array<{ dia_semana: number; cerrado: boolean; hora_apertura: string | null; hora_cierre: string | null }>;
+  horario_publicado: boolean;
+  hoy_dia_semana: number;
+  abierto_ahora: boolean | null;
+  cierra_a: string | null;
+  abre_proximo: { dia_semana: number; hora: string; en_dias: number } | null;
+}
+
+export const fichaNegocio = () => api<FichaNegocio>("/api/cliente/negocio");
+
 export interface NegocioCliente {
   negocio_id: string;
   nombre_comercial: string;

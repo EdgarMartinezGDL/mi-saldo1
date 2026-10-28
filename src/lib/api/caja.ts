@@ -25,7 +25,7 @@ export interface ConfiguracionCaja {
 }
 
 export interface ConfiguracionNegocio extends ConfiguracionCaja {
-  negocio: ConfiguracionCaja["negocio"] & { giro: string | null; tema_id: 1 | 2 | 3; zona_horaria: string; limite_tarjetas_activas: number };
+  negocio: ConfiguracionCaja["negocio"] & { giro: string | null; tema_id: 1 | 2 | 3; zona_horaria: string; limite_tarjetas_activas: number; direccion: string | null; telefono_contacto: string | null; telefono_es_whatsapp: boolean };
   tarjetas?: TarjetaConfig[];
   horarios?: Horario[];
 }
