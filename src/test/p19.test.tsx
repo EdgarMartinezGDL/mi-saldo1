@@ -92,7 +92,7 @@ describe("P19 ficha", () => {
     expect(await screen.findByText("Este negocio aún no publica su horario.")).toBeInTheDocument(); expect(screen.queryByRole("list")).toBeNull();
   });
   it.each(["solo_cliente", "sin_permiso"])("error %s admite reintento", async (codigo) => {
-    m.ficha.mockRejectedValueOnce(new ApiError(403, codigo, "Acceso no permitido")); pagina(FichaRoute);
+    m.ficha.mockRejectedValueOnce(new ApiError(403, { codigo, message: "Acceso no permitido" })); pagina(FichaRoute);
     expect(await screen.findByText("Acceso no permitido")).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Reintentar" })); await screen.findByRole("list"); expect(m.ficha).toHaveBeenCalledTimes(2);
   });
