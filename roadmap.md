@@ -1,7 +1,7 @@
 # P19
-- [ ] Ficha del negocio, franja de Inicio y contacto en Datos y marca, solo frontend
-- [ ] Pruebas P19 y revisión en Chromium a escritorio y 400×860
-- [ ] Recorrido real con Carla y Diego: requiere API externa y sesiones válidas
+- [x] Ficha del negocio, franja de Inicio y contacto en Datos y marca, solo frontend
+- [x] 215 pruebas pasan (23 de P19), compilación correcta; Chromium simulado a 1280×1800 y 400×860 verifica guardado, validación, Inicio → ficha, enlaces, vacío y reintento sin errores
+- [ ] Recorrido real con Carla y Diego: POST /api/auth/refrescar devuelve 404 y redirige a login; requiere API externa y sesiones válidas
 
 # P16d
 - [x] Cambiar únicamente el texto del selector a Archivados y los dos textos indicados de la prueba
