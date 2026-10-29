@@ -10,6 +10,7 @@
 <!-- LOVABLE:END -->
 
 ## MiSaldo structure
+- Staff notifications use server-provided retry eligibility, shared ConfirmarMotivo without TOTP, and applied-filter reloads that clear retry chains. Why: eligibility remains server-authoritative and concurrent retries cannot leave stale actions visible.
 - Customer home and /mi-negocio share the business-scoped cliente-ficha-negocio Query key; opening status comes from the server through formato helpers. Why: context switches cannot show another business and the device never authorizes opening hours.
 - Owner archived-client filters follow server flags; Clientes keeps active/include/archive-only selection in validated URL search and replaces history on changes, and report inclusion is sent only for birthdays. Why: reloads preserve selection, inactivity and reactivation stay server-authoritative, and inactive exports reject that option.
 - AppShell owns role-based navigation from useAuth; MiSaldoProvider owns visual preferences and branding, persisting only theme/color. Why: roles and business data must follow the real session.
