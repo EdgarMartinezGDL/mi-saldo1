@@ -16,9 +16,9 @@ vi.mock("@/components/staff/comun", async (o) => ({ ...await o<typeof import("@/
 vi.mock("@/lib/use-desplazar", () => ({ useDesplazarAlAbrir: () => ({ current: null }) }));
 
 const ficha: ClienteCaja = { cliente: { persona_id: "elena", nombre: "Elena", apellido_paterno: "Demo", cuenta_activada: false, requiere_codigo_acumulacion: false, puede_canjear: false, correo: { estado: "sin_correo", enmascarado: null } } };
-const aviso: NotificacionStaff = { notificacion_id: "n1", creado_en: "2026-10-19T01:03:09Z", actualizado_en: "2026-10-19T01:03:10Z", enviado_en: null, evento: "correo_caja_registrado", canal: "correo", estado: "fallido", intentos: 1, ultimo_error: "sin_destino: La persona no tiene correo", remitente: null, destinatario: { persona_id: "elena", nombre: "Elena", apellido_paterno: "Demo", telefono: "+52••••••0005", correo: "e***@ejemplo.mx" }, negocio: null };
-Object.assign(aviso, { entrega: "sin_confirmar", entregado_en: null, leido_en: null, entrega_detalle: null,
-  reintento_de: null, reintento_num: 0, reintentado_en: null, reintento: { posible: false, motivo: "sin_destino" } });
+const aviso: NotificacionStaff = { notificacion_id: "n1", creado_en: "2026-10-19T01:03:09Z", actualizado_en: "2026-10-19T01:03:10Z", enviado_en: null, evento: "correo_caja_registrado", canal: "correo", estado: "fallido", intentos: 1, ultimo_error: "sin_destino: La persona no tiene correo", remitente: null, destinatario: { persona_id: "elena", nombre: "Elena", apellido_paterno: "Demo", telefono: "+52••••••0005", correo: "e***@ejemplo.mx" }, negocio: null,
+  entrega: "sin_confirmar", entregado_en: null, leido_en: null, entrega_detalle: null,
+  reintento_de: null, reintento_num: 0, reintentado_en: null, reintento: { posible: false, motivo: "sin_destino" } };
 const resumen = { enviado: 9, fallido: 1, pendiente: 2, reintentando: 3, entrega: { sin_confirmar: 4, entregado: 3, leido: 2, no_entregado: 0, rebotado: 0, queja: 0 } };
 const cursor = { antes_de: "2026-10-19T00:16:24Z", antes_id: "n1" };
 beforeEach(() => {
