@@ -2,7 +2,7 @@ import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-li
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { MOTIVOS_NO_REINTENTO, PestanaNotificaciones } from "@/components/staff/notificaciones";
 import { ApiError } from "@/lib/api/client";
-import type { CadenaNotificacion, NotificacionStaff, RespuestaNotificaciones } from "@/lib/api/staff";
+import type { CadenaNotificacion, ReintentoCreado, NotificacionStaff, RespuestaNotificaciones } from "@/lib/api/staff";
 
 const m = vi.hoisted(() => ({ listar: vi.fn(), reintentar: vi.fn(), cadena: vi.fn(), errorStaff: vi.fn(), verFicha: vi.fn(), api: vi.fn() }));
 vi.mock("@/lib/api/staff", async (o) => ({ ...await o<typeof import("@/lib/api/staff")>(), notificaciones: m.listar, reintentarNotificacion: m.reintentar, cadenaNotificacion: m.cadena }));
@@ -18,7 +18,7 @@ if (!compra || !codigo || !enviado) throw new Error("Faltan los avisos reales de
 const fallido: NotificacionStaff = compra;
 const sensible: NotificacionStaff = codigo;
 const enviadoReal: NotificacionStaff = enviado;
-const creado = {"notificacion_id": "5cfde624-979d-4696-ad1a-0af79ad62dd5", "reintento_de": "e47976dc-f3c3-4239-a947-eb25f90e97ef", "reintento_num": 1, "evento": "compra_monedero", "canal": "whatsapp"};
+const creado: ReintentoCreado = {"notificacion_id": "5cfde624-979d-4696-ad1a-0af79ad62dd5", "reintento_de": "e47976dc-f3c3-4239-a947-eb25f90e97ef", "reintento_num": 1, "evento": "compra_monedero", "canal": "whatsapp"};
 const motivo = "Diego dice que no le llegó el aviso de su compra";
 beforeEach(() => {
   vi.resetAllMocks();
@@ -33,7 +33,7 @@ async function abrir(avisos: NotificacionStaff[] = [fallido]) {
   await waitFor(() => expect(screen.getAllByRole("button", { name: "Diego Demo" })).toHaveLength(avisos.length));
 }
 async function confirmar() {
-  fireEvent.click(screen.getByRole("button", { name: "Reintentar", exact: true }));
+  fireEvent.click(screen.getByRole("button", { name: "Reintentar" }));
   fireEvent.change(await screen.findByLabelText("Motivo"), { target: { value: motivo } });
   fireEvent.click(screen.getByRole("button", { name: "Sí, reintentar" }));
 }
@@ -44,7 +44,7 @@ describe("P20 reintentos", () => {
     fireEvent.change(screen.getByLabelText("Evento"), { target: { value: "compra_monedero" } });
     fireEvent.click(screen.getByRole("button", { name: "Buscar" }));
     await waitFor(() => expect(m.listar).toHaveBeenLastCalledWith({ canal: "whatsapp", evento: "compra_monedero" }));
-    fireEvent.click(screen.getByRole("button", { name: "Reintentar", exact: true }));
+    fireEvent.click(screen.getByRole("button", { name: "Reintentar" }));
     await screen.findByRole("heading", { name: "¿Reintentar este aviso?" });
     const boton = screen.getByRole("button", { name: "Sí, reintentar" });
     expect(boton).toBeDisabled();
@@ -61,14 +61,14 @@ describe("P20 reintentos", () => {
   });
   it("no reintenta un código ni muestra motivos en enviados", async () => {
     await abrir([sensible, enviadoReal]);
-    expect(screen.queryByRole("button", { name: "Reintentar", exact: true })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Reintentar" })).toBeNull();
     expect(screen.getByText(MOTIVOS_NO_REINTENTO.evento_no_reintentable)).toBeVisible();
     expect(screen.queryByText(MOTIVOS_NO_REINTENTO.no_fallida)).toBeNull();
     expect(m.reintentar).not.toHaveBeenCalled();
   });
   it("obedece posible del servidor aunque el evento y las fechas parezcan reintentables", async () => {
     await abrir([{ ...fallido, reintento: { posible: false, motivo: "limite_reintentos" } }]);
-    expect(screen.queryByRole("button", { name: "Reintentar", exact: true })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Reintentar" })).toBeNull();
     expect(m.reintentar).not.toHaveBeenCalled();
   });
   it("409 avisa y recarga los filtros aplicados", async () => {
