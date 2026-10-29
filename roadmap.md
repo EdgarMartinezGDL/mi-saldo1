@@ -1,3 +1,8 @@
+# P20
+- [ ] Tipos y llamadas de reintento/cadena; entrega, filtros, resumen y confirmación en Notificaciones, solo frontend
+- [ ] Ajustar P11 y agregar pruebas P20; ejecutar todas las pruebas y comprobar Chromium a 400×860 y escritorio
+- [ ] Publicar con el procedimiento disponible; recorrido real con Teo y Sofía requiere API externa y sesiones válidas
+
 # P19
 - [x] Ficha del negocio, franja de Inicio y contacto en Datos y marca, solo frontend
 - [x] 215 pruebas pasan (23 de P19), compilación correcta; Chromium simulado a 1280×1800 y 400×860 verifica guardado, validación, Inicio → ficha, enlaces, vacío y reintento sin errores
