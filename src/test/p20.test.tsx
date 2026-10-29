@@ -30,7 +30,7 @@ afterEach(cleanup);
 async function abrir(avisos: NotificacionStaff[] = [fallido]) {
   m.listar.mockResolvedValue({ ...respuesta, notificaciones: avisos, siguiente: null });
   render(<PestanaNotificaciones />);
-  await screen.findByRole("button", { name: "Diego Demo" });
+  await waitFor(() => expect(screen.getAllByRole("button", { name: "Diego Demo" })).toHaveLength(avisos.length));
 }
 async function confirmar() {
   fireEvent.click(screen.getByRole("button", { name: "Reintentar", exact: true }));
