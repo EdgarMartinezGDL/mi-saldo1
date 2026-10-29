@@ -339,6 +339,11 @@ export const autorizarRestablecimiento = (id: string, motivo: string) =>
 
 export type EstadoNotificacion = "pendiente" | "reintentando" | "enviado" | "fallido";
 export type CanalNotificacion = "whatsapp" | "correo";
+export type EntregaNotificacion = "sin_confirmar" | "entregado" | "leido" | "no_entregado" | "rebotado" | "queja";
+export type MotivoNoReintentable =
+  | "no_fallida" | "ya_reintentada" | "evento_no_reintentable" | "vencida"
+  | "limite_reintentos" | "persona_eliminada" | "sin_destino" | "correo_suprimido";
+export interface ReintentoPosible { posible: boolean; motivo: MotivoNoReintentable | null }
 export interface NotificacionStaff {
   notificacion_id: string;
   creado_en: string;
@@ -350,6 +355,14 @@ export interface NotificacionStaff {
   intentos: number;
   ultimo_error: string | null;
   remitente: string | null;
+  entrega: EntregaNotificacion;
+  entregado_en: string | null;
+  leido_en: string | null;
+  entrega_detalle: Record<string, string | number> | null;
+  reintento_de: string | null;
+  reintento_num: number;
+  reintentado_en: string | null;
+  reintento: ReintentoPosible;
   destinatario: { persona_id: string; nombre: string; apellido_paterno: string | null; telefono: string | null; correo: string | null };
   negocio: { negocio_id: string; nombre_comercial: string } | null;
 }
@@ -357,6 +370,7 @@ export interface FiltrosNotificaciones {
   estado?: EstadoNotificacion;
   canal?: CanalNotificacion;
   evento?: string;
+  entrega?: EntregaNotificacion;
   negocio_id?: string;
   persona_id?: string;
   desde?: string;
@@ -368,10 +382,38 @@ export interface FiltrosNotificaciones {
 export interface RespuestaNotificaciones {
   notificaciones: NotificacionStaff[];
   siguiente: Cursor;
-  resumen_24h: Record<EstadoNotificacion, number> | null;
+  resumen_24h: (Record<EstadoNotificacion, number> & { entrega: Record<EntregaNotificacion, number> }) | null;
 }
 export const notificaciones = (filtros: FiltrosNotificaciones = {}) =>
   api<RespuestaNotificaciones>(`/api/staff/notificaciones${query({ limite: 50, ...filtros })}`);
+
+export interface ReintentoCreado {
+  notificacion_id: string;
+  reintento_de: string;
+  reintento_num: number;
+  evento: string;
+  canal: CanalNotificacion;
+}
+export const reintentarNotificacion = (id: string, motivo: string) =>
+  api<ReintentoCreado>(`/api/staff/notificaciones/${encodeURIComponent(id)}/reintento`, { method: "POST", body: { motivo } });
+
+export interface AvisoCadena {
+  notificacion_id: string;
+  reintento_num: number;
+  creado_en: string;
+  enviado_en: string | null;
+  evento: string;
+  canal: CanalNotificacion;
+  estado: EstadoNotificacion;
+  intentos: number;
+  ultimo_error: string | null;
+  entrega: EntregaNotificacion;
+  reintentado_en: string | null;
+  reintento: ReintentoPosible;
+}
+export interface CadenaNotificacion { original_id: string; avisos: AvisoCadena[] }
+export const cadenaNotificacion = (id: string) =>
+  api<CadenaNotificacion>(`/api/staff/notificaciones/${encodeURIComponent(id)}/reintentos`);
 
 export interface PrecioMembresia {
   precio_mensual_centavos: number;
