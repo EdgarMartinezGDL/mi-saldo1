@@ -12,7 +12,7 @@ import { fechaAviso } from "@/lib/api/privacidad";
 import { pesos } from "@/lib/api/formato";
 
 export const Route = createFileRoute("/membresia/domiciliado")({
-  validateSearch: (s: Record<string, unknown>): { resultado: "cancelado" | "ok" } => ({ resultado: s.resultado === "cancelado" ? "cancelado" : "ok" }),
+  validateSearch: (s: Record<string, unknown>): { resultado: "cancelado" | "ok" } => ({ resultado: s["resultado"] === "cancelado" ? "cancelado" : "ok" }),
   head: () => ({ meta: [
     { title: "Pago domiciliado · MiSaldo" }, { name: "description", content: "Estado de tu pago domiciliado de la membresía MiSaldo." },
     { property: "og:title", content: "Pago domiciliado · MiSaldo" }, { property: "og:description", content: "Estado de tu pago domiciliado de la membresía MiSaldo." },
