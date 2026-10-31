@@ -57,9 +57,9 @@ describe("P12 consentimiento", () => {
   });
 });
 describe("P12 llave de pago", () => {
-  const pasarela = { disponible: true, simulado: true, metodos: ["tarjeta", "oxxo"] as ("tarjeta" | "oxxo")[], precio_mensual_centavos: 29900, moneda: "MXN", meses_maximos: 12 };
+  const pasarela = { proveedor: "mercadopago" as const, prueba: true, precioMensualCentavos: 29900, moneda: "MXN", mesesMaximos: 12 };
   it("reintentos conservan llave; cambiar meses genera otra", async () => {
-    montar(<PagoEnLinea pasarela={pasarela} />);
+    montar(<PagoEnLinea {...pasarela} />);
     fireEvent.change(screen.getByLabelText("Meses"), { target: { value: "3" } });
     fireEvent.click(screen.getByRole("button", { name: "Continuar al pago" }));
     await waitFor(() => expect(m.crear).toHaveBeenCalledTimes(1)); await screen.findByRole("button", { name: "Continuar al pago" });
@@ -70,12 +70,12 @@ describe("P12 llave de pago", () => {
     await waitFor(() => expect(m.crear).toHaveBeenCalledTimes(3)); expect(m.crear.mock.calls[2]?.[0].idempotency_key).not.toBe(primera.idempotency_key);
   });
   it("cambiar método genera otra llave", async () => {
-    montar(<PagoEnLinea pasarela={pasarela} />); fireEvent.click(screen.getByRole("button", { name: "Continuar al pago" })); await waitFor(() => expect(m.crear).toHaveBeenCalledTimes(1));
+    montar(<PagoEnLinea {...pasarela} />); fireEvent.click(screen.getByRole("button", { name: "Continuar al pago" })); await waitFor(() => expect(m.crear).toHaveBeenCalledTimes(1));
     await screen.findByRole("button", { name: "Continuar al pago" }); fireEvent.click(screen.getByRole("radio", { name: "Efectivo en OXXO" })); fireEvent.click(screen.getByRole("button", { name: "Continuar al pago" }));
     await waitFor(() => expect(m.crear).toHaveBeenCalledTimes(2)); expect(m.crear.mock.calls[1]?.[0].metodo).toBe("oxxo"); expect(m.crear.mock.calls[1]?.[0].idempotency_key).not.toBe(m.crear.mock.calls[0]?.[0].idempotency_key);
   });
   it("doble toque durante petición crea una sola orden", async () => {
-    m.crear.mockReturnValue(new Promise(() => {})); montar(<PagoEnLinea pasarela={pasarela} />); const b = screen.getByRole("button", { name: "Continuar al pago" }); fireEvent.click(b); fireEvent.click(b);
+    m.crear.mockReturnValue(new Promise(() => {})); montar(<PagoEnLinea {...pasarela} />); const b = screen.getByRole("button", { name: "Continuar al pago" }); fireEvent.click(b); fireEvent.click(b);
     await waitFor(() => expect(m.crear).toHaveBeenCalledTimes(1));
   });
 });
