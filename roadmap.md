@@ -1,8 +1,8 @@
 # P21
-- [ ] Métodos enviados por el servidor, pago único Stripe y domiciliado con cancelación/reanudación; solo frontend
-- [ ] Regreso /membresia/domiciliado y aviso de prueba del pago único
-- [ ] Pruebas P21 y ajustes mínimos P12/P13; suite completa y Chromium a 400×860 y escritorio
-- [ ] Recorrido real con dueños y Stripe: requiere API externa y sesiones válidas
+- [x] Métodos enviados por el servidor, pago único Stripe y domiciliado con cancelación/reanudación; solo frontend
+- [x] Regreso /membresia/domiciliado y aviso de prueba del pago único
+- [x] 245 pruebas pasan, incluidas 17 de P21 y ajustes mínimos P12/P13; compilación correcta. Chromium simulado a 1280×1800 y 400×860 verifica métodos, pago, cancelación/reanudación, alta y regreso sin errores ni desbordamiento
+- [ ] Recorrido real con dueños y Stripe: /negocio/membresia redirige a login sin sesión válida; requiere API externa y sesiones válidas. No se realizó ningún cobro real
 
 # P20
 - [x] Tipos y llamadas de reintento/cadena; entrega, filtros, resumen y confirmación en Notificaciones, solo frontend
