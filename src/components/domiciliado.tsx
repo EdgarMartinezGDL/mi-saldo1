@@ -6,7 +6,7 @@ import { Button } from "./ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "./ui/dialog";
 import { useConTotp } from "./totp-provider";
 import { ApiError } from "@/lib/api/client";
-import { cancelarSuscripcion, consultarSuscripcion, crearSuscripcion, errorSuscripcion, estadosPago, reanudarSuscripcion, verificarSuscripcion } from "@/lib/api/pagos";
+import { cancelarSuscripcion, consultarSuscripcion, crearSuscripcion, errorSuscripcion, estadosPago, marcaTarjeta, reanudarSuscripcion, verificarSuscripcion } from "@/lib/api/pagos";
 import { pesos } from "@/lib/api/formato";
 import { fechaAviso } from "@/lib/api/privacidad";
 
@@ -68,7 +68,7 @@ export function Domiciliado({ precioMensualCentavos, moneda }: { precioMensualCe
           <Button disabled={reanudar.isPending} onClick={() => { setError(null); reanudar.mutate(); }}>Reanudar domiciliado</Button>
         </> : <>
           <p className="flex items-center gap-2 font-semibold"><CircleCheck className="size-5 text-success" />Pago domiciliado activo</p>
-          {s.tarjeta && <p>{s.tarjeta.marca ? s.tarjeta.marca.charAt(0).toUpperCase() + s.tarjeta.marca.slice(1) : ""} terminación {s.tarjeta.ultimos4}</p>}
+          {s.tarjeta && <p>{marcaTarjeta(s.tarjeta.marca)} terminación {s.tarjeta.ultimos4}</p>}
           <p>{pesos(s.precio_mensual_centavos)} {s.moneda} al mes</p>
           <p>Próximo cargo: {fechaFin}</p>
           <Button variant="secondary" disabled={cancelar.isPending} onClick={() => { setError(null); setConfirmando(true); }}>Cancelar domiciliado</Button>

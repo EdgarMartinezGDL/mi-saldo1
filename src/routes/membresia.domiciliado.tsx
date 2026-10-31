@@ -7,7 +7,7 @@ import { AppShell } from "@/components/app-shell";
 import { Alerta, TarjetaEnlace } from "@/components/enlace-ui";
 import { Button } from "@/components/ui/button";
 import { AvisoPagoPrueba } from "@/components/pago-comun";
-import { consultarSuscripcion, errorSuscripcion, intervaloSuscripcion, verificarSuscripcion } from "@/lib/api/pagos";
+import { consultarSuscripcion, errorSuscripcion, intervaloSuscripcion, marcaTarjeta, verificarSuscripcion } from "@/lib/api/pagos";
 import { fechaAviso } from "@/lib/api/privacidad";
 import { pesos } from "@/lib/api/formato";
 
@@ -67,7 +67,7 @@ function ConfirmacionDomiciliado() {
     </>}
     {s?.estado === "activa" && <>
       <CircleCheck className="size-12 text-success" /><h2 className="text-2xl font-semibold">¡Tu tarjeta quedó domiciliada!</h2>
-      {s.tarjeta && <p>{s.tarjeta.marca} terminación {s.tarjeta.ultimos4}</p>}
+      {s.tarjeta && <p>{marcaTarjeta(s.tarjeta.marca)} terminación {s.tarjeta.ultimos4}</p>}
       <p>{posterior ? `El primer cargo de ${pesos(s.precio_mensual_centavos)} ${s.moneda} será el ${fechaAviso(s.primer_cobro)} y después cada mes.` : "Ya cobramos tu primer mes. Te enviamos la confirmación por WhatsApp y correo."}</p>
       {volver}
     </>}
