@@ -70,3 +70,7 @@ export const errorPago = (e: unknown) => {
 };
 export const estadosPago: Record<EstadoPago, string> = { aprobado: "Pagado", pendiente: "Pendiente", rechazado: "Rechazado", vencido: "Vencido", cancelado: "Cancelado", en_revision: "En revisión", creado: "Sin pagar" };
 export const intervaloPago = (estado: EstadoPago | undefined, inicio: number, ahora: number) => (estado === "creado" || estado === "pendiente") && ahora - inicio < 120_000 ? 3_000 : false;
+
+/** Marca de la tarjeta para mostrar: "visa" → "Visa", "mastercard" → "Mastercard"; sin marca, "Tarjeta". */
+export const marcaTarjeta = (marca: string | null | undefined) =>
+  marca ? marca.charAt(0).toUpperCase() + marca.slice(1) : "Tarjeta";
