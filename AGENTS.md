@@ -34,7 +34,7 @@
 - Auth distinguishes refresh network failures from anonymous sessions; the root connection boundary owns offline views/notices. Why: disconnected reloads must not redirect to login.
 - Only pwa-registro registers the server-maintained worker with dev/preview/iframe/kill-switch guards; no local worker generation. Why: server owns asset caching and previews must not retain stale shells.
 - Privacy consent shares one Query cache and useConsentimiento across entry forms; AppShell mounts AvisoPendiente once and caches accepted profile state before invalidation. Why: displayed versions and acceptance cannot diverge or lose form inputs.
-- Membership status uses the membresia query; online orders use pagos-membresia and pago-membresia/id, with separate simulator routes and API module. Why: approval invalidates status consistently while payment creation keys survive retries in memory.
+- Membership methods and subscriptions use membresia-metodos and membresia-suscripcion; orders keep pagos-membresia and pago-membresia/id. Stripe return verifies once then polls for one minute; subscription changes use useConTotp and invalidate status/history. Why: server controls availability, shared state and retry keys avoid duplicate payments.
 - Staff membership pricing uses the precio-membresia query and a separately mounted dialog with one explicit confirmation factor, not useConTotp. Why: each change requires fresh proof and closing unmounts all secret state.
 - Staff price submission validates FormData values and focuses the first invalid field; input/change handlers only mirror the display state. Why: autofill can change visible values without updating React state.
 
