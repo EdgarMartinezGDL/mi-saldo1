@@ -1,7 +1,14 @@
+# P21
+- [ ] Métodos enviados por el servidor, pago único Stripe y domiciliado con cancelación/reanudación; solo frontend
+- [ ] Regreso /membresia/domiciliado y aviso de prueba del pago único
+- [ ] Pruebas P21 y ajustes mínimos P12/P13; suite completa y Chromium a 400×860 y escritorio
+- [ ] Recorrido real con dueños y Stripe: requiere API externa y sesiones válidas
+
 # P20
-- [ ] Tipos y llamadas de reintento/cadena; entrega, filtros, resumen y confirmación en Notificaciones, solo frontend
-- [ ] Ajustar P11 y agregar pruebas P20; ejecutar todas las pruebas y comprobar Chromium a 400×860 y escritorio
-- [ ] Publicar con el procedimiento disponible; recorrido real con Teo y Sofía requiere API externa y sesiones válidas
+- [x] Tipos y llamadas de reintento/cadena; entrega, filtros, resumen y confirmación en Notificaciones, solo frontend
+- [x] 228 pruebas pasan; compilación correcta; Chromium simulado a 1280×1800 y 400×860 verifica reintento, cadena y filtros sin desbordamiento ni errores
+- [ ] Publicación interrumpida por nuevo documento; scripts/publicar-frontend.sh no existe
+- [ ] Recorrido real con Teo y Sofía: /api/auth/refrescar devuelve 404 y redirige a login; requiere API externa y sesiones válidas
 
 # P19
 - [x] Ficha del negocio, franja de Inicio y contacto en Datos y marca, solo frontend
