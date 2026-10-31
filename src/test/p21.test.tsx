@@ -75,7 +75,7 @@ describe("P21 selector y pago único", () => {
     fireEvent.change(screen.getByLabelText("Meses"), { target: { value: "2" } });
     expect(screen.getByText("Total: $598.00 MXN")).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Continuar al pago" }));
-    await waitFor(() => expect(m.crear).toHaveBeenCalledWith({ proveedor: "stripe", metodo: "tarjeta", meses: 2, idempotency_key: expect.any(String) }));
+    await waitFor(() => expect(m.crear.mock.calls[0]?.[0]).toEqual({ proveedor: "stripe", metodo: "tarjeta", meses: 2, idempotency_key: expect.any(String) }));
     await waitFor(() => expect(assign).toHaveBeenCalledWith("https://checkout.stripe.com/pago"));
   });
 });
