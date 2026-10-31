@@ -5,7 +5,7 @@ import { SeccionMembresia } from "@/components/membresia";
 import { Domiciliado } from "@/components/domiciliado";
 import { Route } from "@/routes/membresia.domiciliado";
 import { ApiError } from "@/lib/api/client";
-import { intervaloSuscripcion, type MetodosMembresia, type SuscripcionMembresia } from "@/lib/api/pagos";
+import { intervaloSuscripcion, marcaTarjeta, type MetodosMembresia, type SuscripcionMembresia } from "@/lib/api/pagos";
 
 const m = vi.hoisted(() => ({ metodos: vi.fn(), datos: vi.fn(), membresia: vi.fn(), crear: vi.fn(), consultar: vi.fn(), domiciliar: vi.fn(), verificar: vi.fn(), cancelar: vi.fn(), reanudar: vi.fn(), conTotp: vi.fn(), resultado: "ok" }));
 vi.mock("@/lib/api/pagos", async (original) => ({ ...await original<typeof import("@/lib/api/pagos")>(),
@@ -136,9 +136,16 @@ describe("P21 regreso y consulta periódica", () => {
     vi.spyOn(Date, "now").mockReturnValue(new Date("2026-10-31T04:00:00Z").getTime());
     m.consultar.mockResolvedValue({ suscripcion: activa, cobros: [] }); regreso();
     await screen.findByText("¡Tu tarjeta quedó domiciliada!");
+    expect(screen.getByText("Visa terminación 4242")).toBeInTheDocument();
+    expect(screen.queryByText(/visa terminación/)).toBeNull();
     expect(m.verificar).toHaveBeenCalledTimes(1); expect(m.consultar).toHaveBeenCalledTimes(1);
     expect(screen.getByText(/El primer cargo de \$299.00 MXN será el/)).toBeInTheDocument();
     vi.restoreAllMocks();
+  });
+  it("marcaTarjeta muestra la marca con mayúscula o Tarjeta", () => {
+    expect(marcaTarjeta("visa")).toBe("Visa");
+    expect(marcaTarjeta("mastercard")).toBe("Mastercard");
+    expect(marcaTarjeta(null)).toBe("Tarjeta");
   });
   it("cancelado no llama ni verificación ni consulta", () => {
     m.resultado = "cancelado"; regreso();
