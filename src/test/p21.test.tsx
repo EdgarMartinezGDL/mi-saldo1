@@ -48,7 +48,7 @@ beforeEach(() => {
   vi.stubGlobal("location", { ...window.location, assign });
   m.metodos.mockResolvedValue(metodos); m.consultar.mockResolvedValue({ suscripcion: null, cobros: [] });
   m.datos.mockResolvedValue({ transferencia: { banco: "Banco", clabe: "123" }, oxxo: { tarjeta: "123", titular: "Demo" }, whatsapp: null });
-  m.membresia.mockResolvedValue({ estado: "activa", fecha_vencimiento: "2026-12-05", costo_mensual_centavos: 29900 });
+  m.membresia.mockResolvedValue({ estado: "activa", fecha_vencimiento: "2026-12-05", bloqueo_desde: "2026-12-10", dias_para_vencer: 35, aviso_pago_pendiente: false, fecha_inicio: "2026-10-01", movimientos: [] });
   m.crear.mockResolvedValue({ creada: true, pago: { url_pago: "https://checkout.stripe.com/pago" } });
   m.domiciliar.mockResolvedValue({ creada: true, suscripcion: { ...activa, estado: "creada", url_pago: "https://checkout.stripe.com/domiciliado" } });
   m.verificar.mockResolvedValue({ suscripcion: activa, cobros: [] });
@@ -86,7 +86,7 @@ describe("P21 domiciliado", () => {
     expect(screen.getByText(/\$299.00 MXN cada mes/)).toBeInTheDocument();
     fireEvent.click(b); fireEvent.click(b);
     await waitFor(() => expect(m.domiciliar).toHaveBeenCalledTimes(1));
-    expect(m.domiciliar).toHaveBeenCalledWith(expect.any(String));
+    expect(m.domiciliar.mock.calls[0]?.[0]).toEqual(expect.any(String));
     await waitFor(() => expect(assign).toHaveBeenCalledWith("https://checkout.stripe.com/domiciliado"));
   });
   it("409 ya_suscrito recarga sin error", async () => {
