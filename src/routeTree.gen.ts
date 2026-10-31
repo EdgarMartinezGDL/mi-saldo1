@@ -33,6 +33,7 @@ import { Route as ReferidosRouteImport } from './routes/referidos'
 import { Route as RestablecerPinRouteImport } from './routes/restablecer-pin'
 import { Route as StaffRouteImport } from './routes/staff'
 import { Route as ValidacionesRouteImport } from './routes/validaciones'
+import { Route as MembresiaDomiciliadoRouteImport } from './routes/membresia.domiciliado'
 import { Route as NegocioIndexRouteImport } from './routes/negocio.index'
 import { Route as NegocioAsistenteRouteImport } from './routes/negocio.asistente'
 import { Route as NegocioHorariosRouteImport } from './routes/negocio.horarios'
@@ -168,6 +169,11 @@ const ValidacionesRoute = ValidacionesRouteImport.update({
   path: '/validaciones',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MembresiaDomiciliadoRoute = MembresiaDomiciliadoRouteImport.update({
+  id: '/membresia/domiciliado',
+  path: '/membresia/domiciliado',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const NegocioIndexRoute = NegocioIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -264,6 +270,7 @@ export interface FileRoutesByFullPath {
   '/restablecer-pin': typeof RestablecerPinRoute
   '/staff': typeof StaffRoute
   '/validaciones': typeof ValidacionesRoute
+  '/membresia/domiciliado': typeof MembresiaDomiciliadoRoute
   '/negocio/asistente': typeof NegocioAsistenteRoute
   '/negocio/horarios': typeof NegocioHorariosRoute
   '/negocio/marca': typeof NegocioMarcaRoute
@@ -303,6 +310,7 @@ export interface FileRoutesByTo {
   '/restablecer-pin': typeof RestablecerPinRoute
   '/staff': typeof StaffRoute
   '/validaciones': typeof ValidacionesRoute
+  '/membresia/domiciliado': typeof MembresiaDomiciliadoRoute
   '/negocio/asistente': typeof NegocioAsistenteRoute
   '/negocio/horarios': typeof NegocioHorariosRoute
   '/negocio/marca': typeof NegocioMarcaRoute
@@ -344,6 +352,7 @@ export interface FileRoutesById {
   '/restablecer-pin': typeof RestablecerPinRoute
   '/staff': typeof StaffRoute
   '/validaciones': typeof ValidacionesRoute
+  '/membresia/domiciliado': typeof MembresiaDomiciliadoRoute
   '/negocio/asistente': typeof NegocioAsistenteRoute
   '/negocio/horarios': typeof NegocioHorariosRoute
   '/negocio/marca': typeof NegocioMarcaRoute
@@ -386,6 +395,7 @@ export interface FileRouteTypes {
     | '/restablecer-pin'
     | '/staff'
     | '/validaciones'
+    | '/membresia/domiciliado'
     | '/negocio/asistente'
     | '/negocio/horarios'
     | '/negocio/marca'
@@ -425,6 +435,7 @@ export interface FileRouteTypes {
     | '/restablecer-pin'
     | '/staff'
     | '/validaciones'
+    | '/membresia/domiciliado'
     | '/negocio/asistente'
     | '/negocio/horarios'
     | '/negocio/marca'
@@ -465,6 +476,7 @@ export interface FileRouteTypes {
     | '/restablecer-pin'
     | '/staff'
     | '/validaciones'
+    | '/membresia/domiciliado'
     | '/negocio/asistente'
     | '/negocio/horarios'
     | '/negocio/marca'
@@ -506,6 +518,7 @@ export interface RootRouteChildren {
   RestablecerPinRoute: typeof RestablecerPinRoute
   StaffRoute: typeof StaffRoute
   ValidacionesRoute: typeof ValidacionesRoute
+  MembresiaDomiciliadoRoute: typeof MembresiaDomiciliadoRoute
   PagoSimuladoIdRoute: typeof PagoSimuladoIdRoute
   MembresiaPagoIdRoute: typeof MembresiaPagoIdRoute
 }
@@ -680,6 +693,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ValidacionesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/membresia/domiciliado': {
+      id: '/membresia/domiciliado'
+      path: '/membresia/domiciliado'
+      fullPath: '/membresia/domiciliado'
+      preLoaderRoute: typeof MembresiaDomiciliadoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/negocio/': {
       id: '/negocio/'
       path: '/'
@@ -839,6 +859,7 @@ const rootRouteChildren: RootRouteChildren = {
   RestablecerPinRoute: RestablecerPinRoute,
   StaffRoute: StaffRoute,
   ValidacionesRoute: ValidacionesRoute,
+  MembresiaDomiciliadoRoute: MembresiaDomiciliadoRoute,
   PagoSimuladoIdRoute: PagoSimuladoIdRoute,
   MembresiaPagoIdRoute: MembresiaPagoIdRoute,
 }

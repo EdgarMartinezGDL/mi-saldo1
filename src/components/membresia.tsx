@@ -1,4 +1,4 @@
-import { Check, Copy, CreditCard, Landmark, Store } from "lucide-react";
+import { Check, Copy, CreditCard, Landmark, RefreshCw, Store, Wallet } from "lucide-react";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { datosPago } from "@/lib/api/operacion";
@@ -10,7 +10,11 @@ import { instante, pesos } from "@/lib/api/formato";
 import { Button } from "@/components/ui/button";
 import { HistorialPagosEnLinea, PagoEnLinea } from "@/components/pago-en-linea";
 
-type Metodo = "transferencia" | "oxxo" | "tarjeta" | null;
+import { metodosMembresia, type ClaveMetodo } from "@/lib/api/pagos";
+import { Alerta } from "@/components/enlace-ui";
+import { Domiciliado } from "@/components/domiciliado";
+
+type Metodo = ClaveMetodo | null;
 
 const VERDE = "bg-emerald-400/15 text-emerald-400 ring-emerald-400/40";
 const AMBAR = "bg-amber-400/15 text-amber-400 ring-amber-400/40";
@@ -157,6 +161,7 @@ function MetodoHeader({
   subtitulo,
   seleccionado,
   deshabilitado,
+  proximamente,
   onClick,
 }: {
   icono: React.ReactNode;
@@ -164,6 +169,7 @@ function MetodoHeader({
   subtitulo: string;
   seleccionado: boolean;
   deshabilitado?: boolean;
+  proximamente?: boolean;
   onClick: () => void;
 }) {
   return (
@@ -192,8 +198,8 @@ function MetodoHeader({
       <span className="min-w-0 flex-1">
         <span className="flex flex-wrap items-center gap-2">
           <span className="text-lg font-semibold leading-tight">{titulo}</span>
-          {deshabilitado && (
-            <span className="rounded-full bg-amber-400/20 px-3 py-0.5 text-xs font-bold uppercase tracking-wide text-amber-400 ring-1 ring-amber-400/40">
+          {proximamente && (
+            <span className="rounded-full bg-secondary px-2 py-0.5 text-xs font-semibold">
               Próximamente
             </span>
           )}
@@ -224,6 +230,8 @@ export function SeccionMembresia() {
   // No caching: payment details are fetched fresh and dropped when the screen closes.
   const pago = useQuery({ queryKey: ["membresia-pago"], queryFn: datosPago, enabled: esDueno, gcTime: 0, staleTime: 0, retry: false });
 
+  const metodos = useQuery({ queryKey: ["membresia-metodos"], queryFn: metodosMembresia, enabled: esDueno, gcTime: 0, staleTime: 0, retry: false });
+
   // Seguridad: solo el rol real de la sesión puede ver los datos bancarios.
   if (sesion?.contexto.rol !== "dueno") return null;
 
@@ -237,67 +245,46 @@ export function SeccionMembresia() {
       <EstadoMembresia />
 
       <div className="mt-4 flex flex-col gap-3">
-        {pago.isPending ? (
-          <p className="py-4 text-center text-sm text-muted-foreground">Cargando los datos de pago…</p>
-        ) : pago.isError ? (
-          <div className="flex flex-col items-center gap-3 py-4 text-center">
-            <p className="text-sm text-destructive">No pudimos cargar los datos de pago.</p>
-            <Button variant="secondary" onClick={() => void pago.refetch()}>Intentar de nuevo</Button>
-          </div>
-        ) : !pago.data.transferencia && !pago.data.oxxo && !pago.data.pasarela?.disponible ? (
-          <p className="py-4 text-center text-sm text-muted-foreground">Por ahora no hay datos de pago disponibles. Intenta más tarde.</p>
-        ) : null}
-        {pago.data?.transferencia && (() => { const t = pago.data.transferencia; return (
-        <div className="rounded-2xl border border-border bg-background/40 p-2">
-          <MetodoHeader
-            icono={<Landmark className="size-6" />}
-            titulo="Transferencia bancaria"
-            subtitulo="Depósito o transferencia SPEI"
-            seleccionado={metodo === "transferencia"}
-            onClick={() => setMetodo(metodo === "transferencia" ? null : "transferencia")}
-          />
-          {metodo === "transferencia" && (
-            <div className="flex flex-col gap-3 p-2 pt-3">
-              {t.banco && <Dato etiqueta="Institución" valor={t.banco} mono={false} />}
-              {t.clabe && <Dato etiqueta="CLABE" valor={t.clabe} />}
-              {t.beneficiario && <Dato etiqueta="Beneficiario" valor={t.beneficiario} mono={false} />}
-              <BotonWhatsApp href={pago.data.whatsapp?.enlace} />
-            </div>
-          )}
-        </div>); })()}
-
-        {pago.data?.oxxo && (() => { const o = pago.data.oxxo; return (
-        <div className="rounded-2xl border border-border bg-background/40 p-2">
-          <MetodoHeader
-            icono={<Store className="size-6" />}
-            titulo="Depósito en efectivo (OXXO)"
-            subtitulo="Paga en cualquier tienda OXXO"
-            seleccionado={metodo === "oxxo"}
-            onClick={() => setMetodo(metodo === "oxxo" ? null : "oxxo")}
-          />
-          {metodo === "oxxo" && (
-            <div className="flex flex-col gap-3 p-2 pt-3">
-              <p className="rounded-xl bg-secondary/70 px-4 py-3 text-sm text-muted-foreground">
-                Tarjeta <span className="font-semibold text-foreground">Spin by OXXO</span> (+ comisión por establecimiento).
-              </p>
-              {o.tarjeta && <Dato etiqueta="Número de tarjeta" valor={o.tarjeta} />}
-              {o.titular && <Dato etiqueta="Titular de la tarjeta" valor={o.titular} mono={false} />}
-              <BotonWhatsApp href={pago.data.whatsapp?.enlace} />
-            </div>
-          )}
-        </div>); })()}
-
-        {pago.data?.pasarela?.disponible && <div className="rounded-2xl border border-border bg-background/40 p-2">
-          <MetodoHeader
-            icono={<CreditCard className="size-6" />}
-            titulo="Pago en línea"
-            subtitulo="Tarjeta u OXXO con Mercado Pago"
-            seleccionado={metodo === "tarjeta"}
-            deshabilitado={!pago.data?.pasarela?.disponible}
-            onClick={() => setMetodo(metodo === "tarjeta" ? null : "tarjeta")}
-          />
-          {metodo === "tarjeta" && pago.data?.pasarela?.disponible && <PagoEnLinea pasarela={pago.data.pasarela} />}
-        </div>}
+        {metodos.data?.stripe_prueba && <Alerta tono="aviso">Modo de prueba: ningún cobro es real. Usa la tarjeta 4242 4242 4242 4242.</Alerta>}
+        {metodos.isPending ? <p className="py-4 text-center text-sm text-muted-foreground">Cargando los métodos de pago…</p> : metodos.isError ? <div className="flex flex-col items-center gap-3 py-4 text-center">
+          <p className="text-sm text-destructive">No pudimos cargar los métodos de pago.</p>
+          <Button variant="secondary" onClick={() => void metodos.refetch()}>Intentar de nuevo</Button>
+        </div> : null}
+        {pago.isPending ? <p className="py-4 text-center text-sm text-muted-foreground">Cargando los datos de pago…</p> : pago.isError ? <div className="flex flex-col items-center gap-3 py-4 text-center">
+          <p className="text-sm text-destructive">No pudimos cargar los datos de pago.</p>
+          <Button variant="secondary" onClick={() => void pago.refetch()}>Intentar de nuevo</Button>
+        </div> : null}
+        {metodos.data?.metodos.filter((m) => m.estado !== "apagado").map((m) => {
+          const iconos = { stripe_tarjeta: CreditCard, stripe_domiciliado: RefreshCw, transferencia: Landmark, oxxo_deposito: Store, mercadopago: Wallet };
+          const subtitulos = { stripe_tarjeta: "Paga uno o varios meses con tu tarjeta", stripe_domiciliado: "Se cobra solo cada mes a tu tarjeta", transferencia: "Depósito o transferencia SPEI", oxxo_deposito: "Paga en cualquier tienda OXXO", mercadopago: "Tarjeta u OXXO con Mercado Pago" };
+          const Icono = iconos[m.clave];
+          const deshabilitado = m.estado !== "activo" || !m.disponible || (m.clave === "transferencia" && !pago.data?.transferencia) || (m.clave === "oxxo_deposito" && !pago.data?.oxxo);
+          const t = pago.data?.transferencia;
+          const o = pago.data?.oxxo;
+          return <div key={m.clave} className="rounded-2xl border border-border bg-background/40 p-2">
+            <MetodoHeader icono={<Icono className="size-6" />} titulo={m.nombre} subtitulo={subtitulos[m.clave]}
+              seleccionado={!deshabilitado && metodo === m.clave} deshabilitado={deshabilitado} proximamente={m.estado === "proximamente"}
+              onClick={() => setMetodo(metodo === m.clave ? null : m.clave)} />
+            {!deshabilitado && metodo === m.clave && <>
+              {m.clave === "transferencia" && t && <div className="flex flex-col gap-3 p-2 pt-3">
+                {t.banco && <Dato etiqueta="Institución" valor={t.banco} mono={false} />}
+                {t.clabe && <Dato etiqueta="CLABE" valor={t.clabe} />}
+                {t.beneficiario && <Dato etiqueta="Beneficiario" valor={t.beneficiario} mono={false} />}
+                <BotonWhatsApp href={pago.data?.whatsapp?.enlace} />
+              </div>}
+              {m.clave === "oxxo_deposito" && o && <div className="flex flex-col gap-3 p-2 pt-3">
+                <p className="rounded-xl bg-secondary/70 px-4 py-3 text-sm text-muted-foreground">Tarjeta <span className="font-semibold text-foreground">Spin by OXXO</span> (+ comisión por establecimiento).</p>
+                {o.tarjeta && <Dato etiqueta="Número de tarjeta" valor={o.tarjeta} />}
+                {o.titular && <Dato etiqueta="Titular de la tarjeta" valor={o.titular} mono={false} />}
+                <BotonWhatsApp href={pago.data?.whatsapp?.enlace} />
+              </div>}
+              {(m.clave === "stripe_tarjeta" || m.clave === "mercadopago") && metodos.data?.precio_mensual_centavos != null && metodos.data.moneda != null && <PagoEnLinea
+                proveedor={m.clave === "stripe_tarjeta" ? "stripe" : "mercadopago"} precioMensualCentavos={metodos.data.precio_mensual_centavos}
+                moneda={metodos.data.moneda} mesesMaximos={12} prueba={m.clave === "mercadopago" && metodos.data.mercadopago_simulado} />}
+              {m.clave === "stripe_domiciliado" && metodos.data?.precio_mensual_centavos != null && metodos.data.moneda != null && <Domiciliado precioMensualCentavos={metodos.data.precio_mensual_centavos} moneda={metodos.data.moneda} />}
+            </>}
+          </div>;
+        })}
       </div>
 
       <HistorialPagosEnLinea />
