@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { avisoQuery } from "@/lib/api/privacidad";
+import { MarcaMiSaldo } from "@/components/marca";
 import { useId } from "react";
 
 /**
@@ -32,7 +33,7 @@ export function TarjetaEnlace({ titulo, subtitulo, icono, children }: { titulo: 
           <div className="grid size-11 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">{icono}</div>
           <div>
             <h1 className="text-2xl font-semibold tracking-tight">{titulo}</h1>
-            <p className="text-sm text-muted-foreground">{subtitulo ?? "MiSaldo · By MicroFix Cloud"}</p>
+            <p className="text-sm text-muted-foreground">{subtitulo ?? <><MarcaMiSaldo /> · By MicroFix Cloud</>}</p>
           </div>
         </div>
         {children}

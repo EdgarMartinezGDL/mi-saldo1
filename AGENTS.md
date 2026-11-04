@@ -39,3 +39,4 @@
 - Staff price submission validates FormData values and focuses the first invalid field; input/change handlers only mirror the display state. Why: autofill can change visible values without updating React state.
 
 - Owner setup uses the shared asistente query and existing step routes with validated asistente search; every successful step mutation invalidates that query, and closure caches the server response before navigating. Why: progress can regress and must remain server-authoritative without duplicate forms.
+- Brand spots render MarcaMiSaldo (src/components/marca.tsx); plain string elsewhere. Button default = btn-accion; btn-premium only for navigation. roleHome uses a fixed role→path map, never NAV order. Why: Caja sits mid-menu without changing role landings.

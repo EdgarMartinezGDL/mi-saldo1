@@ -24,9 +24,9 @@ import { fueraDeHorario, horarioHoy, INTERVALO_POS } from "@/lib/caja-horario";
 export const Route = createFileRoute("/caja")({
   head: () => ({
     meta: [
-      { title: "Caja · MiSaldo" },
+      { title: "Caja · Mi Saldo Vip" },
       { name: "description", content: "Punto de venta paso a paso: abrir caja, buscar cliente, acumular y canjear." },
-      { property: "og:title", content: "Caja · MiSaldo" },
+      { property: "og:title", content: "Caja · Mi Saldo Vip" },
       { property: "og:description", content: "Caja de mostrador con teclado grande para acumular saldo, sellos y canjes." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

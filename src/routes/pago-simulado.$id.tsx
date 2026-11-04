@@ -12,8 +12,8 @@ import { pesos } from "@/lib/api/formato";
 import { plural } from "@/lib/plural";
 
 export const Route = createFileRoute("/pago-simulado/$id")({ head: () => ({ meta: [
-  { title: "Pago simulado · MiSaldo" }, { name: "description", content: "Prueba el pago de membresía MiSaldo sin realizar ningún cobro real." },
-  { property: "og:title", content: "Pago simulado · MiSaldo" }, { property: "og:description", content: "Simulador de tarjeta y OXXO para MiSaldo." },
+  { title: "Pago simulado · Mi Saldo Vip" }, { name: "description", content: "Prueba el pago de membresía Mi Saldo Vip sin realizar ningún cobro real." },
+  { property: "og:title", content: "Pago simulado · Mi Saldo Vip" }, { property: "og:description", content: "Simulador de tarjeta y OXXO para Mi Saldo Vip." },
   { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" },
 ] }), component: () => <RequiereSesion titulo="Pago simulado" roles={["dueno"]}><Simulador /></RequiereSesion> });
 
@@ -42,7 +42,7 @@ function Simulador() {
       {noDisponible ? <><Alerta>Esta página de prueba no está disponible.</Alerta><Button asChild variant="secondary"><Link to="/negocio/membresia">Volver a Membresía</Link></Button></> : <div className="flex flex-col gap-4">
         {error && <><Alerta>{errorPago(error)}</Alerta><Button asChild variant="secondary"><Link to="/membresia/pago/$id" params={{ id }}>Ver mi pago</Link></Button></>}
         {datos.isPending ? <p>Cargando pago…</p> : p && <>
-          <h2 className="text-xl font-semibold">Membresía MiSaldo · {plural(p.meses, "mes", "meses")}</h2>
+          <h2 className="text-xl font-semibold">Membresía Mi Saldo Vip · {plural(p.meses, "mes", "meses")}</h2>
           <p className="font-mono text-2xl font-bold">{pesos(p.monto_centavos, p.moneda)} {p.moneda}</p>
           <p>{p.metodo === "tarjeta" ? "Tarjeta de crédito o débito" : "Efectivo en OXXO"}</p>
           {p.metodo === "tarjeta" ? <><Button disabled={accion.isPending} onClick={() => ejecutar("aprobar")}>Pagar {pesos(p.monto_centavos, p.moneda)}</Button><Button variant="secondary" disabled={accion.isPending} onClick={() => ejecutar("rechazar")}>Simular tarjeta rechazada</Button></> : <>

@@ -5,12 +5,13 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/components/auth-provider";
 import type { Rol } from "@/lib/api/client";
 import { PantallaSinConexion } from "@/components/sin-conexion";
+import { MarcaMiSaldo } from "@/components/marca";
 
 /** Neutral full-screen loader: no app bar, no business name, no menu. */
 function CargaNeutra() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-2 bg-background text-foreground">
-      <p className="text-2xl font-semibold tracking-tight">MiSaldo</p>
+      <p className="text-2xl font-semibold tracking-tight"><MarcaMiSaldo /></p>
       <p className="text-muted-foreground">Cargando…</p>
     </div>
   );

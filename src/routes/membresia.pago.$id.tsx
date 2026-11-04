@@ -14,8 +14,8 @@ import { pesos } from "@/lib/api/formato";
 import { plural } from "@/lib/plural";
 
 export const Route = createFileRoute("/membresia/pago/$id")({ head: () => ({ meta: [
-  { title: "Estado de tu pago · MiSaldo" }, { name: "description", content: "Consulta tu pago en línea y la renovación de tu membresía MiSaldo." },
-  { property: "og:title", content: "Estado de tu pago · MiSaldo" }, { property: "og:description", content: "Confirmación y seguimiento de pagos de membresía MiSaldo." },
+  { title: "Estado de tu pago · Mi Saldo Vip" }, { name: "description", content: "Consulta tu pago en línea y la renovación de tu membresía Mi Saldo Vip." },
+  { property: "og:title", content: "Estado de tu pago · Mi Saldo Vip" }, { property: "og:description", content: "Confirmación y seguimiento de pagos de membresía Mi Saldo Vip." },
   { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" },
 ] }), component: () => <RequiereSesion titulo="Pago de membresía" roles={["dueno"]}><AppShell><RegresoPago /></AppShell></RequiereSesion> });
 
@@ -41,7 +41,7 @@ function RegresoPago() {
   return <TarjetaEnlace titulo="Pago de membresía" icono={<CreditCard className="size-5" />}>
     {datos.isPending ? <p>Cargando pago…</p> : datos.isError ? <><Alerta>{datos.error instanceof ApiError && datos.error.status === 404 ? "No encontramos este pago." : errorPago(datos.error)}</Alerta>{volver()}</> : p && <div className="flex flex-col gap-4">
       {(p.simulado || p.prueba) && <AvisoPagoPrueba />}
-      <h2 className="text-lg font-semibold">Membresía MiSaldo · {plural(p.meses, "mes", "meses")} · {pesos(p.monto_centavos, p.moneda)} {p.moneda}</h2>
+      <h2 className="text-lg font-semibold">Membresía Mi Saldo Vip · {plural(p.meses, "mes", "meses")} · {pesos(p.monto_centavos, p.moneda)} {p.moneda}</h2>
       {verificar.error && <Alerta>{errorPago(verificar.error)}</Alerta>}
       {p.estado === "creado" && <><p>Aún no recibimos tu pago.</p>{ir("Ir a pagar")}{yaPague}</>}
       {p.estado === "pendiente" && <>{p.metodo === "oxxo" ? <><FichaOxxo ficha={p.datos_pago.oxxo} /><p className="text-sm">Tu membresía se renueva cuando OXXO confirme el pago (puede tardar hasta 1 hora).</p>{p.simulado && ir("Simular pago en la tienda")}</> : <p>Aún no recibimos tu pago.</p>}{yaPague}</>}

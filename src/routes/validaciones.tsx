@@ -17,10 +17,10 @@ import { useDesplazarAlAbrir } from "@/lib/use-desplazar";
 export const Route = createFileRoute("/validaciones")({
   head: () => ({
     meta: [
-      { title: "Validaciones · MiSaldo" },
-      { name: "description", content: "Consulta tus validaciones pendientes en MiSaldo." },
-      { property: "og:title", content: "Validaciones · MiSaldo" },
-      { property: "og:description", content: "Consulta tus validaciones pendientes en MiSaldo." },
+      { title: "Validaciones · Mi Saldo Vip" },
+      { name: "description", content: "Consulta tus validaciones pendientes en Mi Saldo Vip." },
+      { property: "og:title", content: "Validaciones · Mi Saldo Vip" },
+      { property: "og:description", content: "Consulta tus validaciones pendientes en Mi Saldo Vip." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -145,7 +145,7 @@ function Pendiente({ v, onResuelta, onSesionCerrada }: { v: Validacion; onResuel
               <AlertDialogContent>
                 <AlertDialogHeader>
                   <AlertDialogTitle>¿Seguro que no eres tú?</AlertDialogTitle>
-                  <AlertDialogDescription>{v.negocio.nombre_comercial} no te va a registrar y le avisaremos a MiSaldo para revisarlo.</AlertDialogDescription>
+                  <AlertDialogDescription>{v.negocio.nombre_comercial} no te va a registrar y le avisaremos a Mi Saldo Vip para revisarlo.</AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel disabled={cargando}>Cancelar</AlertDialogCancel>

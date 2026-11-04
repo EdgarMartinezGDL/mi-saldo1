@@ -10,10 +10,10 @@ import { cerrarAsistente } from "@/lib/api/dueno";
 
 export const Route = createFileRoute("/negocio/asistente")({
   head: () => ({ meta: [
-    { title: "Configura tu negocio · MiSaldo" },
-    { name: "description", content: "Configuración inicial de horarios, monedero, tarjetas y PIN POS de tu negocio en MiSaldo." },
-    { property: "og:title", content: "Configura tu negocio · MiSaldo" },
-    { property: "og:description", content: "Prepara tu negocio para cobrar con el asistente de configuración de MiSaldo." },
+    { title: "Configura tu negocio · Mi Saldo Vip" },
+    { name: "description", content: "Configuración inicial de horarios, monedero, tarjetas y PIN POS de tu negocio en Mi Saldo Vip." },
+    { property: "og:title", content: "Configura tu negocio · Mi Saldo Vip" },
+    { property: "og:description", content: "Prepara tu negocio para cobrar con el asistente de configuración de Mi Saldo Vip." },
     { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" },
   ] }),
   component: () => <RequiereSesion titulo="Configura tu negocio" roles={["dueno"]}><AsistenteInicial /></RequiereSesion>,

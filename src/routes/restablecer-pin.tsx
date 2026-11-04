@@ -10,16 +10,16 @@ import { consultarRestablecimiento, completarRestablecimiento } from "@/lib/api/
 
 export const Route = createFileRoute("/restablecer-pin")({
   head: () => ({ meta: [
-    { title: "Restablecer PIN · MiSaldo" },
-    { name: "description", content: "Define tu nuevo PIN con el enlace autorizado por soporte de MiSaldo." },
-    { property: "og:title", content: "Restablecer PIN · MiSaldo" },
-    { property: "og:description", content: "Restablece tu acceso a MiSaldo mediante un enlace de un solo uso." },
+    { title: "Restablecer PIN · Mi Saldo Vip" },
+    { name: "description", content: "Define tu nuevo PIN con el enlace autorizado por soporte de Mi Saldo Vip." },
+    { property: "og:title", content: "Restablecer PIN · Mi Saldo Vip" },
+    { property: "og:description", content: "Restablece tu acceso a Mi Saldo Vip mediante un enlace de un solo uso." },
     { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" },
   ] }),
   component: RestablecerPin,
 });
 export const pinRestablecimientoValido = (pin: string, repite: string) => /^\d{6}$/.test(pin) && pin === repite;
-const INVALIDO = "Este enlace no es válido o ya venció. Pide a soporte de MiSaldo uno nuevo.";
+const INVALIDO = "Este enlace no es válido o ya venció. Pide a soporte de Mi Saldo Vip uno nuevo.";
 
 function RestablecerPin() {
   const token = useTokenFragmento();

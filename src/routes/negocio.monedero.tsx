@@ -16,9 +16,9 @@ export const Route = createFileRoute("/negocio/monedero")({
   validateSearch: validarBusquedaAsistente,
   head: () => ({
     meta: [
-      { title: "Monedero y tarjetas de sellos · MiSaldo" },
+      { title: "Monedero y tarjetas de sellos · Mi Saldo Vip" },
       { name: "description", content: "Porcentaje de cashback, vigencia del saldo y tarjetas de sellos." },
-      { property: "og:title", content: "Monedero y tarjetas de sellos · MiSaldo" },
+      { property: "og:title", content: "Monedero y tarjetas de sellos · Mi Saldo Vip" },
       { property: "og:description", content: "Configura cuánto regresa tu negocio en cada compra." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -100,7 +100,7 @@ function Monedero({ cfg }: { cfg: ConfiguracionNegocio }) {
             />
           )}
           {sugerencias.map((a) => (
-            <p key={a} className="mt-3 rounded-xl bg-amber-400/10 p-3 text-sm text-amber-400 ring-1 ring-amber-400/30">Sugerencia: {a}</p>
+            <p key={a} className="mt-3 rounded-xl bg-warn/10 p-3 text-sm text-warn ring-1 ring-warn/30">Sugerencia: {a}</p>
           ))}
           <CalculadoraMonedero factor={factorVivo} />
         </section>

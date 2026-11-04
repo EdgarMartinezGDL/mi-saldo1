@@ -15,9 +15,9 @@ export const Route = createFileRoute("/negocio/pin-pos")({
   validateSearch: validarBusquedaAsistente,
   head: () => ({
     meta: [
-      { title: "PIN POS · MiSaldo" },
+      { title: "PIN POS · Mi Saldo Vip" },
       { name: "description", content: "Define o cambia el PIN con el que tus cajeros abren la caja." },
-      { property: "og:title", content: "PIN POS · MiSaldo" },
+      { property: "og:title", content: "PIN POS · Mi Saldo Vip" },
       { property: "og:description", content: "El PIN POS abre la caja de tu negocio." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

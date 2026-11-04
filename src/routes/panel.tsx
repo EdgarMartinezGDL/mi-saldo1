@@ -14,12 +14,12 @@ import { fechaCorta, pesos } from "@/lib/api/formato";
 export const Route = createFileRoute("/panel")({
   head: () => ({
     meta: [
-      { title: "Panel del dueño · MiSaldo" },
+      { title: "Panel del dueño · Mi Saldo Vip" },
       {
         name: "description",
         content: "Ventas del día, clientes atendidos, sellos entregados y reclamaciones pendientes.",
       },
-      { property: "og:title", content: "Panel del dueño · MiSaldo" },
+      { property: "og:title", content: "Panel del dueño · Mi Saldo Vip" },
       {
         property: "og:description",
         content: "Métricas del negocio: ventas, clientes, sellos y quejas pendientes de la semana.",

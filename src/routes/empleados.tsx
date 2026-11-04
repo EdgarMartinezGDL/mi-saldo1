@@ -19,9 +19,9 @@ export const Route = createFileRoute("/empleados")({
   validateSearch: validarBusquedaAsistente,
   head: () => ({
     meta: [
-      { title: "Empleados · MiSaldo" },
+      { title: "Empleados · Mi Saldo Vip" },
       { name: "description", content: "Da de alta cajeros, reenvía invitaciones y da de baja empleados del negocio." },
-      { property: "og:title", content: "Empleados · MiSaldo" },
+      { property: "og:title", content: "Empleados · Mi Saldo Vip" },
       { property: "og:description", content: "Administra el equipo que atiende la caja de tu negocio." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

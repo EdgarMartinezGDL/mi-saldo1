@@ -18,6 +18,8 @@ import {
 } from "lucide-react";
 import type { ReactNode } from "react";
 import { useAuth } from "@/components/auth-provider";
+import { MarcaMiSaldo } from "@/components/marca";
+import logoMarca from "@/assets/mi-saldo-vip-logo.png.asset.json";
 import { useCerrarSesion } from "@/components/cerrar-sesion";
 import { useMiSaldo } from "@/components/misaldo-provider";
 import { useMisNegocios } from "@/components/mis-negocios";
@@ -28,7 +30,7 @@ import { AvisoPendiente } from "@/components/aviso-pendiente";
 
 type NavItem = { to: string; label: string; icon: LucideIcon; destacado?: boolean };
 
-const NAV: Record<Role, NavItem[]> = {
+export const NAV: Record<Role, NavItem[]> = {
   cliente: [
     { to: "/", label: "Inicio", icon: Home },
     { to: "/canjear", label: "Mis códigos", icon: Gift },
@@ -36,14 +38,14 @@ const NAV: Record<Role, NavItem[]> = {
     { to: "/ajustes", label: "Cuenta", icon: UserRound },
   ],
   empleado: [
-    { to: "/caja", label: "Caja", icon: BadgeDollarSign },
     { to: "/corte", label: "Mi jornada", icon: Receipt },
+    { to: "/caja", label: "Caja", icon: BadgeDollarSign, destacado: true },
     { to: "/ajustes", label: "Cuenta", icon: UserRound },
   ],
   dueno: [
     { to: "/panel", label: "Inicio", icon: BarChart3 },
-    { to: "/caja", label: "Caja", icon: BadgeDollarSign, destacado: true },
     { to: "/clientes", label: "Clientes", icon: Users },
+    { to: "/caja", label: "Caja", icon: BadgeDollarSign, destacado: true },
     { to: "/negocio", label: "Negocio", icon: Store },
     { to: "/ajustes", label: "Cuenta", icon: UserRound },
   ],
@@ -68,8 +70,16 @@ const PADRE: Record<string, string> = {
   "/negocio/reportes": "/negocio",
 };
 
+/** Fixed home per role; independent of the menu order (Caja sits in the middle). */
+const HOME: Record<Role, string> = {
+  cliente: "/",
+  empleado: "/caja",
+  dueno: "/panel",
+  staff: "/staff",
+};
+
 export function roleHome(role: Role) {
-  return NAV[role][0]?.to ?? "/";
+  return HOME[role] ?? "/";
 }
 
 /** Shortcut to /validaciones with a pending counter; shown for any signed-in profile. */
@@ -82,7 +92,7 @@ function AccesoValidaciones() {
     <Link
       to="/validaciones"
       aria-label={pendientes ? `Solicitudes por confirmar: ${pendientes}` : "Solicitudes por confirmar"}
-      className="tap-target shadow-soft relative grid size-11 place-items-center rounded-full border border-border bg-card text-muted-foreground transition-colors hover:text-primary"
+      className="tap-target relative grid size-11 place-items-center rounded-full border border-white/25 bg-white/10 text-white transition-colors hover:bg-white/20"
     >
       <UserCheck className="size-5" />
       {pendientes > 0 && (
@@ -99,9 +109,9 @@ function AppBar() {
   const { sesion } = useAuth();
   const { abrir, varios, dialogo } = useMisNegocios();
   const rol = sesion?.contexto.rol;
-  const nombre = rol && rol !== "staff" && sesion?.contexto.nombre_comercial ? sesion.contexto.nombre_comercial : "MiSaldo";
-  const logo = nombre !== "MiSaldo" ? business.logo : undefined;
-  const initials = nombre
+  const nombre = rol && rol !== "staff" && sesion?.contexto.nombre_comercial ? sesion.contexto.nombre_comercial : null;
+  const logo = nombre ? business.logo : undefined;
+  const initials = (nombre ?? "")
     .split(" ")
     .filter((w) => w.length > 2)
     .slice(0, 2)
@@ -110,35 +120,49 @@ function AppBar() {
     .toUpperCase();
 
   return (
-    <header className="glass-bar sticky top-0 z-30 border-b border-border">
+    <header className="sticky top-0 z-30 border-b border-barra bg-barra text-barra-foreground">
       <div className="mx-auto grid max-w-5xl grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-3">
         <div className="flex min-w-0 items-center gap-3">
-          {logo ? (
-            <img
-              src={logo}
-              alt=""
-              className="size-11 shrink-0 rounded-full object-cover ring-1 ring-border"
-            />
+          {nombre ? (
+            logo ? (
+              <img
+                src={logo}
+                alt=""
+                className="size-11 shrink-0 rounded-full object-cover ring-1 ring-white/30"
+              />
+            ) : (
+              <div className="grid size-11 shrink-0 place-items-center rounded-full bg-white/15 text-base font-bold text-white ring-1 ring-white/30">
+                {initials || "MS"}
+              </div>
+            )
           ) : (
-            <div className="shadow-soft grid size-11 shrink-0 place-items-center rounded-full bg-accent text-base font-bold text-accent-foreground">
-              {initials || "MS"}
-            </div>
+            <img src={logoMarca.url} alt="Mi Saldo Vip" className="h-9 w-auto shrink-0 rounded-lg" />
           )}
           <div className="min-w-0 leading-tight">
-            {varios ? (
-              <button
-                type="button"
-                onClick={abrir}
-                aria-label={`${nombre}. Cambiar de negocio`}
-                className="flex max-w-full items-center gap-1 rounded-lg text-left text-lg font-bold hover:text-primary"
-              >
-                <span className="truncate">{nombre}</span>
-                <ChevronDown className="size-5 shrink-0" />
-              </button>
+            {nombre ? (
+              <>
+                {varios ? (
+                  <button
+                    type="button"
+                    onClick={abrir}
+                    aria-label={`${nombre}. Cambiar de negocio`}
+                    className="flex max-w-full items-center gap-1 rounded-lg text-left text-lg font-bold text-white hover:text-white/80"
+                  >
+                    <span className="truncate">{nombre}</span>
+                    <ChevronDown className="size-5 shrink-0" />
+                  </button>
+                ) : (
+                  <p className="truncate text-lg font-bold text-white">{nombre}</p>
+                )}
+                <p className="truncate text-[11px] text-white/80">
+                  <MarcaMiSaldo /> · By MicroFix Cloud
+                </p>
+              </>
             ) : (
-              <p className="truncate text-lg font-bold">{nombre}</p>
+              <p className="truncate text-lg font-bold text-white">
+                <MarcaMiSaldo />
+              </p>
             )}
-            <p className="truncate text-[11px] text-muted-foreground">MiSaldo · By MicroFix Cloud</p>
           </div>
         </div>
         <div className="flex shrink-0 items-center gap-3">
@@ -231,21 +255,23 @@ export function AppShell({ children, volver, volverTexto, amplio = false }: { ch
                 <span
                   className={cn(
                     "grid h-8 w-14 place-items-center rounded-full transition-colors",
-                    active && "bg-primary/12",
-                    item.destacado && "btn-premium -mt-5 size-14 text-primary-foreground",
+                    active && !item.destacado && "bg-primary/12",
+                    item.destacado && "btn-premium -mt-7 size-16 text-primary-foreground ring-4 ring-background",
                   )}
                 >
-                  <item.icon className="size-[22px] shrink-0" strokeWidth={active ? 2.2 : 1.7} />
+                  <item.icon className={cn("shrink-0", item.destacado ? "size-7" : "size-[22px]")} strokeWidth={active ? 2.2 : 1.7} />
                 </span>
-                <span className={cn("text-[11px] tracking-tight", active ? "font-semibold" : "font-medium")}>
+                <span className={cn("text-[11px] tracking-tight", active || item.destacado ? "font-semibold" : "font-medium")}>
                   {item.label}
                 </span>
-                <span
-                  className={cn(
-                    "absolute bottom-1 size-1 rounded-full bg-primary transition-opacity",
-                    active ? "opacity-100" : "opacity-0",
-                  )}
-                />
+                {!item.destacado && (
+                  <span
+                    className={cn(
+                      "absolute bottom-1 size-1 rounded-full bg-primary transition-opacity",
+                      active ? "opacity-100" : "opacity-0",
+                    )}
+                  />
+                )}
               </Link>
             );
           })}

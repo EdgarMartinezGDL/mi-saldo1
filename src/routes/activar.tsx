@@ -15,10 +15,10 @@ import { useConsentimiento } from "@/lib/api/privacidad";
 export const Route = createFileRoute("/activar")({
   head: () => ({
     meta: [
-      { title: "Activar cuenta · MiSaldo" },
-      { name: "description", content: "Activa tu cuenta de MiSaldo desde tu invitación." },
-      { property: "og:title", content: "Activar cuenta · MiSaldo" },
-      { property: "og:description", content: "Activa tu cuenta de MiSaldo desde tu invitación." },
+      { title: "Activar cuenta · Mi Saldo Vip" },
+      { name: "description", content: "Activa tu cuenta de Mi Saldo Vip desde tu invitación." },
+      { property: "og:title", content: "Activar cuenta · Mi Saldo Vip" },
+      { property: "og:description", content: "Activa tu cuenta de Mi Saldo Vip desde tu invitación." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],

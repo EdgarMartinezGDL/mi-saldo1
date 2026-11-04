@@ -33,9 +33,9 @@ export const Route = createFileRoute("/negocio/movimientos")({
     typeof s["telefono"] === "string" || typeof s["telefono"] === "number" ? { telefono: String(s["telefono"]) } : {},
   head: () => ({
     meta: [
-      { title: "Movimientos · MiSaldo" },
+      { title: "Movimientos · Mi Saldo Vip" },
       { name: "description", content: "Todo lo que pasó en tu caja, con filtros y descarga a Excel." },
-      { property: "og:title", content: "Movimientos · MiSaldo" },
+      { property: "og:title", content: "Movimientos · Mi Saldo Vip" },
       { property: "og:description", content: "Historial de la caja del negocio con filtros y Excel." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

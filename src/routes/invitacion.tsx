@@ -15,10 +15,10 @@ import { useConsentimiento } from "@/lib/api/privacidad";
 export const Route = createFileRoute("/invitacion")({
   head: () => ({
     meta: [
-      { title: "Invitación · MiSaldo" },
-      { name: "description", content: "Abre tu invitación personal de MiSaldo." },
-      { property: "og:title", content: "Invitación · MiSaldo" },
-      { property: "og:description", content: "Abre tu invitación personal de MiSaldo." },
+      { title: "Invitación · Mi Saldo Vip" },
+      { name: "description", content: "Abre tu invitación personal de Mi Saldo Vip." },
+      { property: "og:title", content: "Invitación · Mi Saldo Vip" },
+      { property: "og:description", content: "Abre tu invitación personal de Mi Saldo Vip." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],

@@ -61,5 +61,5 @@ export const MENSAJES_CUENTA: Record<string, string> = {
   sin_enrolamiento: "Empieza de nuevo la activación.",
   totp_inactivo: "La verificación en dos pasos no está activa.",
   codigo_incorrecto: "Código incorrecto.",
-  obligatorio_staff: "Como Staff MiSaldo no puedes desactivarla.",
+  obligatorio_staff: "Como Staff Mi Saldo Vip no puedes desactivarla.",
 };

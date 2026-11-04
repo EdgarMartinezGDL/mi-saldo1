@@ -24,7 +24,7 @@ const MENSAJES = {
 const error = (e: unknown, limite: number) =>
   errorOperacion(e, undefined, {
     ...MENSAJES,
-    limite_tarjetas: `Llegaste al límite de ${limite} tarjetas activas de tu plan: desactiva una o pide más a soporte de MiSaldo`,
+    limite_tarjetas: `Llegaste al límite de ${limite} tarjetas activas de tu plan: desactiva una o pide más a soporte de Mi Saldo Vip`,
   });
 
 const regla = (t: TarjetaConfig) =>
@@ -86,7 +86,7 @@ export function TarjetasSellos({ cfg }: { cfg: ConfiguracionNegocio }) {
               <Button size="lg" className="tap-target h-12 w-full sm:w-auto" disabled={enLimite} onClick={() => setEditando("nueva")}>
                 <Plus className="size-5" /> Nueva tarjeta
               </Button>
-              {enLimite && <p className="mt-2 text-sm text-amber-400">Llegaste al límite de tu plan: desactiva una o pide más a soporte de MiSaldo</p>}
+              {enLimite && <p className="mt-2 text-sm text-warn">Llegaste al límite de tu plan: desactiva una o pide más a soporte de Mi Saldo Vip</p>}
             </div>
           )}
           <ul className="mt-4 flex flex-col gap-3">
@@ -201,7 +201,7 @@ function Campos({ t, onGuardada, limite }: { t: TarjetaConfig | null; onGuardada
   return (
     <div ref={refCampos} className="mt-4 flex flex-col gap-4 px-1">
       {t && (
-        <p className="rounded-xl bg-amber-400/10 p-3 text-sm text-amber-400 ring-1 ring-amber-400/30">
+        <p className="rounded-xl bg-warn/10 p-3 text-sm text-warn ring-1 ring-warn/30">
           Los cambios aplican a las tarjetas nuevas: las que tus clientes ya tienen abiertas conservan su meta y su premio.
         </p>
       )}

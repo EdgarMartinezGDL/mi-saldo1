@@ -48,16 +48,16 @@ import { useDesplazarAlAbrir } from "@/lib/use-desplazar";
 export const Route = createFileRoute("/staff")({
   head: () => ({
     meta: [
-      { title: "Staff MiSaldo · Soporte" },
+      { title: "Staff Mi Saldo Vip · Soporte" },
       { name: "description", content: "Búsqueda global de negocios y personas, rectificación de datos y suspensión de negocios." },
-      { property: "og:title", content: "Staff MiSaldo · Soporte" },
-      { property: "og:description", content: "Panel de soporte de MiSaldo para negocios y personas." },
+      { property: "og:title", content: "Staff Mi Saldo Vip · Soporte" },
+      { property: "og:description", content: "Panel de soporte de Mi Saldo Vip para negocios y personas." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: () => (
-    <RequiereSesion titulo="Staff MiSaldo" roles={["staff"]}>
+    <RequiereSesion titulo="Staff Mi Saldo Vip" roles={["staff"]}>
       <Staff />
     </RequiereSesion>
   ),
@@ -101,7 +101,7 @@ function Staff() {
     <AppShell>
       <div className="flex flex-col gap-6">
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight">Staff MiSaldo</h1>
+          <h1 className="text-3xl font-semibold tracking-tight">Staff Mi Saldo Vip</h1>
           <p className="mt-1 text-base text-muted-foreground">Soporte a negocios y personas.</p>
         </div>
         {resumen && (

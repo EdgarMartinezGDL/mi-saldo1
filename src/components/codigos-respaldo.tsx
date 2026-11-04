@@ -22,7 +22,7 @@ export function CodigosRespaldo({ codigos, boton, onListo }: { codigos: string[]
           <Copy className="size-4" /> Copiar todos
         </Button>
         <Button type="button" variant="secondary" size="lg"
-          onClick={() => guardarArchivo({ blob: new Blob([`Códigos de respaldo de MiSaldo\n\n${texto}\n`], { type: "text/plain" }), nombre: "misaldo-codigos-respaldo.txt" })}>
+          onClick={() => guardarArchivo({ blob: new Blob([`Códigos de respaldo de Mi Saldo Vip\n\n${texto}\n`], { type: "text/plain" }), nombre: "misaldo-codigos-respaldo.txt" })}>
           <Download className="size-4" /> Descargar
         </Button>
       </div>

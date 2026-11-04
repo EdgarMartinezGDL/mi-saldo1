@@ -12,9 +12,9 @@ import { plural } from "@/lib/plural";
 export const Route = createFileRoute("/referidos")({
   head: () => ({
     meta: [
-      { title: "Recomienda y gana · MiSaldo" },
+      { title: "Recomienda y gana · Mi Saldo Vip" },
       { name: "description", content: "Recomienda el negocio a tus amigos y gana saldo o sellos cuando hagan su compra." },
-      { property: "og:title", content: "Recomienda y gana · MiSaldo" },
+      { property: "og:title", content: "Recomienda y gana · Mi Saldo Vip" },
       { property: "og:description", content: "Mira a quién recomendaste y los premios que ya ganaste." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

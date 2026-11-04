@@ -13,9 +13,9 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/corte")({
   head: () => ({
     meta: [
-      { title: "Mi jornada · MiSaldo" },
+      { title: "Mi jornada · Mi Saldo Vip" },
       { name: "description", content: "Totales y movimientos de la jornada del cajero, de 5:00 a 5:00." },
-      { property: "og:title", content: "Mi jornada · MiSaldo" },
+      { property: "og:title", content: "Mi jornada · Mi Saldo Vip" },
       { property: "og:description", content: "Lo que acumulaste y canjeaste en tu jornada de caja." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

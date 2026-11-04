@@ -16,10 +16,10 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/ajustes")({
   head: () => ({
     meta: [
-      { title: "Cuenta · MiSaldo" },
+      { title: "Cuenta · Mi Saldo Vip" },
       { name: "description", content: "Tus datos, tu PIN, tu correo, la apariencia de la app y tu sesión." },
-      { property: "og:title", content: "Cuenta · MiSaldo" },
-      { property: "og:description", content: "Administra tus datos personales, seguridad y apariencia en MiSaldo." },
+      { property: "og:title", content: "Cuenta · Mi Saldo Vip" },
+      { property: "og:description", content: "Administra tus datos personales, seguridad y apariencia en Mi Saldo Vip." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -142,7 +142,7 @@ function Cuenta() {
               Darme de baja de este negocio
             </Link>
             <Link to="/eliminar-cuenta" className="tap-target inline-flex items-center rounded-xl px-4 py-3 text-xs text-muted-foreground hover:text-destructive">
-              Eliminar mi cuenta de MiSaldo
+              Eliminar mi cuenta de Mi Saldo Vip
             </Link>
           </div>
         )}

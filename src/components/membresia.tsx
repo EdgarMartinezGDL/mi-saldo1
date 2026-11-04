@@ -16,9 +16,9 @@ import { Domiciliado } from "@/components/domiciliado";
 
 type Metodo = ClaveMetodo | null;
 
-const VERDE = "bg-emerald-400/15 text-emerald-400 ring-emerald-400/40";
-const AMBAR = "bg-amber-400/15 text-amber-400 ring-amber-400/40";
-const ROJO = "bg-red-400/15 text-red-400 ring-red-400/40";
+const VERDE = "bg-success-fill/15 text-success ring-success-fill/40";
+const AMBAR = "bg-warn/15 text-warn ring-warn/40";
+const ROJO = "bg-red-400/15 text-destructive ring-red-400/40";
 const ESTADO_MEMBRESIA: Record<Membresia["estado"], { texto: string; clases: string }> = {
   prueba: { texto: "Prueba gratis", clases: VERDE },
   activa: { texto: "Vigente", clases: VERDE },
@@ -41,7 +41,7 @@ function textoEstado(m: Membresia) {
     case "activa": return `Vence el ${v}.`;
     case "gracia": return `Venció el ${v}. La caja se bloqueará el ${b} si no registramos tu pago.`;
     case "vencida": return `Venció el ${v}. Caja bloqueada desde el ${b}. Se desbloquea en cuanto registremos tu pago.`;
-    case "suspendida": return "MiSaldo suspendió tu cuenta. Escríbenos por WhatsApp para resolverlo.";
+    case "suspendida": return "Mi Saldo Vip suspendió tu cuenta. Escríbenos por WhatsApp para resolverlo.";
   }
 }
 
@@ -239,7 +239,7 @@ export function SeccionMembresia() {
     <section className="rounded-2xl bg-card p-5 ring-1 ring-border">
       <h2 className="text-lg font-semibold tracking-tight">Membresía</h2>
       <p className="mt-1 text-sm text-muted-foreground">
-        Renueva tu membresía de MiSaldo y elige cómo pagar tu mensualidad. Toca una opción para ver sus datos.
+        Renueva tu membresía de Mi Saldo Vip y elige cómo pagar tu mensualidad. Toca una opción para ver sus datos.
       </p>
 
       <EstadoMembresia />

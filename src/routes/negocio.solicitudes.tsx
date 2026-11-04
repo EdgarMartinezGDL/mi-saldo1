@@ -13,9 +13,9 @@ import { useDesplazarAlAbrir } from "@/lib/use-desplazar";
 export const Route = createFileRoute("/negocio/solicitudes")({
   head: () => ({
     meta: [
-      { title: "Solicitudes de alta · MiSaldo" },
+      { title: "Solicitudes de alta · Mi Saldo Vip" },
       { name: "description", content: "Altas que esperan la confirmación del titular del teléfono." },
-      { property: "og:title", content: "Solicitudes de alta · MiSaldo" },
+      { property: "og:title", content: "Solicitudes de alta · Mi Saldo Vip" },
       { property: "og:description", content: "Estado de las altas pendientes de confirmar." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

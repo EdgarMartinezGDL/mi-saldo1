@@ -6,9 +6,9 @@ import { SeccionNegocio } from "@/components/negocio/comun";
 export const Route = createFileRoute("/negocio/membresia")({
   head: () => ({
     meta: [
-      { title: "Membresía y pagos · MiSaldo" },
-      { name: "description", content: "Estado de tu membresía de MiSaldo y métodos para pagar tu mensualidad." },
-      { property: "og:title", content: "Membresía y pagos · MiSaldo" },
+      { title: "Membresía y pagos · Mi Saldo Vip" },
+      { name: "description", content: "Estado de tu membresía de Mi Saldo Vip y métodos para pagar tu mensualidad." },
+      { property: "og:title", content: "Membresía y pagos · Mi Saldo Vip" },
       { property: "og:description", content: "Revisa si te toca pagar y elige transferencia u OXXO." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

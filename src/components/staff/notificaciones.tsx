@@ -165,7 +165,7 @@ export function PestanaNotificaciones() {
           <Button variant="link" className="h-auto min-w-0 whitespace-normal p-0 text-left" onClick={() => verFicha(n.destinatario.persona_id)}>{nombreCompleto(n.destinatario)}</Button>
           <span className="break-all text-muted-foreground">{n.canal === "whatsapp" ? n.destinatario.telefono : n.destinatario.correo}</span>
         </div>
-        <p className="text-xs text-muted-foreground">{n.negocio?.nombre_comercial ?? "MiSaldo (plataforma)"} · {plural(n.intentos, "intento", "intentos")}</p>
+        <p className="text-xs text-muted-foreground">{n.negocio?.nombre_comercial ?? "Mi Saldo Vip (plataforma)"} · {plural(n.intentos, "intento", "intentos")}</p>
         {n.ultimo_error && <p className="break-words text-xs text-destructive">{n.ultimo_error}</p>}
         {["no_entregado", "rebotado", "queja"].includes(n.entrega) && n.entrega_detalle !== null && <p className="text-xs text-destructive">{["codigo_error", "rebote_tipo", "estado_smtp", "queja_tipo"].map((k) => n.entrega_detalle?.[k]).filter((v) => v !== undefined).join(" · ")}</p>}
         <div className="flex flex-wrap items-center gap-2">

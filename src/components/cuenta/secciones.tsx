@@ -1,10 +1,11 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { KeyRound, Mail, Megaphone, ShieldCheck, UserRound } from "lucide-react";
+import { KeyRound, Mail, Megaphone, ShieldCheck } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import { useState, type ReactNode } from "react";
 import { toast } from "sonner";
 import { CodigosRespaldo } from "@/components/codigos-respaldo";
+import logoCircular from "@/assets/mi-saldo-vip-logo.svg.asset.json";
 import { useConTotp } from "@/components/totp-provider";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription,
@@ -72,9 +73,7 @@ export function Encabezado() {
   const nombre = [data?.nombre, data?.apellido_paterno, data?.apellido_materno].filter(Boolean).join(" ");
   return (
     <div className="flex items-center gap-4 rounded-2xl bg-card p-5 ring-1 ring-border">
-      <span className="shadow-soft grid size-14 shrink-0 place-items-center rounded-full bg-secondary text-primary">
-        <UserRound className="size-7" />
-      </span>
+      <img src={logoCircular.url} alt="Mi Saldo Vip" className="size-14 shrink-0 rounded-full ring-1 ring-border" />
       <div className="min-w-0">
         <p className="truncate text-xl font-semibold">{nombre || "Mi cuenta"}</p>
         {data?.telefono && <p className="font-mono text-base text-muted-foreground">{telefonoBonito(data.telefono)}</p>}
@@ -155,7 +154,7 @@ export function MisDatos() {
         <div className="flex justify-between gap-3"><dt className="text-muted-foreground">Correo</dt><dd className="truncate font-medium">{data?.correo ?? correoSinConfirmar ?? "Sin correo"}</dd></div>
       </dl>
       {correoSinConfirmar && <p className="mt-2 text-sm text-muted-foreground">Sin confirmar: recibe tus avisos, pero no sirve para recuperar tu acceso. Confírmalo con «Confirmar correo».</p>}
-      <p className="mt-2 text-xs text-muted-foreground">Tu nombre lo corrige el negocio o soporte de MiSaldo.</p>
+      <p className="mt-2 text-xs text-muted-foreground">Tu nombre lo corrige el negocio o soporte de Mi Saldo Vip.</p>
       <div className="mt-4 grid gap-2 sm:grid-cols-2">
         <Button variant={abierto === "pin" ? "default" : "secondary"} size="lg" className="h-14 justify-start text-base" onClick={() => { limpiar(); setAbierto(abierto === "pin" ? null : "pin"); }}>
           <KeyRound className="size-5" /> Cambiar PIN

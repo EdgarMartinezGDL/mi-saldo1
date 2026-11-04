@@ -12,12 +12,12 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/reclamaciones")({
   head: () => ({
     meta: [
-      { title: "Reclamaciones · MiSaldo" },
+      { title: "Reclamaciones · Mi Saldo Vip" },
       {
         name: "description",
         content: "Consulta el folio, el estado y la resolución de tus reclamaciones.",
       },
-      { property: "og:title", content: "Reclamaciones · MiSaldo" },
+      { property: "og:title", content: "Reclamaciones · Mi Saldo Vip" },
       {
         property: "og:description",
         content: "Consulta el folio, el estado y la resolución de tus reclamaciones.",

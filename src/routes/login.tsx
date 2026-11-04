@@ -17,6 +17,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { login, type RespuestaLogin } from "@/lib/api/auth";
 import { ApiError, setSesion, telefonoE164, type Sesion } from "@/lib/api/client";
+import { MarcaMiSaldo } from "@/components/marca";
+import logoCircular from "@/assets/mi-saldo-vip-logo.svg.asset.json";
 
 export const Route = createFileRoute("/login")({
   validateSearch: (s: Record<string, unknown>): { volver?: string } => {
@@ -25,9 +27,9 @@ export const Route = createFileRoute("/login")({
   },
   head: () => ({
     meta: [
-      { title: "Entrar · MiSaldo" },
-      { name: "description", content: "Entra a MiSaldo con tu teléfono y tu PIN." },
-      { property: "og:title", content: "Entrar · MiSaldo" },
+      { title: "Entrar · Mi Saldo Vip" },
+      { name: "description", content: "Entra a Mi Saldo Vip con tu teléfono y tu PIN." },
+      { property: "og:title", content: "Entrar · Mi Saldo Vip" },
       { property: "og:description", content: "Acceso con teléfono, PIN y verificación en dos pasos." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -109,6 +111,7 @@ function Login() {
   return (
     <div className="flex min-h-screen items-center justify-center px-4 py-10">
       <div className="w-full max-w-sm rounded-2xl bg-card p-6 shadow-soft ring-1 ring-border">
+        <img src={logoCircular.url} alt="Mi Saldo Vip" className="mx-auto mb-4 size-20 rounded-full" />
         <div className="mb-6 flex items-center gap-3">
           <div className="grid size-11 place-items-center rounded-full bg-primary text-primary-foreground">
             {paso.tipo === "totp" ? <ShieldCheck className="size-5" /> : <KeyRound className="size-5" />}
@@ -117,7 +120,7 @@ function Login() {
             <h1 className="text-2xl font-semibold tracking-tight">
               {paso.tipo === "credenciales" ? "Entrar" : paso.tipo === "contexto" ? "¿Con qué perfil?" : "Verificación"}
             </h1>
-            <p className="text-sm text-muted-foreground">MiSaldo · By MicroFix Cloud</p>
+            <p className="text-sm text-muted-foreground"><MarcaMiSaldo /> · By MicroFix Cloud</p>
           </div>
         </div>
 
