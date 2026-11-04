@@ -118,7 +118,7 @@ export function FilaMovimiento({ m }: { m: Movimiento }) {
           {m.cliente ? `${nombreCompleto(m.cliente)} · ${telefonoVisible(m.cliente.telefono)}` : "—"} · {operador} · {instante(m.fecha)}
         </p>
       </div>
-      <span className={cn("shrink-0 font-mono font-semibold tabular-nums", valor > 0 ? "text-emerald-400" : valor < 0 ? "text-red-400" : "")}>
+      <span className={cn("shrink-0 font-mono font-semibold tabular-nums", valor > 0 ? "text-success" : valor < 0 ? "text-destructive" : "")}>
         {texto}
       </span>
     </li>
@@ -127,9 +127,9 @@ export function FilaMovimiento({ m }: { m: Movimiento }) {
 
 export function Chip({ tono, children }: { tono: "verde" | "ambar" | "rojo" | "gris"; children: ReactNode }) {
   const clases = {
-    verde: "bg-emerald-400/15 text-emerald-400 ring-emerald-400/40",
-    ambar: "bg-amber-400/15 text-amber-400 ring-amber-400/40",
-    rojo: "bg-red-400/15 text-red-400 ring-red-400/40",
+    verde: "bg-success-fill/15 text-success ring-success-fill/40",
+    ambar: "bg-warn/15 text-warn ring-warn/40",
+    rojo: "bg-red-400/15 text-destructive ring-red-400/40",
     gris: "bg-muted text-muted-foreground ring-border",
   }[tono];
   return <span className={cn("inline-flex shrink-0 rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1", clases)}>{children}</span>;

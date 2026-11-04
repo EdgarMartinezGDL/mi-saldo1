@@ -16,9 +16,9 @@ import { Domiciliado } from "@/components/domiciliado";
 
 type Metodo = ClaveMetodo | null;
 
-const VERDE = "bg-emerald-400/15 text-emerald-400 ring-emerald-400/40";
-const AMBAR = "bg-amber-400/15 text-amber-400 ring-amber-400/40";
-const ROJO = "bg-red-400/15 text-red-400 ring-red-400/40";
+const VERDE = "bg-success-fill/15 text-success ring-success-fill/40";
+const AMBAR = "bg-warn/15 text-warn ring-warn/40";
+const ROJO = "bg-red-400/15 text-destructive ring-red-400/40";
 const ESTADO_MEMBRESIA: Record<Membresia["estado"], { texto: string; clases: string }> = {
   prueba: { texto: "Prueba gratis", clases: VERDE },
   activa: { texto: "Vigente", clases: VERDE },

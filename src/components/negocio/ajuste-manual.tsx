@@ -107,7 +107,7 @@ export function AjusteManual({ ficha, telefono, abierto, onAbierto, onHecho }: {
                 {resultado.tarjeta.fecha_vencimiento && ` · vence el ${fechaCorta(resultado.tarjeta.fecha_vencimiento)}`}
               </p>
             )}
-            {resultado.topado && resultado.aviso && <p className="rounded-xl bg-amber-400/15 p-3 text-sm text-amber-400">{resultado.aviso}</p>}
+            {resultado.topado && resultado.aviso && <p className="rounded-xl bg-warn/15 p-3 text-sm text-warn">{resultado.aviso}</p>}
             {(resultado.tarjetas_completadas ?? 0) > 0 && <p>Completó {plural(resultado.tarjetas_completadas ?? 0, "tarjeta", "tarjetas")}</p>}
             {(resultado.tarjetas_reabiertas ?? 0) > 0 && <p>{(resultado.tarjetas_reabiertas ?? 0) === 1 ? "Se reabrió" : "Se reabrieron"} {plural(resultado.tarjetas_reabiertas ?? 0, "tarjeta", "tarjetas")}</p>}
             <Button size="lg" onClick={() => { reiniciar(); onAbierto(false); }}>Cerrar</Button>

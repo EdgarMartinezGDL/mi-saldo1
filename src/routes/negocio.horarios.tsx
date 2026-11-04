@@ -78,7 +78,7 @@ export function Horarios({ cfg }: { cfg: ConfiguracionNegocio }) {
 
   return (
     <section className="rounded-2xl bg-card p-5 ring-1 ring-border">
-      {vacio && <p className="mb-4 rounded-xl bg-amber-400/10 p-3 text-sm text-amber-400 ring-1 ring-amber-400/30">Aún no configuras tus horarios</p>}
+      {vacio && <p className="mb-4 rounded-xl bg-warn/10 p-3 text-sm text-warn ring-1 ring-warn/30">Aún no configuras tus horarios</p>}
       {editando ? (
         <div ref={ref} className="flex flex-col gap-4">
           <ul className="flex flex-col divide-y divide-border">
@@ -105,7 +105,7 @@ export function Horarios({ cfg }: { cfg: ConfiguracionNegocio }) {
                       <span className="text-muted-foreground">a</span>
                       <input type="time" aria-label={`${DIAS[d]}: cierra`} value={x.hora_cierre ?? ""} onChange={(e) => cambiar(d, { hora_cierre: e.target.value })}
                         className="h-12 rounded-xl border border-border bg-card px-3 text-base shadow-soft" />
-                      {cruza && <span className="text-sm text-amber-400">Cierra al día siguiente</span>}
+                      {cruza && <span className="text-sm text-warn">Cierra al día siguiente</span>}
                     </div>
                   )}
                 </li>

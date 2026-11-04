@@ -133,7 +133,7 @@ function Formulario({ cfg, rc }: { cfg: ConfiguracionNegocio; rc: ConfigReferido
 
   return (
     <section className="rounded-2xl bg-card p-5 ring-1 ring-border">
-      {deshabilitado && <p className="mb-4 rounded-xl bg-amber-400/10 p-3 text-sm text-amber-400 ring-1 ring-amber-400/30">Para activarlo necesitas monedero o una tarjeta de sellos por monto</p>}
+      {deshabilitado && <p className="mb-4 rounded-xl bg-warn/10 p-3 text-sm text-warn ring-1 ring-warn/30">Para activarlo necesitas monedero o una tarjeta de sellos por monto</p>}
       {editando ? (
         <div ref={ref}>
           <fieldset disabled={deshabilitado} className="flex flex-col gap-4 disabled:opacity-60">
@@ -281,7 +281,7 @@ function Lista() {
               )}
               {premio(r) && <p className={cn("text-sm", r.estado === "cumplido_sin_premio" && "line-through text-muted-foreground")}>Premio: {premio(r)}</p>}
               {r.estado === "cumplido_sin_premio" && (
-                <p className="text-sm text-amber-400">{(r.motivo_sin_premio && MOTIVO[r.motivo_sin_premio]) || "Sin premio"}. Puedes compensarlo con un ajuste manual</p>
+                <p className="text-sm text-warn">{(r.motivo_sin_premio && MOTIVO[r.motivo_sin_premio]) || "Sin premio"}. Puedes compensarlo con un ajuste manual</p>
               )}
             </li>
           ))}

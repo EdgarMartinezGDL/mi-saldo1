@@ -100,7 +100,7 @@ function Monedero({ cfg }: { cfg: ConfiguracionNegocio }) {
             />
           )}
           {sugerencias.map((a) => (
-            <p key={a} className="mt-3 rounded-xl bg-amber-400/10 p-3 text-sm text-amber-400 ring-1 ring-amber-400/30">Sugerencia: {a}</p>
+            <p key={a} className="mt-3 rounded-xl bg-warn/10 p-3 text-sm text-warn ring-1 ring-warn/30">Sugerencia: {a}</p>
           ))}
           <CalculadoraMonedero factor={factorVivo} />
         </section>
