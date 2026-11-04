@@ -72,9 +72,7 @@ export function Encabezado() {
   const nombre = [data?.nombre, data?.apellido_paterno, data?.apellido_materno].filter(Boolean).join(" ");
   return (
     <div className="flex items-center gap-4 rounded-2xl bg-card p-5 ring-1 ring-border">
-      <span className="shadow-soft grid size-14 shrink-0 place-items-center rounded-full bg-secondary text-primary">
-        <UserRound className="size-7" />
-      </span>
+      <img src={logoCircular.url} alt="Mi Saldo Vip" className="size-14 shrink-0 rounded-full ring-1 ring-border" />
       <div className="min-w-0">
         <p className="truncate text-xl font-semibold">{nombre || "Mi cuenta"}</p>
         {data?.telefono && <p className="font-mono text-base text-muted-foreground">{telefonoBonito(data.telefono)}</p>}
