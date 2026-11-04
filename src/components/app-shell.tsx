@@ -109,9 +109,9 @@ function AppBar() {
   const { sesion } = useAuth();
   const { abrir, varios, dialogo } = useMisNegocios();
   const rol = sesion?.contexto.rol;
-  const nombre = rol && rol !== "staff" && sesion?.contexto.nombre_comercial ? sesion.contexto.nombre_comercial : "MiSaldo";
-  const logo = nombre !== "MiSaldo" ? business.logo : undefined;
-  const initials = nombre
+  const nombre = rol && rol !== "staff" && sesion?.contexto.nombre_comercial ? sesion.contexto.nombre_comercial : null;
+  const logo = nombre ? business.logo : undefined;
+  const initials = (nombre ?? "")
     .split(" ")
     .filter((w) => w.length > 2)
     .slice(0, 2)
@@ -120,35 +120,49 @@ function AppBar() {
     .toUpperCase();
 
   return (
-    <header className="glass-bar sticky top-0 z-30 border-b border-border">
+    <header className="sticky top-0 z-30 border-b border-barra bg-barra text-barra-foreground">
       <div className="mx-auto grid max-w-5xl grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-3">
         <div className="flex min-w-0 items-center gap-3">
-          {logo ? (
-            <img
-              src={logo}
-              alt=""
-              className="size-11 shrink-0 rounded-full object-cover ring-1 ring-border"
-            />
+          {nombre ? (
+            logo ? (
+              <img
+                src={logo}
+                alt=""
+                className="size-11 shrink-0 rounded-full object-cover ring-1 ring-white/30"
+              />
+            ) : (
+              <div className="grid size-11 shrink-0 place-items-center rounded-full bg-white/15 text-base font-bold text-white ring-1 ring-white/30">
+                {initials || "MS"}
+              </div>
+            )
           ) : (
-            <div className="shadow-soft grid size-11 shrink-0 place-items-center rounded-full bg-accent text-base font-bold text-accent-foreground">
-              {initials || "MS"}
-            </div>
+            <img src={logoMarca.url} alt="Mi Saldo Vip" className="h-9 w-auto shrink-0 rounded-lg" />
           )}
           <div className="min-w-0 leading-tight">
-            {varios ? (
-              <button
-                type="button"
-                onClick={abrir}
-                aria-label={`${nombre}. Cambiar de negocio`}
-                className="flex max-w-full items-center gap-1 rounded-lg text-left text-lg font-bold hover:text-primary"
-              >
-                <span className="truncate">{nombre}</span>
-                <ChevronDown className="size-5 shrink-0" />
-              </button>
+            {nombre ? (
+              <>
+                {varios ? (
+                  <button
+                    type="button"
+                    onClick={abrir}
+                    aria-label={`${nombre}. Cambiar de negocio`}
+                    className="flex max-w-full items-center gap-1 rounded-lg text-left text-lg font-bold text-white hover:text-white/80"
+                  >
+                    <span className="truncate">{nombre}</span>
+                    <ChevronDown className="size-5 shrink-0" />
+                  </button>
+                ) : (
+                  <p className="truncate text-lg font-bold text-white">{nombre}</p>
+                )}
+                <p className="truncate text-[11px] text-white/80">
+                  <MarcaMiSaldo /> · By MicroFix Cloud
+                </p>
+              </>
             ) : (
-              <p className="truncate text-lg font-bold">{nombre}</p>
+              <p className="truncate text-lg font-bold text-white">
+                <MarcaMiSaldo />
+              </p>
             )}
-            <p className="truncate text-[11px] text-muted-foreground">MiSaldo · By MicroFix Cloud</p>
           </div>
         </div>
         <div className="flex shrink-0 items-center gap-3">
@@ -241,21 +255,23 @@ export function AppShell({ children, volver, volverTexto, amplio = false }: { ch
                 <span
                   className={cn(
                     "grid h-8 w-14 place-items-center rounded-full transition-colors",
-                    active && "bg-primary/12",
-                    item.destacado && "btn-premium -mt-5 size-14 text-primary-foreground",
+                    active && !item.destacado && "bg-primary/12",
+                    item.destacado && "btn-premium -mt-7 size-16 text-primary-foreground ring-4 ring-background",
                   )}
                 >
-                  <item.icon className="size-[22px] shrink-0" strokeWidth={active ? 2.2 : 1.7} />
+                  <item.icon className={cn("shrink-0", item.destacado ? "size-7" : "size-[22px]")} strokeWidth={active ? 2.2 : 1.7} />
                 </span>
-                <span className={cn("text-[11px] tracking-tight", active ? "font-semibold" : "font-medium")}>
+                <span className={cn("text-[11px] tracking-tight", active || item.destacado ? "font-semibold" : "font-medium")}>
                   {item.label}
                 </span>
-                <span
-                  className={cn(
-                    "absolute bottom-1 size-1 rounded-full bg-primary transition-opacity",
-                    active ? "opacity-100" : "opacity-0",
-                  )}
-                />
+                {!item.destacado && (
+                  <span
+                    className={cn(
+                      "absolute bottom-1 size-1 rounded-full bg-primary transition-opacity",
+                      active ? "opacity-100" : "opacity-0",
+                    )}
+                  />
+                )}
               </Link>
             );
           })}
