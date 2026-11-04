@@ -29,9 +29,10 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * MiSaldo design system — dark neumorphism based on Mi Agenda Zen.
- * Midnight navy canvas + slate Soft UI surfaces + teal actions.
- * All color values are oklch. The custom theme overrides --primary at runtime.
+ * Mi Saldo Vip design system — soft neumorphism.
+ * Light: white canvas, night-blue text, dark teal primary, orange only for action buttons.
+ * Dark: midnight navy canvas, bright teal primary, same orange accent and top bar.
+ * The custom theme overrides --primary at runtime.
  */
 
 @theme inline {
@@ -64,6 +65,9 @@
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-success: var(--success);
+  --color-success-fill: var(--success-fill);
+  --color-barra: var(--barra);
+  --color-barra-foreground: var(--barra-foreground);
   --color-pending: var(--pending);
   --color-border: var(--border);
   --color-input: var(--input);
@@ -85,80 +89,91 @@
 
 :root {
   --radius: 0.75rem;
-  --background: oklch(0.955 0.006 235);
-  --foreground: oklch(0.22 0.025 255);
-  --card: oklch(0.975 0.005 235);
-  --card-foreground: oklch(0.22 0.025 255);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.22 0.025 255);
-  --primary: oklch(0.72 0.12 183);
-  --primary-foreground: oklch(0.16 0.025 255);
-  --secondary: oklch(0.93 0.008 235);
-  --secondary-foreground: oklch(0.25 0.025 255);
-  --muted: oklch(0.93 0.008 235);
-  --muted-foreground: oklch(0.49 0.02 255);
-  --accent: oklch(0.784 0.135 74);
-  --accent-foreground: oklch(0.234 0.013 170);
+  --background: #ffffff;
+  --foreground: #1e293b;
+  --card: #f8fafc;
+  --card-foreground: #1e293b;
+  --popover: #ffffff;
+  --popover-foreground: #1e293b;
+  --primary: #0f766e;
+  --primary-foreground: #ffffff;
+  --secondary: #f1f5f9;
+  --secondary-foreground: #1e293b;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --accent: #f97316;
+  --accent-foreground: #1e293b;
   --warn: oklch(0.586 0.176 33);
   --warn-foreground: oklch(0.99 0.004 174);
   --destructive: oklch(0.55 0.21 27);
   --destructive-foreground: oklch(0.99 0.004 174);
-  --success: oklch(0.48 0.13 150);
+  --success: #047857;
+  --success-fill: #10b981;
   --pending: oklch(0.52 0.12 75);
-  --border: oklch(0.87 0.01 240);
-  --input: oklch(0.87 0.01 240);
-  --ring: oklch(0.72 0.12 183);
-  --chart-1: oklch(0.72 0.12 183);
-  --chart-2: oklch(0.784 0.135 74);
-  --chart-3: oklch(0.586 0.176 33);
-  --chart-4: oklch(0.62 0.09 200);
-  --chart-5: oklch(0.7 0.06 150);
-  --sidebar: oklch(0.985 0.003 235);
-  --sidebar-foreground: oklch(0.22 0.025 255);
-  --sidebar-primary: oklch(0.72 0.12 183);
-  --sidebar-primary-foreground: oklch(0.16 0.025 255);
-  --sidebar-accent: oklch(0.93 0.008 235);
-  --sidebar-accent-foreground: oklch(0.22 0.025 255);
-  --sidebar-border: oklch(0.87 0.01 240);
-  --sidebar-ring: oklch(0.72 0.12 183);
-  --neo-shadow-dark: oklch(0.72 0.018 245 / 42%);
-  --neo-shadow-light: oklch(1 0 0 / 92%);
-  --neo-inset-dark: oklch(0.72 0.018 245 / 34%);
-  --neo-inset-light: oklch(1 0 0 / 80%);
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #0f766e;
+  --barra: #0f766e;
+  --barra-foreground: #ffffff;
+  --chart-1: var(--primary);
+  --chart-2: #f97316;
+  --chart-3: #10b981;
+  --chart-4: #64748b;
+  --chart-5: #94a3b8;
+  --sidebar: var(--card);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--secondary);
+  --sidebar-accent-foreground: var(--secondary-foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
+  --neo-shadow-dark: rgb(148 163 184 / 28%);
+  --neo-shadow-light: rgb(255 255 255 / 92%);
+  --neo-inset-dark: rgb(148 163 184 / 25%);
+  --neo-inset-light: rgb(255 255 255 / 80%);
 }
 
 .dark {
-  --background: oklch(0.145 0.035 258);
-  --foreground: oklch(0.965 0.008 245);
-  --card: oklch(0.225 0.04 258);
-  --card-foreground: oklch(0.955 0.008 245);
-  --popover: oklch(0.225 0.04 258);
-  --popover-foreground: oklch(0.955 0.008 245);
-  --primary: oklch(0.72 0.12 183);
-  --primary-foreground: oklch(0.16 0.035 258);
-  --secondary: oklch(0.245 0.038 258);
-  --secondary-foreground: oklch(0.94 0.01 245);
-  --muted: oklch(0.255 0.04 258);
-  --muted-foreground: oklch(0.7 0.025 250);
-  --accent: oklch(0.78 0.14 70);
-  --accent-foreground: oklch(0.2 0.02 264);
+  --background: #0f172a;
+  --foreground: #e2e8f0;
+  --card: #1e293b;
+  --card-foreground: #e2e8f0;
+  --popover: #1e293b;
+  --popover-foreground: #e2e8f0;
+  --primary: #2dd4bf;
+  --primary-foreground: #0f172a;
+  --secondary: #334155;
+  --secondary-foreground: #e2e8f0;
+  --muted: #334155;
+  --muted-foreground: #94a3b8;
+  --accent: #f97316;
+  --accent-foreground: #0f172a;
   --warn: oklch(0.72 0.15 55);
   --warn-foreground: oklch(0.2 0.02 264);
   --destructive: oklch(0.66 0.19 27);
   --destructive-foreground: oklch(0.2 0.02 264);
-  --success: oklch(0.78 0.15 150);
+  --success: #10b981;
+  --success-fill: #10b981;
   --pending: oklch(0.8 0.14 75);
-  --border: oklch(0.84 0.02 250 / 10%);
-  --input: oklch(0.84 0.02 250 / 16%);
-  --ring: oklch(0.72 0.12 183);
-  --sidebar: oklch(0.185 0.036 258);
-  --sidebar-foreground: oklch(0.94 0.01 245);
-  --sidebar-primary: oklch(0.72 0.12 183);
-  --sidebar-primary-foreground: oklch(0.16 0.035 258);
-  --sidebar-accent: oklch(0.255 0.04 258);
-  --sidebar-accent-foreground: oklch(0.94 0.01 245);
-  --sidebar-border: oklch(0.84 0.02 250 / 12%);
-  --sidebar-ring: oklch(0.72 0.12 183);
+  --border: #334155;
+  --input: #475569;
+  --ring: #2dd4bf;
+  --barra: #0f766e;
+  --barra-foreground: #ffffff;
+  --chart-1: var(--primary);
+  --chart-2: #f97316;
+  --chart-3: #10b981;
+  --chart-4: #64748b;
+  --chart-5: #94a3b8;
+  --sidebar: var(--card);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--secondary);
+  --sidebar-accent-foreground: var(--secondary-foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
   --neo-shadow-dark: oklch(0.045 0.02 260 / 92%);
   --neo-shadow-light: oklch(0.38 0.045 250 / 34%);
   --neo-inset-dark: oklch(0.055 0.02 260 / 72%);
@@ -253,6 +268,21 @@
 }
 
 .btn-premium:active {
+  box-shadow:
+    inset 4px 4px 8px color-mix(in oklab, black 28%, transparent),
+    inset -3px -3px 7px color-mix(in oklab, white 16%, transparent);
+}
+
+/* Action buttons: same raised look as btn-premium, in the orange accent. */
+@utility btn-accion {
+  background-color: var(--accent);
+  box-shadow:
+    -4px -4px 10px color-mix(in oklab, var(--accent) 32%, var(--neo-shadow-light)),
+    6px 6px 14px var(--neo-shadow-dark),
+    inset 1px 1px 0 color-mix(in oklab, white 25%, transparent);
+}
+
+.btn-accion:active {
   box-shadow:
     inset 4px 4px 8px color-mix(in oklab, black 28%, transparent),
     inset -3px -3px 7px color-mix(in oklab, white 16%, transparent);
