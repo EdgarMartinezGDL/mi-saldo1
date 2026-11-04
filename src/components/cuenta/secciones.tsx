@@ -1,10 +1,11 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { KeyRound, Mail, Megaphone, ShieldCheck, UserRound } from "lucide-react";
+import { KeyRound, Mail, Megaphone, ShieldCheck } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import { useState, type ReactNode } from "react";
 import { toast } from "sonner";
 import { CodigosRespaldo } from "@/components/codigos-respaldo";
+import logoCircular from "@/assets/mi-saldo-vip-logo.svg.asset.json";
 import { useConTotp } from "@/components/totp-provider";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription,
