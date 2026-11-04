@@ -30,7 +30,7 @@ import { AvisoPendiente } from "@/components/aviso-pendiente";
 
 type NavItem = { to: string; label: string; icon: LucideIcon; destacado?: boolean };
 
-const NAV: Record<Role, NavItem[]> = {
+export const NAV: Record<Role, NavItem[]> = {
   cliente: [
     { to: "/", label: "Inicio", icon: Home },
     { to: "/canjear", label: "Mis códigos", icon: Gift },

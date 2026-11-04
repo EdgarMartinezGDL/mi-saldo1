@@ -10,7 +10,9 @@ afterEach(cleanup);
 describe("P8", () => {
   it("encabezado con el lema de la marca", () => {
     render(<TarjetaEnlace titulo="Hola" icono={null}>x</TarjetaEnlace>);
-    expect(screen.getByText("MiSaldo · By MicroFix Cloud")).toBeInTheDocument();
+    expect(screen.getByText("Mi Saldo")).toBeInTheDocument();
+    expect(screen.getByText("Vip")).toBeInTheDocument();
+    expect(screen.getByText(/By MicroFix Cloud/)).toBeInTheDocument();
   });
 
   it("plural()", () => {
