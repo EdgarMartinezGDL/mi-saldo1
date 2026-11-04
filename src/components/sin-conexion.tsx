@@ -5,6 +5,7 @@ import { useAuth } from "@/components/auth-provider";
 import { leerCopia, type CopiaSinConexion } from "@/lib/sin-conexion-storage";
 import { instante } from "@/lib/api/formato";
 import { plural } from "@/lib/plural";
+import { MarcaMiSaldo } from "@/components/marca";
 
 export function PantallaSinConexion() {
   const { sesion, reintentar } = useAuth();
@@ -12,7 +13,7 @@ export function PantallaSinConexion() {
   const [ocupado, setOcupado] = useState(false);
   useEffect(() => { setCopia(!sesion || sesion.contexto.rol === "cliente" ? leerCopia() : null); }, [sesion]);
   return <div className="min-h-screen bg-background text-foreground">
-    <header className="border-b border-border bg-card px-4 py-4"><p className="font-semibold">MiSaldo · By MicroFix Cloud</p></header>
+    <header className="border-b border-border bg-card px-4 py-4"><p className="font-semibold"><MarcaMiSaldo /> · By MicroFix Cloud</p></header>
     <main className="mx-auto flex max-w-2xl flex-col gap-5 px-4 py-6">
       {copia ? <>
         <div role="status"><p className="font-medium text-warn">Sin conexión. Mostramos lo último que guardamos en este teléfono.</p>

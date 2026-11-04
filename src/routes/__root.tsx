@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/sonner";
 import { TecladoVisible } from "@/lib/teclado-visible";
 import { ConexionContenido } from "@/components/sin-conexion";
+import { MarcaMiSaldo } from "@/components/marca";
 import { registrarWorker } from "@/lib/pwa-registro";
 
 /** Card shell shared by the 404 and error boundaries: app styling, no AppShell chrome. */
@@ -28,7 +29,7 @@ function TarjetaEstado({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4 py-10">
       <div className="shadow-soft w-full max-w-sm rounded-2xl bg-card px-6 py-10 text-center ring-1 ring-border sm:px-8">
-        <p className="font-mono text-lg font-bold tracking-tight text-primary">MiSaldo</p>
+        <p className="font-mono text-lg font-bold tracking-tight text-primary"><MarcaMiSaldo /></p>
         {children}
       </div>
     </div>
@@ -55,7 +56,7 @@ function BotonInicio() {
 
 function NotFoundComponent() {
   useEffect(() => {
-    document.title = "Página no encontrada · MiSaldo";
+    document.title = "Página no encontrada · Mi Saldo Vip";
   }, []);
 
   return (
@@ -108,13 +109,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" },
-      { title: "MiSaldo · Lealtad para tu negocio" },
+      { title: "Mi Saldo Vip · Lealtad para tu negocio" },
       {
         name: "description",
         content: "Saldo, sellos y recompensas de tus negocios favoritos, en tu celular.",
       },
-      { name: "theme-color", content: "#0b7a5e" },
-      { property: "og:title", content: "MiSaldo · Lealtad para tu negocio" },
+      { name: "theme-color", content: "#0F766E" },
+      { property: "og:title", content: "Mi Saldo Vip · Lealtad para tu negocio" },
       {
         property: "og:description",
         content: "Saldo, sellos y recompensas de tus negocios favoritos, en tu celular.",
