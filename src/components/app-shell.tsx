@@ -18,6 +18,8 @@ import {
 } from "lucide-react";
 import type { ReactNode } from "react";
 import { useAuth } from "@/components/auth-provider";
+import { MarcaMiSaldo } from "@/components/marca";
+import logoMarca from "@/assets/mi-saldo-vip-logo.png.asset.json";
 import { useCerrarSesion } from "@/components/cerrar-sesion";
 import { useMiSaldo } from "@/components/misaldo-provider";
 import { useMisNegocios } from "@/components/mis-negocios";
@@ -36,14 +38,14 @@ const NAV: Record<Role, NavItem[]> = {
     { to: "/ajustes", label: "Cuenta", icon: UserRound },
   ],
   empleado: [
-    { to: "/caja", label: "Caja", icon: BadgeDollarSign },
     { to: "/corte", label: "Mi jornada", icon: Receipt },
+    { to: "/caja", label: "Caja", icon: BadgeDollarSign, destacado: true },
     { to: "/ajustes", label: "Cuenta", icon: UserRound },
   ],
   dueno: [
     { to: "/panel", label: "Inicio", icon: BarChart3 },
-    { to: "/caja", label: "Caja", icon: BadgeDollarSign, destacado: true },
     { to: "/clientes", label: "Clientes", icon: Users },
+    { to: "/caja", label: "Caja", icon: BadgeDollarSign, destacado: true },
     { to: "/negocio", label: "Negocio", icon: Store },
     { to: "/ajustes", label: "Cuenta", icon: UserRound },
   ],
@@ -68,8 +70,16 @@ const PADRE: Record<string, string> = {
   "/negocio/reportes": "/negocio",
 };
 
+/** Fixed home per role; independent of the menu order (Caja sits in the middle). */
+const HOME: Record<Role, string> = {
+  cliente: "/",
+  empleado: "/caja",
+  dueno: "/panel",
+  staff: "/staff",
+};
+
 export function roleHome(role: Role) {
-  return NAV[role][0]?.to ?? "/";
+  return HOME[role] ?? "/";
 }
 
 /** Shortcut to /validaciones with a pending counter; shown for any signed-in profile. */
@@ -82,7 +92,7 @@ function AccesoValidaciones() {
     <Link
       to="/validaciones"
       aria-label={pendientes ? `Solicitudes por confirmar: ${pendientes}` : "Solicitudes por confirmar"}
-      className="tap-target shadow-soft relative grid size-11 place-items-center rounded-full border border-border bg-card text-muted-foreground transition-colors hover:text-primary"
+      className="tap-target relative grid size-11 place-items-center rounded-full border border-white/25 bg-white/10 text-white transition-colors hover:bg-white/20"
     >
       <UserCheck className="size-5" />
       {pendientes > 0 && (
