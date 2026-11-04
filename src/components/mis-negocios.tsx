@@ -130,7 +130,7 @@ function Selector({ onCerrar, abierto }: { onCerrar: () => void; abierto: boolea
       }
       const s = await cambiarContexto(body);
       queryClient.clear();
-      updateBusiness({ name: s.contexto.nombre_comercial ?? "MiSaldo", logo: null });
+      updateBusiness({ name: s.contexto.nombre_comercial ?? "Mi Saldo Vip", logo: null });
       toast.success(`Ahora estás en ${etiquetaContexto(s.contexto)}`);
       onCerrar();
       void navigate({ to: INICIO[s.contexto.rol], replace: true });

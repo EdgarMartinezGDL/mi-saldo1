@@ -41,7 +41,7 @@ function textoEstado(m: Membresia) {
     case "activa": return `Vence el ${v}.`;
     case "gracia": return `Venció el ${v}. La caja se bloqueará el ${b} si no registramos tu pago.`;
     case "vencida": return `Venció el ${v}. Caja bloqueada desde el ${b}. Se desbloquea en cuanto registremos tu pago.`;
-    case "suspendida": return "MiSaldo suspendió tu cuenta. Escríbenos por WhatsApp para resolverlo.";
+    case "suspendida": return "Mi Saldo Vip suspendió tu cuenta. Escríbenos por WhatsApp para resolverlo.";
   }
 }
 

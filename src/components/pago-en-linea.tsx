@@ -30,7 +30,7 @@ export function PagoEnLinea({ proveedor, precioMensualCentavos, moneda, mesesMax
     <p className="text-lg font-semibold">Total: {pesos(precioMensualCentavos * meses, moneda)} {moneda}</p>
     {error && <Alerta>{error}</Alerta>}
     <Button type="submit" size="lg" disabled={crear.isPending || enviando.current}>{crear.isPending ? "Preparando tu pago…" : "Continuar al pago"}</Button>
-    <p className="text-sm text-muted-foreground">{proveedor === "stripe" ? "La tarjeta se captura en la página segura de Stripe. MiSaldo nunca ve los datos de tu tarjeta." : "La tarjeta se captura en la página segura de Mercado Pago. MiSaldo nunca ve los datos de tu tarjeta."}</p>
+    <p className="text-sm text-muted-foreground">{proveedor === "stripe" ? "La tarjeta se captura en la página segura de Stripe. Mi Saldo Vip nunca ve los datos de tu tarjeta." : "La tarjeta se captura en la página segura de Mercado Pago. Mi Saldo Vip nunca ve los datos de tu tarjeta."}</p>
   </form>;
 }
 

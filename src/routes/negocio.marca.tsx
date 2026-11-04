@@ -17,10 +17,10 @@ export const Route = createFileRoute("/negocio/marca")({
   validateSearch: validarBusquedaAsistente,
   head: () => ({
     meta: [
-      { title: "Datos y marca · MiSaldo" },
+      { title: "Datos y marca · Mi Saldo Vip" },
       { name: "description", content: "Nombre, giro, logotipo, tema y color de tu negocio." },
-      { property: "og:title", content: "Datos y marca · MiSaldo" },
-      { property: "og:description", content: "Así verán tus clientes tu negocio en MiSaldo." },
+      { property: "og:title", content: "Datos y marca · Mi Saldo Vip" },
+      { property: "og:description", content: "Así verán tus clientes tu negocio en Mi Saldo Vip." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
