@@ -13,10 +13,10 @@ import {
 export const Route = createFileRoute("/confirmar-alta")({
   head: () => ({
     meta: [
-      { title: "Confirmar alta · MiSaldo" },
-      { name: "description", content: "Confirma una solicitud de alta en MiSaldo." },
-      { property: "og:title", content: "Confirmar alta · MiSaldo" },
-      { property: "og:description", content: "Confirma una solicitud de alta en MiSaldo." },
+      { title: "Confirmar alta · Mi Saldo Vip" },
+      { name: "description", content: "Confirma una solicitud de alta en Mi Saldo Vip." },
+      { property: "og:title", content: "Confirmar alta · Mi Saldo Vip" },
+      { property: "og:description", content: "Confirma una solicitud de alta en Mi Saldo Vip." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],

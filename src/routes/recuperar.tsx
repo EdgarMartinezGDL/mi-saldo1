@@ -21,9 +21,9 @@ export const Route = createFileRoute("/recuperar")({
   },
   head: () => ({
     meta: [
-      { title: "Olvidé mi PIN · MiSaldo" },
-      { name: "description", content: "Recupera el acceso a MiSaldo con un código por WhatsApp o correo." },
-      { property: "og:title", content: "Olvidé mi PIN · MiSaldo" },
+      { title: "Olvidé mi PIN · Mi Saldo Vip" },
+      { name: "description", content: "Recupera el acceso a Mi Saldo Vip con un código por WhatsApp o correo." },
+      { property: "og:title", content: "Olvidé mi PIN · Mi Saldo Vip" },
       { property: "og:description", content: "Verifica tu teléfono y crea un PIN nuevo." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

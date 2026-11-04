@@ -16,13 +16,13 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "MiSaldo · Tu saldo y tus sellos" },
+      { title: "Mi Saldo Vip · Tu saldo y tus sellos" },
       {
         name: "description",
         content:
           "Consulta tu saldo, tus tarjetas de sellos y tus premios en los negocios donde eres cliente.",
       },
-      { property: "og:title", content: "MiSaldo · Tu saldo y tus sellos" },
+      { property: "og:title", content: "Mi Saldo Vip · Tu saldo y tus sellos" },
       {
         property: "og:description",
         content: "Saldo, sellos y premios de todos tus negocios favoritos en un solo lugar.",

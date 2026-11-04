@@ -15,9 +15,9 @@ import { plural } from "@/lib/plural";
 export const Route = createFileRoute("/baja")({
   head: () => ({
     meta: [
-      { title: "Darme de baja · MiSaldo" },
+      { title: "Darme de baja · Mi Saldo Vip" },
       { name: "description", content: "Baja voluntaria de un negocio: revisa lo que pierdes antes de confirmar con tu PIN." },
-      { property: "og:title", content: "Darme de baja · MiSaldo" },
+      { property: "og:title", content: "Darme de baja · Mi Saldo Vip" },
       { property: "og:description", content: "Baja inmediata e irreversible con vista previa de tu saldo y sellos." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -97,7 +97,7 @@ function Formulario({ onHecha }: { onHecha: () => void }) {
               ))}
               {vista.reclamaciones_pendientes > 0 && <li>{plural(vista.reclamaciones_pendientes, "reclamación pendiente", "reclamaciones pendientes")}</li>}
               {vista.referidos_pendientes > 0 && <li>{plural(vista.referidos_pendientes, "recomendación pendiente", "recomendaciones pendientes")}</li>}
-              {vista.cuenta_se_elimina && <li>Tu cuenta de MiSaldo se elimina por completo.</li>}
+              {vista.cuenta_se_elimina && <li>Tu cuenta de Mi Saldo Vip se elimina por completo.</li>}
             </ul>
             <p className="mt-4 text-sm text-muted-foreground">Es inmediato y no se puede deshacer. Escribe tu PIN para confirmar.</p>
             <Input

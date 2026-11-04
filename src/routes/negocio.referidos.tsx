@@ -30,9 +30,9 @@ export const Route = createFileRoute("/negocio/referidos")({
   validateSearch: validarBusquedaAsistente,
   head: () => ({
     meta: [
-      { title: "Recomienda y gana · MiSaldo" },
+      { title: "Recomienda y gana · Mi Saldo Vip" },
       { name: "description", content: "Premia a tus clientes por traer clientes nuevos." },
-      { property: "og:title", content: "Recomienda y gana · MiSaldo" },
+      { property: "og:title", content: "Recomienda y gana · Mi Saldo Vip" },
       { property: "og:description", content: "Configura el programa de recomendaciones de tu negocio." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

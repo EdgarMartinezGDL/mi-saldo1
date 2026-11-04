@@ -15,9 +15,9 @@ export const Route = createFileRoute("/negocio/horarios")({
   validateSearch: validarBusquedaAsistente,
   head: () => ({
     meta: [
-      { title: "Horarios · MiSaldo" },
+      { title: "Horarios · Mi Saldo Vip" },
       { name: "description", content: "Los días y horas en que abre tu negocio." },
-      { property: "og:title", content: "Horarios · MiSaldo" },
+      { property: "og:title", content: "Horarios · Mi Saldo Vip" },
       { property: "og:description", content: "Configura los días y horas en que abres." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

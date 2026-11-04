@@ -14,8 +14,8 @@ import { pesos } from "@/lib/api/formato";
 export const Route = createFileRoute("/membresia/domiciliado")({
   validateSearch: (s: Record<string, unknown>): { resultado: "cancelado" | "ok" } => ({ resultado: s["resultado"] === "cancelado" ? "cancelado" : "ok" }),
   head: () => ({ meta: [
-    { title: "Pago domiciliado · MiSaldo" }, { name: "description", content: "Estado de tu pago domiciliado de la membresía MiSaldo." },
-    { property: "og:title", content: "Pago domiciliado · MiSaldo" }, { property: "og:description", content: "Estado de tu pago domiciliado de la membresía MiSaldo." },
+    { title: "Pago domiciliado · Mi Saldo Vip" }, { name: "description", content: "Estado de tu pago domiciliado de la membresía Mi Saldo Vip." },
+    { property: "og:title", content: "Pago domiciliado · Mi Saldo Vip" }, { property: "og:description", content: "Estado de tu pago domiciliado de la membresía Mi Saldo Vip." },
     { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" },
   ] }),
   component: () => <RequiereSesion titulo="Pago domiciliado" roles={["dueno"]}><AppShell><RegresoDomiciliado /></AppShell></RequiereSesion>,

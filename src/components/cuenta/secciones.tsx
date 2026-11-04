@@ -155,7 +155,7 @@ export function MisDatos() {
         <div className="flex justify-between gap-3"><dt className="text-muted-foreground">Correo</dt><dd className="truncate font-medium">{data?.correo ?? correoSinConfirmar ?? "Sin correo"}</dd></div>
       </dl>
       {correoSinConfirmar && <p className="mt-2 text-sm text-muted-foreground">Sin confirmar: recibe tus avisos, pero no sirve para recuperar tu acceso. Confírmalo con «Confirmar correo».</p>}
-      <p className="mt-2 text-xs text-muted-foreground">Tu nombre lo corrige el negocio o soporte de MiSaldo.</p>
+      <p className="mt-2 text-xs text-muted-foreground">Tu nombre lo corrige el negocio o soporte de Mi Saldo Vip.</p>
       <div className="mt-4 grid gap-2 sm:grid-cols-2">
         <Button variant={abierto === "pin" ? "default" : "secondary"} size="lg" className="h-14 justify-start text-base" onClick={() => { limpiar(); setAbierto(abierto === "pin" ? null : "pin"); }}>
           <KeyRound className="size-5" /> Cambiar PIN

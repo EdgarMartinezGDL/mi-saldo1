@@ -12,9 +12,9 @@ import { contarReporte, descargarReporte, type Reporte } from "@/lib/api/marketi
 export const Route = createFileRoute("/negocio/reportes")({
   head: () => ({
     meta: [
-      { title: "Reportes · MiSaldo" },
+      { title: "Reportes · Mi Saldo Vip" },
       { name: "description", content: "Cumpleañeros e inactivos en Excel, con enlace de WhatsApp." },
-      { property: "og:title", content: "Reportes · MiSaldo" },
+      { property: "og:title", content: "Reportes · Mi Saldo Vip" },
       { property: "og:description", content: "Descarga cumpleañeros e inactivos con enlace de WhatsApp." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

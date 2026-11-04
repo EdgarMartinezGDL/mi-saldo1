@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { elegirContexto, validarTotp, type RespuestaLogin } from "@/lib/api/auth";
 import { ApiError } from "@/lib/api/client";
 
-const ROL_LABEL = { cliente: "cliente", empleado: "cajero", dueno: "dueño", staff: "Staff MiSaldo" } as const;
+const ROL_LABEL = { cliente: "cliente", empleado: "cajero", dueno: "dueño", staff: "Staff Mi Saldo Vip" } as const;
 
 /** Only same-app paths are accepted as a return destination. */
 export const destinoSeguro = (d: string | null | undefined) =>
@@ -90,7 +90,7 @@ export function ContinuarSesion({
               <Button variant="outline" size="lg" disabled={cargando} className="h-auto w-full justify-start py-3 text-left"
                 onClick={() => correr(() => elegirContexto(token, c.rol, c.negocio_id))}>
                 <span className="flex flex-col">
-                  <span className="text-base">{c.nombre_comercial ?? "Staff MiSaldo"}</span>
+                  <span className="text-base">{c.nombre_comercial ?? "Staff Mi Saldo Vip"}</span>
                   <span className="text-xs font-normal text-muted-foreground">Como {ROL_LABEL[c.rol]}</span>
                 </span>
               </Button>

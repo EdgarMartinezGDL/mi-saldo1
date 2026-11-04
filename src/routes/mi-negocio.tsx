@@ -12,9 +12,9 @@ import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/mi-negocio")({
   head: () => ({ meta: [
-    { title: "Mi negocio · MiSaldo" },
+    { title: "Mi negocio · Mi Saldo Vip" },
     { name: "description", content: "Horario, ubicación y teléfono del negocio donde juntas tu saldo." },
-    { property: "og:title", content: "Mi negocio · MiSaldo" },
+    { property: "og:title", content: "Mi negocio · Mi Saldo Vip" },
     { property: "og:description", content: "Consulta el horario, la dirección y el contacto de tu negocio." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary_large_image" },

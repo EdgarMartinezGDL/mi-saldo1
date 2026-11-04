@@ -19,9 +19,9 @@ export const Route = createFileRoute("/clientes")({
     s["archivados"] === "solo" || s["archivados"] === "incluir" ? { archivados: s["archivados"] } : {},
   head: () => ({
     meta: [
-      { title: "Clientes · MiSaldo" },
+      { title: "Clientes · Mi Saldo Vip" },
       { name: "description", content: "Busca a tus clientes por nombre o teléfono y revisa su saldo y sellos." },
-      { property: "og:title", content: "Clientes · MiSaldo" },
+      { property: "og:title", content: "Clientes · Mi Saldo Vip" },
       { property: "og:description", content: "Lista y ficha de clientes del negocio, sin abrir la caja." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

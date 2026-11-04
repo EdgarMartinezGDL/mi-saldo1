@@ -7,10 +7,10 @@ import { avisoQuery, fechaAviso } from "@/lib/api/privacidad";
 
 export const Route = createFileRoute("/aviso-privacidad")({
   head: () => ({ meta: [
-    { title: "Aviso de privacidad · MiSaldo" },
-    { name: "description", content: "Consulta el aviso de privacidad vigente de MiSaldo y el contacto para ejercer tus derechos ARCO." },
-    { property: "og:title", content: "Aviso de privacidad · MiSaldo" },
-    { property: "og:description", content: "Datos personales y derechos ARCO en MiSaldo." },
+    { title: "Aviso de privacidad · Mi Saldo Vip" },
+    { name: "description", content: "Consulta el aviso de privacidad vigente de Mi Saldo Vip y el contacto para ejercer tus derechos ARCO." },
+    { property: "og:title", content: "Aviso de privacidad · Mi Saldo Vip" },
+    { property: "og:description", content: "Datos personales y derechos ARCO en Mi Saldo Vip." },
     { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" },
   ] }), component: PaginaAviso,
 });

@@ -20,10 +20,10 @@ import { plural } from "@/lib/plural";
 export const Route = createFileRoute("/eliminar-cuenta")({
   head: () => ({
     meta: [
-      { title: "Eliminar mi cuenta · MiSaldo" },
-      { name: "description", content: "Revisa lo que pierdes antes de eliminar tu cuenta de MiSaldo en todos tus negocios." },
-      { property: "og:title", content: "Eliminar mi cuenta · MiSaldo" },
-      { property: "og:description", content: "Eliminación definitiva de tu cuenta de MiSaldo, con vista previa." },
+      { title: "Eliminar mi cuenta · Mi Saldo Vip" },
+      { name: "description", content: "Revisa lo que pierdes antes de eliminar tu cuenta de Mi Saldo Vip en todos tus negocios." },
+      { property: "og:title", content: "Eliminar mi cuenta · Mi Saldo Vip" },
+      { property: "og:description", content: "Eliminación definitiva de tu cuenta de Mi Saldo Vip, con vista previa." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -107,7 +107,7 @@ function Formulario({ onHecha }: { onHecha: () => void }) {
           <section className="rounded-2xl bg-card p-5 ring-1 ring-border">
             <p className="text-base">
               Tu cuenta también es de {vista.otros_roles.map((r) => ROLES[r]).join(" / ")} y no se puede eliminar desde aquí. Puedes darte de baja como
-              cliente en cada negocio o escribir a soporte de MiSaldo.
+              cliente en cada negocio o escribir a soporte de Mi Saldo Vip.
             </p>
           </section>
         ) : (
@@ -127,7 +127,7 @@ function Formulario({ onHecha }: { onHecha: () => void }) {
               ))}
             </ul>
             <p className="mt-4 text-sm text-muted-foreground">
-              Tu cuenta, tu teléfono y tu correo se borran de MiSaldo en todos tus negocios. No se puede deshacer.
+              Tu cuenta, tu teléfono y tu correo se borran de Mi Saldo Vip en todos tus negocios. No se puede deshacer.
             </p>
             <Input className="mt-3 h-12 text-center font-mono text-xl tracking-[0.4em]" type="password" inputMode="numeric" maxLength={128}
               placeholder="PIN" aria-label="Tu PIN" value={pin} onChange={(e) => setPin(e.target.value)} />

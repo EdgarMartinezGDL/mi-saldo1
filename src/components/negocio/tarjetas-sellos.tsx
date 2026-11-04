@@ -24,7 +24,7 @@ const MENSAJES = {
 const error = (e: unknown, limite: number) =>
   errorOperacion(e, undefined, {
     ...MENSAJES,
-    limite_tarjetas: `Llegaste al límite de ${limite} tarjetas activas de tu plan: desactiva una o pide más a soporte de MiSaldo`,
+    limite_tarjetas: `Llegaste al límite de ${limite} tarjetas activas de tu plan: desactiva una o pide más a soporte de Mi Saldo Vip`,
   });
 
 const regla = (t: TarjetaConfig) =>
@@ -86,7 +86,7 @@ export function TarjetasSellos({ cfg }: { cfg: ConfiguracionNegocio }) {
               <Button size="lg" className="tap-target h-12 w-full sm:w-auto" disabled={enLimite} onClick={() => setEditando("nueva")}>
                 <Plus className="size-5" /> Nueva tarjeta
               </Button>
-              {enLimite && <p className="mt-2 text-sm text-amber-400">Llegaste al límite de tu plan: desactiva una o pide más a soporte de MiSaldo</p>}
+              {enLimite && <p className="mt-2 text-sm text-amber-400">Llegaste al límite de tu plan: desactiva una o pide más a soporte de Mi Saldo Vip</p>}
             </div>
           )}
           <ul className="mt-4 flex flex-col gap-3">

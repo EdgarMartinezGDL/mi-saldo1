@@ -13,9 +13,9 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/canjear")({
   head: () => ({
     meta: [
-      { title: "Mis códigos · MiSaldo" },
+      { title: "Mis códigos · Mi Saldo Vip" },
       { name: "description", content: "Tu saldo y tus premios listos para cobrar en caja con tu código de canje." },
-      { property: "og:title", content: "Mis códigos · MiSaldo" },
+      { property: "og:title", content: "Mis códigos · Mi Saldo Vip" },
       { property: "og:description", content: "Dicta tu código de canje de 4 dígitos al cajero para usar saldo o premios." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

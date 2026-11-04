@@ -65,7 +65,7 @@ const MENSAJES: Record<string, string> = {
   pin_pos_trivial: "El PIN POS no puede ser una secuencia ni un número repetido.",
   nombre_invalido: "Revisa el nombre.",
   // Staff
-  solo_staff: "Esta función es solo para Staff MiSaldo.",
+  solo_staff: "Esta función es solo para Staff Mi Saldo Vip.",
   ya_suspendido: "El negocio ya estaba suspendido.",
   no_suspendido: "El negocio no está suspendido.",
   motivo_invalido: "Escribe un motivo de 5 a 500 caracteres.",

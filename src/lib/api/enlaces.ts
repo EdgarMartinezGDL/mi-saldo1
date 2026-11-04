@@ -101,7 +101,7 @@ export const textoSolicitud = (v: Validacion) =>
 
 export const textoResultado = (r: ResultadoValidacion, negocio: string) =>
   r.estado === "rechazada"
-    ? "Gracias, avisamos al equipo de MiSaldo. No se creó nada."
+    ? "Gracias, avisamos al equipo de Mi Saldo Vip. No se creó nada."
     : r.tipo === "cliente"
       ? `Listo, ya eres cliente de ${negocio}.`
       : "Te llegará una invitación por WhatsApp para crear tu PIN.";

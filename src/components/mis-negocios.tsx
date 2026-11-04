@@ -14,7 +14,7 @@ import { cambiarContexto, contextos, type ContextoDisponible } from "@/lib/api/a
 import { ApiError, type Rol } from "@/lib/api/client";
 import { cn } from "@/lib/utils";
 
-export const ROL_TEXTO: Record<Rol, string> = { cliente: "Cliente", empleado: "Empleado", dueno: "Dueño", staff: "Staff MiSaldo" };
+export const ROL_TEXTO: Record<Rol, string> = { cliente: "Cliente", empleado: "Empleado", dueno: "Dueño", staff: "Staff Mi Saldo Vip" };
 const INICIO: Record<Rol, string> = { cliente: "/", empleado: "/caja", dueno: "/panel", staff: "/staff" };
 
 export const etiquetaContexto = (c: Pick<ContextoDisponible, "rol" | "nombre_comercial">) =>

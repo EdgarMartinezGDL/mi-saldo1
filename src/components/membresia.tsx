@@ -239,7 +239,7 @@ export function SeccionMembresia() {
     <section className="rounded-2xl bg-card p-5 ring-1 ring-border">
       <h2 className="text-lg font-semibold tracking-tight">Membresía</h2>
       <p className="mt-1 text-sm text-muted-foreground">
-        Renueva tu membresía de MiSaldo y elige cómo pagar tu mensualidad. Toca una opción para ver sus datos.
+        Renueva tu membresía de Mi Saldo Vip y elige cómo pagar tu mensualidad. Toca una opción para ver sus datos.
       </p>
 
       <EstadoMembresia />

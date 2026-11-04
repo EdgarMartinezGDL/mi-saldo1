@@ -16,9 +16,9 @@ export const Route = createFileRoute("/negocio/monedero")({
   validateSearch: validarBusquedaAsistente,
   head: () => ({
     meta: [
-      { title: "Monedero y tarjetas de sellos · MiSaldo" },
+      { title: "Monedero y tarjetas de sellos · Mi Saldo Vip" },
       { name: "description", content: "Porcentaje de cashback, vigencia del saldo y tarjetas de sellos." },
-      { property: "og:title", content: "Monedero y tarjetas de sellos · MiSaldo" },
+      { property: "og:title", content: "Monedero y tarjetas de sellos · Mi Saldo Vip" },
       { property: "og:description", content: "Configura cuánto regresa tu negocio en cada compra." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

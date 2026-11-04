@@ -27,9 +27,9 @@ import {
 export const Route = createFileRoute("/negocio/reclamaciones")({
   head: () => ({
     meta: [
-      { title: "Reclamaciones · MiSaldo" },
+      { title: "Reclamaciones · Mi Saldo Vip" },
       { name: "description", content: "Compras que no se registraron: apruébalas, recházalas o cancélalas." },
-      { property: "og:title", content: "Reclamaciones · MiSaldo" },
+      { property: "og:title", content: "Reclamaciones · Mi Saldo Vip" },
       { property: "og:description", content: "Revisa las reclamaciones de compras no registradas." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

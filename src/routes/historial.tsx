@@ -12,9 +12,9 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/historial")({
   head: () => ({
     meta: [
-      { title: "Historial · MiSaldo" },
+      { title: "Historial · Mi Saldo Vip" },
       { name: "description", content: "Todos tus movimientos de saldo y sellos: lo que ganaste, usaste y venció." },
-      { property: "og:title", content: "Historial · MiSaldo" },
+      { property: "og:title", content: "Historial · Mi Saldo Vip" },
       { property: "og:description", content: "Revisa cada compra, canje y ajuste de tu saldo y tus sellos." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
