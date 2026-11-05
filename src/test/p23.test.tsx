@@ -12,6 +12,7 @@ import membresia from "@/components/membresia.tsx?raw";
 import inicio from "@/routes/index.tsx?raw";
 import dropdownMenu from "@/components/ui/dropdown-menu.tsx?raw";
 import selectUi from "@/components/ui/select.tsx?raw";
+import buttonUi from "@/components/ui/button.tsx?raw";
 
 const m = vi.hoisted(() => ({ path: "/panel" }));
 vi.mock("@tanstack/react-router", () => ({
@@ -116,9 +117,9 @@ describe("P23 branding", () => {
   });
 
   it('"Canjear" del Inicio es un botón de acción', () => {
-    expect(inicio).toMatch(/to="\/canjear"[\s\S]{0,200}Canjear/);
-    const boton = inicio.match(/<Button size="lg" className="tap-target" asChild>[\s\S]{0,120}Canjear/)?.[0] ?? "";
+    const boton = inicio.match(/<Button size="lg" className="tap-target" asChild>[\s\S]{0,120}to="\/canjear">Canjear/)?.[0] ?? "";
     expect(boton).toContain("Canjear");
+    expect(buttonUi).toMatch(/default:\s*"btn-accion text-accent-foreground/);
   });
 
   it("los menús ya no resaltan con el acento", () => {
