@@ -67,7 +67,7 @@ function Canjear() {
                 <ul className="mt-3 flex flex-col divide-y divide-border">
                   {premios.map((p) => (
                     <li key={p.cliente_tarjeta_id} className="flex items-center gap-3 py-3">
-                      <Gift className="size-5 shrink-0 text-accent" />
+                       <Gift className="size-5 shrink-0 text-warning" />
                       <div className="min-w-0 flex-1">
                         <p className="truncate font-medium">{p.premio_texto}</p>
                         <p className={cn("flex items-center gap-1 text-sm", p.vence_pronto ? "text-warn" : "text-muted-foreground")}>
