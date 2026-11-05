@@ -74,6 +74,7 @@
   --color-pending: var(--pending);
   --color-separador: var(--separador);
   --color-warning-icono: var(--warning-icono);
+  --color-esqueleto: var(--esqueleto);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
@@ -130,6 +131,7 @@
   --accent-foreground: #ffffff;
   --separador: #cbd5e1;
   --warning-icono: #a16207;
+  --esqueleto: #e2e8f0;
   --warn: oklch(0.586 0.176 33);
   --warn-foreground: oklch(0.99 0.004 174);
   --destructive: oklch(0.55 0.21 27);
@@ -190,6 +192,7 @@
   --accent-foreground: #ffffff;
   --separador: #334155;
   --warning-icono: #fcd34d;
+  --esqueleto: #334155;
   --warn: oklch(0.72 0.15 55);
   --warn-foreground: oklch(0.2 0.02 264);
   --destructive: oklch(0.66 0.19 27);

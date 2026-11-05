@@ -215,14 +215,12 @@ function Clientes() {
                     <Iniciales nombre={nombreCompleto(c)} />
                     <div className="col-span-2 grid grid-cols-subgrid items-center gap-3 border-b border-separador py-3 group-last:border-b-0">
                       <div className="min-w-0">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <p className="min-w-0 truncate text-base font-medium">{nombreCompleto(c)}</p>
-                          {!c.cuenta_activada && <span className="pill-badge text-warning-icono">Sin activar</span>}
-                          {c.archivado && <Badge variant="secondary">Archivado</Badge>}
-                        </div>
-                        <p className="text-sm text-muted-foreground">
-                          {telefonoVisible(c.telefono)}
-                          {c.archivado && ` · desde ${diaDeInstante(c.archivado_en)}`}
+                        <p className="truncate text-base font-medium">{nombreCompleto(c)}</p>
+                        <p className="flex min-w-0 items-center gap-2 text-sm text-muted-foreground">
+                          <span className="shrink-0 tabular-nums">{telefonoVisible(c.telefono)}</span>
+                          {!c.cuenta_activada && <span className="pill-badge shrink-0 py-0.5 text-[11px] leading-4 text-warning-icono">Sin activar</span>}
+                          {c.archivado && <Badge variant="secondary" className="shrink-0 py-0.5 text-[11px] leading-4">Archivado</Badge>}
+                          {c.archivado && <span className="min-w-0 truncate">desde {diaDeInstante(c.archivado_en)}</span>}
                         </p>
                       </div>
                       <span className="shrink-0 text-right">

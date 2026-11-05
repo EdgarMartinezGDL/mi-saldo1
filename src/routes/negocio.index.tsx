@@ -112,7 +112,7 @@ export function Centro() {
     <Link
       key={t.to}
       to={t.to}
-      className="tap-target flex min-h-20 items-center gap-4 rounded-2xl bg-card p-5 ring-1 ring-border transition-colors transition-transform duration-100 hover:text-primary active:scale-[0.98] motion-reduce:transform-none motion-reduce:transition-none"
+      className="tap-target flex min-h-20 items-center gap-4 rounded-2xl bg-card p-5 ring-1 ring-border transition-[color,background-color,border-color,box-shadow,transform] duration-150 hover:text-primary active:scale-[0.98] motion-reduce:transform-none motion-reduce:transition-none"
     >
       <IconoTono icono={t.icono} tono={t.alerta && t.to !== "/negocio/asistente" ? "warning" : tono} />
       <span className="min-w-0 flex-1">
