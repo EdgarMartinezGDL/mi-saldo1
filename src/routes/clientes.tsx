@@ -1,8 +1,10 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { Search, X } from "lucide-react";
+import { Search, Users, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { AppShell } from "@/components/app-shell";
+import { EstadoVacio } from "@/components/estado-vacio";
+import { Iniciales } from "@/components/fila-lista";
 import { AjusteManual } from "@/components/negocio/ajuste-manual";
 import { Cargando, RequiereSesion } from "@/components/requiere-sesion";
 import { Button } from "@/components/ui/button";
@@ -191,39 +193,43 @@ function Clientes() {
           {!lista ? (
             <Cargando />
           ) : lista.length === 0 ? (
-            <div>
-              <p className="text-sm text-muted-foreground">{archivados === "solo" ? "No hay clientes archivados." : "No hay clientes que coincidan."}</p>
-              {busquedaValida(q) !== undefined && archivados === undefined && (
-                <>
-                  <p className="mt-2 text-sm text-muted-foreground">Si lleva más de 180 días sin comprar, puede estar archivado.</p>
-                  <Button variant="secondary" className="mt-3" onClick={() => elegir("incluir")}>Buscar también en archivados</Button>
-                </>
-              )}
-            </div>
+            <EstadoVacio
+              icono={Users}
+              titulo={archivados === "solo" ? "No hay clientes archivados." : "No hay clientes que coincidan."}
+              texto={busquedaValida(q) !== undefined && archivados === undefined ? "Si lleva más de 180 días sin comprar, puede estar archivado." : undefined}
+              accion={
+                busquedaValida(q) !== undefined && archivados === undefined ? (
+                  <Button variant="secondary" onClick={() => elegir("incluir")}>Buscar también en archivados</Button>
+                ) : undefined
+              }
+            />
           ) : (
-            <ul className="flex flex-col divide-y divide-border">
+            <ul className="flex flex-col">
               {lista.map((c) => (
-                <li key={c.negocio_cliente_id}>
+                <li key={c.negocio_cliente_id} className="group">
                   <button
                     type="button"
                     onClick={() => void abrir(c.negocio_cliente_id)}
-                    className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-3 py-3 text-left"
+                    className="-mx-2 grid w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 rounded-xl px-2 text-left transition-colors hover:bg-secondary/60 active:bg-secondary"
                   >
-                    <div className="min-w-0">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <p className="min-w-0 truncate text-base font-medium">{nombreCompleto(c)}</p>
-                        {c.archivado && <Badge variant="secondary">Archivado</Badge>}
+                    <Iniciales nombre={nombreCompleto(c)} />
+                    <div className="col-span-2 grid grid-cols-subgrid items-center gap-3 border-b border-separador py-3 group-last:border-b-0">
+                      <div className="min-w-0">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <p className="min-w-0 truncate text-base font-medium">{nombreCompleto(c)}</p>
+                          {!c.cuenta_activada && <span className="pill-badge text-warning-icono">Sin activar</span>}
+                          {c.archivado && <Badge variant="secondary">Archivado</Badge>}
+                        </div>
+                        <p className="text-sm text-muted-foreground">
+                          {telefonoVisible(c.telefono)}
+                          {c.archivado && ` · desde ${diaDeInstante(c.archivado_en)}`}
+                        </p>
                       </div>
-                      <p className="text-sm text-muted-foreground">
-                        {telefonoVisible(c.telefono)}
-                        {!c.cuenta_activada && " · sin activar"}
-                        {c.archivado && ` · desde ${diaDeInstante(c.archivado_en)}`}
-                      </p>
+                      <span className="shrink-0 text-right">
+                        {c.saldo_centavos !== null && <span className="block font-semibold tabular-nums">{pesos(c.saldo_centavos)}</span>}
+                        {!!c.premios_por_canjear && <span className="block text-xs text-accent">{plural(c.premios_por_canjear, "premio", "premios")}</span>}
+                      </span>
                     </div>
-                    <span className="shrink-0 text-right">
-                      {c.saldo_centavos !== null && <span className="block font-mono font-semibold tabular-nums">{pesos(c.saldo_centavos)}</span>}
-                      {!!c.premios_por_canjear && <span className="block text-xs text-accent">{plural(c.premios_por_canjear, "premio", "premios")}</span>}
-                    </span>
                   </button>
                 </li>
               ))}

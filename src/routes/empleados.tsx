@@ -1,10 +1,12 @@
 import { BarraAsistente } from "@/components/negocio/barra-asistente";
 import { useInvalidarAsistente, validarBusquedaAsistente } from "@/components/negocio/asistente";
 import { createFileRoute } from "@tanstack/react-router";
-import { Plus } from "lucide-react";
+import { Plus, Users } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { AppShell } from "@/components/app-shell";
+import { EstadoVacio } from "@/components/estado-vacio";
+import { Iniciales } from "@/components/fila-lista";
 import { Cargando, RequiereSesion } from "@/components/requiere-sesion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -141,36 +143,39 @@ function Empleados() {
           {!lista ? (
             <Cargando />
           ) : lista.length === 0 ? (
-            <p className="text-sm text-muted-foreground">Aún no tienes empleados.</p>
+            <EstadoVacio icono={Users} titulo="Aún no tienes empleados." />
           ) : (
-            <ul className="flex flex-col divide-y divide-border">
+            <ul className="flex flex-col">
               {lista.map((emp) => (
-                <li key={emp.negocio_empleado_id} className={cn("flex flex-wrap items-center justify-between gap-3 py-3", !emp.activo && "opacity-60")}>
-                  <div className="min-w-0">
-                    <p className="truncate text-base font-medium">{nombreCompleto(emp)}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {telefonoVisible(emp.telefono)} ·{" "}
-                      {!emp.activo
-                        ? `Baja ${instante(emp.dado_de_baja_en)}`
-                        : emp.cuenta_activada
-                          ? "Activo"
-                          : emp.invitacion_vence_en
-                            ? `Invitación vence ${instante(emp.invitacion_vence_en)}`
-                            : "Invitación vencida"}
-                    </p>
-                  </div>
-                  {emp.activo && (
-                    <div className="flex gap-2">
-                      {!emp.cuenta_activada && (
-                        <Button size="sm" variant="secondary" onClick={() => void reenviar(emp.negocio_empleado_id)}>
-                          Reenviar invitación
-                        </Button>
-                      )}
-                      <Button size="sm" variant="ghost" className="text-destructive" onClick={() => void baja(emp)}>
-                        Dar de baja
-                      </Button>
+                <li key={emp.negocio_empleado_id} className={cn("group -mx-2 grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3 rounded-xl px-2 transition-colors active:bg-secondary", !emp.activo && "opacity-60")}>
+                  <Iniciales nombre={nombreCompleto(emp)} />
+                  <div className="flex flex-wrap items-center justify-between gap-3 border-b border-separador py-3 group-last:border-b-0">
+                    <div className="min-w-0">
+                      <p className="truncate text-base font-medium">{nombreCompleto(emp)}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {telefonoVisible(emp.telefono)} ·{" "}
+                        {!emp.activo
+                          ? `Baja ${instante(emp.dado_de_baja_en)}`
+                          : emp.cuenta_activada
+                            ? "Activo"
+                            : emp.invitacion_vence_en
+                              ? `Invitación vence ${instante(emp.invitacion_vence_en)}`
+                              : "Invitación vencida"}
+                      </p>
                     </div>
-                  )}
+                    {emp.activo && (
+                      <div className="flex gap-2">
+                        {!emp.cuenta_activada && (
+                          <Button size="sm" variant="secondary" onClick={() => void reenviar(emp.negocio_empleado_id)}>
+                            Reenviar invitación
+                          </Button>
+                        )}
+                        <Button size="sm" variant="ghost" className="text-destructive" onClick={() => void baja(emp)}>
+                          Dar de baja
+                        </Button>
+                      </div>
+                    )}
+                  </div>
                 </li>
               ))}
             </ul>
