@@ -75,6 +75,14 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-tecla: var(--tecla);
+  --color-tecla-foreground: var(--tecla-foreground);
+  --color-tecla-borde: var(--tecla-borde);
+  --color-tecla-canto: var(--tecla-canto);
+  --color-tecla-accion: var(--tecla-accion);
+  --color-tecla-accion-foreground: var(--tecla-accion-foreground);
+  --color-casilla: var(--casilla);
+  --color-casilla-borde: var(--casilla-borde);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -96,6 +104,14 @@
 
 :root {
   --radius: 0.75rem;
+  --tecla: #FFFFFF;
+  --tecla-foreground: #1E293B;
+  --tecla-borde: #CBD5E1;
+  --tecla-canto: #94A3B8;
+  --tecla-accion: #E2E8F0;
+  --tecla-accion-foreground: #334155;
+  --casilla: #F1F5F9;
+  --casilla-borde: #CBD5E1;
   --background: #f8fafc;
   --foreground: #1e293b;
   --card: #ffffff;
@@ -146,6 +162,14 @@
 }
 
 .dark {
+  --tecla: #334155;
+  --tecla-foreground: #F1F5F9;
+  --tecla-borde: #475569;
+  --tecla-canto: #0F172A;
+  --tecla-accion: #1E293B;
+  --tecla-accion-foreground: #CBD5E1;
+  --casilla: #0F172A;
+  --casilla-borde: #475569;
   --background: #0f172a;
   --foreground: #e2e8f0;
   --card: #1e293b;
@@ -302,6 +326,11 @@ select:focus-visible {
 }
 
 /* Floating Caja keeps its separation ring independently of box-shadow. */
+.btn-accion:disabled {
+  background-color: var(--muted);
+  color: var(--muted-foreground);
+}
+
 .btn-accion.shadow-flotante.ring-4 {
   outline: 4px solid var(--background);
   box-shadow: var(--sombra-flotante);

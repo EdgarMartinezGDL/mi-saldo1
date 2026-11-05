@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState, type ReactNode, type RefObject } from "react";
 import { useDigitos } from "@/components/caja/teclado";
 import { NumericKeypad } from "@/components/numeric-keypad";
+import { CasillasDigitos } from "@/components/casillas-digitos";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -79,13 +80,7 @@ export function CampoDigitos({ etiqueta, ayuda, valor, onChange, largo, limite =
         className={cn("rounded-xl p-3 text-left ring-1 transition-colors", activo ? "ring-2 ring-primary" : "ring-border")}>
         <span className="block text-sm font-medium">{etiqueta}</span>
         {ayuda && <span className="block text-xs text-muted-foreground">{ayuda}</span>}
-        <span className="mt-2 flex gap-1.5" aria-label={`${valor.length} de ${limite} dígitos`}>
-          {Array.from({ length: largo }, (_, i) => (
-            <span key={i} className="grid h-11 flex-1 place-items-center rounded-lg bg-secondary font-mono text-xl font-bold">
-              {valor[i] ? "•" : ""}
-            </span>
-          ))}
-        </span>
+        <CasillasDigitos className="mt-2" largo={largo} llenos={Math.min(valor.length, largo)} activo={activo} ariaLabel={`${valor.length} de ${limite} dígitos`} />
         {limite > largo && valor.length > largo && (
           <span className="mt-2 block text-sm text-muted-foreground">{valor.length} dígitos</span>
         )}

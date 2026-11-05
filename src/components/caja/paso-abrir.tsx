@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { CreditCard, KeyRound, Lock } from "lucide-react";
 import { useRef, useState } from "react";
 import { NumericKeypad } from "@/components/numeric-keypad";
+import { CasillasDigitos } from "@/components/casillas-digitos";
 import { Button } from "@/components/ui/button";
 import { abrirCaja } from "@/lib/api/caja";
 import type { Rol } from "@/lib/api/client";
@@ -39,11 +40,7 @@ export function PinPos({ onAbierta, compacto }: { onAbierta: (venceEn: string) =
     <div ref={ref} className={compacto ? "" : "rounded-2xl bg-card p-5 ring-1 ring-border"}>
       <p className="flex items-center gap-2 text-sm uppercase tracking-[0.12em] text-muted-foreground"><Lock className="size-4" /> PIN POS</p>
       {conMouse && <p className="mt-2 text-base text-muted-foreground">Escribe el PIN con el teclado y presiona Enter.</p>}
-      <p className="mt-2 flex gap-2" aria-label={`${pin.length} de 6 dígitos`}>
-        {Array.from({ length: 6 }, (_, i) => (
-          <span key={i} className="grid h-14 flex-1 place-items-center rounded-xl bg-secondary font-mono text-3xl font-bold">{pin[i] ? "•" : ""}</span>
-        ))}
-      </p>
+      <CasillasDigitos className="mt-2" largo={6} llenos={pin.length} activo={!ocupado} grande />
       <NumericKeypad compacto={conMouse} className="mt-4" onKey={onKey} />
       <Button size="lg" className="mt-4 h-14 w-full text-lg" disabled={ocupado || pin.length !== 6} onClick={() => void enviar()}>
         <Lock className="size-5" /> {ocupado ? "Abriendo…" : "Abrir caja"}<Tecla>Enter</Tecla>
