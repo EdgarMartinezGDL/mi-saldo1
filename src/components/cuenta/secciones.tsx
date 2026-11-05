@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { KeyRound, Mail, Megaphone, ShieldCheck } from "lucide-react";
+import { ChevronDown, ChevronRight, KeyRound, Mail, Megaphone, ShieldCheck } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import { useState, type ReactNode } from "react";
 import { toast } from "sonner";
@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { ApiError } from "@/lib/api/client";
 import { useDesplazarAlAbrir } from "@/lib/use-desplazar";
+import { cn } from "@/lib/utils";
 import {
   activarTotp,
   cambiarPin,
@@ -161,10 +162,12 @@ export function MisDatos() {
       <p className="mt-2 text-xs text-muted-foreground">Tu nombre lo corrige el negocio o soporte de Mi Saldo Vip.</p>
       <div className="mt-4 grid gap-2 sm:grid-cols-2">
         <Button variant={abierto === "pin" ? "default" : "secondary"} size="lg" className="h-14 justify-start text-base" onClick={() => { limpiar(); setAbierto(abierto === "pin" ? null : "pin"); }}>
-          <KeyRound className="size-5" /> Cambiar PIN
+          <KeyRound className={cn("size-5", abierto !== "pin" && "text-primary")} /> Cambiar PIN
+          {abierto === "pin" ? <ChevronDown className="ml-auto size-5 text-muted-foreground" /> : <ChevronRight className="ml-auto size-5 text-muted-foreground" />}
         </Button>
         <Button variant={abierto === "correo" ? "default" : "secondary"} size="lg" className="h-14 justify-start text-base" onClick={() => { limpiar(); if (abierto !== "correo") setCorreo(correoSinConfirmar ?? ""); setAbierto(abierto === "correo" ? null : "correo"); }}>
-          <Mail className="size-5" /> {data?.correo ? "Cambiar correo" : correoSinConfirmar ? "Confirmar correo" : "Agregar correo"}
+          <Mail className={cn("size-5", abierto !== "correo" && "text-primary")} /> {data?.correo ? "Cambiar correo" : correoSinConfirmar ? "Confirmar correo" : "Agregar correo"}
+          {abierto === "correo" ? <ChevronDown className="ml-auto size-5 text-muted-foreground" /> : <ChevronRight className="ml-auto size-5 text-muted-foreground" />}
         </Button>
       </div>
 
