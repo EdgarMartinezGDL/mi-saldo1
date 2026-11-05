@@ -140,8 +140,8 @@ function AppBar() {
             logoError ? (
               <p className="shrink-0 text-lg font-bold text-white"><MarcaMiSaldo /></p>
             ) : (
-              <img src={LOGO_MARCA} alt="Mi Saldo Vip" height={36} decoding="async"
-                onError={() => setLogoError(true)} className="h-9 w-auto shrink-0 rounded-lg" />
+              <img src={LOGO_MARCA} alt="Mi Saldo Vip" height={48} decoding="async"
+                onError={() => setLogoError(true)} className="h-12 w-auto object-contain shrink-0" />
             )
           )}
           <div className="min-w-0 leading-tight">
@@ -262,7 +262,7 @@ export function AppShell({ children, volver, volverTexto, amplio = false }: { ch
                   className={cn(
                     "grid h-8 w-14 place-items-center rounded-full transition-colors",
                     active && !item.destacado && "bg-primary/12",
-                    item.destacado && "btn-premium -mt-7 size-16 text-primary-foreground ring-4 ring-background",
+                    item.destacado && "btn-accion -mt-7 size-16 text-accent-foreground ring-4 ring-background",
                   )}
                 >
                   <item.icon className={cn("shrink-0", item.destacado ? "size-7" : "size-[22px]")} strokeWidth={active ? 2.2 : 1.7} />

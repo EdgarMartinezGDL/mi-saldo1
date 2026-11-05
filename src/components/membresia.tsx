@@ -146,8 +146,7 @@ function BotonWhatsApp({ href }: { href: string | undefined }) {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="tap-target flex min-h-14 items-center justify-center gap-3 rounded-2xl px-6 py-4 text-lg font-bold text-white transition-transform active:scale-[0.98]"
-      style={{ backgroundColor: "#25D366" }}
+      className="tap-target flex min-h-14 items-center justify-center gap-3 rounded-2xl bg-success-fill px-6 py-4 text-lg font-bold text-primary-foreground transition-transform active:scale-[0.98]"
     >
       <WhatsAppIcon className="size-7 shrink-0" />
       Ya pagué, enviar comprobante

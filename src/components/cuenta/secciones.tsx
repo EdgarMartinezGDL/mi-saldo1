@@ -75,8 +75,8 @@ export function Encabezado() {
   return (
     <div className="flex items-center gap-4 rounded-2xl bg-card p-5 ring-1 ring-border">
       {!logoError && (
-        <img src={LOGO_CIRCULAR} alt="Mi Saldo Vip" width={56} height={56} decoding="async"
-          onError={() => setLogoError(true)} className="size-14 shrink-0 rounded-full ring-1 ring-border" />
+        <img src={LOGO_CIRCULAR} alt="Mi Saldo Vip" width={96} height={96} decoding="async"
+          onError={() => setLogoError(true)} className="size-24 shrink-0 rounded-full object-contain ring-1 ring-border" />
       )}
       <div className="min-w-0">
         <p className="truncate text-xl font-semibold">{nombre || "Mi cuenta"}</p>

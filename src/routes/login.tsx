@@ -115,8 +115,8 @@ function Login() {
         {logoError ? (
           <p className="mx-auto mb-4 text-center text-2xl font-semibold tracking-tight"><MarcaMiSaldo /></p>
         ) : (
-          <img src={LOGO_CIRCULAR} alt="Mi Saldo Vip" width={80} height={80} decoding="async"
-            onError={() => setLogoError(true)} className="mx-auto mb-4 size-20 rounded-full" />
+          <img src={LOGO_CIRCULAR} alt="Mi Saldo Vip" width={128} height={128} decoding="async"
+            onError={() => setLogoError(true)} className="mx-auto mb-4 size-32 rounded-full object-contain" />
         )}
         <div className="mb-6 flex items-center gap-3">
           <div className="grid size-11 place-items-center rounded-full bg-primary text-primary-foreground">
