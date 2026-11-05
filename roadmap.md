@@ -5,6 +5,13 @@
 - [x] "Ir a la caja" del Panel pasa a `btn-accion` naranja; WhatsApp vuelve al verde oficial #25D366; theme-color y manifest actualizados.
 - [x] Tema personalizado vuelve a ajustar la letra con `readableForeground`; 270 pruebas en verde y compilación OK.
 
+## P24 — Paleta Azul Cobalto + Coral + Amarillo (completo)
+- [x] `:root`/`.dark`: primary #2563EB/#3B82F6, accent Coral #F43F5E, nuevas `--warning`/`--warning-foreground` (#EAB308/#FCD34D), chart-4 = warning, chart-5 ajustado; comentario del archivo actualizado.
+- [x] Retirados #232E21/#F97316/#10B981 como primary: theme-color, manifest, PRESETS de Ajustes y DEFAULT_PRIMARY → #2563EB; #25D366 de WhatsApp intacto.
+- [x] Resaltado de menús UI (dropdown, select, command, context-menu, menubar, navigation-menu, toggle, calendar) → `bg-secondary text-foreground`; Coral solo en botones de acción.
+- [x] Sellos ganados y premios en `bg-warning`/`text-warning`; franja de la tarjeta de saldo `bg-accent/25` → `bg-white/5`.
+- [x] Pruebas P23 actualizadas + nuevas (paleta, restos hex, btn-accion, menús, sellos, WhatsApp): 274 en verde, build OK, entrada verificada en claro y oscuro.
+
 ## P23 — Ajuste de paleta y tamaños de marca (completo)
 - [x] Valores claro/oscuro, colores fijos y Canjear principal ajustados; personalización solo sobrescribe primary.
 - [x] Caja inferior naranja y logos de encabezado/Entrada/Cuenta a 48/128/96 px, conservando respaldos.
