@@ -237,7 +237,7 @@ function Negocios({ onCambio, onIrWhatsapp }: { onCambio: () => void; onIrWhatsa
           <ul className="flex flex-col divide-y divide-separador">
             {lista.map((n) => (
               <li key={n.negocio_id} className="flex flex-wrap items-center justify-between gap-3 py-3">
-                <button type="button" onClick={() => setAbierto(n.negocio_id)} className="min-w-0 flex-1 text-left">
+                <button type="button" onClick={() => setAbierto(n.negocio_id)} className="min-w-0 flex-1 text-left transition-colors active:bg-secondary">
                   <p className="flex items-center gap-2 truncate text-base font-medium">
                     {n.nombre_comercial}
                     <span className={cn("rounded-full px-2.5 py-0.5 text-xs font-semibold", ESTADOS[n.membresia.estado].c)}>
@@ -347,7 +347,7 @@ function Personas({ abrirId, onAbierta }: { abrirId: string | null; onAbierta: (
             <ul className="flex flex-col divide-y divide-separador">
               {lista.map((p) => (
                 <li key={p.persona_id}>
-                  <button type="button" onClick={() => void abrir(p.persona_id)} className="w-full py-3 text-left">
+                  <button type="button" onClick={() => void abrir(p.persona_id)} className="w-full py-3 text-left transition-colors active:bg-secondary">
                     <p className="text-base font-medium">{nombreCompleto(p)}</p>
                     <p className="text-sm text-muted-foreground">
                       {telefonoVisible(p.telefono)} · {p.correo ?? "sin correo"} · cliente en {plural(p.roles.cliente, "negocio", "negocios")}
