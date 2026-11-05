@@ -16,10 +16,10 @@ import {
   ChevronDown,
   type LucideIcon,
 } from "lucide-react";
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { useAuth } from "@/components/auth-provider";
 import { MarcaMiSaldo } from "@/components/marca";
-import logoMarca from "@/assets/mi-saldo-vip-logo.png.asset.json";
+import { LOGO_MARCA } from "@/lib/marca";
 import { useCerrarSesion } from "@/components/cerrar-sesion";
 import { useMiSaldo } from "@/components/misaldo-provider";
 import { useMisNegocios } from "@/components/mis-negocios";
@@ -108,6 +108,7 @@ function AppBar() {
   const { business } = useMiSaldo();
   const { sesion } = useAuth();
   const { abrir, varios, dialogo } = useMisNegocios();
+  const [logoError, setLogoError] = useState(false);
   const rol = sesion?.contexto.rol;
   const nombre = rol && rol !== "staff" && sesion?.contexto.nombre_comercial ? sesion.contexto.nombre_comercial : null;
   const logo = nombre ? business.logo : undefined;
@@ -136,7 +137,12 @@ function AppBar() {
               </div>
             )
           ) : (
-            <img src={logoMarca.url} alt="Mi Saldo Vip" className="h-9 w-auto shrink-0 rounded-lg" />
+            logoError ? (
+              <p className="shrink-0 text-lg font-bold text-white"><MarcaMiSaldo /></p>
+            ) : (
+              <img src={LOGO_MARCA} alt="Mi Saldo Vip" height={36} decoding="async"
+                onError={() => setLogoError(true)} className="h-9 w-auto shrink-0 rounded-lg" />
+            )
           )}
           <div className="min-w-0 leading-tight">
             {nombre ? (
