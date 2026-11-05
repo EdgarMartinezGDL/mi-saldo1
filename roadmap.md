@@ -1,9 +1,9 @@
 # Roadmap
 
-## P24b — Teclado, casillas y botones desactivados
-- [ ] Aplicar tokens y aspecto de teclas sin cambiar entrada ni envío.
-- [ ] Compartir casillas entre PinPos y CampoDigitos, conservando límites y etiquetas.
-- [ ] Neutralizar solo botones default desactivados y ejecutar todas las pruebas y revisión visual.
+## P24b — Teclado, casillas y botones desactivados (completo)
+- [x] Aplicar tokens y aspecto de teclas sin cambiar entrada ni envío.
+- [x] Compartir casillas entre PinPos y CampoDigitos, conservando límites y etiquetas.
+- [x] Neutralizar solo botones default desactivados; 290 pruebas pasan y compilación OK. Revisión a 1280/400 px en claro/oscuro con sesión y API simuladas: puntos, siguiente casilla, borrar/limpiar y habilitación con seis dígitos; sin operaciones reales.
 
 ## P24a — Superficies elevadas (completo)
 - [x] Sustituir neumorfismo por bordes finos y sombras verticales por modo; invertir fondo/tarjetas claros y reforzar campos sin cambiar la paleta restante.
