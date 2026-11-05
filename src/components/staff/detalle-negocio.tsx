@@ -299,7 +299,7 @@ export function DetalleNegocio({
               {d.movimientos.length === 0 ? (
                 <p className="text-sm text-muted-foreground">Sin movimientos</p>
               ) : (
-                <ul className="flex flex-col divide-y divide-border">
+                <ul className="flex flex-col divide-y divide-separador">
                   {d.movimientos.slice(0, 5).map((mv, i) => (
                     <li key={`${mv.creado_en}-${i}`} className="py-2">
                       <p className="break-words text-sm font-medium">{textoMovimiento(mv)}</p>

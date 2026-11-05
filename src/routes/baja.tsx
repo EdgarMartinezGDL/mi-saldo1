@@ -80,7 +80,7 @@ function Formulario({ onHecha }: { onHecha: () => void }) {
   return (
     <AppShell>
       <div className="flex flex-col gap-6">
-        <h1 className="text-3xl font-semibold tracking-tight">Darme de baja</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Darme de baja</h1>
         {!vista ? (
           <Cargando />
         ) : (

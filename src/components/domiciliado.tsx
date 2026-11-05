@@ -75,7 +75,7 @@ export function Domiciliado({ precioMensualCentavos, moneda }: { precioMensualCe
         </>}
       </>}
       {cobros.length > 0 && <div><h3 className="text-base font-semibold">Cobros del domiciliado</h3>
-        <ul className="mt-2 divide-y divide-border">{cobros.map((p) => <li key={p.id} className="flex flex-wrap items-center justify-between gap-2 py-3">
+        <ul className="mt-2 divide-y divide-separador">{cobros.map((p) => <li key={p.id} className="flex flex-wrap items-center justify-between gap-2 py-3">
           <span className="text-sm">{fechaAviso(p.creado_en)} · {pesos(p.monto_centavos)} {p.moneda}</span>
           <span className="rounded-full bg-secondary px-3 py-1 text-xs font-semibold">{estadosPago[p.estado]}</span>
         </li>)}</ul>

@@ -84,7 +84,7 @@ export function PestanaAuditoria({ inicial }: { inicial: FiltroAuditoria | null 
         </div>
       </section>
       {!eventos ? <Cargando /> : eventos.length === 0 ? <p className="text-sm text-muted-foreground">Sin eventos con esos filtros.</p> : (
-        <ul className="flex flex-col divide-y divide-border rounded-2xl bg-card px-4 ring-1 ring-border">
+        <ul className="flex flex-col divide-y divide-separador rounded-2xl bg-card px-4 ring-1 ring-border">
           {eventos.map((ev) => (
             <li key={ev.auditoria_id} className="py-3">
               <button type="button" className="w-full text-left" onClick={() => setAbierto(abierto === ev.auditoria_id ? null : ev.auditoria_id)}>

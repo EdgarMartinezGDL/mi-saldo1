@@ -1,7 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { History } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { AppShell } from "@/components/app-shell";
+import { EstadoVacio } from "@/components/estado-vacio";
 import { Cargando, RequiereSesion } from "@/components/requiere-sesion";
 import { Button } from "@/components/ui/button";
 import { ApiError } from "@/lib/api/client";
@@ -81,7 +83,7 @@ function Historial() {
   return (
     <AppShell>
       <div className="flex flex-col gap-6">
-        <h1 className="text-3xl font-semibold tracking-tight">Historial</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Historial</h1>
         <div className="flex gap-2">
           {FILTROS.map((f) => (
             <button
@@ -101,9 +103,9 @@ function Historial() {
           {!lista ? (
             <Cargando />
           ) : lista.length === 0 ? (
-            <p className="text-sm text-muted-foreground">Aún no tienes movimientos.</p>
+            <EstadoVacio icono={History} titulo="Aún no tienes movimientos." />
           ) : (
-            <ul className="flex flex-col divide-y divide-border">
+            <ul className="flex flex-col divide-y divide-separador">
               {lista.map((m) => {
                 const positivo = (m.monto_centavos ?? m.cantidad ?? 0) >= 0;
                 return (
@@ -112,7 +114,7 @@ function Historial() {
                       <p className="text-base font-medium">{describir(m)}</p>
                       <p className="text-sm text-muted-foreground">{instante(m.fecha)}</p>
                     </div>
-                    <span className={cn("shrink-0 font-mono text-base font-semibold tabular-nums", positivo ? "text-primary" : "text-destructive")}>
+                    <span className={cn("shrink-0 text-base font-semibold tabular-nums", positivo ? "text-primary" : "text-destructive")}>
                       {m.monto_centavos !== undefined
                         ? `${positivo ? "+" : "−"}${pesos(Math.abs(m.monto_centavos))}`
                         : m.cantidad !== undefined

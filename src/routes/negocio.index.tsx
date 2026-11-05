@@ -2,6 +2,7 @@ import { useAsistente } from "@/components/negocio/asistente";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { BarChart3, ListChecks, Clock, Gift, ChevronRight, CreditCard, History, KeyRound, MessageSquareWarning, Palette, UserPlus, Users, Wallet, type LucideIcon } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
+import { IconoTono, type Tono } from "@/components/fila-lista";
 import { useConfigNegocio } from "@/components/negocio/comun";
 import { useConteosNegocio } from "@/components/negocio/operacion-ui";
 import { RequiereSesion } from "@/components/requiere-sesion";
@@ -26,6 +27,12 @@ export const Route = createFileRoute("/negocio/")({
 });
 
 type Tarjeta = { to: string; titulo: string; texto: string; icono: LucideIcon; alerta?: string };
+
+const TONO_GRUPO: Record<string, Tono> = {
+  Operación: "primary",
+  "Marketing y recompensas": "accent",
+  Administración: "success",
+};
 
 export function Centro() {
   const { data: estadoAsistente } = useAsistente();
@@ -101,15 +108,13 @@ export function Centro() {
     },
   ];
 
-  const tarjeta = (t: Tarjeta) => (
+  const tarjeta = (t: Tarjeta, tono: Tono = "primary") => (
     <Link
       key={t.to}
       to={t.to}
-      className="tap-target flex min-h-20 items-center gap-4 rounded-2xl bg-card p-5 ring-1 ring-border transition-colors hover:text-primary"
+      className="tap-target flex min-h-20 items-center gap-4 rounded-2xl bg-card p-5 ring-1 ring-border transition-colors transition-transform duration-100 hover:text-primary active:scale-[0.98] motion-reduce:transform-none motion-reduce:transition-none"
     >
-      <span className="shadow-soft grid size-12 shrink-0 place-items-center rounded-xl bg-secondary text-primary">
-        <t.icono className="size-6" />
-      </span>
+      <IconoTono icono={t.icono} tono={t.alerta && t.to !== "/negocio/asistente" ? "warning" : tono} />
       <span className="min-w-0 flex-1">
         <span className="block text-lg font-semibold">{t.titulo}</span>
         <span className="block text-sm text-muted-foreground">{t.texto}</span>
@@ -123,14 +128,14 @@ export function Centro() {
     <AppShell>
       <div className="flex flex-col gap-6">
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight">Mi negocio</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Mi negocio</h1>
           <p className="mt-1 text-base text-muted-foreground">Elige qué quieres administrar.</p>
         </div>
         {asistenteIncompleto && <div className="flex flex-col gap-3">{tarjeta(asistente)}</div>}
         {secciones.map((s) => (
           <section key={s.titulo} className="flex flex-col gap-3">
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">{s.titulo}</h2>
-            {s.tarjetas.map(tarjeta)}
+            <h2 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{s.titulo}</h2>
+            {s.tarjetas.map((t) => tarjeta(t, TONO_GRUPO[s.titulo]))}
           </section>
         ))}
       </div>

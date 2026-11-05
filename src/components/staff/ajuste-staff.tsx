@@ -165,7 +165,7 @@ export function AjusteStaff({ negocioId, personaId, onCerrar }: { negocioId: str
             <section className="flex flex-col gap-2">
               <h3 className="text-base font-semibold">Ajustes recientes</h3>
               {datos.ajustes_recientes.length === 0 ? <p className="text-sm text-muted-foreground">Sin ajustes.</p> : (
-                <ul className="flex flex-col divide-y divide-border">
+                <ul className="flex flex-col divide-y divide-separador">
                   {datos.ajustes_recientes.slice(0, 20).map((a) => (
                     <li key={a.ajuste_id} className="py-2 text-sm">
                       <p className="font-medium">

@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { ChevronDown, Download } from "lucide-react";
+import { ChevronDown, Download, History } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { EstadoVacio } from "@/components/estado-vacio";
 import { useConfigNegocio, SeccionNegocio } from "@/components/negocio/comun";
 import { Confirmar, errorOperacion, FilaMovimiento } from "@/components/negocio/operacion-ui";
 import { Cargando } from "@/components/requiere-sesion";
@@ -193,9 +194,9 @@ function Movimientos() {
         {!lista ? (
           <Cargando />
         ) : lista.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No hay movimientos con estos filtros.</p>
+          <EstadoVacio icono={History} titulo="No hay movimientos con estos filtros." />
         ) : (
-          <ul className="flex flex-col divide-y divide-border">
+          <ul className="flex flex-col divide-y divide-separador">
             {lista.map((m) => <FilaMovimiento key={m.movimiento_id} m={m} />)}
           </ul>
         )}

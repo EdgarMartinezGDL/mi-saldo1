@@ -1,8 +1,10 @@
 import { useInvalidarAsistente, validarBusquedaAsistente } from "@/components/negocio/asistente";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
+import { Gift } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { EstadoVacio } from "@/components/estado-vacio";
 import { ConConfig, SeccionNegocio } from "@/components/negocio/comun";
 import { Chip, Confirmar, errorOperacion, Pestanas } from "@/components/negocio/operacion-ui";
 import { BotonesEdicion, useModoEdicion, VistaLectura } from "@/components/seccion-editable";
@@ -268,9 +270,9 @@ function Lista() {
       ) : q.error ? (
         <p className="mt-4 text-destructive">{q.error.message}</p>
       ) : items.length === 0 ? (
-        <p className="mt-4 text-muted-foreground">Aún no hay recomendaciones.</p>
+        <EstadoVacio icono={Gift} titulo="Aún no hay recomendaciones." />
       ) : (
-        <ul className="mt-4 flex flex-col divide-y divide-border">
+        <ul className="mt-4 flex flex-col divide-y divide-separador">
           {items.map((r, i) => (
             <li key={`${r.fecha_registro}-${i}`} className="flex flex-col gap-1 py-3">
               <p className="text-base font-medium">{persona(r.referidor)} recomendó a {persona(r.referido)}</p>

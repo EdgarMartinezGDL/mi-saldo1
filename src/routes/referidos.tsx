@@ -1,7 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Gift } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { AppShell } from "@/components/app-shell";
+import { EstadoVacio } from "@/components/estado-vacio";
 import { Cargando, RequiereSesion } from "@/components/requiere-sesion";
 import { ApiError } from "@/lib/api/client";
 import { referidos, type EstadoReferido, type MisReferidos } from "@/lib/api/cliente";
@@ -46,7 +48,7 @@ function Referidos() {
   return (
     <AppShell>
       <div className="flex flex-col gap-6">
-        <h1 className="text-3xl font-semibold tracking-tight">Recomienda y gana</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Recomienda y gana</h1>
         {!datos ? (
           <Cargando />
         ) : (
@@ -67,9 +69,9 @@ function Referidos() {
             <section className="rounded-2xl bg-card p-5 ring-1 ring-border">
               <h2 className="text-lg font-semibold tracking-tight">Tus recomendados</h2>
               {datos.recomendados.length === 0 ? (
-                <p className="mt-2 text-sm text-muted-foreground">Aún no recomiendas a nadie.</p>
+                <EstadoVacio icono={Gift} titulo="Aún no recomiendas a nadie." />
               ) : (
-                <ul className="mt-3 flex flex-col divide-y divide-border">
+                <ul className="mt-3 flex flex-col divide-y divide-separador">
                   {datos.recomendados.map((r) => (
                     <li key={r.referido_id} className="flex items-center justify-between gap-3 py-3">
                       <div className="min-w-0">

@@ -72,7 +72,7 @@ export function FranjaCaja({ venceEn, zona, gracia, onCerrada }: { venceEn: stri
           </AlertDialogHeader>
           <AlertDialogFooter className="gap-2">
             <AlertDialogCancel disabled={ocupado} className="h-14 text-base">Cancelar</AlertDialogCancel>
-            <Button size="lg" variant="destructive" className="h-14 text-base" disabled={ocupado} onClick={() => void cerrar()}>
+            <Button size="lg" variant="primario" className="h-14 text-base" disabled={ocupado} onClick={() => void cerrar()}>
               {ocupado ? "Cerrando…" : "Sí, cerrar caja"}
             </Button>
           </AlertDialogFooter>

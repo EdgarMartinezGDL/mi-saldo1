@@ -38,7 +38,7 @@ export function TarjetaPrecioMembresia() {
         {precio.data.historial.length > 0 && <Button variant="link" aria-expanded={historial} onClick={() => setHistorial(!historial)}>Ver historial</Button>}
         {esAdmin && <Button onClick={() => setAbierto(true)}>{precio.data.vigente ? "Cambiar precio" : "Fijar precio"}</Button>}
       </div>
-      {historial && precio.data.historial.length > 0 && <ul className="divide-y divide-border">{precio.data.historial.map((p, i) => <li key={`${p.desde}-${i}`} className="flex flex-col gap-1 py-3"><p className="font-semibold">{pesos(p.precio_mensual_centavos)} MXN al mes</p><DatosPrecio precio={p} /></li>)}</ul>}
+      {historial && precio.data.historial.length > 0 && <ul className="divide-y divide-separador">{precio.data.historial.map((p, i) => <li key={`${p.desde}-${i}`} className="flex flex-col gap-1 py-3"><p className="font-semibold">{pesos(p.precio_mensual_centavos)} MXN al mes</p><DatosPrecio precio={p} /></li>)}</ul>}
       {abierto && esAdmin && <DialogoPrecio vigente={precio.data.vigente} onCerrar={() => setAbierto(false)} />}
     </>}
   </section>;
