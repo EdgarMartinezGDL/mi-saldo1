@@ -69,7 +69,7 @@ function Referidos() {
               {datos.recomendados.length === 0 ? (
                 <p className="mt-2 text-sm text-muted-foreground">Aún no recomiendas a nadie.</p>
               ) : (
-                <ul className="mt-3 flex flex-col divide-y divide-border">
+                <ul className="mt-3 flex flex-col divide-y divide-separador">
                   {datos.recomendados.map((r) => (
                     <li key={r.referido_id} className="flex items-center justify-between gap-3 py-3">
                       <div className="min-w-0">

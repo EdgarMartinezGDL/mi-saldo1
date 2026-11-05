@@ -81,7 +81,7 @@ export function Horarios({ cfg }: { cfg: ConfiguracionNegocio }) {
       {vacio && <p className="mb-4 rounded-xl bg-warn/10 p-3 text-sm text-warn ring-1 ring-warn/30">Aún no configuras tus horarios</p>}
       {editando ? (
         <div ref={ref} className="flex flex-col gap-4">
-          <ul className="flex flex-col divide-y divide-border">
+          <ul className="flex flex-col divide-y divide-separador">
             {ORDEN.map((d) => {
               const x = dias[d]!;
               const cruza = !x.cerrado && x.hora_apertura && x.hora_cierre && x.hora_cierre < x.hora_apertura;

@@ -188,7 +188,7 @@ function Panel() {
           {hoy.cajeros.length === 0 ? (
             <p className="mt-2 text-sm text-muted-foreground">Aún no hay operaciones hoy.</p>
           ) : (
-            <ul className="mt-3 flex flex-col divide-y divide-border">
+            <ul className="mt-3 flex flex-col divide-y divide-separador">
               {hoy.cajeros.map((c) => (
                 <li key={c.persona_id} className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 py-3">
                   <div className="min-w-0">

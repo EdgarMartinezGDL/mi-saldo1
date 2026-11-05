@@ -99,7 +99,7 @@ function Reclamaciones() {
         ) : lista.length === 0 ? (
           <p className="text-sm text-muted-foreground">{pestana === "pendiente" ? "No hay reclamaciones pendientes." : "No hay reclamaciones."}</p>
         ) : (
-          <ul className="flex flex-col divide-y divide-border">
+          <ul className="flex flex-col divide-y divide-separador">
             {lista.map((r) => (
               <li key={r.reclamacion_id}>
                 <button type="button" onClick={() => setAbierta(r.reclamacion_id)} className="flex w-full flex-col gap-1 py-3 text-left">
@@ -226,7 +226,7 @@ function Detalle({ id, onCerrar, onResuelta }: { id: string | null; onCerrar: ()
               {datos.historial.movimientos.length === 0 ? (
                 <p className="mt-1 text-sm text-muted-foreground">No hay movimientos de ese día</p>
               ) : (
-                <ul className="flex flex-col divide-y divide-border">
+                <ul className="flex flex-col divide-y divide-separador">
                   {datos.historial.movimientos.map((m) => <FilaMovimiento key={m.movimiento_id} m={m} />)}
                 </ul>
               )}

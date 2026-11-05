@@ -195,7 +195,7 @@ function Movimientos() {
         ) : lista.length === 0 ? (
           <p className="text-sm text-muted-foreground">No hay movimientos con estos filtros.</p>
         ) : (
-          <ul className="flex flex-col divide-y divide-border">
+          <ul className="flex flex-col divide-y divide-separador">
             {lista.map((m) => <FilaMovimiento key={m.movimiento_id} m={m} />)}
           </ul>
         )}

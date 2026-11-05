@@ -93,7 +93,7 @@ function Solicitudes() {
         ) : lista.length === 0 ? (
           <p className="text-sm text-muted-foreground">{pestana === "pendiente" ? "No hay solicitudes pendientes." : "No hay solicitudes."}</p>
         ) : (
-          <ul className="flex flex-col divide-y divide-border">
+          <ul className="flex flex-col divide-y divide-separador">
             {lista.map((v) => (
               <li key={v.validacion_id} className="flex flex-col gap-1 py-3">
                 <span className="flex items-start justify-between gap-2">

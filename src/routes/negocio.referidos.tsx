@@ -270,7 +270,7 @@ function Lista() {
       ) : items.length === 0 ? (
         <p className="mt-4 text-muted-foreground">Aún no hay recomendaciones.</p>
       ) : (
-        <ul className="mt-4 flex flex-col divide-y divide-border">
+        <ul className="mt-4 flex flex-col divide-y divide-separador">
           {items.map((r, i) => (
             <li key={`${r.fecha_registro}-${i}`} className="flex flex-col gap-1 py-3">
               <p className="text-base font-medium">{persona(r.referidor)} recomendó a {persona(r.referido)}</p>

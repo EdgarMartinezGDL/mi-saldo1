@@ -3,6 +3,7 @@ import { Gift, TriangleAlert } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { AppShell } from "@/components/app-shell";
+import { EstadoVacio } from "@/components/estado-vacio";
 import { TarjetaMisCodigos } from "@/components/cuenta/mis-codigos";
 import { Cargando, RequiereSesion } from "@/components/requiere-sesion";
 import { ApiError } from "@/lib/api/client";
@@ -62,9 +63,9 @@ function Canjear() {
             <section className="rounded-2xl bg-card p-5 ring-1 ring-border">
               <h2 className="text-lg font-semibold tracking-tight">Premios listos</h2>
               {premios.length === 0 ? (
-                <p className="mt-2 text-sm text-muted-foreground">Aún no tienes premios por cobrar.</p>
+                <EstadoVacio icono={Gift} titulo="Aún no tienes premios por cobrar." />
               ) : (
-                <ul className="mt-3 flex flex-col divide-y divide-border">
+                <ul className="mt-3 flex flex-col divide-y divide-separador">
                   {premios.map((p) => (
                     <li key={p.cliente_tarjeta_id} className="flex items-center gap-3 py-3">
                        <Gift className="size-5 shrink-0 text-warning" />

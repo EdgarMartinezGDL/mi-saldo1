@@ -86,7 +86,7 @@ function EstadoMembresia() {
         {movs.length === 0 ? (
           <p className="mt-2 text-sm text-muted-foreground">Aún no hay pagos registrados.</p>
         ) : (
-          <ul className="mt-2 flex flex-col divide-y divide-border">
+          <ul className="mt-2 flex flex-col divide-y divide-separador">
             {movs.map((m, i) => (
               <li key={`${m.creado_en}-${m.tipo}-${i}`} className="py-2">
                 <p className="text-sm font-medium">{lineaMovimiento(m)}</p>

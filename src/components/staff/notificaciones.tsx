@@ -151,7 +151,7 @@ export function PestanaNotificaciones() {
       </div>
       <Button type="submit" disabled={cargando} className="justify-self-start">Buscar</Button>
     </form>
-    {!lista ? <Cargando /> : lista.length === 0 ? <p className="text-sm text-muted-foreground">No hay notificaciones con estos filtros.</p> : <ul className="flex flex-col divide-y divide-border rounded-2xl bg-card px-4 ring-1 ring-border">
+    {!lista ? <Cargando /> : lista.length === 0 ? <p className="text-sm text-muted-foreground">No hay notificaciones con estos filtros.</p> : <ul className="flex flex-col divide-y divide-separador rounded-2xl bg-card px-4 ring-1 ring-border">
       {lista.map((n) => <li key={n.notificacion_id} className="flex flex-col gap-2 py-3">
         <p className="text-xs text-muted-foreground">{instante(n.creado_en)}</p>
         <div className="flex flex-wrap items-center gap-2">

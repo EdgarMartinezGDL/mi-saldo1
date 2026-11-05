@@ -234,7 +234,7 @@ function Negocios({ onCambio, onIrWhatsapp }: { onCambio: () => void; onIrWhatsa
         ) : lista.length === 0 ? (
           <p className="text-sm text-muted-foreground">No hay negocios que coincidan.</p>
         ) : (
-          <ul className="flex flex-col divide-y divide-border">
+          <ul className="flex flex-col divide-y divide-separador">
             {lista.map((n) => (
               <li key={n.negocio_id} className="flex flex-wrap items-center justify-between gap-3 py-3">
                 <button type="button" onClick={() => setAbierto(n.negocio_id)} className="min-w-0 flex-1 text-left">
@@ -344,7 +344,7 @@ function Personas({ abrirId, onAbierta }: { abrirId: string | null; onAbierta: (
           {lista.length === 0 ? (
             <p className="text-sm text-muted-foreground">Nadie con ese teléfono o correo.</p>
           ) : (
-            <ul className="flex flex-col divide-y divide-border">
+            <ul className="flex flex-col divide-y divide-separador">
               {lista.map((p) => (
                 <li key={p.persona_id}>
                   <button type="button" onClick={() => void abrir(p.persona_id)} className="w-full py-3 text-left">
