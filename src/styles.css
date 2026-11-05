@@ -29,9 +29,9 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Mi Saldo Vip design system — soft neumorphism.
+ * Mi Saldo Vip design system — elevated surfaces.
  * Mi Saldo Vip: Azul Cobalto (primary) y Coral (accent).
- * Light: white canvas, cobalt primary, coral only for action buttons.
+ * Light: slate-tinted canvas and white surfaces, cobalt primary, coral only for action buttons.
  * Dark: midnight navy canvas, soft blue primary, same coral accent.
  * The custom theme overrides --primary at runtime.
  */
@@ -88,15 +88,19 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --shadow-card: var(--sombra-card);
+  --shadow-raised: var(--sombra-raised);
+  --shadow-pressed: var(--sombra-pressed);
+  --shadow-flotante: var(--sombra-flotante);
 }
 
 :root {
   --radius: 0.75rem;
-  --background: #ffffff;
+  --background: #f8fafc;
   --foreground: #1e293b;
-  --card: #f8fafc;
+  --card: #ffffff;
   --card-foreground: #1e293b;
-  --popover: #f8fafc;
+  --popover: #ffffff;
   --popover-foreground: #1e293b;
   --primary: #2563eb;
   --primary-foreground: #ffffff;
@@ -116,7 +120,7 @@
   --warning-foreground: #1e293b;
   --pending: oklch(0.52 0.12 75);
   --border: #e2e8f0;
-  --input: #e2e8f0;
+  --input: #cbd5e1;
   --ring: #2563eb;
   --barra: #2563eb;
   --barra-foreground: #ffffff;
@@ -133,10 +137,12 @@
   --sidebar-accent-foreground: var(--secondary-foreground);
   --sidebar-border: var(--border);
   --sidebar-ring: var(--ring);
-  --neo-shadow-dark: rgb(148 163 184 / 28%);
-  --neo-shadow-light: rgb(255 255 255 / 92%);
-  --neo-inset-dark: rgb(148 163 184 / 25%);
-  --neo-inset-light: rgb(255 255 255 / 80%);
+  --sombra-card: 0 1px 2px rgb(15 23 42 / 0.05), 0 1px 3px rgb(15 23 42 / 0.10);
+  --sombra-raised: 0 1px 2px rgb(15 23 42 / 0.08), 0 2px 4px -1px rgb(15 23 42 / 0.08);
+  --sombra-pressed: inset 0 1px 2px rgb(15 23 42 / 0.12);
+  --sombra-flotante: 0 4px 6px -1px rgb(15 23 42 / 0.10), 0 2px 4px -2px rgb(15 23 42 / 0.10);
+  --sombra-barra-inferior: 0 -1px 3px rgb(15 23 42 / 0.06), 0 -4px 12px rgb(15 23 42 / 0.04);
+  --brillo-superior: inset 0 0 0 0 transparent;
 }
 
 .dark {
@@ -181,10 +187,12 @@
   --sidebar-accent-foreground: var(--secondary-foreground);
   --sidebar-border: var(--border);
   --sidebar-ring: var(--ring);
-  --neo-shadow-dark: oklch(0.045 0.02 260 / 92%);
-  --neo-shadow-light: oklch(0.38 0.045 250 / 34%);
-  --neo-inset-dark: oklch(0.055 0.02 260 / 72%);
-  --neo-inset-light: oklch(0.45 0.04 245 / 25%);
+  --sombra-card: 0 1px 2px rgb(0 0 0 / 0.30), 0 1px 3px rgb(0 0 0 / 0.25);
+  --sombra-raised: 0 1px 2px rgb(0 0 0 / 0.35), 0 2px 4px -1px rgb(0 0 0 / 0.30);
+  --sombra-pressed: inset 0 1px 2px rgb(0 0 0 / 0.40);
+  --sombra-flotante: 0 4px 8px -1px rgb(0 0 0 / 0.45), 0 2px 4px -2px rgb(0 0 0 / 0.35);
+  --sombra-barra-inferior: 0 -1px 0 rgb(255 255 255 / 0.04), 0 -4px 12px rgb(0 0 0 / 0.35);
+  --brillo-superior: inset 0 1px 0 rgb(255 255 255 / 0.05);
 }
 
 @layer base {
@@ -222,85 +230,91 @@
   }
 }
 
-/* Shared raised surfaces: highlight upper-left, depth lower-right. */
-@layer components {
-  .ring-border.bg-card,
-  .bg-card.ring-1 {
-    --tw-ring-color: var(--border);
-    box-shadow:
-      0 0 0 1px var(--border),
-      -7px -7px 16px var(--neo-shadow-light),
-      9px 9px 20px var(--neo-shadow-dark);
-  }
+/* Shared surfaces override utility shadows so borders and elevation stay together. */
+.ring-border.bg-card,
+.bg-card.ring-1 {
+  --tw-ring-color: var(--border);
+  box-shadow: 0 0 0 1px var(--border), var(--brillo-superior), var(--sombra-card);
+}
 
-  .bg-secondary.shadow-soft,
-  button.bg-secondary,
-  a.bg-secondary {
-    box-shadow:
-      -4px -4px 10px var(--neo-shadow-light),
-      5px 5px 12px var(--neo-shadow-dark);
-  }
+.bg-secondary.shadow-soft,
+button.bg-secondary,
+a.bg-secondary {
+  background-color: var(--secondary);
+  box-shadow: 0 0 0 1px var(--border), var(--brillo-superior), var(--sombra-raised);
+  transition: box-shadow 150ms, transform 150ms, background-color 150ms;
+}
 
-  .bg-secondary.shadow-soft:active,
-  button.bg-secondary:active,
-  a.bg-secondary:active {
-    box-shadow:
-      inset 3px 3px 7px var(--neo-inset-dark),
-      inset -3px -3px 7px var(--neo-inset-light);
-  }
+.bg-secondary.shadow-soft:active,
+button.bg-secondary:active,
+a.bg-secondary:active {
+  box-shadow: 0 0 0 1px var(--border), var(--sombra-pressed);
+  transform: translateY(1px);
+}
 
-  input:not([type="color"]),
-  textarea,
-  select {
-    background-color: color-mix(in oklab, var(--background) 74%, var(--card));
-    border-color: color-mix(in oklab, var(--border) 78%, transparent);
-    box-shadow:
-      inset 3px 3px 7px var(--neo-inset-dark),
-      inset -3px -3px 7px var(--neo-inset-light);
-  }
+input:not([type="color"]),
+textarea,
+select {
+  background-color: var(--card);
+  border: 1px solid var(--input);
+  box-shadow: none;
+}
+
+.dark input:not([type="color"]),
+.dark textarea,
+.dark select {
+  background-color: var(--background);
+}
+
+input:not([type="color"]):focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  border-color: var(--ring);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 25%, transparent);
 }
 
 @utility shadow-soft {
-  box-shadow:
-    -4px -4px 10px var(--neo-shadow-light),
-    5px 5px 12px var(--neo-shadow-dark);
+  box-shadow: 0 0 0 1px var(--border), var(--brillo-superior), var(--sombra-raised);
 }
 
 @utility btn-premium {
   background-color: var(--primary);
-  box-shadow:
-    -4px -4px 10px color-mix(in oklab, var(--primary) 32%, var(--neo-shadow-light)),
-    6px 6px 14px var(--neo-shadow-dark),
-    inset 1px 1px 0 color-mix(in oklab, white 25%, transparent);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.15), var(--sombra-raised);
 }
 
-.btn-premium:active {
-  box-shadow:
-    inset 4px 4px 8px color-mix(in oklab, black 28%, transparent),
-    inset -3px -3px 7px color-mix(in oklab, white 16%, transparent);
-}
-
-/* Action buttons: same raised look as btn-premium, in the orange accent. */
 @utility btn-accion {
   background-color: var(--accent);
-  box-shadow:
-    -4px -4px 10px color-mix(in oklab, var(--accent) 32%, var(--neo-shadow-light)),
-    6px 6px 14px var(--neo-shadow-dark),
-    inset 1px 1px 0 color-mix(in oklab, white 25%, transparent);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.15), var(--sombra-raised);
 }
 
+.btn-premium:active,
 .btn-accion:active {
-  box-shadow:
-    inset 4px 4px 8px color-mix(in oklab, black 28%, transparent),
-    inset -3px -3px 7px color-mix(in oklab, white 16%, transparent);
+  box-shadow: var(--sombra-pressed);
+  transform: translateY(1px);
+}
+
+.btn-premium:disabled,
+.btn-premium[aria-disabled="true"],
+.btn-accion:disabled,
+.btn-accion[aria-disabled="true"] {
+  box-shadow: none;
+  transform: none;
+}
+
+/* Floating Caja keeps its separation ring independently of box-shadow. */
+.btn-accion.shadow-flotante.ring-4 {
+  outline: 4px solid var(--background);
+  box-shadow: var(--sombra-flotante);
+}
+
+.btn-accion.shadow-flotante.ring-4:active {
+  box-shadow: var(--sombra-pressed);
 }
 
 /* Glass surface for navigation bars. */
 @utility glass-bar {
-  background-color: color-mix(in oklab, var(--card) 91%, transparent);
-  box-shadow:
-    -4px -4px 12px var(--neo-shadow-light),
-    0 8px 22px var(--neo-shadow-dark);
+  background-color: color-mix(in oklab, var(--card) 94%, transparent);
+  box-shadow: var(--sombra-barra-inferior);
   backdrop-filter: blur(18px) saturate(145%);
   -webkit-backdrop-filter: blur(18px) saturate(145%);
 }

@@ -12,7 +12,7 @@ const buttonVariants = cva(
         default: "btn-accion text-accent-foreground hover:brightness-105",
         destructive: "bg-destructive text-destructive-foreground shadow-soft hover:bg-destructive/90",
         outline:
-          "border border-border bg-card text-foreground shadow-soft hover:bg-secondary active:[box-shadow:inset_3px_3px_7px_var(--neo-inset-dark),inset_-3px_-3px_7px_var(--neo-inset-light)]",
+          "border border-border bg-card text-foreground shadow-soft hover:bg-secondary active:shadow-pressed",
         secondary:
           "border border-border bg-secondary text-secondary-foreground shadow-soft hover:bg-secondary/70",
         ghost: "text-muted-foreground hover:bg-secondary hover:text-foreground hover:shadow-soft active:shadow-none",

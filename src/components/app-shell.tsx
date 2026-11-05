@@ -121,7 +121,7 @@ function AppBar() {
     .toUpperCase();
 
   return (
-    <header className="sticky top-0 z-30 border-b border-barra bg-barra text-barra-foreground">
+    <header className="sticky top-0 z-30 border-b border-barra bg-barra text-barra-foreground shadow-flotante">
       <div className="mx-auto grid max-w-5xl grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-3">
         <div className="flex min-w-0 items-center gap-3">
           {nombre ? (
@@ -262,7 +262,7 @@ export function AppShell({ children, volver, volverTexto, amplio = false }: { ch
                   className={cn(
                     "grid h-8 w-14 place-items-center rounded-full transition-colors",
                     active && !item.destacado && "bg-primary/12",
-                    item.destacado && "btn-accion -mt-7 size-16 text-accent-foreground ring-4 ring-background",
+                    item.destacado && "btn-accion shadow-flotante -mt-7 size-16 text-accent-foreground ring-4 ring-background",
                   )}
                 >
                   <item.icon className={cn("shrink-0", item.destacado ? "size-7" : "size-[22px]")} strokeWidth={active ? 2.2 : 1.7} />
