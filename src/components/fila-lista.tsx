@@ -20,7 +20,7 @@ export function Iniciales({ nombre, className }: { nombre: string; className?: s
   );
 }
 
-type Tono = "primary" | "success" | "warning" | "accent" | "neutro";
+export type Tono = "primary" | "success" | "warning" | "accent" | "neutro";
 
 const TONOS: Record<Tono, string> = {
   primary: "bg-primary/10 text-primary",

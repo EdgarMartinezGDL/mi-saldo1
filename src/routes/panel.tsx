@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { AppShell } from "@/components/app-shell";
+import { IconoTono, type Tono } from "@/components/fila-lista";
 import { Cargando, RequiereSesion } from "@/components/requiere-sesion";
 import { ApiError } from "@/lib/api/client";
 import { configuracion } from "@/lib/api/caja";
@@ -77,7 +78,7 @@ function Panel() {
   if (!hoy) {
     return (
       <AppShell>
-        <Cargando />
+        <Cargando forma="tarjetas" />
       </AppShell>
     );
   }
@@ -89,13 +90,13 @@ function Panel() {
         { label: "Ventas con sellos", value: pesos(hoy.tarjetas!.ventas.monto_compra_centavos), icon: TrendingUp },
       ]
     : [{ label: "Ventas de hoy", value: pesos((hoy.monedero ?? hoy.tarjetas)?.ventas.monto_compra_centavos ?? 0), icon: TrendingUp }];
-  const cards: Array<{ label: string; value: string; icon: LucideIcon; aviso: boolean; to?: "/clientes" | "/negocio/reclamaciones" | "/negocio/solicitudes" | undefined; search?: { archivados: "solo" } }> = [
-    ...ventasCards.map((c) => ({ ...c, aviso: false, to: undefined })),
-    { label: "Clientes atendidos", value: String(hoy.clientes.atendidos), icon: Users, aviso: false, to: undefined },
-    ...(hoy.clientes.archivados_total > 0 ? [{ label: "Clientes archivados", value: String(hoy.clientes.archivados_total), icon: Archive, aviso: false, to: "/clientes" as const, search: { archivados: "solo" as const } }] : []),
-    { label: "Sellos entregados", value: String(hoy.tarjetas?.sellos_otorgados ?? 0), icon: Stamp, aviso: false, to: undefined },
-    { label: "Reclamaciones pendientes", value: String(hoy.reclamaciones.pendientes), icon: MessageSquareWarning, aviso: false, to: "/negocio/reclamaciones" },
-    { label: "Solicitudes de alta", value: String(hoy.validaciones_alta.pendientes), icon: UserPlus, aviso: hoy.validaciones_alta.pendientes > 0, to: "/negocio/solicitudes" },
+  const cards: Array<{ label: string; value: string; icon: LucideIcon; tono: Tono; aviso: boolean; to?: "/clientes" | "/negocio/reclamaciones" | "/negocio/solicitudes" | undefined; search?: { archivados: "solo" } }> = [
+    ...ventasCards.map((c) => ({ ...c, tono: "success" as const, aviso: false, to: undefined })),
+    { label: "Clientes atendidos", value: String(hoy.clientes.atendidos), icon: Users, tono: "primary", aviso: false, to: undefined },
+    ...(hoy.clientes.archivados_total > 0 ? [{ label: "Clientes archivados", value: String(hoy.clientes.archivados_total), icon: Archive, tono: "neutro" as const, aviso: false, to: "/clientes" as const, search: { archivados: "solo" as const } }] : []),
+    { label: "Sellos entregados", value: String(hoy.tarjetas?.sellos_otorgados ?? 0), icon: Stamp, tono: "warning", aviso: false, to: undefined },
+    { label: "Reclamaciones pendientes", value: String(hoy.reclamaciones.pendientes), icon: MessageSquareWarning, tono: "accent", aviso: false, to: "/negocio/reclamaciones" },
+    { label: "Solicitudes de alta", value: String(hoy.validaciones_alta.pendientes), icon: UserPlus, tono: "primary", aviso: hoy.validaciones_alta.pendientes > 0, to: "/negocio/solicitudes" },
   ];
   const usaVentas = !!hoy.monedero && (!hoy.tarjetas || vista === "saldo");
   const serie = (semana?.serie ?? []).map((s) => ({
@@ -140,10 +141,10 @@ function Panel() {
 
         <div className="grid grid-cols-2 gap-3 lg:grid-cols-3">
           {cards.map((c) => {
-            const clase = cn("rounded-2xl p-4 ring-1", c.aviso ? "bg-warn text-warn-foreground ring-warn" : "bg-card ring-border", c.to && "transition-colors hover:ring-primary/60");
+            const clase = cn("rounded-2xl p-4 ring-1", c.aviso ? "bg-warn text-warn-foreground ring-warn" : "bg-card ring-border", c.to && "transition-colors transition-transform duration-100 hover:ring-primary/60 active:scale-[0.98] motion-reduce:transform-none motion-reduce:transition-none");
             const cuerpo = (
               <>
-                <c.icon className={cn("size-6 shrink-0", c.aviso ? "text-warn-foreground" : "text-primary")} />
+                {c.aviso ? <c.icon className="size-6 shrink-0 text-warn-foreground" /> : <IconoTono icono={c.icon} tono={c.tono} className="size-10 [&_svg]:size-5" />}
                 <p className="mt-3 font-mono text-2xl font-bold tabular-nums sm:text-3xl">{c.value}</p>
                 <p className={cn("mt-1 text-sm", c.aviso ? "text-warn-foreground" : "text-muted-foreground")}>{c.label}</p>
               </>
