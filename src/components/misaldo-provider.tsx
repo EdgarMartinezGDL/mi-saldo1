@@ -12,7 +12,7 @@ import type { Role } from "@/lib/misaldo-data";
 export type ThemeMode = "claro" | "oscuro" | "personalizado";
 
 export const DEFAULT_THEME: ThemeMode = "oscuro";
-export const DEFAULT_PRIMARY = "#10B981";
+export const DEFAULT_PRIMARY = "#2563EB";
 
 /** Readable text color over a custom primary: dark on light colors, white on dark ones. */
 function readableForeground(hex: string) {
