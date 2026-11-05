@@ -112,7 +112,7 @@ function ClienteInicio() {
           <section className="relative overflow-hidden rounded-2xl bg-primary p-5 text-primary-foreground ring-1 ring-black/5 sm:p-6">
             <div className="pane-diagonal" aria-hidden="true">
               <div className="h-[200%] w-1/2 bg-white/10 backdrop-blur-sm" style={{ transform: "translateX(-15%) skewX(-16deg)" }} />
-              <div className="h-[200%] w-1/3 bg-accent/25 backdrop-blur-sm" style={{ transform: "translateX(55%) skewX(-16deg)" }} />
+              <div className="h-[200%] w-1/3 bg-white/5 backdrop-blur-sm" style={{ transform: "translateX(55%) skewX(-16deg)" }} />
             </div>
             <div className="relative">
               <div className="flex items-center justify-between gap-3">
@@ -157,7 +157,7 @@ function ClienteInicio() {
             {premios.map((p) => (
               <div key={p.cliente_tarjeta_id} className="rounded-2xl bg-card p-4 ring-1 ring-border">
                 <p className="flex items-center gap-2 truncate text-sm font-semibold">
-                  <Gift className="size-4 shrink-0 text-accent" /> {p.tarjeta}
+                   <Gift className="size-4 shrink-0 text-warning" /> {p.tarjeta}
                 </p>
                 <p className="mt-1 text-xl font-bold">{p.premio_texto}</p>
                 <p className={cn("mt-2 flex items-center gap-1.5 text-sm font-medium", p.vence_pronto ? "text-warn" : "text-muted-foreground")}>
@@ -203,8 +203,8 @@ function ClienteInicio() {
                             key={i}
                             className={cn(
                               "grid size-9 place-items-center rounded-full text-xs font-bold",
-                              filled && (index % 2 === 0 ? "bg-primary text-primary-foreground" : "bg-accent text-accent-foreground"),
-                              !filled && last && "border-2 border-accent text-accent",
+                              filled && "bg-warning text-warning-foreground",
+                              !filled && last && "border-2 border-warning text-warning",
                               !filled && !last && "border border-dashed border-border text-muted-foreground",
                             )}
                           >
