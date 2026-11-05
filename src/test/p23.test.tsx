@@ -9,6 +9,9 @@ import { MiSaldoProvider, useMiSaldo } from "@/components/misaldo-provider";
 import styles from "@/styles.css?raw";
 import panel from "@/routes/panel.tsx?raw";
 import membresia from "@/components/membresia.tsx?raw";
+import inicio from "@/routes/index.tsx?raw";
+import dropdownMenu from "@/components/ui/dropdown-menu.tsx?raw";
+import selectUi from "@/components/ui/select.tsx?raw";
 
 const m = vi.hoisted(() => ({ path: "/panel" }));
 vi.mock("@tanstack/react-router", () => ({
@@ -71,18 +74,27 @@ describe("P23 branding", () => {
     expect(logo).toHaveClass("size-24", "object-contain");
   });
 
-  it("primario claro azul oscuro y oscuro verde menta", () => {
+  it("primario Azul Cobalto en claro y Azul Suave en oscuro", () => {
     const root = styles.match(/:root\s*\{([^}]+)\}/)?.[1];
     const dark = styles.match(/\.dark\s*\{([^}]+)\}/)?.[1];
-    expect(root).toMatch(/--primary:\s*#1e293b\s*;/i);
-    expect(dark).toMatch(/--primary:\s*#10b981\s*;/i);
+    expect(root).toMatch(/--primary:\s*#2563eb\s*;/i);
+    expect(dark).toMatch(/--primary:\s*#3b82f6\s*;/i);
   });
 
-  it("barra verde carbón en ambos modos", () => {
+  it("barra azul en ambos modos", () => {
     const root = styles.match(/:root\s*\{([^}]+)\}/)?.[1];
     const dark = styles.match(/\.dark\s*\{([^}]+)\}/)?.[1];
-    expect(root).toMatch(/--barra:\s*#232e21\s*;/i);
-    expect(dark).toMatch(/--barra:\s*#232e21\s*;/i);
+    expect(root).toMatch(/--barra:\s*#2563eb\s*;/i);
+    expect(dark).toMatch(/--barra:\s*#3b82f6\s*;/i);
+  });
+
+  it("acento Coral y advertencia Amarillo en ambos modos", () => {
+    const root = styles.match(/:root\s*\{([^}]+)\}/)?.[1];
+    const dark = styles.match(/\.dark\s*\{([^}]+)\}/)?.[1];
+    expect(root).toMatch(/--accent:\s*#f43f5e\s*;/i);
+    expect(root).toMatch(/--warning:\s*#eab308\s*;/i);
+    expect(dark).toMatch(/--accent:\s*#f43f5e\s*;/i);
+    expect(dark).toMatch(/--warning:\s*#fcd34d\s*;/i);
   });
 
   it("éxito claro verde de la paleta", () => {
@@ -97,10 +109,26 @@ describe("P23 branding", () => {
       eager: true,
     }) as Record<string, string>;
     for (const [ruta, contenido] of Object.entries(archivos)) {
-      expect(contenido, ruta).not.toMatch(/0f766e|0b7a5e/i);
+      expect(contenido, ruta).not.toMatch(/0f766e|0b7a5e|f97316|232e21|2dd4bf|45c4b8/i);
     }
     const manifest = readFileSync("public/manifest.webmanifest", "utf8");
-    expect(manifest).not.toMatch(/0f766e|0b7a5e/i);
+    expect(manifest).not.toMatch(/0f766e|0b7a5e|f97316|232e21|2dd4bf|45c4b8/i);
+  });
+
+  it('"Canjear" del Inicio es un botón de acción', () => {
+    expect(inicio).toMatch(/to="\/canjear"[\s\S]{0,200}Canjear/);
+    const boton = inicio.match(/<Button size="lg" className="tap-target" asChild>[\s\S]{0,120}Canjear/)?.[0] ?? "";
+    expect(boton).toContain("Canjear");
+  });
+
+  it("los menús ya no resaltan con el acento", () => {
+    expect(dropdownMenu).not.toContain("focus:bg-accent");
+    expect(selectUi).not.toContain("focus:bg-accent");
+  });
+
+  it("un sello ganado de la tarjeta del cliente lleva bg-warning", () => {
+    expect(inicio).toContain('filled && "bg-warning text-warning-foreground"');
+    expect(inicio).toContain('"border-2 border-warning text-warning"');
   });
 
   it('"Ir a la caja" del Panel es un botón de acción naranja', () => {
