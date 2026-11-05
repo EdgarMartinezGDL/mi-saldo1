@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { MessageSquareWarning } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { EstadoVacio } from "@/components/estado-vacio";
 import { SeccionNegocio } from "@/components/negocio/comun";
 import { CampoTexto, Chip, Confirmar, errorOperacion, FilaMovimiento, Pestanas, useRecargarConteos } from "@/components/negocio/operacion-ui";
 import { Cargando } from "@/components/requiere-sesion";
@@ -97,12 +99,12 @@ function Reclamaciones() {
         {!lista ? (
           <Cargando />
         ) : lista.length === 0 ? (
-          <p className="text-sm text-muted-foreground">{pestana === "pendiente" ? "No hay reclamaciones pendientes." : "No hay reclamaciones."}</p>
+          <EstadoVacio icono={MessageSquareWarning} titulo={pestana === "pendiente" ? "No hay reclamaciones pendientes." : "No hay reclamaciones."} />
         ) : (
           <ul className="flex flex-col divide-y divide-separador">
             {lista.map((r) => (
               <li key={r.reclamacion_id}>
-                <button type="button" onClick={() => setAbierta(r.reclamacion_id)} className="flex w-full flex-col gap-1 py-3 text-left">
+                <button type="button" onClick={() => setAbierta(r.reclamacion_id)} className="-mx-2 flex w-[calc(100%+1rem)] flex-col gap-1 rounded-xl px-2 py-3 text-left transition-colors active:bg-secondary">
                   <span className="flex items-center justify-between gap-2">
                     <span className="font-mono font-semibold">{r.folio}</span>
                     <Chip tono={ESTADO[r.estado].tono}>{ESTADO[r.estado].texto}</Chip>

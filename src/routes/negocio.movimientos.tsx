@@ -193,7 +193,7 @@ function Movimientos() {
         {!lista ? (
           <Cargando />
         ) : lista.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No hay movimientos con estos filtros.</p>
+          <EstadoVacio icono={History} titulo="No hay movimientos con estos filtros." />
         ) : (
           <ul className="flex flex-col divide-y divide-separador">
             {lista.map((m) => <FilaMovimiento key={m.movimiento_id} m={m} />)}

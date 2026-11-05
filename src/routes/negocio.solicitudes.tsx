@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { UserPlus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { EstadoVacio } from "@/components/estado-vacio";
 import { SeccionNegocio } from "@/components/negocio/comun";
 import { CampoTexto, Chip, Confirmar, errorOperacion, Pestanas, useRecargarConteos } from "@/components/negocio/operacion-ui";
 import { Cargando } from "@/components/requiere-sesion";
@@ -91,7 +93,7 @@ function Solicitudes() {
         {!lista ? (
           <Cargando />
         ) : lista.length === 0 ? (
-          <p className="text-sm text-muted-foreground">{pestana === "pendiente" ? "No hay solicitudes pendientes." : "No hay solicitudes."}</p>
+          <EstadoVacio icono={UserPlus} titulo={pestana === "pendiente" ? "No hay solicitudes pendientes." : "No hay solicitudes."} />
         ) : (
           <ul className="flex flex-col divide-y divide-separador">
             {lista.map((v) => (
