@@ -141,7 +141,7 @@ function Panel() {
 
         <div className="grid grid-cols-2 gap-3 lg:grid-cols-3">
           {cards.map((c) => {
-            const clase = cn("rounded-2xl p-4 ring-1", c.aviso ? "bg-warn text-warn-foreground ring-warn" : "bg-card ring-border", c.to && "transition-colors transition-transform duration-100 hover:ring-primary/60 active:scale-[0.98] motion-reduce:transform-none motion-reduce:transition-none");
+            const clase = cn("rounded-2xl p-4 ring-1", c.aviso ? "bg-warn text-warn-foreground ring-warn" : "bg-card ring-border", c.to && "transition-[color,background-color,border-color,box-shadow,transform] duration-150 hover:ring-primary/60 active:scale-[0.98] motion-reduce:transform-none motion-reduce:transition-none");
             const cuerpo = (
               <>
                 {c.aviso ? <c.icon className="size-6 shrink-0 text-warn-foreground" /> : <IconoTono icono={c.icon} tono={c.tono} className="size-10 [&_svg]:size-5" />}
