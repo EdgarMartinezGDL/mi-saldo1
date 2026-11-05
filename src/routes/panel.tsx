@@ -123,7 +123,7 @@ function Panel() {
         )}
         <Link
           to="/caja"
-          className="btn-premium tap-target flex min-h-16 items-center justify-center gap-3 rounded-2xl px-6 text-lg font-semibold text-primary-foreground"
+          className="btn-accion tap-target flex min-h-16 items-center justify-center gap-3 rounded-2xl px-6 text-lg font-semibold text-accent-foreground"
         >
           Ir a la caja
         </Link>

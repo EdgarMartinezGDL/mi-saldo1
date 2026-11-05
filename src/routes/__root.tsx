@@ -114,7 +114,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         name: "description",
         content: "Saldo, sellos y recompensas de tus negocios favoritos, en tu celular.",
       },
-      { name: "theme-color", content: "#0F766E" },
+      { name: "theme-color", content: "#232E21" },
       { property: "og:title", content: "Mi Saldo Vip · Lealtad para tu negocio" },
       {
         property: "og:description",

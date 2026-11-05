@@ -1,11 +1,14 @@
 import { cleanup, render, screen, within } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { readFileSync } from "node:fs";
 import type { ReactNode, ComponentType } from "react";
 import { AppShell } from "@/components/app-shell";
 import { Encabezado } from "@/components/cuenta/secciones";
 import { Route as LoginRoute } from "@/routes/login";
 import { MiSaldoProvider, useMiSaldo } from "@/components/misaldo-provider";
 import styles from "@/styles.css?raw";
+import panel from "@/routes/panel.tsx?raw";
+import membresia from "@/components/membresia.tsx?raw";
 
 const m = vi.hoisted(() => ({ path: "/panel" }));
 vi.mock("@tanstack/react-router", () => ({
@@ -68,9 +71,18 @@ describe("P23 branding", () => {
     expect(logo).toHaveClass("size-24", "object-contain");
   });
 
-  it("primario oscuro turquesa", () => {
+  it("primario claro azul oscuro y oscuro verde menta", () => {
+    const root = styles.match(/:root\s*\{([^}]+)\}/)?.[1];
     const dark = styles.match(/\.dark\s*\{([^}]+)\}/)?.[1];
-    expect(dark).toMatch(/--primary:\s*#0f766e\s*;/i);
+    expect(root).toMatch(/--primary:\s*#1e293b\s*;/i);
+    expect(dark).toMatch(/--primary:\s*#10b981\s*;/i);
+  });
+
+  it("barra verde carbón en ambos modos", () => {
+    const root = styles.match(/:root\s*\{([^}]+)\}/)?.[1];
+    const dark = styles.match(/\.dark\s*\{([^}]+)\}/)?.[1];
+    expect(root).toMatch(/--barra:\s*#232e21\s*;/i);
+    expect(dark).toMatch(/--barra:\s*#232e21\s*;/i);
   });
 
   it("éxito claro verde de la paleta", () => {
@@ -78,7 +90,25 @@ describe("P23 branding", () => {
     expect(root).toMatch(/--success:\s*#10b981\s*;/i);
   });
 
-  it("personalizado solo sobrescribe primary", () => {
+  it("ningún archivo conserva el turquesa retirado", () => {
+    const archivos = import.meta.glob(["/src/**/*", "!/src/test/**"], {
+      query: "?raw",
+      import: "default",
+      eager: true,
+    }) as Record<string, string>;
+    for (const [ruta, contenido] of Object.entries(archivos)) {
+      expect(contenido, ruta).not.toMatch(/0f766e|0b7a5e/i);
+    }
+    const manifest = readFileSync("public/manifest.webmanifest", "utf8");
+    expect(manifest).not.toMatch(/0f766e|0b7a5e/i);
+  });
+
+  it('"Ir a la caja" del Panel es un botón de acción naranja', () => {
+    expect(panel).toMatch(/to="\/caja"[\s\S]{0,300}btn-accion[\s\S]{0,300}text-accent-foreground/);
+    expect(panel).not.toMatch(/to="\/caja"[\s\S]{0,300}btn-premium/);
+  });
+
+  it("personalizado sobrescribe primary, su letra y el ring", () => {
     localStorage.setItem("misaldo-prefs", JSON.stringify({ theme: "personalizado", customColor: "#123456" }));
     function Preferencias() {
       const { theme } = useMiSaldo();
@@ -87,7 +117,24 @@ describe("P23 branding", () => {
     render(<MiSaldoProvider><Preferencias /></MiSaldoProvider>);
     expect(screen.getByText("personalizado")).toBeInTheDocument();
     expect(document.documentElement.style.getPropertyValue("--primary")).toBe("#123456");
-    expect(document.documentElement.style.getPropertyValue("--primary-foreground")).toBe("");
-    expect(document.documentElement.style.getPropertyValue("--ring")).toBe("");
+    expect(document.documentElement.style.getPropertyValue("--primary-foreground")).toBe("#ffffff");
+    expect(document.documentElement.style.getPropertyValue("--ring")).toBe("#123456");
+  });
+
+  it.each([
+    ["#FFEB3B", "#1E293B"],
+    ["#232E21", "#ffffff"],
+  ])("personalizado con %s usa letra %s", (customColor, letra) => {
+    localStorage.setItem("misaldo-prefs", JSON.stringify({ theme: "personalizado", customColor }));
+    render(<MiSaldoProvider>{null}</MiSaldoProvider>);
+    expect(document.documentElement.style.getPropertyValue("--primary-foreground")).toBe(letra);
+  });
+
+  it("el botón de WhatsApp usa el verde oficial #25D366", () => {
+    expect(membresia).toContain('"#25D366"');
+    expect(membresia).toMatch(/Ya pagué, enviar comprobante/);
+    const boton = membresia.match(/function BotonWhatsApp[\s\S]*?Ya pagué, enviar comprobante/)?.[0] ?? "";
+    expect(boton).toContain("text-white");
+    expect(boton).not.toContain("bg-success-fill");
   });
 });
