@@ -1,5 +1,10 @@
 # Roadmap
 
+## P24c — Aspecto de listas, títulos, íconos, cargas y vacíos (completo)
+- [x] secondary-foreground legible, separador y warning-icono en ambos modos; anillo de casilla reforzado en oscuro y «Sí, cerrar caja» en variante primario.
+- [x] Títulos h1 en negrita, filas con Iniciales y separador tras el círculo en Clientes/Empleados, IconoTono por grupo en Mi negocio y Panel, Cargando con esqueletos y EstadoVacio en listas vacías.
+- [x] Pruebas P24c añadidas: 299 pruebas en verde y compilación OK; acceso revisado en vista previa. Sin cambios de lógica, API ni package.json.
+
 ## P24b — Teclado, casillas y botones desactivados (completo)
 - [x] Aplicar tokens y aspecto de teclas sin cambiar entrada ni envío.
 - [x] Compartir casillas entre PinPos y CampoDigitos, conservando límites y etiquetas.
