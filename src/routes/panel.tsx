@@ -128,7 +128,7 @@ function Panel() {
           Ir a la caja
         </Link>
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight">Panel</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Panel</h1>
           <p className="mt-1 text-base text-muted-foreground">Cómo va tu negocio hoy.</p>
         </div>
 

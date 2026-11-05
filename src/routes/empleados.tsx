@@ -97,7 +97,7 @@ function Empleados() {
       <div className="flex flex-col gap-6">
         <BarraAsistente />
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight">Empleados</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Empleados</h1>
           <p className="mt-1 text-base text-muted-foreground">Las personas que atienden tu caja.</p>
         </div>
 

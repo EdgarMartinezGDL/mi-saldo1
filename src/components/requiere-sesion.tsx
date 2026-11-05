@@ -6,6 +6,7 @@ import { useAuth } from "@/components/auth-provider";
 import type { Rol } from "@/lib/api/client";
 import { PantallaSinConexion } from "@/components/sin-conexion";
 import { MarcaMiSaldo } from "@/components/marca";
+import { Skeleton } from "@/components/ui/skeleton";
 
 /** Neutral full-screen loader: no app bar, no business name, no menu. */
 function CargaNeutra() {
@@ -49,5 +50,30 @@ export function RequiereSesion({ titulo, roles, children }: { titulo: string; ro
   return <>{children}</>;
 }
 
-/** Shared skeleton text for loading sections. */
-export const Cargando = () => <p className="py-6 text-center text-sm text-muted-foreground">Cargando…</p>;
+/** Animated skeleton blocks for loading sections; screen readers still hear "Cargando…". */
+export function Cargando({ forma = "lista", filas = 3 }: { forma?: "lista" | "tarjetas"; filas?: number }) {
+  return (
+    <div role="status" aria-live="polite" className="py-2">
+      <span className="sr-only">Cargando…</span>
+      {forma === "tarjetas" ? (
+        <div className="grid grid-cols-2 gap-3">
+          {Array.from({ length: 4 }, (_, i) => (
+            <Skeleton key={i} className="h-28 rounded-2xl" />
+          ))}
+        </div>
+      ) : (
+        <div className="flex flex-col gap-4">
+          {Array.from({ length: filas }, (_, i) => (
+            <div key={i} className="flex items-center gap-3">
+              <Skeleton className="size-10 rounded-full" />
+              <div className="flex flex-1 flex-col gap-2">
+                <Skeleton className="h-4 w-2/3" />
+                <Skeleton className="h-3 w-1/3" />
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}

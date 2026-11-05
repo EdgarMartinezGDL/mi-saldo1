@@ -89,7 +89,7 @@ function Clientes() {
     <AppShell>
       <div className="flex flex-col gap-6">
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight">Clientes</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Clientes</h1>
           <p className="mt-1 text-base text-muted-foreground">{lista ? plural(total, "cliente", "clientes") : "Busca por nombre o teléfono."}</p>
         </div>
         <label className="relative block">

@@ -11,7 +11,7 @@ export function CasillasDigitos({ largo, llenos, activo = true, grande = false, 
           "flex-1 grid place-items-center transition-colors border-2",
           grande ? "h-14 rounded-xl" : "h-11 rounded-lg",
           i < llenos || (activo && i === llenos && llenos < largo) ? "bg-card border-primary" : "bg-casilla border-casilla-borde",
-          activo && i === llenos && llenos < largo && "ring-4 ring-primary/15",
+          activo && i === llenos && llenos < largo && "ring-4 ring-primary/15 dark:ring-primary/40",
         )}>
           {i < llenos && <span className="size-3.5 rounded-full bg-primary" />}
         </span>

@@ -101,7 +101,7 @@ function Staff() {
     <AppShell>
       <div className="flex flex-col gap-6">
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight">Staff Mi Saldo Vip</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Staff Mi Saldo Vip</h1>
           <p className="mt-1 text-base text-muted-foreground">Soporte a negocios y personas.</p>
         </div>
         {resumen && (

@@ -81,7 +81,7 @@ function Historial() {
   return (
     <AppShell>
       <div className="flex flex-col gap-6">
-        <h1 className="text-3xl font-semibold tracking-tight">Historial</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Historial</h1>
         <div className="flex gap-2">
           {FILTROS.map((f) => (
             <button

@@ -100,7 +100,7 @@ function Formulario({ onHecha }: { onHecha: () => void }) {
   return (
     <AppShell>
       <div className="flex flex-col gap-6">
-        <h1 className="text-3xl font-semibold tracking-tight">Eliminar mi cuenta</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Eliminar mi cuenta</h1>
         {!vista ? (
           <Cargando />
         ) : !vista.puede_eliminarse ? (

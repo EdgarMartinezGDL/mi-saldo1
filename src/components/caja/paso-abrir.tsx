@@ -53,7 +53,7 @@ export function PasoAbrir({ negocio, onAbierta }: { negocio: string; onAbierta: 
   return (
     <div className="mx-auto flex w-full max-w-md flex-col gap-5">
       <div>
-        <h1 className="text-3xl font-semibold tracking-tight">Caja de {negocio}</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Caja de {negocio}</h1>
         <p className="mt-1 text-base text-muted-foreground">Escribe el PIN POS del negocio para abrir la caja.</p>
       </div>
       <PinPos onAbierta={onAbierta} />
@@ -66,7 +66,7 @@ export function PasoBloqueo({ motivo, negocio, rol }: { motivo: "sin_pin" | "mem
   const dueno = rol === "dueno";
   return (
     <div className="mx-auto flex w-full max-w-md flex-col gap-5">
-      <h1 className="text-3xl font-semibold tracking-tight">Caja de {negocio}</h1>
+      <h1 className="text-3xl font-bold tracking-tight">Caja de {negocio}</h1>
       <div className="rounded-2xl bg-card p-6 ring-1 ring-border">
         <p className="text-lg font-semibold">
           {motivo === "membresia"

@@ -51,7 +51,7 @@ export function PasoBuscar({ inicial, onEncontrado, onAlta }: { inicial: string;
   return (
     <div className="mx-auto flex w-full max-w-md flex-col gap-5">
       <div>
-        <h1 className="text-3xl font-semibold tracking-tight">Buscar cliente</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Buscar cliente</h1>
         <p className="mt-1 text-base text-muted-foreground">{conMouse ? "Escribe los 10 dígitos de su teléfono con el teclado y presiona Enter." : "Escribe los 10 dígitos de su teléfono."}</p>
       </div>
       <div className="rounded-2xl bg-card p-5 ring-1 ring-border">

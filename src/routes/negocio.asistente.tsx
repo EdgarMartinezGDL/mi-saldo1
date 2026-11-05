@@ -35,7 +35,7 @@ export function AsistenteInicial() {
   const pasos = data ? pasosVisibles(data) : [];
   const completos = pasos.filter((p) => p.completo).length;
   return <AppShell><div className="flex flex-col gap-6">
-    <div><h1 className="text-3xl font-semibold tracking-tight">Configura tu negocio</h1>
+    <div><h1 className="text-3xl font-bold tracking-tight">Configura tu negocio</h1>
       <p className="mt-1 text-base text-muted-foreground">Te llevará unos minutos. Lo marcado como obligatorio es lo mínimo para que tu caja empiece a cobrar.</p>
     </div>
     {error ? <p role="alert" className="text-destructive">{error.message}</p> : !data ? <Cargando /> : <>

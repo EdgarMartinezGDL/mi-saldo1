@@ -46,7 +46,7 @@ function Referidos() {
   return (
     <AppShell>
       <div className="flex flex-col gap-6">
-        <h1 className="text-3xl font-semibold tracking-tight">Recomienda y gana</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Recomienda y gana</h1>
         {!datos ? (
           <Cargando />
         ) : (

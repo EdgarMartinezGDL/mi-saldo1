@@ -123,7 +123,7 @@ export function Centro() {
     <AppShell>
       <div className="flex flex-col gap-6">
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight">Mi negocio</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Mi negocio</h1>
           <p className="mt-1 text-base text-muted-foreground">Elige qué quieres administrar.</p>
         </div>
         {asistenteIncompleto && <div className="flex flex-col gap-3">{tarjeta(asistente)}</div>}

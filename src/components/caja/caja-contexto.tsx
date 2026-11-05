@@ -92,7 +92,7 @@ export function EncabezadoPaso({ titulo, subtitulo, onVolver }: { titulo: string
   return (
     <div className="flex items-start justify-between gap-3">
       <div className="min-w-0">
-        <h1 className="text-3xl font-semibold tracking-tight">{titulo}</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{titulo}</h1>
         {subtitulo && <p className="mt-1 text-base text-muted-foreground">{subtitulo}</p>}
       </div>
       {onVolver && <Button variant="outline" size="lg" onClick={onVolver}>Volver<Tecla>Esc</Tecla></Button>}

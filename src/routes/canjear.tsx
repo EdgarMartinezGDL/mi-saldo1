@@ -40,7 +40,7 @@ function Canjear() {
     <AppShell>
       <div className="flex flex-col gap-6">
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight">Mis códigos</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Mis códigos</h1>
           <p className="mt-1 text-base text-muted-foreground">
             Dicta estos códigos en caja. Sirven en todos tus negocios. El cajero nunca debe pedirte tu PIN.
           </p>
