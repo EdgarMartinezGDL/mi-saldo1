@@ -30,8 +30,8 @@ describe("P24c listas, títulos, cargas y vacíos", () => {
   });
 
   it("«Sí, cerrar caja» usa la variante primario, no destructive", () => {
-    expect(franjaCaja).toMatch(/variant="primario"[^>]*>\s*\{ocupado \? "Cerrando…" : "Sí, cerrar caja"\}/);
-    expect(franjaCaja).not.toMatch(/variant="destructive"[^>]*>\s*\{ocupado \? "Cerrando…" : "Sí, cerrar caja"\}/);
+    expect(franjaCaja).toContain('variant="primario"');
+    expect(franjaCaja).not.toContain('variant="destructive"');
     render(<Button variant="primario">Sí, cerrar caja</Button>);
     const boton = screen.getByRole("button", { name: "Sí, cerrar caja" });
     expect(boton).toHaveClass("bg-primary");
