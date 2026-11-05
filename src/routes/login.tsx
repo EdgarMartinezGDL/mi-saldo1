@@ -18,7 +18,7 @@ import { Label } from "@/components/ui/label";
 import { login, type RespuestaLogin } from "@/lib/api/auth";
 import { ApiError, setSesion, telefonoE164, type Sesion } from "@/lib/api/client";
 import { MarcaMiSaldo } from "@/components/marca";
-import logoCircular from "@/assets/mi-saldo-vip-logo.svg.asset.json";
+import { LOGO_CIRCULAR } from "@/lib/marca";
 
 export const Route = createFileRoute("/login")({
   validateSearch: (s: Record<string, unknown>): { volver?: string } => {
@@ -46,6 +46,7 @@ function Login() {
   const [pin, setPin] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [cargando, setCargando] = useState(false);
+  const [logoError, setLogoError] = useState(false);
 
   const paso = {
     tipo: !sesionPendiente || sesionPendiente.estado === "autenticado"
@@ -111,7 +112,12 @@ function Login() {
   return (
     <div className="flex min-h-screen items-center justify-center px-4 py-10">
       <div className="w-full max-w-sm rounded-2xl bg-card p-6 shadow-soft ring-1 ring-border">
-        <img src={logoCircular.url} alt="Mi Saldo Vip" className="mx-auto mb-4 size-20 rounded-full" />
+        {logoError ? (
+          <p className="mx-auto mb-4 text-center text-2xl font-semibold tracking-tight"><MarcaMiSaldo /></p>
+        ) : (
+          <img src={LOGO_CIRCULAR} alt="Mi Saldo Vip" width={80} height={80} decoding="async"
+            onError={() => setLogoError(true)} className="mx-auto mb-4 size-20 rounded-full" />
+        )}
         <div className="mb-6 flex items-center gap-3">
           <div className="grid size-11 place-items-center rounded-full bg-primary text-primary-foreground">
             {paso.tipo === "totp" ? <ShieldCheck className="size-5" /> : <KeyRound className="size-5" />}

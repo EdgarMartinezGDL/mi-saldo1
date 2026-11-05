@@ -5,7 +5,7 @@ import { QRCodeSVG } from "qrcode.react";
 import { useState, type ReactNode } from "react";
 import { toast } from "sonner";
 import { CodigosRespaldo } from "@/components/codigos-respaldo";
-import logoCircular from "@/assets/mi-saldo-vip-logo.svg.asset.json";
+import { LOGO_CIRCULAR } from "@/lib/marca";
 import { useConTotp } from "@/components/totp-provider";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription,
@@ -70,10 +70,14 @@ const telefonoBonito = (t?: string | null) => {
 
 export function Encabezado() {
   const { data } = usePerfil();
+  const [logoError, setLogoError] = useState(false);
   const nombre = [data?.nombre, data?.apellido_paterno, data?.apellido_materno].filter(Boolean).join(" ");
   return (
     <div className="flex items-center gap-4 rounded-2xl bg-card p-5 ring-1 ring-border">
-      <img src={logoCircular.url} alt="Mi Saldo Vip" className="size-14 shrink-0 rounded-full ring-1 ring-border" />
+      {!logoError && (
+        <img src={LOGO_CIRCULAR} alt="Mi Saldo Vip" width={56} height={56} decoding="async"
+          onError={() => setLogoError(true)} className="size-14 shrink-0 rounded-full ring-1 ring-border" />
+      )}
       <div className="min-w-0">
         <p className="truncate text-xl font-semibold">{nombre || "Mi cuenta"}</p>
         {data?.telefono && <p className="font-mono text-base text-muted-foreground">{telefonoBonito(data.telefono)}</p>}
