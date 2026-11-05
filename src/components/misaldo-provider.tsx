@@ -12,7 +12,18 @@ import type { Role } from "@/lib/misaldo-data";
 export type ThemeMode = "claro" | "oscuro" | "personalizado";
 
 export const DEFAULT_THEME: ThemeMode = "oscuro";
-export const DEFAULT_PRIMARY = "#45c4b8";
+export const DEFAULT_PRIMARY = "#10B981";
+
+/** Readable text color over a custom primary: dark on light colors, white on dark ones. */
+function readableForeground(hex: string) {
+  const clean = hex.replace("#", "");
+  if (clean.length !== 6) return "#ffffff";
+  const channels = [0, 2, 4].map((i) => parseInt(clean.slice(i, i + 2), 16) / 255);
+  const lin = (c: number) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
+  const luminance =
+    0.2126 * lin(channels[0] ?? 0) + 0.7152 * lin(channels[1] ?? 0) + 0.0722 * lin(channels[2] ?? 0);
+  return luminance > 0.45 ? "#1E293B" : "#ffffff";
+}
 
 type Business = {
   name: string;
@@ -84,8 +95,12 @@ export function MiSaldoProvider({ children }: { children: ReactNode }) {
     root.classList.toggle("dark", theme !== "claro");
     if (theme === "personalizado") {
       root.style.setProperty("--primary", customColor);
+      root.style.setProperty("--primary-foreground", readableForeground(customColor));
+      root.style.setProperty("--ring", customColor);
     } else {
       root.style.removeProperty("--primary");
+      root.style.removeProperty("--primary-foreground");
+      root.style.removeProperty("--ring");
     }
   }, [theme, customColor]);
 

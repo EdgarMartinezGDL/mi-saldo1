@@ -37,7 +37,7 @@ const THEMES: { value: ThemeMode; label: string; icon: typeof Sun }[] = [
   { value: "personalizado", label: "Personalizado", icon: Palette },
 ];
 
-const PRESETS = ["#0b7a5e", "#7c3f2f", "#1d4ed8", "#b3261e", "#6b21a8", "#0f766e"];
+const PRESETS = ["#10B981", "#7c3f2f", "#1d4ed8", "#b3261e", "#6b21a8", "#232E21"];
 
 const enlace = "tap-target flex min-h-14 items-center gap-3 rounded-xl bg-secondary px-4 py-3 text-base font-medium shadow-soft hover:text-primary";
 
