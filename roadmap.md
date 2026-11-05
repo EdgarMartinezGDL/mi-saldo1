@@ -1,5 +1,10 @@
 # Roadmap
 
+## P23 — Ajuste de paleta y tamaños de marca
+- [ ] Aplicar valores claro/oscuro y revisar colores fijos y acciones principales sin cambios de lógica.
+- [ ] Caja inferior naranja y logos de encabezado/Entrada/Cuenta a 48/128/96 px, conservando respaldos.
+- [ ] Actualizar pruebas y verificar suite completa y presentación en navegador.
+
 ## P22 — Marca "Mi Saldo Vip", paleta y navegación (completo)
 - [x] Logos: PNG en Navbar (sin sesión/Staff), SVG circular en Login y avatar de perfil
 - [x] Nombre visible "Mi Saldo Vip" (titles, og:title, manifest, textos) + componente `MarcaMiSaldo`

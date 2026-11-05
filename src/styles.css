@@ -31,7 +31,7 @@
 /*
  * Mi Saldo Vip design system — soft neumorphism.
  * Light: white canvas, night-blue text, dark teal primary, orange only for action buttons.
- * Dark: midnight navy canvas, bright teal primary, same orange accent and top bar.
+ * Dark: midnight navy canvas, dark teal primary, same orange accent and top bar.
  * The custom theme overrides --primary at runtime.
  */
 
@@ -107,7 +107,7 @@
   --warn-foreground: oklch(0.99 0.004 174);
   --destructive: oklch(0.55 0.21 27);
   --destructive-foreground: oklch(0.99 0.004 174);
-  --success: #047857;
+  --success: #10b981;
   --success-fill: #10b981;
   --pending: oklch(0.52 0.12 75);
   --border: #e2e8f0;
@@ -141,8 +141,8 @@
   --card-foreground: #e2e8f0;
   --popover: #1e293b;
   --popover-foreground: #e2e8f0;
-  --primary: #2dd4bf;
-  --primary-foreground: #0f172a;
+  --primary: #0f766e;
+  --primary-foreground: #ffffff;
   --secondary: #334155;
   --secondary-foreground: #e2e8f0;
   --muted: #334155;
@@ -158,7 +158,7 @@
   --pending: oklch(0.8 0.14 75);
   --border: #334155;
   --input: #475569;
-  --ring: #2dd4bf;
+  --ring: #0f766e;
   --barra: #0f766e;
   --barra-foreground: #ffffff;
   --chart-1: var(--primary);
