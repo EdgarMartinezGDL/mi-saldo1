@@ -173,7 +173,7 @@ function Panel() {
           <div className="mt-5 flex h-48 items-end gap-2">
             {serie.map((d) => (
               <div key={d.fecha} className="flex h-full min-w-0 flex-1 flex-col items-center justify-end gap-2">
-                <span className="font-mono text-[11px] tabular-nums text-muted-foreground">
+                <span className="text-[11px] tabular-nums text-muted-foreground">
                   {usaVentas ? etiquetaPesos(d.value) : d.value || ""}
                 </span>
                 <div className="w-full rounded-t-lg bg-primary" style={{ height: `${(d.value / max) * 100}%` }} />
@@ -199,7 +199,7 @@ function Panel() {
                       {c.rol === "dueno" ? "Dueño" : "Cajero"} · {c.monedero.acumulaciones + c.tarjetas.acumulaciones} operaciones
                     </p>
                   </div>
-                  <span className="shrink-0 font-mono text-base font-semibold tabular-nums">
+                  <span className="shrink-0 text-base font-semibold tabular-nums">
                     {pesos(c.monedero.ventas_centavos || c.tarjetas.ventas_centavos)}
                   </span>
                 </li>

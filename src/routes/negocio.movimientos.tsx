@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { ChevronDown, Download } from "lucide-react";
+import { ChevronDown, Download, History } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { EstadoVacio } from "@/components/estado-vacio";
 import { useConfigNegocio, SeccionNegocio } from "@/components/negocio/comun";
 import { Confirmar, errorOperacion, FilaMovimiento } from "@/components/negocio/operacion-ui";
 import { Cargando } from "@/components/requiere-sesion";

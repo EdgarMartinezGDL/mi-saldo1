@@ -118,7 +118,7 @@ export function FilaMovimiento({ m }: { m: Movimiento }) {
           {m.cliente ? `${nombreCompleto(m.cliente)} · ${telefonoVisible(m.cliente.telefono)}` : "—"} · {operador} · {instante(m.fecha)}
         </p>
       </div>
-      <span className={cn("shrink-0 font-mono font-semibold tabular-nums", valor > 0 ? "text-success" : valor < 0 ? "text-destructive" : "")}>
+      <span className={cn("shrink-0 font-semibold tabular-nums", valor > 0 ? "text-success" : valor < 0 ? "text-destructive" : "")}>
         {texto}
       </span>
     </li>

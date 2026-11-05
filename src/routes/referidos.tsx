@@ -1,7 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Gift } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { AppShell } from "@/components/app-shell";
+import { EstadoVacio } from "@/components/estado-vacio";
 import { Cargando, RequiereSesion } from "@/components/requiere-sesion";
 import { ApiError } from "@/lib/api/client";
 import { referidos, type EstadoReferido, type MisReferidos } from "@/lib/api/cliente";
@@ -67,7 +69,7 @@ function Referidos() {
             <section className="rounded-2xl bg-card p-5 ring-1 ring-border">
               <h2 className="text-lg font-semibold tracking-tight">Tus recomendados</h2>
               {datos.recomendados.length === 0 ? (
-                <p className="mt-2 text-sm text-muted-foreground">Aún no recomiendas a nadie.</p>
+                <EstadoVacio icono={Gift} titulo="Aún no recomiendas a nadie." />
               ) : (
                 <ul className="mt-3 flex flex-col divide-y divide-separador">
                   {datos.recomendados.map((r) => (
