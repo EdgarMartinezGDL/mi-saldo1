@@ -140,7 +140,7 @@ function ClienteInicio() {
                       <History className="size-5" /> Historial
                     </Link>
                   </Button>
-                  <Button size="lg" variant="ghost" className="tap-target bg-white/15 text-primary-foreground hover:bg-white/25" asChild>
+                  <Button size="lg" className="tap-target" asChild>
                     <Link to="/canjear">Canjear</Link>
                   </Button>
                 </div>
