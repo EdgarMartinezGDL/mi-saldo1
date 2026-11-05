@@ -1,0 +1,2 @@
+## Staff notifications
+- Staff notifications use server-provided retry eligibility, shared ConfirmarMotivo without TOTP, and applied-filter reloads that clear retry chains. Why: eligibility remains server-authoritative and concurrent retries cannot leave stale actions visible.

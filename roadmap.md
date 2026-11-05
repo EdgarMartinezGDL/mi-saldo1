@@ -1,5 +1,10 @@
 # Roadmap
 
+## P24a — Superficies elevadas (completo)
+- [x] Sustituir neumorfismo por bordes finos y sombras verticales por modo; invertir fondo/tarjetas claros y reforzar campos sin cambiar la paleta restante.
+- [x] Unificar sombras de elementos flotantes y barras; conservar el anillo de Caja mediante outline y actualizar la regla de AGENTS.md.
+- [x] Pruebas P24a añadidas: 280 pruebas en verde y compilación OK. Entrada, campos y confirmación revisados en ambos modos a 1280/400 px; Caja y anillo verificados en Modo Diseño, no con una sesión real.
+
 ## P24 — Paleta oficial estricta (completo)
 - [x] `--barra` #232E21 en ambos modos; primario #1E293B claro / #10B981 oscuro; turquesa #0F766E/#0b7a5e eliminado de src/ y public/.
 - [x] "Ir a la caja" del Panel pasa a `btn-accion` naranja; WhatsApp vuelve al verde oficial #25D366; theme-color y manifest actualizados.
