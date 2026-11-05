@@ -33,7 +33,7 @@ describe("P24a superficies elevadas", () => {
   });
 
   it("Caja flotante conserva acción, sombra y anillo", () => {
-    const destacado = appShell.match(/item\.destacado\s*&&\s*"([^"]+)"/i)?.[1];
+    const destacado = appShell.match(/item\.destacado\s*&&\s*"(btn-accion[^"]+)"/i)?.[1];
     expect(destacado?.split(/\s+/)).toEqual(expect.arrayContaining(["btn-accion", "shadow-flotante", "ring-4", "ring-background"]));
   });
 });
