@@ -1,15 +1,17 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { cleanup, render, screen, within } from "@testing-library/react";
-import type { ReactNode } from "react";
+import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
+import type { ComponentType, ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { NAV, roleHome } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
 import { Centro } from "@/routes/negocio.index";
+import { Route as LoginRoute } from "@/routes/login";
 
 const m = vi.hoisted(() => ({ asistente: vi.fn(), config: vi.fn(), conteos: vi.fn() }));
 vi.mock("@tanstack/react-router", () => ({
-  createFileRoute: () => (options: object) => ({ options }),
+  createFileRoute: () => (options: object) => ({ options, useSearch: () => ({}) }),
   Link: ({ to, children, ...props }: { to: string; children: ReactNode }) => <a {...props} href={to}>{children}</a>,
+  useNavigate: () => () => {},
 }));
 vi.mock("@/components/app-shell", async (importOriginal) => {
   const real = await importOriginal<typeof import("@/components/app-shell")>();
@@ -93,5 +95,34 @@ describe("P22 botones de acción", () => {
   it("el botón por defecto lleva btn-accion", () => {
     render(<Button>Guardar</Button>);
     expect(screen.getByRole("button", { name: "Guardar" }).className).toContain("btn-accion");
+  });
+});
+
+describe("P22 logo desde public/", () => {
+  const Login = (LoginRoute as unknown as { options: { component: ComponentType } }).options.component;
+
+  it("la entrada muestra el logo circular servido desde /marca/", () => {
+    render(<Login />);
+    const logo = screen.getByRole("img", { name: "Mi Saldo Vip" });
+    expect(logo).toHaveAttribute("src", "/marca/mi-saldo-vip-circular.png");
+    expect(logo).toHaveAttribute("alt", "Mi Saldo Vip");
+  });
+
+  it("si el logo no carga, se esconde y se ve la marca en texto", () => {
+    render(<Login />);
+    const logo = screen.getByRole("img", { name: "Mi Saldo Vip" });
+    fireEvent.error(logo);
+    expect(screen.queryByRole("img", { name: "Mi Saldo Vip" })).toBeNull();
+    expect(screen.getAllByText("Mi Saldo").length).toBeGreaterThanOrEqual(2);
+    expect(screen.getAllByText("Vip").length).toBeGreaterThanOrEqual(2);
+  });
+
+  it("ningún archivo de src/ (fuera de pruebas) referencia __l5e ni .asset.json", () => {
+    const archivos = import.meta.glob("/src/**/*.{ts,tsx}", { query: "?raw", import: "default", eager: true }) as Record<string, string>;
+    for (const [ruta, contenido] of Object.entries(archivos)) {
+      if (ruta.startsWith("/src/test/")) continue;
+      expect(contenido, ruta).not.toContain("__l5e");
+      expect(contenido, ruta).not.toContain(".asset.json");
+    }
   });
 });
