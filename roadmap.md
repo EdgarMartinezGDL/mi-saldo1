@@ -1,5 +1,10 @@
 # Roadmap
 
+## P25b — Íconos de la app con el logo de Mi Saldo Vip (completo)
+- [x] Guardadas las 2 imágenes adjuntas (512×512, sin modificar) en public/icons/mi-saldo-vip-512.png y mi-saldo-vip-maskable-512.png; borrados icon-512.png, favicon.png y favicon.ico del logo verde.
+- [x] Manifest con los 2 íconos nuevos (purpose any y maskable); __root.tsx enlaza icon y apple-touch-icon nuevos; vista previa de Promociones usa el ícono nuevo; sin referencias al logo viejo en src/ ni public/.
+- [x] Pruebas p25b añadidas: 334 pruebas en verde y compilación OK, sin tocar package.json ni service worker. Pendiente: cambiar el ícono de notificaciones en infra/pwa/sw.js (lado del servidor) y publicar.
+
 ## P25 — Notificaciones push y Promociones del dueño (completo)
 - [x] API push (llave pública, suscripciones, resumen/historial/envío de promociones) y lógica del dispositivo con APIs del navegador; sin service worker propio ni librerías de push.
 - [x] Cerrar sesión desactiva la suscripción del dispositivo (antes de logout, con límite de 3 s, sin bloquear la salida).
