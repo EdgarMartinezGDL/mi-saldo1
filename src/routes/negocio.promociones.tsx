@@ -221,7 +221,7 @@ function Formulario({ r, negocio }: { r: ResumenPromociones; negocio: string }) 
           <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Así se verá</span>
           <div className="rounded-2xl bg-card p-4 shadow-raised ring-1 ring-border">
             <div className="flex items-start gap-3">
-              <img src="/icons/icon-512.png" alt="" width={40} height={40} decoding="async" className="size-10 shrink-0 rounded-xl" />
+              <img src="/icons/mi-saldo-vip-512.png" alt="" width={40} height={40} decoding="async" className="size-10 shrink-0 rounded-xl" />
               <div className="min-w-0">
                 <p className="text-xs text-muted-foreground">Mi Saldo Vip · ahora</p>
                 <p className={cn("font-semibold", !titulo && "text-muted-foreground")}>{negocio}: {titulo || "Título de la promoción"}</p>
