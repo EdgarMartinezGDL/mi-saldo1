@@ -270,6 +270,7 @@ function Historial() {
     refetchInterval: (consulta) =>
       consulta.state.data?.promociones.some((p) => p.estado === "enviando") ? 5000 : false,
   });
+  const promos = q.data?.promociones;
   return (
     <section className="rounded-2xl bg-card p-5 ring-1 ring-border">
       <h2 className="text-lg font-semibold tracking-tight">Enviadas</h2>
@@ -277,11 +278,11 @@ function Historial() {
         <Cargando />
       ) : q.error ? (
         <p className="mt-4 text-destructive">{q.error.message}</p>
-      ) : q.data.promociones.length === 0 ? (
+      ) : !promos || promos.length === 0 ? (
         <EstadoVacio icono={Megaphone} titulo="Aún no envías promociones." />
       ) : (
         <ul className="mt-4 flex flex-col divide-y divide-separador">
-          {q.data.promociones.map((p) => (
+          {promos.map((p) => (
             <li key={p.id} className="flex items-center gap-3 py-3">
               <IconoTono icono={Megaphone} tono="accent" />
               <div className="min-w-0 flex-1">
