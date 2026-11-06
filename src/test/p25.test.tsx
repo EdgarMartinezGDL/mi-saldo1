@@ -69,7 +69,6 @@ function stubNavegador(opts: { registro?: boolean; suscripcion?: boolean; permis
     value: (q: string) => ({ matches: standalone && q.includes("standalone"), addEventListener: () => {}, removeEventListener: () => {} }),
   });
   m.getSubscription.mockResolvedValue(suscripcion ? SUB : null);
-  m.unsubscribe.mockResolvedValue(true);
 }
 
 function limpiarNavegador() {
@@ -140,7 +139,8 @@ describe("P25 activarPush", () => {
       { endpoint: "https://push.example.com/sub1", expirationTime: null, keys: { p256dh: "a2xhdmU", auth: "YXV0aA" } },
       expect.any(String),
     );
-    expect(Object.keys(m.registrar.mock.calls[0]![0] as object).sort()).toEqual(["dispositivo", "endpoint", "expirationTime", "keys"]);
+    expect(Object.keys(m.registrar.mock.calls[0]![0] as object).sort()).toEqual(["endpoint", "expirationTime", "keys"]);
+    expect(typeof m.registrar.mock.calls[0]![1]).toBe("string");
   });
   it("con permiso negado no llama al backend", async () => {
     stubNavegador();
