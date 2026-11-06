@@ -4,7 +4,7 @@ import { AppShell } from "@/components/app-shell";
 import { useDesplazarAlAbrir } from "@/lib/use-desplazar";
 import { useAuth } from "@/components/auth-provider";
 import { useCerrarSesion } from "@/components/cerrar-sesion";
-import { Encabezado, MisDatos, Promociones, Seguridad, Tarjeta } from "@/components/cuenta/secciones";
+import { Encabezado, MisDatos, NotificacionesDispositivo, Promociones, Seguridad, Tarjeta } from "@/components/cuenta/secciones";
 import { useMisNegocios } from "@/components/mis-negocios";
 import { useMiSaldo, type ThemeMode } from "@/components/misaldo-provider";
 import { RequiereSesion } from "@/components/requiere-sesion";
@@ -69,6 +69,7 @@ function Cuenta() {
 
         {rol === "cliente" && (
           <>
+            <NotificacionesDispositivo />
             <Promociones />
             <div className="flex flex-col gap-2">
               <Link to="/referidos" className={enlace}>

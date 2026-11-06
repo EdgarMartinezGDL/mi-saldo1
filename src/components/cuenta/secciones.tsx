@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { ChevronDown, ChevronRight, KeyRound, Mail, Megaphone, ShieldCheck } from "lucide-react";
+import { BellRing, ChevronDown, ChevronRight, KeyRound, Mail, Megaphone, ShieldCheck } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import { useState, type ReactNode } from "react";
 import { toast } from "sonner";
@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { ApiError } from "@/lib/api/client";
+import { activarPush, desactivarPush, estadoPush } from "@/lib/push-dispositivo";
 import { useDesplazarAlAbrir } from "@/lib/use-desplazar";
 import { cn } from "@/lib/utils";
 import {
@@ -362,6 +363,66 @@ export function Promociones() {
         <Switch checked={acepta} disabled={ocupado || !data} onCheckedChange={(v) => void cambiar(v)} aria-label="Recibir promociones" />
       </label>
       <p className="mt-2 text-xs text-muted-foreground">Si no las aceptas, tu saldo y tus tarjetas siguen igual.</p>
+    </Tarjeta>
+  );
+}
+
+/** Client-only push notifications block for this device (browser APIs only; the server owns /sw.js). */
+export function NotificacionesDispositivo() {
+  const queryClient = useQueryClient();
+  const mostrar = useError();
+  const { data: estado } = useQuery({ queryKey: ["push-estado"], queryFn: estadoPush });
+  const { data: promo } = useQuery({ queryKey: ["promociones"], queryFn: promociones });
+  const [ocupado, setOcupado] = useState(false);
+
+  if (!estado || estado === "no_disponible") return null;
+
+  const cambiar = async (activar: boolean) => {
+    setOcupado(true);
+    try {
+      if (activar) await activarPush();
+      else await desactivarPush();
+      await queryClient.invalidateQueries({ queryKey: ["push-estado"] });
+      toast.success(activar ? "Notificaciones activadas" : "Notificaciones desactivadas");
+    } catch (e) {
+      mostrar(e);
+    } finally {
+      setOcupado(false);
+    }
+  };
+
+  return (
+    <Tarjeta titulo="Notificaciones" icono={<BellRing className="size-5 text-primary" />}>
+      {estado === "instalar_ios" && (
+        <p className="mt-3 text-sm text-muted-foreground">
+          Para recibir avisos en tu iPhone, primero agrega Mi Saldo Vip a tu pantalla de inicio: toca Compartir y luego <strong>Agregar a inicio</strong>.
+        </p>
+      )}
+      {estado === "bloqueadas" && (
+        <p className="mt-3 text-sm text-muted-foreground">
+          Las notificaciones están bloqueadas en este navegador. Actívalas en los ajustes del sitio y vuelve aquí.
+        </p>
+      )}
+      {estado === "desactivadas" && (
+        <>
+          <p className="mt-3 text-sm text-muted-foreground">Recibe en este dispositivo las promociones de los negocios donde compras.</p>
+          <Button size="lg" className="mt-4 w-full" disabled={ocupado} onClick={() => void cambiar(true)}>
+            <BellRing className="size-5" /> {ocupado ? "Activando…" : "Activar notificaciones"}
+          </Button>
+        </>
+      )}
+      {estado === "activadas" && (
+        <>
+          <span className="pill-badge mt-3 inline-block text-success">Activadas en este dispositivo</span>
+          {promo && !promo.acepta_promociones && (
+            <p className="mt-2 text-sm text-muted-foreground">Para recibir las de este negocio, activa también <strong>Promociones</strong> aquí abajo.</p>
+          )}
+          <Button variant="outline" size="lg" className="mt-4 w-full" disabled={ocupado} onClick={() => void cambiar(false)}>
+            {ocupado ? "Desactivando…" : "Desactivar"}
+          </Button>
+        </>
+      )}
+      <p className="mt-3 text-xs text-muted-foreground">Al cerrar sesión se desactivan en este dispositivo.</p>
     </Tarjeta>
   );
 }
