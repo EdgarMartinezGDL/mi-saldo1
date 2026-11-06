@@ -1,6 +1,6 @@
 import { useAsistente } from "@/components/negocio/asistente";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { BarChart3, ListChecks, Clock, Gift, ChevronRight, CreditCard, History, KeyRound, MessageSquareWarning, Palette, UserPlus, Users, Wallet, type LucideIcon } from "lucide-react";
+import { BarChart3, ListChecks, Clock, Gift, ChevronRight, CreditCard, History, KeyRound, Megaphone, MessageSquareWarning, Palette, UserPlus, Users, Wallet, type LucideIcon } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { IconoTono, type Tono } from "@/components/fila-lista";
 import { useConfigNegocio } from "@/components/negocio/comun";
@@ -92,6 +92,7 @@ export function Centro() {
     {
       titulo: "Marketing y recompensas",
       tarjetas: [
+        { to: "/negocio/promociones", titulo: "Promociones", texto: "Avisos al celular de tus clientes (1 al día).", icono: Megaphone },
         { to: "/negocio/monedero", titulo: "Monedero y tarjetas de sellos", texto: "Cashback, vigencia del saldo y tus tarjetas.", icono: Wallet },
         { to: "/negocio/marca", titulo: "Datos y marca", texto: "Nombre, logotipo y color de tu negocio.", icono: Palette },
         { to: "/negocio/referidos", titulo: "Recomienda y gana", texto: "Premia a tus clientes por traer clientes nuevos.", icono: Gift },

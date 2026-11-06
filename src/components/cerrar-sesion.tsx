@@ -13,6 +13,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { logout } from "@/lib/api/auth";
+import { desactivarPush } from "@/lib/push-dispositivo";
 
 /** Single shared sign-out confirmation used by Ajustes and the desktop sidebar. */
 export function useCerrarSesion(): { pedirConfirmacion: () => void; dialogo: ReactNode } {
@@ -25,6 +26,8 @@ export function useCerrarSesion(): { pedirConfirmacion: () => void; dialogo: Rea
   const cerrarSesion = async () => {
     setSaliendo(true);
     try {
+      // Sign-out also drops this device's push subscription; it must never block signing out.
+      await Promise.race([desactivarPush().catch(() => undefined), new Promise((ok) => setTimeout(ok, 3000))]);
       await logout();
     } finally {
       queryClient.clear();
