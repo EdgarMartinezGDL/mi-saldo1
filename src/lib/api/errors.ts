@@ -85,6 +85,10 @@ const MENSAJES: Record<string, string> = {
   ya_activada: "Tu cuenta ya está activa.",
   codigo_agotado: "Usaste todos los intentos de este código. Pide uno nuevo.",
   sesion_cerrada: "Por seguridad cerramos tu sesión. Vuelve a entrar.",
+  // Promociones push
+  limite: "Ya enviaste el máximo de promociones: 1 por día y 3 por semana.",
+  sin_destinatarios: "Ningún cliente tiene activadas las notificaciones de tu negocio todavía.",
+  totp_no_activado: "Activa la verificación en dos pasos (app autenticadora) en Cuenta para enviar promociones.",
 };
 
 export function mensajeDeError(

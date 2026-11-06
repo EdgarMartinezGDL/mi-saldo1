@@ -42,6 +42,7 @@ import { Route as NegocioMembresiaRouteImport } from './routes/negocio.membresia
 import { Route as NegocioMonederoRouteImport } from './routes/negocio.monedero'
 import { Route as NegocioMovimientosRouteImport } from './routes/negocio.movimientos'
 import { Route as NegocioPinPosRouteImport } from './routes/negocio.pin-pos'
+import { Route as NegocioPromocionesRouteImport } from './routes/negocio.promociones'
 import { Route as NegocioReclamacionesRouteImport } from './routes/negocio.reclamaciones'
 import { Route as NegocioReferidosRouteImport } from './routes/negocio.referidos'
 import { Route as NegocioReportesRouteImport } from './routes/negocio.reportes'
@@ -214,6 +215,11 @@ const NegocioPinPosRoute = NegocioPinPosRouteImport.update({
   path: '/pin-pos',
   getParentRoute: () => NegocioRoute,
 } as any)
+const NegocioPromocionesRoute = NegocioPromocionesRouteImport.update({
+  id: '/promociones',
+  path: '/promociones',
+  getParentRoute: () => NegocioRoute,
+} as any)
 const NegocioReclamacionesRoute = NegocioReclamacionesRouteImport.update({
   id: '/reclamaciones',
   path: '/reclamaciones',
@@ -278,6 +284,7 @@ export interface FileRoutesByFullPath {
   '/negocio/monedero': typeof NegocioMonederoRoute
   '/negocio/movimientos': typeof NegocioMovimientosRoute
   '/negocio/pin-pos': typeof NegocioPinPosRoute
+  '/negocio/promociones': typeof NegocioPromocionesRoute
   '/negocio/reclamaciones': typeof NegocioReclamacionesRoute
   '/negocio/referidos': typeof NegocioReferidosRoute
   '/negocio/reportes': typeof NegocioReportesRoute
@@ -318,6 +325,7 @@ export interface FileRoutesByTo {
   '/negocio/monedero': typeof NegocioMonederoRoute
   '/negocio/movimientos': typeof NegocioMovimientosRoute
   '/negocio/pin-pos': typeof NegocioPinPosRoute
+  '/negocio/promociones': typeof NegocioPromocionesRoute
   '/negocio/reclamaciones': typeof NegocioReclamacionesRoute
   '/negocio/referidos': typeof NegocioReferidosRoute
   '/negocio/reportes': typeof NegocioReportesRoute
@@ -360,6 +368,7 @@ export interface FileRoutesById {
   '/negocio/monedero': typeof NegocioMonederoRoute
   '/negocio/movimientos': typeof NegocioMovimientosRoute
   '/negocio/pin-pos': typeof NegocioPinPosRoute
+  '/negocio/promociones': typeof NegocioPromocionesRoute
   '/negocio/reclamaciones': typeof NegocioReclamacionesRoute
   '/negocio/referidos': typeof NegocioReferidosRoute
   '/negocio/reportes': typeof NegocioReportesRoute
@@ -403,6 +412,7 @@ export interface FileRouteTypes {
     | '/negocio/monedero'
     | '/negocio/movimientos'
     | '/negocio/pin-pos'
+    | '/negocio/promociones'
     | '/negocio/reclamaciones'
     | '/negocio/referidos'
     | '/negocio/reportes'
@@ -443,6 +453,7 @@ export interface FileRouteTypes {
     | '/negocio/monedero'
     | '/negocio/movimientos'
     | '/negocio/pin-pos'
+    | '/negocio/promociones'
     | '/negocio/reclamaciones'
     | '/negocio/referidos'
     | '/negocio/reportes'
@@ -484,6 +495,7 @@ export interface FileRouteTypes {
     | '/negocio/monedero'
     | '/negocio/movimientos'
     | '/negocio/pin-pos'
+    | '/negocio/promociones'
     | '/negocio/reclamaciones'
     | '/negocio/referidos'
     | '/negocio/reportes'
@@ -756,6 +768,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NegocioPinPosRouteImport
       parentRoute: typeof NegocioRoute
     }
+    '/negocio/promociones': {
+      id: '/negocio/promociones'
+      path: '/promociones'
+      fullPath: '/negocio/promociones'
+      preLoaderRoute: typeof NegocioPromocionesRouteImport
+      parentRoute: typeof NegocioRoute
+    }
     '/negocio/reclamaciones': {
       id: '/negocio/reclamaciones'
       path: '/reclamaciones'
@@ -809,6 +828,7 @@ interface NegocioRouteChildren {
   NegocioMonederoRoute: typeof NegocioMonederoRoute
   NegocioMovimientosRoute: typeof NegocioMovimientosRoute
   NegocioPinPosRoute: typeof NegocioPinPosRoute
+  NegocioPromocionesRoute: typeof NegocioPromocionesRoute
   NegocioReclamacionesRoute: typeof NegocioReclamacionesRoute
   NegocioReferidosRoute: typeof NegocioReferidosRoute
   NegocioReportesRoute: typeof NegocioReportesRoute
@@ -824,6 +844,7 @@ const NegocioRouteChildren: NegocioRouteChildren = {
   NegocioMonederoRoute: NegocioMonederoRoute,
   NegocioMovimientosRoute: NegocioMovimientosRoute,
   NegocioPinPosRoute: NegocioPinPosRoute,
+  NegocioPromocionesRoute: NegocioPromocionesRoute,
   NegocioReclamacionesRoute: NegocioReclamacionesRoute,
   NegocioReferidosRoute: NegocioReferidosRoute,
   NegocioReportesRoute: NegocioReportesRoute,

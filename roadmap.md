@@ -1,5 +1,12 @@
 # Roadmap
 
+## P25 — Notificaciones push y Promociones del dueño (completo)
+- [x] API push (llave pública, suscripciones, resumen/historial/envío de promociones) y lógica del dispositivo con APIs del navegador; sin service worker propio ni librerías de push.
+- [x] Cerrar sesión desactiva la suscripción del dispositivo (antes de logout, con límite de 3 s, sin bloquear la salida).
+- [x] Bloque "Notificaciones" en Cuenta (cliente) según estado del dispositivo; nota fija de cierre de sesión.
+- [x] Ruta /negocio/promociones: resumen, formulario con vista previa, confirmación con código TOTP (CasillasDigitos + NumericKeypad) e historial con sondeo mientras envía; tarjeta nueva en Mi negocio.
+- [x] Mensajes de error limite/sin_destinatarios/totp_no_activado y pruebas p25: 330 pruebas en verde y compilación OK, sin tocar package.json. Pendiente: recorrido real (el backend de vista previa no responde /api/auth/refrescar).
+
 ## P24d — Detalles visuales de P24c (completo)
 - [x] Token --esqueleto (#E2E8F0 claro / #334155 oscuro) y Skeleton con bg-esqueleto visible sobre tarjetas blancas.
 - [x] Filas de Clientes en 2 renglones fijos: nombre truncado arriba; teléfono, «Sin activar», «Archivado» y fecha compactos abajo.
