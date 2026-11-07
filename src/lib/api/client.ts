@@ -174,24 +174,53 @@ export async function api<T>(path: string, { method = "GET", body, auth = true }
   }
 
   const init: RequestInit = body === undefined ? { method } : { method, body: JSON.stringify(body) };
-  let res: Response;
-  try {
-    res = await rawFetch(path, init, auth);
-  } catch {
-    throw new ApiError(0, { codigo: "sin_conexion" });
-  }
-  if (res.status === 401 && auth) {
-    const nueva = await refrescar();
-    if (!nueva) throw new ApiError(401, { codigo: "sesion_expirada" });
+
+  /** One attempt: request + the existing 401 refresh-and-retry handling. */
+  const pedir = async (): Promise<Response> => {
+    let res: Response;
     try {
       res = await rawFetch(path, init, auth);
     } catch {
       throw new ApiError(0, { codigo: "sin_conexion" });
     }
-    if (res.status === 401) {
-      setSesion(null);
-      throw new ApiError(401, { codigo: "sesion_expirada" });
+    if (res.status === 401 && auth) {
+      const nueva = await refrescar();
+      if (!nueva) throw new ApiError(401, { codigo: "sesion_expirada" });
+      try {
+        res = await rawFetch(path, init, auth);
+      } catch {
+        throw new ApiError(0, { codigo: "sin_conexion" });
+      }
+      if (res.status === 401) {
+        setSesion(null);
+        throw new ApiError(401, { codigo: "sesion_expirada" });
+      }
     }
+    return res;
+  };
+
+  /** True only for a 503 whose JSON body carries codigo "servicio_saturado"; never consumes res. */
+  const esServicioSaturado = async (res: Response): Promise<boolean> => {
+    if (res.status !== 503) return false;
+    try {
+      const cuerpo: unknown = await res.clone().json();
+      return (
+        typeof cuerpo === "object" &&
+        cuerpo !== null &&
+        (cuerpo as Record<string, unknown>)["codigo"] === "servicio_saturado"
+      );
+    } catch {
+      return false;
+    }
+  };
+
+  let res = await pedir();
+  // Up to 2 retries (3 attempts total) only for 503 servicio_saturado, reusing the exact same init.
+  for (let reintento = 0; reintento < 2 && (await esServicioSaturado(res)); reintento++) {
+    const ra = Number(res.headers.get("Retry-After"));
+    const segundos = Math.min(Number.isFinite(ra) && ra > 0 ? ra : 2, 5);
+    await new Promise((resolve) => setTimeout(resolve, segundos * 1000 + Math.random() * 500));
+    res = await pedir();
   }
   return parse<T>(res);
 }

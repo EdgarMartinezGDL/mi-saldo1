@@ -1,6 +1,8 @@
 /** Spanish messages per backend `codigo`. Codes not listed fall back to the backend's own message. */
 const MENSAJES: Record<string, string> = {
   sin_conexion: "No se registró: revisa tu conexión.",
+  servicio_saturado:
+    "Hay mucha actividad en este momento. Espera unos segundos e intenta de nuevo; no se hizo ningún cargo doble.",
   respuesta_invalida: "El servidor no respondió correctamente. Intenta de nuevo.",
   sesion_expirada: "Tu sesión terminó. Vuelve a entrar.",
   // Autenticación
