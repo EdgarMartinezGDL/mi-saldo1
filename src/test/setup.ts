@@ -1,4 +1,7 @@
 import "@testing-library/jest-dom/vitest";
+import { configure } from "@testing-library/react";
+
+configure({ asyncUtilTimeout: 5_000 });
 
 // Radix measures its hidden checkbox input when mounted inside a form.
 globalThis.ResizeObserver = class {
