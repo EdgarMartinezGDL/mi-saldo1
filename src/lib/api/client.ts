@@ -6,6 +6,7 @@
  * - On a 401 it refreshes once (shared promise) and retries the request.
  */
 import { mensajeDeError } from "./errors";
+import { borrarCopia } from "@/lib/sin-conexion-storage";
 
 export type Rol = "cliente" | "empleado" | "dueno" | "staff";
 
@@ -47,6 +48,11 @@ export function onSinConexion(fn: () => void) { connectionListener = fn; }
 export function setSesion(s: Sesion | null) {
   accessToken = s?.access_token ?? null;
   sessionListener?.(s);
+}
+/** CL-01: the server itself rejected the session (401). End it and erase the offline copy. */
+function sesionRechazada() {
+  setSesion(null);
+  borrarCopia();
 }
 export function onSesion(fn: (s: Sesion | null) => void) {
   sessionListener = fn;
@@ -90,6 +96,7 @@ export function refrescar(): Promise<Sesion | null> {
     }
     refreshing = rawFetch("/api/auth/refrescar", { method: "POST" }, false)
       .then(async (res) => {
+        if (res.status === 401) return "rechazada" as const;
         if (!res.ok) return null;
         return (await res.json()) as Sesion;
       })
@@ -98,6 +105,10 @@ export function refrescar(): Promise<Sesion | null> {
         throw new ApiError(0, { codigo: "sin_conexion" });
       })
       .then((s) => {
+        if (s === "rechazada") {
+          sesionRechazada();
+          return null;
+        }
         setSesion(s);
         return s;
       })
@@ -192,7 +203,7 @@ export async function api<T>(path: string, { method = "GET", body, auth = true }
         throw new ApiError(0, { codigo: "sin_conexion" });
       }
       if (res.status === 401) {
-        setSesion(null);
+        sesionRechazada();
         throw new ApiError(401, { codigo: "sesion_expirada" });
       }
     }
@@ -242,7 +253,7 @@ export async function apiArchivo(path: string, body: unknown): Promise<{ blob: B
     if (!nueva) throw new ApiError(401, { codigo: "sesion_expirada" });
     res = await pedir();
     if (res.status === 401) {
-      setSesion(null);
+      sesionRechazada();
       throw new ApiError(401, { codigo: "sesion_expirada" });
     }
   }
