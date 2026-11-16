@@ -1,5 +1,5 @@
 import { Search, UserPlus } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { NumericKeypad } from "@/components/numeric-keypad";
 import { Button } from "@/components/ui/button";
 import { buscarCliente, type ClienteCaja } from "@/lib/api/caja";
@@ -17,6 +17,8 @@ export function PasoBuscar({ inicial, onEncontrado, onAlta }: { inicial: string;
   const [tel, setTel] = useState(inicial);
   const [noExiste, setNoExiste] = useState(false);
   const [ocupado, setOcupado] = useState(false);
+  const resultadoRef = useRef<HTMLDivElement>(null);
+  useEffect(() => { if (noExiste) resultadoRef.current?.scrollIntoView?.({ behavior: "smooth", block: "start" }); }, [noExiste]);
 
   const buscar = async () => {
     if (ocupado || tel.length !== 10) return;
@@ -65,7 +67,7 @@ export function PasoBuscar({ inicial, onEncontrado, onAlta }: { inicial: string;
         </Button>
       </div>
       {noExiste && (
-        <div className="rounded-2xl bg-card p-5 ring-1 ring-border">
+        <div ref={resultadoRef} className="rounded-2xl bg-card p-5 ring-1 ring-border">
           <p className="text-lg font-semibold">Este teléfono aún no es cliente</p>
           <p className="mt-1 text-muted-foreground">Puedes darlo de alta ahora mismo.</p>
           <Button size="lg" className="mt-4 h-14 w-full text-lg" onClick={() => onAlta(tel)}>

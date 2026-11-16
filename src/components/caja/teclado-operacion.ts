@@ -1,15 +1,18 @@
-import { useCallback, useRef, type KeyboardEvent as ReactKeyboardEvent } from "react";
+import { useCallback, useEffect, useRef, type KeyboardEvent as ReactKeyboardEvent } from "react";
 import { useConMouse, useFocoCaja, useTecla } from "./teclado";
 
 /** Shared Enter path for native form submission and keys outside text fields. */
-export function useTecladoOperacion({ listo, ocupado, soloCodigo = false, onConfirmar, onVolver, destino, onOpcion, onCantidad }: {
+export function useTecladoOperacion({ listo, ocupado, soloCodigo = false, onConfirmar, onVolver, destino, onOpcion, onCantidad, porMonto = true }: {
   listo: boolean; ocupado: boolean; soloCodigo?: boolean; onConfirmar: () => void; onVolver: () => void;
   destino?: string; onOpcion?: (indice: number) => void; onCantidad?: (delta: number) => void;
+  porMonto?: boolean;
 }) {
   const conMouse = useConMouse();
   const codigoRef = useRef<HTMLButtonElement>(null);
   const montoRef = useRef<HTMLInputElement>(null);
+  const cantidadRef = useRef<HTMLButtonElement>(null);
   useFocoCaja(montoRef, destino);
+  useEffect(() => { if (!porMonto) cantidadRef.current?.focus({ preventScroll: true }); }, [porMonto, destino]);
   const enviar = useCallback(() => {
     if (ocupado) return;
     if (listo) onConfirmar();
@@ -35,5 +38,5 @@ export function useTecladoOperacion({ listo, ocupado, soloCodigo = false, onConf
       e.preventDefault(); enviar();
     }
   };
-  return { conMouse, codigoRef, montoRef, enviar, alTeclaFormulario };
+  return { conMouse, codigoRef, montoRef, cantidadRef, enviar, alTeclaFormulario };
 }
