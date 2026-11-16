@@ -12,6 +12,8 @@ import { useQuery } from "@tanstack/react-query";
 import { fichaNegocio, perfil, referidos, resumen, type Perfil, type Resumen } from "@/lib/api/cliente";
 import { pesos, textoCaducidad, textoEstadoHorario } from "@/lib/api/formato";
 import { cn } from "@/lib/utils";
+import { useRecargaVisible } from "@/lib/use-recarga-visible";
+import { fechaTarjeta } from "@/lib/fecha-tarjeta";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -39,24 +41,23 @@ export const Route = createFileRoute("/")({
 });
 
 function ClienteInicio() {
-  const { sesion } = useAuth();
+  const { sesion, conectado } = useAuth();
   const { updateBusiness } = useMiSaldo();
   const ficha = useQuery({ queryKey: ["cliente-ficha-negocio", sesion?.contexto.negocio_id], queryFn: fichaNegocio, enabled: !!sesion, retry: false });
   const refs = useQuery({ queryKey: ["cliente-referidos"], queryFn: referidos, enabled: !!sesion, retry: false });
   const hayReferidos = !!refs.data && (refs.data.programa !== null || refs.data.recomendados.length > 0);
-  const [datos, setDatos] = useState<Resumen | null>(null);
+  const consulta = useQuery({ queryKey: ["cliente-resumen", sesion?.contexto.negocio_id], queryFn: resumen, enabled: !!sesion && conectado !== false, retry: false, staleTime: 20_000 });
+  const datos = consulta.data;
+  useRecargaVisible(() => { if (!consulta.isFetching) void consulta.refetch(); }, conectado !== false);
   const [yo, setYo] = useState<Perfil | null>(null);
   const [query, setQuery] = useState("");
 
   useEffect(() => {
-    resumen()
-      .then((r) => {
-        setDatos(r);
-        updateBusiness({ name: r.negocio.nombre_comercial, logo: r.negocio.logo_url });
-      })
-      .catch((e) => toast.error(e instanceof ApiError ? e.message : "No se pudo cargar tu saldo."));
+    if (datos) updateBusiness({ name: datos.negocio.nombre_comercial, logo: datos.negocio.logo_url });
+  }, [datos, updateBusiness]);
+  useEffect(() => {
     perfil().then(setYo).catch(() => undefined);
-  }, [sesion?.contexto.negocio_id, updateBusiness]);
+  }, [sesion?.contexto.negocio_id]);
 
   if (!datos) {
     return (
@@ -157,12 +158,13 @@ function ClienteInicio() {
             {premios.map((p) => (
               <div key={p.cliente_tarjeta_id} className="rounded-2xl bg-card p-4 ring-1 ring-border">
                 <p className="flex items-center gap-2 truncate text-sm font-semibold">
-                   <Gift className="size-4 shrink-0 text-warning" /> {p.tarjeta}
+                   <Gift className="size-6 shrink-0 text-warning" /> {p.tarjeta}
                 </p>
                 <p className="mt-1 text-xl font-bold">{p.premio_texto}</p>
+                <p className="text-sm font-medium">Premio listo · canjéalo en caja</p>
                 <p className={cn("mt-2 flex items-center gap-1.5 text-sm font-medium", p.vence_pronto ? "text-warn" : "text-muted-foreground")}>
                   {p.vence_pronto && <TriangleAlert className="size-4 shrink-0" />}
-                  {textoCaducidad(p)}
+                  {p.fecha_vencimiento ? `Canjéalo antes del ${fechaTarjeta(p.fecha_vencimiento)}` : ""}
                 </p>
               </div>
             ))}
@@ -214,12 +216,14 @@ function ClienteInicio() {
                       })}
                     </div>
                     {card.en_retiro && <p className="mt-2 text-xs font-medium text-warn">Ya no da sellos: canjea tus premios.</p>}
-                    {cad && (
+                    {cad?.fecha_vencimiento && (
                       <p className={cn("mt-3 flex items-center gap-1.5 text-sm font-semibold", cad.vence_pronto || cad.vencido ? "text-warn" : "text-muted-foreground")}>
                         {(cad.vence_pronto || cad.vencido) && <TriangleAlert className="size-4 shrink-0" />}
-                        {textoCaducidad(cad)}
+                        Vence el {fechaTarjeta(cad.fecha_vencimiento)} · cada compra renueva la fecha
                       </p>
                     )}
+                    {card.regla.vigencia_dias === null && <p className="mt-3 text-sm text-muted-foreground">Sin vencimiento</p>}
+                    {card.tipo_sello === "por_monto" && (cad?.remanente_centavos ?? 0) > 0 && <p className="mt-2 text-sm text-muted-foreground">{pesos(cad?.remanente_centavos, moneda)} acumulados para el siguiente sello</p>}
                   </article>
                 );
               })}

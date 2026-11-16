@@ -20,6 +20,7 @@ import { PasoAcumular, PasoCanjear, type Comprobante } from "@/components/caja/p
 import { PasoReclamar } from "@/components/caja/paso-reclamar";
 import type { AltaRespuesta } from "@/components/caja/caja-extra";
 import { fueraDeHorario, horarioHoy, INTERVALO_POS } from "@/lib/caja-horario";
+import { useMiSaldo } from "@/components/misaldo-provider";
 
 export const Route = createFileRoute("/caja")({
   head: () => ({
@@ -45,6 +46,7 @@ type PidePin = { reintentar: () => void; cancelar: () => void };
 
 function Caja() {
   const { sesion } = useAuth();
+  const { updateBusiness } = useMiSaldo();
   const rol = sesion?.contexto.rol ?? "empleado";
   const [estado, setEstado] = useState<Estado>("cargando");
   const [config, setConfig] = useState<ConfiguracionCaja | null>(null);
@@ -61,6 +63,7 @@ function Caja() {
     try {
       const [est, cfg] = await Promise.all([estadoPos(), configuracion()]);
       setConfig(cfg);
+      updateBusiness({ name: cfg.negocio.nombre_comercial, logo: cfg.negocio.logo_url });
       setVenceEn(est.vence_en);
       setFuera(fueraDeHorario(rol, est));
       const m = cfg.negocio.membresia_estado;
@@ -71,7 +74,7 @@ function Caja() {
       if (e instanceof ApiError && e.codigo === "membresia_vencida") setEstado("membresia");
       else { setEstado("error"); avisarError(e); }
     }
-  }, [rol]);
+  }, [rol, sesion?.contexto.negocio_id, updateBusiness]);
 
   useEffect(() => { void cargar(); }, [cargar]);
 

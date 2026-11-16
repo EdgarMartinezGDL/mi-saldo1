@@ -16,7 +16,10 @@ import {
   ChevronDown,
   type LucideIcon,
 } from "lucide-react";
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { resumen } from "@/lib/api/cliente";
+import { configuracion } from "@/lib/api/caja";
 import { useAuth } from "@/components/auth-provider";
 import { MarcaMiSaldo } from "@/components/marca";
 import { LOGO_MARCA } from "@/lib/marca";
@@ -88,6 +91,7 @@ function AccesoValidaciones() {
   const { data } = useMisValidaciones();
   const pendientes = data?.validaciones?.filter((v) => v.estado === "pendiente").length ?? 0;
   if (estado !== "autenticado") return null;
+  if (pendientes === 0) return <span className="max-w-28 text-xs opacity-70">Mi Saldo Vip · By MicroFix Cloud</span>;
   return (
     <Link
       to="/validaciones"
@@ -105,13 +109,18 @@ function AccesoValidaciones() {
 }
 
 function AppBar() {
-  const { business } = useMiSaldo();
-  const { sesion } = useAuth();
+  const { business, updateBusiness } = useMiSaldo();
+  const { sesion, conectado } = useAuth();
+  const rol = sesion?.contexto.rol;
+  const negocioId = sesion?.contexto.negocio_id;
+  const datosCliente = useQuery({ queryKey: ["cliente-resumen", negocioId], queryFn: resumen, enabled: !!negocioId && rol === "cliente" && conectado !== false, retry: false, staleTime: 20_000 });
+  const datosEmpleado = useQuery({ queryKey: ["caja-configuracion", negocioId], queryFn: configuracion, enabled: !!negocioId && rol === "empleado" && conectado !== false, retry: false, staleTime: 20_000 });
+  const negocioActivo = rol === "cliente" ? datosCliente.data?.negocio : rol === "empleado" ? datosEmpleado.data?.negocio : undefined;
+  useEffect(() => { if (negocioActivo) updateBusiness({ name: negocioActivo.nombre_comercial, logo: negocioActivo.logo_url }); }, [negocioActivo, updateBusiness]);
   const { abrir, varios, dialogo } = useMisNegocios();
   const [logoError, setLogoError] = useState(false);
-  const rol = sesion?.contexto.rol;
   const nombre = rol && rol !== "staff" && sesion?.contexto.nombre_comercial ? sesion.contexto.nombre_comercial : null;
-  const logo = nombre ? business.logo : undefined;
+  const logo = nombre ? (rol === "cliente" || rol === "empleado" ? negocioActivo?.logo_url : business.logo) : undefined;
   const initials = (nombre ?? "")
     .split(" ")
     .filter((w) => w.length > 2)
@@ -122,17 +131,17 @@ function AppBar() {
 
   return (
     <header className="sticky top-0 z-30 border-b border-barra bg-barra text-barra-foreground shadow-flotante">
-      <div className="mx-auto grid max-w-5xl grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-3">
+      <div className="mx-auto grid max-w-5xl grid-cols-[minmax(0,1fr)_auto] items-center gap-2 px-4 py-2">
         <div className="flex min-w-0 items-center gap-3">
           {nombre ? (
             logo ? (
               <img
                 src={logo}
-                alt=""
-                className="size-11 shrink-0 rounded-full object-cover ring-1 ring-white/30"
+                alt={`Logo de ${nombre}`}
+                className="size-14 shrink-0 rounded-full object-cover ring-1 ring-barra-foreground/30"
               />
             ) : (
-              <div className="grid size-11 shrink-0 place-items-center rounded-full bg-white/15 text-base font-bold text-white ring-1 ring-white/30">
+              <div className="grid size-14 shrink-0 place-items-center rounded-full bg-barra-foreground/15 text-base font-bold text-barra-foreground ring-1 ring-barra-foreground/30">
                 {initials || "MS"}
               </div>
             )
