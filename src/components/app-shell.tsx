@@ -114,13 +114,13 @@ function AppBar() {
   const rol = sesion?.contexto.rol;
   const negocioId = sesion?.contexto.negocio_id;
   const datosCliente = useQuery({ queryKey: ["cliente-resumen", negocioId], queryFn: resumen, enabled: !!negocioId && rol === "cliente" && conectado !== false, retry: false, staleTime: 20_000 });
-  const datosEmpleado = useQuery({ queryKey: ["caja-configuracion", negocioId], queryFn: configuracion, enabled: !!negocioId && rol === "empleado" && conectado !== false, retry: false, staleTime: 20_000 });
-  const negocioActivo = rol === "cliente" ? datosCliente.data?.negocio : rol === "empleado" ? datosEmpleado.data?.negocio : undefined;
+  const datosEmpleado = useQuery({ queryKey: ["caja-configuracion", negocioId, rol], queryFn: configuracion, enabled: !!negocioId && (rol === "empleado" || rol === "dueno") && conectado !== false, retry: false, staleTime: 20_000 });
+  const negocioActivo = rol === "cliente" ? datosCliente.data?.negocio : rol === "empleado" || rol === "dueno" ? datosEmpleado.data?.negocio : undefined;
   useEffect(() => { if (negocioActivo) updateBusiness({ name: negocioActivo.nombre_comercial, logo: negocioActivo.logo_url }); }, [negocioActivo, updateBusiness]);
   const { abrir, varios, dialogo } = useMisNegocios();
   const [logoError, setLogoError] = useState(false);
   const nombre = rol && rol !== "staff" && sesion?.contexto.nombre_comercial ? sesion.contexto.nombre_comercial : null;
-  const logo = nombre ? (rol === "cliente" || rol === "empleado" ? negocioActivo?.logo_url : business.logo) : undefined;
+  const logo = nombre ? (negocioId ? negocioActivo?.logo_url : business.logo) : undefined;
   const initials = (nombre ?? "")
     .split(" ")
     .filter((w) => w.length > 2)

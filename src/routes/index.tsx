@@ -1,15 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, ChevronRight, Gift, History, Search, TriangleAlert } from "lucide-react";
 import { useEffect, useState } from "react";
-import { toast } from "sonner";
 import { AppShell } from "@/components/app-shell";
 import { useAuth } from "@/components/auth-provider";
 import { useMiSaldo } from "@/components/misaldo-provider";
 import { Cargando, RequiereSesion } from "@/components/requiere-sesion";
 import { Button } from "@/components/ui/button";
-import { ApiError } from "@/lib/api/client";
 import { useQuery } from "@tanstack/react-query";
-import { fichaNegocio, perfil, referidos, resumen, type Perfil, type Resumen } from "@/lib/api/cliente";
+import { fichaNegocio, perfil, referidos, resumen, type Perfil } from "@/lib/api/cliente";
 import { pesos, textoCaducidad, textoEstadoHorario } from "@/lib/api/formato";
 import { cn } from "@/lib/utils";
 import { useRecargaVisible } from "@/lib/use-recarga-visible";
@@ -43,8 +41,8 @@ export const Route = createFileRoute("/")({
 function ClienteInicio() {
   const { sesion, conectado } = useAuth();
   const { updateBusiness } = useMiSaldo();
-  const ficha = useQuery({ queryKey: ["cliente-ficha-negocio", sesion?.contexto.negocio_id], queryFn: fichaNegocio, enabled: !!sesion, retry: false });
-  const refs = useQuery({ queryKey: ["cliente-referidos"], queryFn: referidos, enabled: !!sesion, retry: false });
+  const ficha = useQuery({ queryKey: ["cliente-ficha-negocio", sesion?.contexto.negocio_id], queryFn: fichaNegocio, enabled: !!sesion && conectado !== false, retry: false });
+  const refs = useQuery({ queryKey: ["cliente-referidos"], queryFn: referidos, enabled: !!sesion && conectado !== false, retry: false });
   const hayReferidos = !!refs.data && (refs.data.programa !== null || refs.data.recomendados.length > 0);
   const consulta = useQuery({ queryKey: ["cliente-resumen", sesion?.contexto.negocio_id], queryFn: resumen, enabled: !!sesion && conectado !== false, retry: false, staleTime: 20_000 });
   const datos = consulta.data;
@@ -56,8 +54,9 @@ function ClienteInicio() {
     if (datos) updateBusiness({ name: datos.negocio.nombre_comercial, logo: datos.negocio.logo_url });
   }, [datos, updateBusiness]);
   useEffect(() => {
+    if (conectado === false) return;
     perfil().then(setYo).catch(() => undefined);
-  }, [sesion?.contexto.negocio_id]);
+  }, [sesion?.contexto.negocio_id, conectado]);
 
   if (!datos) {
     return (

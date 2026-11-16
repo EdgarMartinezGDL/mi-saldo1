@@ -87,6 +87,7 @@ export function PasoAcumular({ telefono, ficha, onVolver, onHecho }: Props) {
     ...(!pideCodigo ? { onOpcion: (i: number) => { const o = opciones[i]; if (o) setDestino(o.id); } } : {}),
     ...(!porMonto ? { onCantidad: (delta: number) => setCantidad((c) => Math.min(100, Math.max(1, c + delta))) } : {}),
     porMonto,
+    onCodigo: () => setCampo("codigo"),
   });
   const pregunta = esMonedero
     ? `¿Acumular por una compra de ${pesos(centavos, moneda)}?`
@@ -191,6 +192,7 @@ export function PasoCanjear({ telefono, ficha, onVolver, onHecho }: Props) {
     soloCodigo: !!destino && (!esMonedero || (centavos > 0 && centavos <= saldo)) && codigo.length !== 4,
     onConfirmar: () => setConfirmar(true), onVolver, destino,
     porMonto: esMonedero,
+    onCodigo: () => setCampo("codigo"),
   });
   const premio = tarjeta?.premio_por_canjear ?? tarjeta?.premio_texto ?? "";
 
