@@ -1,20 +1,23 @@
-import { useCallback, useRef, type KeyboardEvent as ReactKeyboardEvent } from "react";
-import { useConMouse, useFocoCaja, useTecla } from "./teclado";
+import { useCallback, useEffect, useRef, type KeyboardEvent as ReactKeyboardEvent } from "react";
+import { useConMouse, useTecla } from "./teclado";
 
 /** Shared Enter path for native form submission and keys outside text fields. */
-export function useTecladoOperacion({ listo, ocupado, soloCodigo = false, onConfirmar, onVolver, destino, onOpcion, onCantidad }: {
+export function useTecladoOperacion({ listo, ocupado, soloCodigo = false, onConfirmar, onVolver, destino, onOpcion, onCantidad, porMonto = true, onCodigo }: {
   listo: boolean; ocupado: boolean; soloCodigo?: boolean; onConfirmar: () => void; onVolver: () => void;
   destino?: string; onOpcion?: (indice: number) => void; onCantidad?: (delta: number) => void;
+  porMonto?: boolean;
+  onCodigo?: () => void;
 }) {
   const conMouse = useConMouse();
   const codigoRef = useRef<HTMLButtonElement>(null);
   const montoRef = useRef<HTMLInputElement>(null);
-  useFocoCaja(montoRef, destino);
+  const cantidadRef = useRef<HTMLButtonElement>(null);
+  useEffect(() => { (porMonto ? montoRef.current : cantidadRef.current)?.focus({ preventScroll: true }); }, [porMonto, destino]);
   const enviar = useCallback(() => {
     if (ocupado) return;
     if (listo) onConfirmar();
-    else if (soloCodigo) codigoRef.current?.focus();
-  }, [ocupado, listo, soloCodigo, onConfirmar]);
+    else if (soloCodigo) { onCodigo?.(); codigoRef.current?.focus(); }
+  }, [ocupado, listo, soloCodigo, onConfirmar, onCodigo]);
   useTecla((e) => {
     if (e.key === "Enter" && e.target instanceof HTMLElement && e.target.closest("[data-caja-opcion]")) return false;
     if (e.key === "Enter") { enviar(); return true; }
@@ -35,5 +38,5 @@ export function useTecladoOperacion({ listo, ocupado, soloCodigo = false, onConf
       e.preventDefault(); enviar();
     }
   };
-  return { conMouse, codigoRef, montoRef, enviar, alTeclaFormulario };
+  return { conMouse, codigoRef, montoRef, cantidadRef, enviar, alTeclaFormulario };
 }

@@ -56,7 +56,9 @@ export function avisarError(e: unknown, moneda = "MXN") {
   if (err?.codigo === "limite_pendientes") desc = "El cliente ya tiene 3 reclamaciones pendientes.";
   if (err?.codigo === "fecha_fuera_de_plazo") desc = "Solo compras de los últimos 30 días.";
   if (err?.status === 0) desc = "No se aplicó nada. Puedes reintentar con seguridad.";
-  toast.error(err?.message ?? "Algo salió mal. Intenta de nuevo.", { description: desc });
+  const cortos: Record<string, string> = { codigo_incorrecto: "Código incorrecto", codigo_acumulacion_incorrecto: "Código incorrecto", codigo_canje_incorrecto: "Código incorrecto", saldo_insuficiente: "Saldo insuficiente", tarjeta_vencida: "Premio vencido", pin_incorrecto: "PIN incorrecto", pin_pos_incorrecto: "PIN POS incorrecto", limite_pendientes: "Límite de reclamaciones", fecha_fuera_de_plazo: "Compra fuera de plazo", fuera_de_horario: "Fuera de horario" };
+  const mensaje = (err?.codigo && cortos[err.codigo]) || err?.message || "Intenta de nuevo";
+  toast.error(mensaje.length > 26 ? "No se pudo completar" : mensaje, { description: desc, classNames: { title: "text-lg font-semibold whitespace-nowrap text-foreground", description: "text-lg text-foreground" } });
 }
 
 /** Explicit confirmation before any value operation. */
@@ -100,4 +102,8 @@ export function EncabezadoPaso({ titulo, subtitulo, onVolver }: { titulo: string
   );
 }
 
-export const soloMonto = (v: string) => v.replace(/[^\d.]/g, "").replace(/(\..*)\./g, "$1");
+export const soloMonto = (v: string) => {
+  const limpio = v.replace(/[^\d.]/g, "");
+  const [entero = "", ...decimales] = limpio.split(".");
+  return decimales.length ? `${entero}.${decimales.join("").slice(0, 2)}` : entero;
+};

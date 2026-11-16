@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { History } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { AppShell } from "@/components/app-shell";
 import { EstadoVacio } from "@/components/estado-vacio";
@@ -10,6 +10,8 @@ import { ApiError } from "@/lib/api/client";
 import { movimientos, type Cursor, type Movimiento } from "@/lib/api/cliente";
 import { instante, pesos } from "@/lib/api/formato";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/components/auth-provider";
+import { useRecargaVisible } from "@/lib/use-recarga-visible";
 
 export const Route = createFileRoute("/historial")({
   head: () => ({
@@ -56,29 +58,40 @@ function describir(m: Movimiento) {
 }
 
 function Historial() {
+  const { sesion, conectado } = useAuth();
   const [filtro, setFiltro] = useState<Filtro>("todos");
   const [lista, setLista] = useState<Movimiento[] | null>(null);
   const [siguiente, setSiguiente] = useState<Cursor>(null);
   const [cargando, setCargando] = useState(false);
 
-  const cargar = async (cursor: Cursor) => {
+  const generacion = useRef(0);
+  const pendiente = useRef(false);
+  const cargar = useCallback(async (cursor: Cursor, silencioso = false) => {
+    if (!navigator.onLine || pendiente.current) return;
+    const version = generacion.current;
+    pendiente.current = true;
     setCargando(true);
     try {
       const r = await movimientos({ modulo: filtro === "todos" ? undefined : filtro, cursor });
+      if (version !== generacion.current) return;
       setLista((prev) => (cursor ? [...(prev ?? []), ...r.movimientos] : r.movimientos));
       setSiguiente(r.siguiente);
     } catch (e) {
-      toast.error(e instanceof ApiError ? e.message : "No se pudo cargar el historial.");
+      if (!silencioso && version === generacion.current) toast.error(e instanceof ApiError ? e.message : "No se pudo cargar el historial.");
     } finally {
-      setCargando(false);
+      if (version === generacion.current) { setCargando(false); pendiente.current = false; }
     }
-  };
+  }, [filtro, sesion?.contexto.negocio_id]);
+  useRecargaVisible(() => void cargar(null, true), conectado !== false);
 
   useEffect(() => {
     setLista(null);
+    generacion.current += 1;
+    pendiente.current = false;
     void cargar(null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filtro]);
+    return () => { generacion.current += 1; };
+  }, [cargar]);
 
   return (
     <AppShell>

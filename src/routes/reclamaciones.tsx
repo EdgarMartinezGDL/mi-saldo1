@@ -63,10 +63,10 @@ function MisReclamaciones() {
       <div className="flex flex-col gap-6">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Reclamaciones</h1>
-          <p className="mt-1 text-base text-muted-foreground">
-            Si una compra no se te registró, la reclamación la levanta el cajero del negocio: te llega un WhatsApp con el
-            folio. Aquí solo consultas el estado.
-          </p>
+          <div className="mt-3 rounded-xl bg-secondary p-4 text-base">
+            <p className="font-semibold">¿No se te sumó saldo o sellos en una compra?</p>
+            <p className="mt-1">Acude con el cajero del negocio con tu ticket (hasta 30 días después de la compra). Él levanta la aclaración y aquí verás su folio y cuando quede resuelta.</p>
+          </div>
         </div>
 
         {lista.length === 0 ? (

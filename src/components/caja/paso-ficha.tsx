@@ -1,5 +1,5 @@
 import { FileWarning, Gift, PlusCircle } from "lucide-react";
-import { useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { guardarCorreoCliente, type ClienteCaja } from "@/lib/api/caja";
 import { ApiError } from "@/lib/api/client";
 import { Button } from "@/components/ui/button";
@@ -24,7 +24,7 @@ function Accion({ icono, texto, ayuda, disabled, onClick, tecla }: { tecla: stri
       <span className="shrink-0">{icono}</span>
       <span className="min-w-0">
         <span className="block text-xl font-semibold">{texto}</span>
-        {ayuda && <span className="block text-sm opacity-80">{ayuda}</span>}
+        {ayuda && <span className="block text-base opacity-80">{ayuda}</span>}
       </span>
       {conMouse && <span className="ml-auto shrink-0"><Tecla>{tecla}</Tecla></span>}
     </button>
@@ -36,6 +36,8 @@ export const correoCajaValido = (correo: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 export function PasoFicha({ ficha, onAccion, onVolver, onRefrescar }: { ficha: ClienteCaja; onAccion: (a: "acumular" | "canjear" | "reclamar") => void; onVolver: () => void; onRefrescar: () => Promise<void> }) {
   const conMouse = useConMouse();
   useFocoCaja();
+  const resultadoRef = useRef<HTMLDivElement>(null);
+  useEffect(() => { resultadoRef.current?.scrollIntoView?.({ behavior: "smooth", block: "start" }); }, [ficha.cliente.persona_id]);
   const { moneda, ejecutar } = useCaja();
   const [editando, setEditando] = useState(false);
   const [correo, setCorreo] = useState("");
@@ -52,7 +54,7 @@ export function PasoFicha({ ficha, onAccion, onVolver, onRefrescar }: { ficha: C
       setEditando(false); setCorreo("");
       await onRefrescar();
     } catch (e) {
-      if (e instanceof ApiError && e.status === 400) toast.error("Revisa el correo: está mal escrito.");
+      if (e instanceof ApiError && e.status === 400) toast.error("Revisa el correo", { classNames: { title: "text-lg font-semibold whitespace-nowrap text-foreground" } });
       else avisarError(e, moneda);
       if (e instanceof ApiError && e.status === 404) onVolver();
     } finally { setOcupado(false); }
@@ -72,7 +74,7 @@ export function PasoFicha({ ficha, onAccion, onVolver, onRefrescar }: { ficha: C
   }, { activo: !ocupado, inclusoEnCampos: true });
   const premios = (ficha.tarjetas ?? []).filter((t) => t.completas_por_canjear > 0);
   return (
-    <div className="mx-auto flex w-full max-w-xl lg:max-w-none flex-col gap-5">
+    <div ref={resultadoRef} className="mx-auto flex w-full max-w-xl lg:max-w-none flex-col gap-5">
       <EncabezadoPaso titulo={nombreCliente(c)} subtitulo={c.cuenta_activada ? "Cliente con app activada" : "Aún no activa su app"} onVolver={onVolver} />
 
       <div className="grid gap-5 lg:gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
@@ -126,10 +128,10 @@ export function PasoFicha({ ficha, onAccion, onVolver, onRefrescar }: { ficha: C
 
       {premios.length > 0 && (
         <div className="rounded-2xl bg-primary/10 p-4 ring-1 ring-primary/40">
-          <p className="flex items-center gap-2 text-base font-semibold"><Gift className="size-5" /> Premios listos</p>
+          <p className="flex items-center gap-2 text-xl font-semibold"><Gift className="size-8 shrink-0" /> ¡Premio listo para canjear!</p>
           <ul className="mt-2 flex flex-col gap-1">
             {premios.map((t) => (
-              <li key={t.tarjeta_digital_id} className="text-base">{t.completas_por_canjear} × {t.premio_por_canjear ?? t.premio_texto}</li>
+              <li key={t.tarjeta_digital_id} className="text-base">{t.premio_por_canjear ?? t.premio_texto}{t.completas_por_canjear > 1 ? ` (${t.completas_por_canjear})` : ""}</li>
             ))}
           </ul>
         </div>
@@ -141,7 +143,7 @@ export function PasoFicha({ ficha, onAccion, onVolver, onRefrescar }: { ficha: C
           ayuda={puedeAcumular(ficha) ? "Saldo o sellos por esta compra" : "Este cliente no puede acumular aquí"} onClick={() => onAccion("acumular")} />
         <Accion tecla="C" icono={<Gift className="size-8" />} texto="Canjear" disabled={!puedeCanjear(ficha)}
           ayuda={!c.puede_canjear ? "Debe activar su app para canjear" : puedeCanjear(ficha) ? "Usar saldo o entregar un premio" : "No tiene saldo ni premios"} onClick={() => onAccion("canjear")} />
-        <Accion tecla="R" icono={<FileWarning className="size-8" />} texto="Reportar compra no registrada" ayuda="Si no se le sumó saldo o sellos" onClick={() => onAccion("reclamar")} />
+        <Accion tecla="R" icono={<FileWarning className="size-8" />} texto="Reclamación: compra no registrada" ayuda="Si no se le sumó saldo o sellos" onClick={() => onAccion("reclamar")} />
       </div>
       </div>
     </div>

@@ -1,9 +1,12 @@
 import { Gift, Minus, Plus, PlusCircle, Stamp, Wallet } from "lucide-react";
-import { useMemo, useState, type ReactNode, type RefObject } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from "react";
 import { CampoDigitos } from "@/components/enlace-ui";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { NumericKeypad } from "@/components/numeric-keypad";
+import { fechaTarjeta, vencimientoRenovado } from "@/lib/fecha-tarjeta";
 import { acumularMonedero, acumularSellos, canjearMonedero, canjearPremio, type ClienteCaja } from "@/lib/api/caja";
 import { telefonoE164 } from "@/lib/api/client";
 import { aCentavos, fechaCorta, pesos } from "@/lib/api/formato";
@@ -25,22 +28,23 @@ function Opciones({ opciones, valor, onChange }: { opciones: Opcion[]; valor: st
         <button data-caja-opcion key={o.id} type="button" onClick={() => onChange(o.id)}
           className={cn("flex min-h-16 items-center gap-3 rounded-2xl p-4 text-left ring-1 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background", valor === o.id ? "bg-primary/12 ring-2 ring-primary" : "bg-card ring-border")}>
           <span className="shrink-0 text-primary">{o.icono}</span>
-          <span className="min-w-0"><span className="block text-lg font-semibold">{o.titulo}</span><span className="block truncate text-sm text-muted-foreground">{o.detalle}</span></span>
+          <span className="min-w-0"><span className="block text-lg font-semibold">{o.titulo}</span><span className="block text-lg text-muted-foreground">{o.detalle}</span></span>
         </button>
       ))}
     </div>
   );
 }
 
-function CampoMonto({ id, etiqueta, valor, onChange, ayuda, extra, inputRef, conMouse }: { conMouse: boolean; inputRef?: RefObject<HTMLInputElement | null>; id: string; etiqueta: string; valor: string; onChange: (v: string) => void; ayuda?: string | undefined; extra?: ReactNode }) {
+function CampoMonto({ id, etiqueta, valor, onChange, ayuda, extra, inputRef, conMouse, activo, onActivar }: { activo: boolean; onActivar: () => void; conMouse: boolean; inputRef?: RefObject<HTMLInputElement | null>; id: string; etiqueta: string; valor: string; onChange: (v: string) => void; ayuda?: string | undefined; extra?: ReactNode }) {
   return (
     <div className="flex flex-col gap-2">
       <Label htmlFor={id} className="text-base">{etiqueta}</Label>
       <div className="flex gap-2">
-        <Input ref={inputRef} data-sin-centrar={conMouse ? "" : undefined} id={id} inputMode="decimal" placeholder="0.00" value={valor} onChange={(e) => onChange(soloMonto(e.target.value))} className="h-16 flex-1 font-mono text-3xl font-bold tabular-nums" />
+        <Input ref={inputRef} data-sin-centrar={conMouse ? "" : undefined} id={id} inputMode={conMouse ? "decimal" : "none"} onFocus={onActivar} placeholder="0.00" value={valor} onChange={(e) => onChange(soloMonto(e.target.value))} className="h-16 min-w-0 flex-1 font-mono text-3xl font-bold tabular-nums" />
         {extra}
       </div>
-      {ayuda && <p className="text-sm text-muted-foreground">{ayuda}</p>}
+      {ayuda && <p className="text-lg text-muted-foreground">{ayuda}</p>}
+      {!conMouse && activo && <NumericKeypad decimal onKey={(k) => onChange(k === "borrar" ? valor.slice(0, -1) : soloMonto(valor + k))} />}
     </div>
   );
 }
@@ -49,7 +53,7 @@ type Props = { telefono: string; ficha: ClienteCaja; onVolver: () => void; onHec
 
 /** Acumular saldo (§7.1) or sellos (§7.2). */
 export function PasoAcumular({ telefono, ficha, onVolver, onHecho }: Props) {
-  const { config, moneda, ejecutar, recargarConfig } = useCaja();
+  const { config, moneda, zona, ejecutar, recargarConfig } = useCaja();
   const llave = useLlave();
   const opciones = useMemo<Opcion[]>(() => [
     ...(ficha.monedero?.acumula ? [{ id: "monedero", titulo: "Saldo", detalle: `Cashback ${Math.round((config.monedero?.factor_cashback ?? 0) * 1000) / 10}%`, icono: <Wallet className="size-7" /> }] : []),
@@ -61,25 +65,36 @@ export function PasoAcumular({ telefono, ficha, onVolver, onHecho }: Props) {
   const [codigo, setCodigo] = useState("");
   const [confirmar, setConfirmar] = useState(false);
   const [ocupado, setOcupado] = useState(false);
+  const [campo, setCampo] = useState<"monto" | "codigo">("monto");
+  const [explicado, setExplicado] = useState(false);
+  const confirmarRef = useRef<HTMLButtonElement>(null);
+  useEffect(() => { setExplicado(false); setCampo("monto"); }, [destino, ficha.cliente.persona_id]);
+  useEffect(() => { if (codigo.length === 4) confirmarRef.current?.scrollIntoView?.({ behavior: "smooth", block: "start" }); }, [codigo]);
 
   const tarjeta = ficha.tarjetas?.find((t) => t.tarjeta_digital_id === destino);
   const esMonedero = destino === "monedero";
   const porMonto = esMonedero || tarjeta?.tipo_sello === "por_monto";
   const centavos = aCentavos(monto);
   const pideCodigo = ficha.cliente.requiere_codigo_acumulacion;
-  const listo = !!destino && (porMonto ? centavos > 0 : cantidad >= 1) && (!pideCodigo || codigo.length === 4);
+  const vigencia = config.tarjetas?.find((t) => t.tarjeta_digital_id === destino)?.vigencia_dias;
+  const conVigencia = !esMonedero && vigencia != null;
+  const primeraCompra = conVigencia && tarjeta?.sellos_actuales === 0 && tarjeta.remanente_centavos === 0 && tarjeta.completas_por_canjear === 0;
+  const listo = !!destino && (porMonto ? centavos > 0 : cantidad >= 1) && (!pideCodigo || codigo.length === 4) && (!primeraCompra || explicado);
   const estimado = Math.floor(centavos * (config.monedero?.factor_cashback ?? 0));
 
   const teclado = useTecladoOperacion({ listo, ocupado, soloCodigo: !!destino && (porMonto ? centavos > 0 : cantidad >= 1) && pideCodigo && codigo.length !== 4,
     onConfirmar: () => setConfirmar(true), onVolver, destino,
     ...(!pideCodigo ? { onOpcion: (i: number) => { const o = opciones[i]; if (o) setDestino(o.id); } } : {}),
     ...(!porMonto ? { onCantidad: (delta: number) => setCantidad((c) => Math.min(100, Math.max(1, c + delta))) } : {}),
+    porMonto,
+    onCodigo: () => setCampo("codigo"),
   });
   const pregunta = esMonedero
     ? `¿Acumular por una compra de ${pesos(centavos, moneda)}?`
     : porMonto ? `¿Dar sellos por una compra de ${pesos(centavos, moneda)}?` : `¿Dar ${cantidad} ${cantidad === 1 ? "sello" : "sellos"}?`;
 
   const enviar = async () => {
+    if (!listo || ocupado) return;
     setOcupado(true);
     const tel = telefonoE164(telefono);
     const cod = pideCodigo ? { codigo_acumulacion: codigo } : {};
@@ -101,7 +116,7 @@ export function PasoAcumular({ telefono, ficha, onVolver, onHecho }: Props) {
         const premio = r.tarjetas_completadas[0]?.premio_texto;
         onHecho({
           titulo: premio ? `¡Completó su tarjeta! Ganó: ${premio}` : `+${r.sellos_agregados} ${r.sellos_agregados === 1 ? "sello" : "sellos"}`,
-          lineas: [`${tarjeta.nombre}: ${r.tarjeta.sellos_actuales}/${r.tarjeta.sellos_requeridos}`, ...(r.cliente_sin_app_activada ? ["El cliente aún no activa su app."] : [])],
+          lineas: [`${tarjeta.nombre}: ${r.tarjeta.sellos_actuales}/${r.tarjeta.sellos_requeridos}`, ...(r.tarjeta.fecha_vencimiento ? [`Tarjeta vence el ${fechaTarjeta(r.tarjeta.fecha_vencimiento)} (se renueva con cada compra)`] : []), ...(r.cliente_sin_app_activada ? ["El cliente aún no activa su app."] : [])],
         });
       }
       setConfirmar(false);
@@ -121,21 +136,26 @@ export function PasoAcumular({ telefono, ficha, onVolver, onHecho }: Props) {
       <form noValidate onSubmit={(e) => { e.preventDefault(); teclado.enviar(); }} onKeyDown={teclado.alTeclaFormulario} className="flex flex-col gap-4 rounded-2xl bg-card p-5 ring-1 ring-border">
         {porMonto ? (
           <CampoMonto conMouse={teclado.conMouse} inputRef={teclado.montoRef} id="acu-monto" etiqueta="Total de la compra" valor={monto} onChange={setMonto}
+            activo={campo === "monto"} onActivar={() => setCampo("monto")}
             ayuda={esMonedero && centavos > 0 ? `Ganará aprox. ${pesos(estimado, moneda)}` : tarjeta?.tipo_sello === "por_monto" ? "Los sellos se calculan según el monto." : undefined} />
         ) : (
           <div>
             <p className="mb-2 text-base font-medium">Sellos a dar</p>
             <div className="flex items-center gap-3">
-              <Button type="button" variant="outline" size="lg" className="size-16" aria-label="Un sello menos" onClick={() => setCantidad((c) => Math.max(1, c - 1))}><Minus className="size-6" /></Button>
+              <Button ref={teclado.cantidadRef} type="button" variant="outline" size="lg" className="size-16" aria-label="Un sello menos" onClick={() => setCantidad((c) => Math.max(1, c - 1))}><Minus className="size-6" /></Button>
               <span className="flex-1 text-center font-mono text-4xl font-bold tabular-nums">{cantidad}</span>
               <Button type="button" variant="outline" size="lg" className="size-16" aria-label="Un sello más" onClick={() => setCantidad((c) => Math.min(100, c + 1))}><Plus className="size-6" /></Button>
             </div>
           </div>
         )}
         {pideCodigo && (
-          <CampoDigitos botonRef={teclado.codigoRef} tecladoFisico={!ocupado} compacto={teclado.conMouse} etiqueta="Código de acumulación del cliente" ayuda="4 dígitos, lo ve en su app" valor={codigo} onChange={(v) => { if (!ocupado) setCodigo(v); }} largo={4} activo onActivar={() => undefined} />
+          <CampoDigitos botonRef={teclado.codigoRef} tecladoFisico={!ocupado} compacto={teclado.conMouse} etiqueta="Código de acumulación del cliente" ayuda="4 dígitos, lo ve en su app" valor={codigo} onChange={(v) => { if (!ocupado) setCodigo(v); }} largo={4} activo={teclado.conMouse || campo === "codigo" || !porMonto} onActivar={() => setCampo("codigo")} />
         )}
-        <Button type="submit" size="lg" className="h-16 w-full text-xl" disabled={!listo || ocupado}>
+        {conVigencia && tarjeta && <div className="rounded-xl bg-warning/15 p-3 text-base text-foreground">
+          <p>⏳ <strong>Con esta compra, la tarjeta "{tarjeta.nombre}" vence el {vencimientoRenovado(vigencia, zona)} si el cliente no vuelve a comprar.</strong> Cada compra renueva la fecha. Si vence, pierde los sellos y el monto acumulado de esta tarjeta (no su saldo ni otras tarjetas).</p>
+          {primeraCompra && <div className="mt-3 flex items-start gap-3"><Checkbox id="vigencia-explicada" checked={explicado} onCheckedChange={(v) => setExplicado(v === true)} className="mt-1 size-6 shrink-0" /><Label htmlFor="vigencia-explicada" className="text-base">Ya le expliqué al cliente cuándo vence esta tarjeta</Label></div>}
+        </div>}
+        <Button ref={confirmarRef} type="submit" size="lg" className="h-16 w-full scroll-mb-24 text-xl" disabled={!listo || ocupado}>
           <PlusCircle className="size-6" /> Acumular<Tecla>Enter</Tecla>
         </Button>
       </form>
@@ -159,6 +179,10 @@ export function PasoCanjear({ telefono, ficha, onVolver, onHecho }: Props) {
   const [codigo, setCodigo] = useState("");
   const [confirmar, setConfirmar] = useState(false);
   const [ocupado, setOcupado] = useState(false);
+  const [campo, setCampo] = useState<"monto" | "codigo">("monto");
+  const confirmarRef = useRef<HTMLButtonElement>(null);
+  useEffect(() => { setCampo("monto"); }, [destino]);
+  useEffect(() => { if (codigo.length === 4) confirmarRef.current?.scrollIntoView?.({ behavior: "smooth", block: "start" }); }, [codigo]);
 
   const esMonedero = destino === "monedero";
   const tarjeta = ficha.tarjetas?.find((t) => t.tarjeta_digital_id === destino);
@@ -167,6 +191,8 @@ export function PasoCanjear({ telefono, ficha, onVolver, onHecho }: Props) {
   const teclado = useTecladoOperacion({ listo, ocupado,
     soloCodigo: !!destino && (!esMonedero || (centavos > 0 && centavos <= saldo)) && codigo.length !== 4,
     onConfirmar: () => setConfirmar(true), onVolver, destino,
+    porMonto: esMonedero,
+    onCodigo: () => setCampo("codigo"),
   });
   const premio = tarjeta?.premio_por_canjear ?? tarjeta?.premio_texto ?? "";
 
@@ -206,13 +232,14 @@ export function PasoCanjear({ telefono, ficha, onVolver, onHecho }: Props) {
       <form noValidate onSubmit={(e) => { e.preventDefault(); teclado.enviar(); }} onKeyDown={teclado.alTeclaFormulario} className="flex flex-col gap-4 rounded-2xl bg-card p-5 ring-1 ring-border">
         {esMonedero ? (
           <CampoMonto conMouse={teclado.conMouse} inputRef={teclado.montoRef} id="canje-monto" etiqueta="Saldo a usar" valor={monto} onChange={setMonto}
+            activo={campo === "monto"} onActivar={() => setCampo("monto")}
             ayuda={centavos > saldo ? `Solo tiene ${pesos(saldo, moneda)}.` : `Disponible: ${pesos(saldo, moneda)}`}
             extra={<Button type="button" variant="outline" size="lg" className="h-16" onClick={() => setMonto((saldo / 100).toFixed(2))}>Todo</Button>} />
         ) : tarjeta ? (
           <p className="text-lg">Premio: <span className="font-semibold">{premio}</span></p>
         ) : null}
-        <CampoDigitos botonRef={teclado.codigoRef} tecladoFisico={!ocupado} compacto={teclado.conMouse} etiqueta="Código de canje del cliente" ayuda="4 dígitos, lo ve en su app" valor={codigo} onChange={(v) => { if (!ocupado) setCodigo(v); }} largo={4} activo onActivar={() => undefined} />
-        <Button type="submit" size="lg" className="h-16 w-full text-xl" disabled={!listo || ocupado}>
+        <CampoDigitos botonRef={teclado.codigoRef} tecladoFisico={!ocupado} compacto={teclado.conMouse} etiqueta="Código de canje del cliente" ayuda="4 dígitos, lo ve en su app" valor={codigo} onChange={(v) => { if (!ocupado) setCodigo(v); }} largo={4} activo={teclado.conMouse || campo === "codigo" || !esMonedero} onActivar={() => setCampo("codigo")} />
+        <Button ref={confirmarRef} type="submit" size="lg" className="h-16 w-full scroll-mb-24 text-xl" disabled={!listo || ocupado}>
           <Gift className="size-6" /> Canjear<Tecla>Enter</Tecla>
         </Button>
       </form>

@@ -55,7 +55,7 @@ export function FranjaCaja({ venceEn, zona, gracia, onCerrada }: { venceEn: stri
               ["Retroceso / Supr", "Borrar un dígito / borrar todo"],
               ["Enter", "Buscar, continuar o confirmar"],
               ["Esc", "Volver o cancelar"],
-              ["A · C · R", "Acumular · Canjear · Reportar (en la ficha)"],
+              ["A · C · R", "Acumular · Canjear · Reclamación: compra no registrada (en la ficha)"],
               ["1 · 2 · 3", "Elegir saldo o tarjeta (si no pide código)"],
               ["+ · −", "Sumar o quitar un sello"],
               ["N", "Nuevo cliente (en el comprobante)"],

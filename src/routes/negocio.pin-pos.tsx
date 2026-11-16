@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type { ConfiguracionNegocio } from "@/lib/api/caja";
 import { cambiarPinPos } from "@/lib/api/dueno";
+import { ApiError } from "@/lib/api/client";
 
 export const Route = createFileRoute("/negocio/pin-pos")({
   validateSearch: validarBusquedaAsistente,
@@ -36,10 +37,16 @@ function PinPos({ cfg }: { cfg: ConfiguracionNegocio }) {
   const { actualizar } = useConfigNegocio();
   const [pin, setPin] = useState("");
   const [pinPos, setPinPos] = useState("");
+  const [confirmacion, setConfirmacion] = useState("");
+  const [errorPin, setErrorPin] = useState<string | null>(null);
+  const [intentos, setIntentos] = useState<number | null>(null);
   const [ocupado, setOcupado] = useState(false);
   const definido = cfg.negocio.pin_pos_configurado;
+  const listo = /^\d{4,}$/.test(pin) && pinPos.length === 6 && confirmacion === pinPos;
 
   const guardar = async () => {
+    if (!listo || ocupado) return;
+    setErrorPin(null); setIntentos(null);
     setOcupado(true);
     try {
       const r = await conTotp(() => cambiarPinPos(pin, pinPos));
@@ -49,9 +56,14 @@ function PinPos({ cfg }: { cfg: ConfiguracionNegocio }) {
       });
       setPin("");
       setPinPos("");
+      setConfirmacion("");
       actualizar((c) => ({ ...c, negocio: { ...c.negocio, pin_pos_configurado: true } }));
     } catch (e) {
-      mostrarError(e);
+      if (e instanceof ApiError && e.codigo === "pin_incorrecto") {
+        setErrorPin("Tu PIN de acceso es incorrecto");
+        const restantes = e.extras["intentos_restantes"];
+        setIntentos(typeof restantes === "number" ? restantes : null);
+      } else mostrarError(e);
     } finally {
       setOcupado(false);
     }
@@ -65,15 +77,23 @@ function PinPos({ cfg }: { cfg: ConfiguracionNegocio }) {
       </p>
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
         <div className="flex flex-col gap-2">
-          <Label htmlFor="pin" className="text-base">Tu PIN de acceso</Label>
+          <Label htmlFor="pin" className="text-base">Tu PIN de acceso (con el que entras a la app)</Label>
           <Input id="pin" type="password" inputMode="numeric" maxLength={128} value={pin} onChange={(e) => setPin(e.target.value)} className="h-14 text-center font-mono text-xl tracking-[0.4em]" />
+          <p className="text-sm text-muted-foreground">Lo pedimos para confirmar que eres tú.</p>
+          {errorPin && <div role="alert" className="text-base font-semibold text-destructive"><p>{errorPin}</p>{intentos !== null && <p>Te quedan {intentos} intentos</p>}</div>}
         </div>
         <div className="flex flex-col gap-2">
-          <Label htmlFor="pinpos" className="text-base">Nuevo PIN POS</Label>
+          <Label htmlFor="pinpos" className="text-base">Nuevo PIN POS para abrir las cajas</Label>
           <Input id="pinpos" type="password" inputMode="numeric" maxLength={6} value={pinPos} onChange={(e) => setPinPos(e.target.value.replace(/\D/g, ""))} className="h-14 text-center font-mono text-xl tracking-[0.4em]" />
+          <p className="text-sm text-muted-foreground">6 dígitos. No uses secuencias (123456) ni el mismo dígito (111111).</p>
+        </div>
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="pinpos-confirmar" className="text-base">Confirma el nuevo PIN POS</Label>
+          <Input id="pinpos-confirmar" type="password" inputMode="numeric" maxLength={6} value={confirmacion} onChange={(e) => setConfirmacion(e.target.value.replace(/\D/g, ""))} className="h-14 text-center font-mono text-xl tracking-[0.4em]" />
+          {confirmacion.length === 6 && confirmacion !== pinPos && <p role="alert" className="text-base font-semibold text-destructive">Los dos PIN POS no coinciden</p>}
         </div>
       </div>
-      <Button size="lg" className="tap-target mt-5 h-14 w-full text-base sm:w-auto sm:px-8" disabled={pin.length < 4 || pinPos.length !== 6 || ocupado} onClick={() => void guardar()}>
+      <Button size="lg" className="tap-target mt-5 h-14 w-full text-base sm:w-auto sm:px-8" disabled={!listo || ocupado} onClick={() => void guardar()}>
         {ocupado ? "Guardando…" : definido ? "Cambiar PIN POS" : "Definir PIN POS"}
       </Button>
     </section>

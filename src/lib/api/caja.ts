@@ -22,6 +22,7 @@ export interface ConfiguracionCaja {
   modulos_en_retiro: Array<"monedero" | "tarjetas_sellos">;
   monedero: { factor_cashback: number; vigencia_dias: number | null; actualizado_en: string } | null;
   horarios?: Horario[];
+  tarjetas?: TarjetaConfig[];
 }
 
 export interface ConfiguracionNegocio extends ConfiguracionCaja {
