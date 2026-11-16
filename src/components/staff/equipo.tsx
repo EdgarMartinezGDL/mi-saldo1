@@ -156,7 +156,7 @@ function NuevoMiembro({ abierto, onAbierto, onCreado }: { abierto: boolean; onAb
             telefono: `${lada}${tel}`, nombre: nombre.trim(), correo: correo.trim(), nivel,
             ...(ap.trim() ? { apellido_paterno: ap.trim() } : {}), ...(am.trim() ? { apellido_materno: am.trim() } : {}),
           }));
-          toast.success(r.invitacion_vence_en ? "Le enviamos una invitación por WhatsApp" : "Ya tenía cuenta: le avisamos");
+          toast.success(r.invitacion_vence_en ? "Le enviamos una invitación por correo" : "Ya tenía cuenta: le avisamos");
           setTel(""); setNombre(""); setAp(""); setAm(""); setCorreo(""); setNivel("soporte");
           onAbierto(false);
           onCreado();
