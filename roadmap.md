@@ -6,7 +6,8 @@
 - [x] Barra: solicitudes pendientes y logo del negocio por contexto.
 - [x] Cliente: actualización visible cada 20 s, historial y reclamaciones.
 - [x] Tarjetas: leyendas renovables, candado inicial y comprobante.
-- [ ] Pruebas P29, suite completa y verificación visual (sesión real depende de la API existente).
+- [x] P29: 16 pruebas nuevas; 379 pruebas pasan y compilación OK. Caja verificada a 360/1280 px con respuestas simuladas, sin compras.
+- [ ] Verificación con sesión real: /caja redirige a /login; requiere acceso autenticado de la API existente.
 
 ## P25b — Íconos de la app con el logo de Mi Saldo Vip (completo)
 - [x] Guardadas las 2 imágenes adjuntas (512×512, sin modificar) en public/icons/mi-saldo-vip-512.png y mi-saldo-vip-maskable-512.png; borrados icon-512.png, favicon.png y favicon.ico del logo verde.
