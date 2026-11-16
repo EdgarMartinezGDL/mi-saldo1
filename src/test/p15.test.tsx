@@ -152,11 +152,11 @@ describe("P15 teclado de Caja", () => {
     rerender(<><Escucha /><div role="alertdialog" /></>); tecla("1"); expect(manejar).not.toHaveBeenCalled();
     rerender(<Escucha />); tecla("1"); expect(manejar).toHaveBeenCalledOnce();
   });
-  it("sin mouse no muestra pistas ni enfoca o desenfoca campos automáticamente", () => {
+  it("sin mouse no muestra pistas y enfoca el monto sin teclado del sistema", () => {
     mouse(false);
     const input = document.createElement("input"); document.body.append(input); input.focus();
     const { container } = caja(<PasoAcumular telefono="5512345678" ficha={ficha} onVolver={() => {}} onHecho={() => {}} />);
-    expect(input).toHaveFocus(); expect(container.querySelector("kbd")).toBeNull(); input.remove();
+    expect(screen.getByLabelText("Total de la compra")).toHaveFocus(); expect(screen.getByLabelText("Total de la compra")).toHaveAttribute("inputmode", "none"); expect(container.querySelector("kbd")).toBeNull(); input.remove();
   });
   it("Enter en monto pasa al código y luego abre confirmación sin canjear todavía", () => {
     caja(<PasoCanjear telefono="5512345678" ficha={ficha} onVolver={() => {}} onHecho={() => {}} />);
