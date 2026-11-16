@@ -16,9 +16,10 @@ export function useConMouse() {
 
 const esCampoTexto = (el: EventTarget | null) =>
   el instanceof HTMLElement && (el.tagName === "INPUT" || el.tagName === "TEXTAREA" || el.tagName === "SELECT" || el.isContentEditable);
+/** A dialog on top blocks the till keys. One that is closing (Radix exit animation, data-state="closed") no longer does. */
 const dialogoEncima = (dentro: HTMLElement | null) =>
   Array.from(document.querySelectorAll<HTMLElement>('[role="dialog"],[role="alertdialog"]'))
-    .some((d) => !dentro || !d.contains(dentro));
+    .some((d) => d.getAttribute("data-state") !== "closed" && (!dentro || !d.contains(dentro)));
 
 export interface OpcionesTecla {
   activo?: boolean;
