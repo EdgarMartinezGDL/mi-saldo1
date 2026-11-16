@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, type KeyboardEvent as ReactKeyboardEvent } from "react";
-import { useConMouse, useFocoCaja, useTecla } from "./teclado";
+import { useConMouse, useTecla } from "./teclado";
 
 /** Shared Enter path for native form submission and keys outside text fields. */
 export function useTecladoOperacion({ listo, ocupado, soloCodigo = false, onConfirmar, onVolver, destino, onOpcion, onCantidad, porMonto = true, onCodigo }: {
@@ -12,8 +12,7 @@ export function useTecladoOperacion({ listo, ocupado, soloCodigo = false, onConf
   const codigoRef = useRef<HTMLButtonElement>(null);
   const montoRef = useRef<HTMLInputElement>(null);
   const cantidadRef = useRef<HTMLButtonElement>(null);
-  useFocoCaja(montoRef, destino);
-  useEffect(() => { if (!porMonto) cantidadRef.current?.focus({ preventScroll: true }); }, [porMonto, destino]);
+  useEffect(() => { (porMonto ? montoRef.current : cantidadRef.current)?.focus({ preventScroll: true }); }, [porMonto, destino]);
   const enviar = useCallback(() => {
     if (ocupado) return;
     if (listo) onConfirmar();

@@ -169,9 +169,6 @@ function AppBar() {
                 ) : (
                   <p className="truncate text-lg font-bold text-white">{nombre}</p>
                 )}
-                <p className="truncate text-[11px] text-white/80">
-                  <MarcaMiSaldo /> · By MicroFix Cloud
-                </p>
               </>
             ) : (
               <p className="truncate text-lg font-bold text-white">

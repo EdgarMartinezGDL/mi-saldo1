@@ -1,11 +1,11 @@
 # Roadmap
 
 ## P29 — Claridad y actualización del cliente y Caja
-- [ ] PIN POS y activación: etiquetas, confirmación y errores.
-- [ ] Caja: legibilidad, premios, scroll, foco y teclado decimal compartido.
-- [ ] Barra: solicitudes pendientes y logo del negocio por contexto.
-- [ ] Cliente: actualización visible cada 20 s, historial y reclamaciones.
-- [ ] Tarjetas: leyendas renovables, candado inicial y comprobante.
+- [x] PIN POS y activación: etiquetas, confirmación y errores.
+- [x] Caja: legibilidad, premios, scroll, foco y teclado decimal compartido.
+- [x] Barra: solicitudes pendientes y logo del negocio por contexto.
+- [x] Cliente: actualización visible cada 20 s, historial y reclamaciones.
+- [x] Tarjetas: leyendas renovables, candado inicial y comprobante.
 - [ ] Pruebas P29, suite completa y verificación visual (sesión real depende de la API existente).
 
 ## P25b — Íconos de la app con el logo de Mi Saldo Vip (completo)

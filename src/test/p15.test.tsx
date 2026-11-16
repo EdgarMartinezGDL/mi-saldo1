@@ -86,7 +86,7 @@ describe("P15 teclado de Caja", () => {
     mouse(false);
     caja(<PasoCanjear telefono="5512345678" ficha={ficha} onVolver={() => {}} onHecho={() => {}} />);
     const monto = screen.getByLabelText("Saldo a usar");
-    expect(monto).not.toHaveFocus();
+    expect(monto).toHaveFocus();
     fireEvent.change(monto, { target: { value: "20" } }); monto.focus();
     fireEvent.keyDown(monto, { key: "Enter" });
     expect(screen.getByRole("button", { name: /Código de canje del cliente/ })).toHaveFocus();
