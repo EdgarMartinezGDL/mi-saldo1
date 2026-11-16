@@ -84,16 +84,16 @@ describe("P29 vencimiento", () => {
   });
   it("con tres sellos solo muestra la fecha renovada en la zona del negocio", () => {
     vi.useFakeTimers({ toFake: ["Date"] }); vi.setSystemTime(new Date("2026-11-16T02:20:00Z"));
-    acumular({ ...ficha, tarjetas: ficha.tarjetas?.map((t) => ({ ...t, sellos_actuales: 3 })) });
+    acumular({ ...ficha, tarjetas: (ficha.tarjetas ?? []).map((t) => ({ ...t, sellos_actuales: 3 })) });
     expect(screen.queryByRole("checkbox")).toBeNull(); expect(screen.getByText(/vence el 15\/12\/2026/)).toBeInTheDocument();
   });
   it("sin vigencia no muestra leyenda ni casilla", () => {
-    acumular(ficha, { ...cfg, tarjetas: cfg.tarjetas?.map((t) => ({ ...t, vigencia_dias: null })) });
+    acumular(ficha, { ...cfg, tarjetas: (cfg.tarjetas ?? []).map((t) => ({ ...t, vigencia_dias: null })) });
     expect(screen.queryByRole("checkbox")).toBeNull(); expect(screen.queryByText(/Cada compra renueva/)).toBeNull();
   });
   it.each(["2027-02-14", null])("comprobante muestra vencimiento solo cuando existe: %s", async (fecha) => {
     const hecho = vi.fn(); m.sellos.mockResolvedValue({ sellos_agregados: 1, tarjetas_completadas: [], tarjeta: { sellos_actuales: 4, sellos_requeridos: 10, fecha_vencimiento: fecha } });
-    acumular({ ...ficha, tarjetas: ficha.tarjetas?.map((t) => ({ ...t, sellos_actuales: 3 })) }, cfg, hecho);
+    acumular({ ...ficha, tarjetas: (ficha.tarjetas ?? []).map((t) => ({ ...t, sellos_actuales: 3 })) }, cfg, hecho);
     fireEvent.click(screen.getByRole("button", { name: "Acumular" })); fireEvent.click(screen.getByRole("button", { name: "Sí, acumular" }));
     await waitFor(() => expect(hecho).toHaveBeenCalled()); const comprobante = hecho.mock.calls[0]?.[0]; cleanup();
     render(<PasoComprobante comprobante={comprobante} nombre={null} onNuevo={vi.fn()} onSeguir={vi.fn()} />);
