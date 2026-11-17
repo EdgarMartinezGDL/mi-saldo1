@@ -1,3 +1,4 @@
+import { textoIntentos } from "@/lib/plural";
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useState, type FormEvent } from "react";
 import { roleHome } from "@/components/app-shell";
@@ -58,7 +59,7 @@ export function ContinuarSesion({
       const err = e instanceof ApiError ? e : null;
       let msg = err?.message ?? "Algo salió mal. Intenta de nuevo.";
       const restantes = err?.extras["intentos_restantes"];
-      if (typeof restantes === "number") msg += ` Te quedan ${restantes} intentos.`;
+      if (typeof restantes === "number") msg += ` ${textoIntentos(restantes)}.`;
       if (err && (err.codigo === "token_invalido" || err.codigo === "contexto_no_disponible" || err.status === 401)) {
         onReiniciar(msg);
       } else setError(msg);

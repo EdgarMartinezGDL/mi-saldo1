@@ -1,5 +1,11 @@
 # Roadmap
 
+## P31 — Intentos y recomendaciones en Cuenta
+- [x] Mensajes compartidos de intentos con puntuación conservada.
+- [x] Inicio y Cuenta comparten regla y consulta de recomendaciones.
+- [x] 423 pruebas pasan; Login, PIN POS, Inicio y Cuenta verificados con respuestas simuladas a 360/1280 px, en claro/oscuro/personalizado, incluyendo carga, error y destinos de enlaces.
+- [ ] Cuenta con sesión real: /ajustes redirige a /login; requiere acceso autenticado a la API existente.
+
 ## QR de registro y bienvenida pública
 - [x] Enlace con nombre limpio en fragmento y página pública sin llamadas propias a la API.
 - [x] QR en Buscar cliente y Panel; cierre, foco, historial y bloqueo de teclas sin perder el teléfono.

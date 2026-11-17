@@ -10,7 +10,7 @@ import { ApiError, setSesion } from "@/lib/api/client";
 import { darmeDeBaja, vistaBaja, type VistaBaja } from "@/lib/api/cliente";
 import { pesos } from "@/lib/api/formato";
 import { useDesplazarAlAbrir } from "@/lib/use-desplazar";
-import { plural } from "@/lib/plural";
+import { plural, textoIntentos } from "@/lib/plural";
 
 export const Route = createFileRoute("/baja")({
   head: () => ({
@@ -69,7 +69,7 @@ function Formulario({ onHecha }: { onHecha: () => void }) {
       const err = e instanceof ApiError ? e : null;
       const r = err?.extras["intentos_restantes"];
       toast.error(err?.message ?? "No se pudo completar la baja.", {
-        description: typeof r === "number" ? `Te quedan ${r} intentos.` : undefined,
+        description: typeof r === "number" ? `${textoIntentos(r)}.` : undefined,
       });
       setPin("");
     } finally {

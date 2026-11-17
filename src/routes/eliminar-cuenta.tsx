@@ -15,7 +15,7 @@ import { ApiError, setSesion } from "@/lib/api/client";
 import { pesos } from "@/lib/api/formato";
 import { eliminarCuenta, vistaEliminacion, type VistaEliminacion } from "@/lib/api/recuperacion";
 import { useDesplazarAlAbrir } from "@/lib/use-desplazar";
-import { plural } from "@/lib/plural";
+import { plural, textoIntentos } from "@/lib/plural";
 
 export const Route = createFileRoute("/eliminar-cuenta")({
   head: () => ({
@@ -88,7 +88,7 @@ function Formulario({ onHecha }: { onHecha: () => void }) {
       }
       const r = err?.extras["intentos_restantes"];
       toast.error(err?.codigo === "pin_incorrecto" ? "PIN incorrecto" : err?.message ?? "No se pudo eliminar tu cuenta.", {
-        description: typeof r === "number" ? (r === 1 ? "Te queda 1 intento." : `Te quedan ${r} intentos.`) : undefined,
+        description: typeof r === "number" ? `${textoIntentos(r)}.` : undefined,
       });
       setPin("");
     } finally {

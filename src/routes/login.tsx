@@ -1,3 +1,4 @@
+import { textoIntentos } from "@/lib/plural";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { KeyRound, ShieldCheck } from "lucide-react";
 import { useState, type FormEvent } from "react";
@@ -74,7 +75,7 @@ function Login() {
       const apiErr = err instanceof ApiError ? err : null;
       let msg = apiErr?.message ?? "Algo salió mal. Intenta de nuevo.";
       const restantes = apiErr?.extras["intentos_restantes"];
-      if (typeof restantes === "number") msg += ` Te quedan ${restantes} intentos.`;
+      if (typeof restantes === "number") msg += ` ${textoIntentos(restantes)}.`;
       setError(msg);
     } finally {
       setCargando(false);

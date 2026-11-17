@@ -1,3 +1,4 @@
+import { textoIntentos } from "@/lib/plural";
 import { useInvalidarAsistente, validarBusquedaAsistente } from "@/components/negocio/asistente";
 import { createFileRoute } from "@tanstack/react-router";
 import { Lock } from "lucide-react";
@@ -80,7 +81,7 @@ function PinPos({ cfg }: { cfg: ConfiguracionNegocio }) {
           <Label htmlFor="pin" className="text-base">Tu PIN de acceso (con el que entras a la app)</Label>
           <Input id="pin" type="password" inputMode="numeric" maxLength={128} value={pin} onChange={(e) => setPin(e.target.value)} className="h-14 text-center font-mono text-xl tracking-[0.4em]" />
           <p className="text-sm text-muted-foreground">Lo pedimos para confirmar que eres tú.</p>
-          {errorPin && <div role="alert" className="text-base font-semibold text-destructive"><p>{errorPin}</p>{intentos !== null && <p>Te quedan {intentos} intentos</p>}</div>}
+          {errorPin && <div role="alert" className="text-base font-semibold text-destructive"><p>{errorPin}</p>{intentos !== null && <p>{textoIntentos(intentos)}</p>}</div>}
         </div>
         <div className="flex flex-col gap-2">
           <Label htmlFor="pinpos" className="text-base">Nuevo PIN POS para abrir las cajas</Label>

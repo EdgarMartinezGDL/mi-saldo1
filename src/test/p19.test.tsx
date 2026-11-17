@@ -24,7 +24,7 @@ vi.mock("@/components/negocio/comun", () => ({
   ConConfig: ({ children }: { children: (cfg: object) => ReactNode }) => children({ negocio: { nombre_comercial: "Barbería Demo", giro: "barbería", logo_url: null, tema_id: 2, direccion: null, telefono_contacto: null, telefono_es_whatsapp: false } }),
   useConfigNegocio: () => ({ actualizar: m.actualizar }), mostrarError: m.error,
 }));
-vi.mock("@/lib/api/cliente", () => ({ fichaNegocio: m.ficha, resumen: m.resumen, perfil: m.perfil, referidos: m.referidos }));
+vi.mock("@/lib/api/cliente", async (original) => ({ ...await original<typeof import("@/lib/api/cliente")>(), fichaNegocio: m.ficha, resumen: m.resumen, perfil: m.perfil, referidos: m.referidos }));
 vi.mock("@/lib/api/dueno", () => ({ actualizarNegocio: m.guardar }));
 vi.mock("sonner", () => ({ toast: { error: m.error, success: vi.fn() } }));
 

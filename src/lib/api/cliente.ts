@@ -102,6 +102,10 @@ export interface MisReferidos {
   }>;
 }
 
+/** El programa o los recomendados determinan si se muestra el enlace. */
+export const tieneReferidos = (datos?: MisReferidos) =>
+  !!datos && (datos.programa !== null || datos.recomendados.length > 0);
+
 export interface VistaBaja {
   negocio: { negocio_id: string; nombre_comercial: string };
   saldo_centavos: number;

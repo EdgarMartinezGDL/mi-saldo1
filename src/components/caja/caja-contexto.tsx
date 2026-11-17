@@ -1,3 +1,4 @@
+import { textoIntentos } from "@/lib/plural";
 import { Tecla } from "./teclado";
 import { createContext, useContext, useRef, type ReactNode } from "react";
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
@@ -50,7 +51,7 @@ export function avisarError(e: unknown, moneda = "MXN") {
   if (err?.codigo === "membresia_vencida") return;
   let desc: string | undefined;
   const x = err?.extras ?? {};
-  if (typeof x["intentos_restantes"] === "number") desc = `Te quedan ${x["intentos_restantes"]} intentos.`;
+  if (typeof x["intentos_restantes"] === "number") desc = `${textoIntentos(x["intentos_restantes"])}.`;
   if (err?.codigo === "saldo_insuficiente" && typeof x["saldo_centavos"] === "number") desc = `Disponible: ${pesos(x["saldo_centavos"] as number, moneda)}.`;
   if (err?.codigo === "tarjeta_vencida" && typeof x["fecha_vencimiento"] === "string") desc = `El premio venció el ${fechaCorta(x["fecha_vencimiento"] as string)}.`;
   if (err?.codigo === "limite_pendientes") desc = "El cliente ya tiene 3 reclamaciones pendientes.";

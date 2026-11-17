@@ -7,7 +7,7 @@ import { useMiSaldo } from "@/components/misaldo-provider";
 import { Cargando, RequiereSesion } from "@/components/requiere-sesion";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
-import { fichaNegocio, perfil, referidos, resumen, type Perfil } from "@/lib/api/cliente";
+import { fichaNegocio, perfil, referidos, resumen, tieneReferidos, type Perfil } from "@/lib/api/cliente";
 import { pesos, textoCaducidad, textoEstadoHorario } from "@/lib/api/formato";
 import { cn } from "@/lib/utils";
 import { useRecargaVisible } from "@/lib/use-recarga-visible";
@@ -43,7 +43,7 @@ function ClienteInicio() {
   const { updateBusiness } = useMiSaldo();
   const ficha = useQuery({ queryKey: ["cliente-ficha-negocio", sesion?.contexto.negocio_id], queryFn: fichaNegocio, enabled: !!sesion && conectado !== false, retry: false });
   const refs = useQuery({ queryKey: ["cliente-referidos"], queryFn: referidos, enabled: !!sesion && conectado !== false, retry: false });
-  const hayReferidos = !!refs.data && (refs.data.programa !== null || refs.data.recomendados.length > 0);
+  const hayReferidos = tieneReferidos(refs.data);
   const consulta = useQuery({ queryKey: ["cliente-resumen", sesion?.contexto.negocio_id], queryFn: resumen, enabled: !!sesion && conectado !== false, retry: false, staleTime: 20_000 });
   const datos = consulta.data;
   useRecargaVisible(() => { if (!consulta.isFetching) void consulta.refetch(); }, conectado !== false);

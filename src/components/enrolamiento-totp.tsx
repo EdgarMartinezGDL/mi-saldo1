@@ -1,3 +1,4 @@
+import { textoIntentos } from "@/lib/plural";
 import { useNavigate } from "@tanstack/react-router";
 import { Copy } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
@@ -24,7 +25,7 @@ export function EnrolamientoTotp({ token, onReiniciar }: { token: string; onRein
     if (err?.status === 401) return onReiniciar("El tiempo terminó. Inicia sesión de nuevo");
     if (err?.codigo === "codigo_incorrecto") {
       const r = err.extras["intentos_restantes"];
-      return setError(typeof r === "number" ? (r === 1 ? "Código incorrecto. Te queda 1 intento" : `Código incorrecto. Te quedan ${r} intentos`) : "Código incorrecto.");
+      return setError(typeof r === "number" ? `Código incorrecto. ${textoIntentos(r)}` : "Código incorrecto.");
     }
     setError(err?.message ?? "Algo salió mal. Intenta de nuevo.");
   }, [onReiniciar]);

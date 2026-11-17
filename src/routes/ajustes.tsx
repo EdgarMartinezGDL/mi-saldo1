@@ -1,3 +1,5 @@
+import { useQuery } from "@tanstack/react-query";
+import { referidos, tieneReferidos } from "@/lib/api/cliente";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeftRight, ChevronRight, Gift, LogOut, MessageSquareWarning, Moon, Palette, Sun } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
@@ -43,8 +45,10 @@ const enlace = "tap-target flex min-h-14 items-center gap-3 rounded-xl bg-second
 
 function Cuenta() {
   const { theme, setTheme, customColor, setCustomColor } = useMiSaldo();
-  const { estado, sesion } = useAuth();
+  const { estado, sesion, conectado } = useAuth();
   const rol = sesion?.contexto.rol;
+  const refs = useQuery({ queryKey: ["cliente-referidos"], queryFn: referidos, enabled: !!sesion && rol === "cliente" && conectado !== false, retry: false });
+  const hayReferidos = !refs.isPending && !refs.isError && tieneReferidos(refs.data);
   const { pedirConfirmacion, dialogo } = useCerrarSesion();
   const negocios = useMisNegocios();
   const refCustom = useDesplazarAlAbrir(theme === "personalizado");
@@ -72,11 +76,11 @@ function Cuenta() {
             <NotificacionesDispositivo />
             <Promociones />
             <div className="flex flex-col gap-2">
-              <Link to="/referidos" className={enlace}>
+              {hayReferidos && <Link to="/referidos" className={enlace}>
                 <Gift className="size-5 text-primary" />
                 <span className="flex-1">Recomienda y gana</span>
                 <ChevronRight className="size-5 text-muted-foreground" />
-              </Link>
+              </Link>}
               <Link to="/reclamaciones" className={enlace}>
                 <MessageSquareWarning className="size-5 text-primary" />
                 <span className="flex-1">Mis reclamaciones</span>

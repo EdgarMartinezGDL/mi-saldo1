@@ -1,3 +1,4 @@
+import { textoIntentos } from "@/lib/plural";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { Check, ChevronRight } from "lucide-react";
@@ -137,7 +138,7 @@ function Selector({ onCerrar, abierto }: { onCerrar: () => void; abierto: boolea
     } catch (e) {
       const err = e instanceof ApiError ? e : null;
       const r = err?.extras["intentos_restantes"];
-      const intentos = typeof r === "number" ? ` Te quedan ${r} intentos.` : "";
+      const intentos = typeof r === "number" ? ` ${textoIntentos(r)}.` : "";
       switch (err?.codigo) {
         case "requiere_pin":
           setFalta((x) => ({ ...x, pin: true }));
