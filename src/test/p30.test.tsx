@@ -16,8 +16,15 @@ beforeEach(() => { m.nombre = "Tortas Leah"; m.rol = "dueno"; m.sesion = true; h
 afterEach(async () => { cleanup(); await new Promise((resolve) => setTimeout(resolve, 30)); vi.restoreAllMocks(); });
 
 describe("Nombre de bienvenida", () => {
-  it("decodifica el nombre", () => expect(limpiarNombreNegocio("Tortas%20Leah")).toBe("Tortas Leah"));
-  it.each([null, "", "%E0%A4%A", "   "])("rechaza nombre ausente o inválido: %s", (valor) => expect(limpiarNombreNegocio(valor)).toBeNull());
+  it("conserva el nombre tal cual", () => expect(limpiarNombreNegocio("Tortas Leah")).toBe("Tortas Leah"));
+  it("conserva el porcentaje literal", () => expect(limpiarNombreNegocio("Café 100% natural")).toBe("Café 100% natural"));
+  it("no decodifica secuencias con porcentaje", () => expect(limpiarNombreNegocio("Promo 50%25")).toBe("Promo 50%25"));
+  it.each([null, "", "   "])("rechaza nombre ausente o vacío: %s", (valor) => expect(limpiarNombreNegocio(valor)).toBeNull());
+  it.each(["Café 100% natural", "Promo 50%25", "Café & Pan", "A+B"])("ida y vuelta conserva: %s", (nombre) => {
+    const enlace = enlaceBienvenida("https://x.test", nombre);
+    const leido = new URLSearchParams(enlace.slice(enlace.indexOf("#") + 1)).get("n");
+    expect(limpiarNombreNegocio(leido)).toBe(nombre);
+  });
   it("quita dirección y saltos de línea", () => expect(limpiarNombreNegocio("Tortas\u202E\n Leah")).toBe("Tortas Leah"));
   it("quita todos los rangos de control y dirección", () => expect(limpiarNombreNegocio("A\u0000\u001F\u007F\u009F\u200E\u200F\u202A\u202E\u2066\u2069B")).toBe("AB"));
   it("junta espacios y recorta", () => expect(limpiarNombreNegocio("  Tortas   Leah  ")).toBe("Tortas Leah"));
