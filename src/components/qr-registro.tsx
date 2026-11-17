@@ -70,7 +70,7 @@ export function BotonQrRegistro({ onAbiertoChange }: { onAbiertoChange?: (abiert
           <p className="text-xl font-semibold">Escanea este código con la cámara de tu celular</p>
           <p className="mt-2 text-sm">Te explica cómo registrarte en Mi Saldo Vip</p>
         </div>
-        <Button ref={cerrar} variant="secondary" className="min-h-14 w-full max-w-md shrink-0 text-xl" onClick={() => setAbierto(false)}>Cerrar</Button>
+        <Button ref={cerrar} variant="secondary" className="min-h-14 w-full max-w-md shrink-0 border-qr-texto bg-qr-fondo text-xl text-qr-texto hover:bg-qr-fondo" onClick={() => setAbierto(false)}>Cerrar</Button>
       </div>, document.body,
     )}
   </>;
