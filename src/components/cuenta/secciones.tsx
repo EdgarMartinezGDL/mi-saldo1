@@ -1,3 +1,4 @@
+import { textoIntentos } from "@/lib/plural";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { BellRing, ChevronDown, ChevronRight, KeyRound, Mail, Megaphone, ShieldCheck } from "lucide-react";
@@ -53,7 +54,7 @@ export function useError() {
     }
     const r = err?.extras["intentos_restantes"];
     toast.error((err?.codigo && MENSAJES_CUENTA[err.codigo]) || err?.message || "No se pudo completar.", {
-      description: typeof r === "number" ? (r === 1 ? "Te queda 1 intento." : `Te quedan ${r} intentos.`) : undefined,
+      description: typeof r === "number" ? `${textoIntentos(r)}.` : undefined,
     });
   };
 }

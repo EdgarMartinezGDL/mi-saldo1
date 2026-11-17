@@ -1,3 +1,4 @@
+import { textoIntentos } from "@/lib/plural";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { BellRing, Megaphone, Send, ShieldCheck } from "lucide-react";
@@ -173,7 +174,7 @@ function Formulario({ r, negocio }: { r: ResumenPromociones; negocio: string }) 
       if (err?.status === 422 && err.codigo === "codigo_incorrecto") {
         setCodigo("");
         const n = err.extras["intentos_restantes"];
-        setErrorCodigo(`${err.message}${typeof n === "number" ? ` Te quedan ${n} intentos.` : ""}`);
+        setErrorCodigo(`${err.message}${typeof n === "number" ? ` ${textoIntentos(n)}.` : ""}`);
       } else {
         setAbierto(false);
         setCodigo("");

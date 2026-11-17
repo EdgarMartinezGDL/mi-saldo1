@@ -12,7 +12,7 @@ import {
 } from "@/lib/api/staff";
 import { ConfirmarMotivo, errorStaff, NOTA_AUDITORIA, useStaffNav } from "./comun";
 import { useDesplazarAlAbrir } from "@/lib/use-desplazar";
-import { plural } from "@/lib/plural";
+import { plural, textoIntentos } from "@/lib/plural";
 import { RestablecerPinStaff } from "./restablecer-pin";
 
 const MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
@@ -240,7 +240,7 @@ export function AccionesPersona({ f, onCambio }: { f: FichaPersona; onCambio: ()
             const err = e instanceof ApiError ? e : null;
             if (err?.codigo === "codigo_incorrecto") {
               const r = err.extras["intentos_restantes"];
-              toast.error(typeof r === "number" ? (r === 1 ? "Código incorrecto. Te queda 1 intento" : `Código incorrecto. Te quedan ${r} intentos`) : "Código incorrecto.");
+              toast.error(typeof r === "number" ? `Código incorrecto. ${textoIntentos(r)}` : "Código incorrecto.");
               setCodigo("");
               throw e;
             }

@@ -1,3 +1,4 @@
+import { textoIntentos } from "@/lib/plural";
 import { useRef, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -98,7 +99,7 @@ function DialogoPrecio({ vigente, onCerrar }: { vigente: PrecioMembresia | null;
       if (err?.status === 422) {
         setSecreto("");
         const intentos = err.extras["intentos_restantes"];
-        setError(`${mensaje}${typeof intentos === "number" ? ` Te quedan ${intentos} intentos` : ""}`);
+        setError(`${mensaje}${typeof intentos === "number" ? ` ${textoIntentos(intentos)}` : ""}`);
       } else if (err?.status === 429) setError(err.retryAfter ? `Demasiados intentos. Espera ${Math.ceil(err.retryAfter / 60)} minutos.` : err.message);
       else if (err?.status === 403 && err.codigo === "sin_permiso") setError("Solo un administrador puede cambiar el precio.");
       else if (err?.status === 401) { setSecreto(""); onCerrar(); }

@@ -1,5 +1,10 @@
 # Roadmap
 
+## P31 — Intentos y recomendaciones en Cuenta
+- [x] Mensajes compartidos de intentos con puntuación conservada.
+- [x] Inicio y Cuenta comparten regla y consulta de recomendaciones.
+- [ ] Pruebas P31 y regresión completa.
+
 ## QR de registro y bienvenida pública
 - [x] Enlace con nombre limpio en fragmento y página pública sin llamadas propias a la API.
 - [x] QR en Buscar cliente y Panel; cierre, foco, historial y bloqueo de teclas sin perder el teléfono.

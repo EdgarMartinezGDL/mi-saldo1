@@ -1,3 +1,4 @@
+import { textoIntentos } from "@/lib/plural";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type { ReactNode } from "react";
 import { toast } from "sonner";
@@ -23,7 +24,7 @@ export const mostrarError = (e: unknown, propio?: Record<string, string>) => {
   const err = e instanceof ApiError ? e : null;
   const r = err?.extras["intentos_restantes"];
   toast.error((err?.codigo && propio?.[err.codigo]) || err?.message || "No se pudo guardar.", {
-    description: typeof r === "number" ? `Te quedan ${r} intentos.` : undefined,
+    description: typeof r === "number" ? `${textoIntentos(r)}.` : undefined,
   });
 };
 

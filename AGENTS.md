@@ -28,6 +28,7 @@
 - Mis negocios uses the contextos query; successful switches clear the entire query cache and navigate to role home. Why: previous-business data must not leak.
 - Owner operation screens share operacion API and operacion-ui; downloads use apiArchivo. Why: one error/confirmation/TOTP path.
 - Revealed sections use useDesplazarAlAbrir; saved forms use SeccionEditable/useModoEdicion; TecladoVisible is mounted once at root. Why: consistent mobile forms.
+- Remaining-attempt messages use textoIntentos(); customer Home and Account share cliente-referidos and tieneReferidos. Why: consistent grammar and referral eligibility without separate API definitions.
 - Visible counts use plural(), never parenthesized suffixes; Staff date filters share fechas-staff. Why: consistent plurals and date boundaries.
 - Dedicated offline storage/session modules allowlist client snapshot fields; each emitted client session verifies identity and generation-guards asynchronous writes. Why: never save another person's or a terminated session's data.
 - Auth distinguishes refresh network failures from anonymous sessions; the root connection boundary owns offline views/notices. Why: disconnected reloads must not redirect to login.
