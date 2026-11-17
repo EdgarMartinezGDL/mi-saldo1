@@ -83,3 +83,7 @@
 - [x] Pruebas: p8 actualizada + nueva `src/test/p22.test.tsx` (253 pruebas en verde, build OK, revisión visual en claro y oscuro)
 
 Pendiente fuera de alcance: publicar y verificar con sesiones reales (el backend de vista previa no responde `/api/auth/refrescar`).
+
+## P32 — Bienvenida sin doble decodificación
+- [x] `limpiarNombreNegocio` ya no decodifica: solo limpia controles/dirección, junta espacios, recorta y corta a 150
+- [x] Pruebas p30 actualizadas: literales con `%`, ida y vuelta con `URLSearchParams`, botón QR con "Café 100% natural" y página con fragmento codificado (429 pruebas en verde, build OK)
