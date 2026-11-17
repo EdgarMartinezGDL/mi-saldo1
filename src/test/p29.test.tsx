@@ -28,7 +28,7 @@ vi.mock("@/components/negocio/comun", () => ({ SeccionNegocio: ({ children }: { 
 vi.mock("@/components/negocio/asistente", () => ({ useInvalidarAsistente: () => vi.fn(), validarBusquedaAsistente: () => ({}) }));
 vi.mock("@/components/totp-provider", () => ({ useConTotp: () => (fn: () => Promise<unknown>) => fn() }));
 vi.mock("@/lib/api/dueno", () => ({ cambiarPinPos: m.pin }));
-vi.mock("@/lib/api/cliente", () => ({ resumen: m.resumen, fichaNegocio: async () => null, perfil: async () => ({ nombre: "Ana" }), referidos: async () => ({ programa: null, recomendados: [] }), reclamaciones: async () => ({ reclamaciones: [] }) }));
+vi.mock("@/lib/api/cliente", async (original) => ({ ...await original<typeof import("@/lib/api/cliente")>(), resumen: m.resumen, fichaNegocio: async () => null, perfil: async () => ({ nombre: "Ana" }), referidos: async () => ({ programa: null, recomendados: [] }), reclamaciones: async () => ({ reclamaciones: [] }) }));
 vi.mock("@/lib/api/caja", async (original) => ({ ...await original<typeof import("@/lib/api/caja")>(), configuracion: m.config, acumularSellos: m.sellos, estadoPos: async () => ({ desbloqueado: true, pin_pos_configurado: true, en_horario: true, horario_aplica: false, vence_en: null }) }));
 vi.mock("sonner", () => ({ toast: { error: m.error, success: m.success } }));
 
