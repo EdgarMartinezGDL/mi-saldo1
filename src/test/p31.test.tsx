@@ -51,7 +51,7 @@ describe("P31 intentos", () => {
     pagina(LoginRoute);
     fireEvent.change(screen.getByLabelText("Teléfono (10 dígitos)"), { target: { value: "3312345678" } });
     fireEvent.change(screen.getByLabelText("PIN"), { target: { value: "4821" } });
-    fireEvent.click(screen.getByRole("button", { name: "Entrar", exact: true }));
+    fireEvent.click(screen.getByRole("button", { name: /^Entrar$/ }));
     fireEvent.click(screen.getByRole("button", { name: "Sí, iniciar sesión" }));
     expect(await screen.findByRole("alert")).toHaveTextContent("Te queda 1 intento.");
     expect(screen.queryByText(/1 intentos/)).toBeNull();

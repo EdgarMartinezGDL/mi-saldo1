@@ -3,7 +3,8 @@
 ## P31 — Intentos y recomendaciones en Cuenta
 - [x] Mensajes compartidos de intentos con puntuación conservada.
 - [x] Inicio y Cuenta comparten regla y consulta de recomendaciones.
-- [ ] Pruebas P31 y regresión completa.
+- [x] 423 pruebas pasan; Login verificado en navegador con respuesta simulada.
+- [ ] Cuenta con sesión real: /ajustes redirige a /login; requiere acceso autenticado a la API existente.
 
 ## QR de registro y bienvenida pública
 - [x] Enlace con nombre limpio en fragmento y página pública sin llamadas propias a la API.
