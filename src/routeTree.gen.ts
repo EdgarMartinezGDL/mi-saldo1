@@ -14,6 +14,7 @@ import { Route as ActivarRouteImport } from './routes/activar'
 import { Route as AjustesRouteImport } from './routes/ajustes'
 import { Route as AvisoPrivacidadRouteImport } from './routes/aviso-privacidad'
 import { Route as BajaRouteImport } from './routes/baja'
+import { Route as BienvenidaRouteImport } from './routes/bienvenida'
 import { Route as CajaRouteImport } from './routes/caja'
 import { Route as CanjearRouteImport } from './routes/canjear'
 import { Route as ClientesRouteImport } from './routes/clientes'
@@ -73,6 +74,11 @@ const AvisoPrivacidadRoute = AvisoPrivacidadRouteImport.update({
 const BajaRoute = BajaRouteImport.update({
   id: '/baja',
   path: '/baja',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BienvenidaRoute = BienvenidaRouteImport.update({
+  id: '/bienvenida',
+  path: '/bienvenida',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CajaRoute = CajaRouteImport.update({
@@ -257,6 +263,7 @@ export interface FileRoutesByFullPath {
   '/ajustes': typeof AjustesRoute
   '/aviso-privacidad': typeof AvisoPrivacidadRoute
   '/baja': typeof BajaRoute
+  '/bienvenida': typeof BienvenidaRoute
   '/caja': typeof CajaRoute
   '/canjear': typeof CanjearRoute
   '/clientes': typeof ClientesRoute
@@ -299,6 +306,7 @@ export interface FileRoutesByTo {
   '/ajustes': typeof AjustesRoute
   '/aviso-privacidad': typeof AvisoPrivacidadRoute
   '/baja': typeof BajaRoute
+  '/bienvenida': typeof BienvenidaRoute
   '/caja': typeof CajaRoute
   '/canjear': typeof CanjearRoute
   '/clientes': typeof ClientesRoute
@@ -341,6 +349,7 @@ export interface FileRoutesById {
   '/ajustes': typeof AjustesRoute
   '/aviso-privacidad': typeof AvisoPrivacidadRoute
   '/baja': typeof BajaRoute
+  '/bienvenida': typeof BienvenidaRoute
   '/caja': typeof CajaRoute
   '/canjear': typeof CanjearRoute
   '/clientes': typeof ClientesRoute
@@ -385,6 +394,7 @@ export interface FileRouteTypes {
     | '/ajustes'
     | '/aviso-privacidad'
     | '/baja'
+    | '/bienvenida'
     | '/caja'
     | '/canjear'
     | '/clientes'
@@ -427,6 +437,7 @@ export interface FileRouteTypes {
     | '/ajustes'
     | '/aviso-privacidad'
     | '/baja'
+    | '/bienvenida'
     | '/caja'
     | '/canjear'
     | '/clientes'
@@ -468,6 +479,7 @@ export interface FileRouteTypes {
     | '/ajustes'
     | '/aviso-privacidad'
     | '/baja'
+    | '/bienvenida'
     | '/caja'
     | '/canjear'
     | '/clientes'
@@ -511,6 +523,7 @@ export interface RootRouteChildren {
   AjustesRoute: typeof AjustesRoute
   AvisoPrivacidadRoute: typeof AvisoPrivacidadRoute
   BajaRoute: typeof BajaRoute
+  BienvenidaRoute: typeof BienvenidaRoute
   CajaRoute: typeof CajaRoute
   CanjearRoute: typeof CanjearRoute
   ClientesRoute: typeof ClientesRoute
@@ -570,6 +583,13 @@ declare module '@tanstack/react-router' {
       path: '/baja'
       fullPath: '/baja'
       preLoaderRoute: typeof BajaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bienvenida': {
+      id: '/bienvenida'
+      path: '/bienvenida'
+      fullPath: '/bienvenida'
+      preLoaderRoute: typeof BienvenidaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/caja': {
@@ -861,6 +881,7 @@ const rootRouteChildren: RootRouteChildren = {
   AjustesRoute: AjustesRoute,
   AvisoPrivacidadRoute: AvisoPrivacidadRoute,
   BajaRoute: BajaRoute,
+  BienvenidaRoute: BienvenidaRoute,
   CajaRoute: CajaRoute,
   CanjearRoute: CanjearRoute,
   ClientesRoute: ClientesRoute,
