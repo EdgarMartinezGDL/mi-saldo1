@@ -16,8 +16,15 @@ beforeEach(() => { m.nombre = "Tortas Leah"; m.rol = "dueno"; m.sesion = true; h
 afterEach(async () => { cleanup(); await new Promise((resolve) => setTimeout(resolve, 30)); vi.restoreAllMocks(); });
 
 describe("Nombre de bienvenida", () => {
-  it("decodifica el nombre", () => expect(limpiarNombreNegocio("Tortas%20Leah")).toBe("Tortas Leah"));
-  it.each([null, "", "%E0%A4%A", "   "])("rechaza nombre ausente o inválido: %s", (valor) => expect(limpiarNombreNegocio(valor)).toBeNull());
+  it("conserva el nombre tal cual", () => expect(limpiarNombreNegocio("Tortas Leah")).toBe("Tortas Leah"));
+  it("conserva el porcentaje literal", () => expect(limpiarNombreNegocio("Café 100% natural")).toBe("Café 100% natural"));
+  it("no decodifica secuencias con porcentaje", () => expect(limpiarNombreNegocio("Promo 50%25")).toBe("Promo 50%25"));
+  it.each([null, "", "   "])("rechaza nombre ausente o vacío: %s", (valor) => expect(limpiarNombreNegocio(valor)).toBeNull());
+  it.each(["Café 100% natural", "Promo 50%25", "Café & Pan", "A+B"])("ida y vuelta conserva: %s", (nombre) => {
+    const enlace = enlaceBienvenida("https://x.test", nombre);
+    const leido = new URLSearchParams(enlace.slice(enlace.indexOf("#") + 1)).get("n");
+    expect(limpiarNombreNegocio(leido)).toBe(nombre);
+  });
   it("quita dirección y saltos de línea", () => expect(limpiarNombreNegocio("Tortas\u202E\n Leah")).toBe("Tortas Leah"));
   it("quita todos los rangos de control y dirección", () => expect(limpiarNombreNegocio("A\u0000\u001F\u007F\u009F\u200E\u200F\u202A\u202E\u2066\u2069B")).toBe("AB"));
   it("junta espacios y recorta", () => expect(limpiarNombreNegocio("  Tortas   Leah  ")).toBe("Tortas Leah"));
@@ -31,6 +38,7 @@ function bienvenida() {
 }
 describe("Bienvenida pública", () => {
   it("lee nombre y conserva fragmento", () => { history.replaceState(null, "", "/bienvenida#n=Tortas%20Leah"); bienvenida(); expect(screen.getByRole("heading", { name: "Te damos la bienvenida a Tortas Leah" })).toBeInTheDocument(); expect(window.location.hash).toBe("#n=Tortas%20Leah"); });
+  it("muestra nombre con porcentaje codificado", () => { history.replaceState(null, "", "/bienvenida#n=Caf%C3%A9%20100%25%20natural"); bienvenida(); expect(screen.getByRole("heading", { name: "Te damos la bienvenida a Café 100% natural" })).toBeInTheDocument(); });
   it("trata HTML como texto, no como elementos", () => { history.replaceState(null, "", "/bienvenida#n=<img src=x onerror=alert(1)>"); const view = bienvenida(); expect(screen.getByRole("heading", { name: "Te damos la bienvenida a <img src=x onerror=alert(1)>" })).toBeInTheDocument(); expect(view.container.querySelector("img")).toBeNull(); });
   it("sin nombre muestra bienvenida genérica", () => { bienvenida(); expect(screen.getByRole("heading", { name: "Te damos la bienvenida a Mi Saldo Vip" })).toBeInTheDocument(); });
   it.each(["cliente", "dueno", "empleado", "staff"])("sesión %s entra al inicio de su rol", (rol) => { m.rol = rol; bienvenida(); expect(screen.getByRole("link", { name: "Ir a mi app" })).toHaveAttribute("href", ({ cliente: "/", dueno: "/panel", empleado: "/caja", staff: "/staff" })[rol]); });
@@ -38,7 +46,8 @@ describe("Bienvenida pública", () => {
 });
 
 describe("QR de registro", () => {
-  it.each([null, "", "%E0%A4%A"])("no aparece sin nombre válido: %s", (nombre) => { m.nombre = nombre; render(<BotonQrRegistro />); expect(screen.queryByRole("button")).toBeNull(); });
+  it.each([null, ""])("no aparece sin nombre válido: %s", (nombre) => { m.nombre = nombre; render(<BotonQrRegistro />); expect(screen.queryByRole("button")).toBeNull(); });
+  it("aparece con nombre que incluye porcentaje", () => { m.nombre = "Café 100% natural"; render(<BotonQrRegistro />); expect(screen.getByRole("button", { name: "Mostrar QR de registro" })).toBeInTheDocument(); });
   it.each(["cliente", "staff"])("no aparece para %s", (rol) => { m.rol = rol; render(<BotonQrRegistro />); expect(screen.queryByRole("button")).toBeNull(); });
   it("abre el QR y Esc cierra devolviendo el foco y el historial", async () => {
     const previo = history.length; const cambio = vi.fn(); render(<BotonQrRegistro onAbiertoChange={cambio} />);
