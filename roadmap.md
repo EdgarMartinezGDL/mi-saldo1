@@ -1,5 +1,11 @@
 # Roadmap
 
+## QR de registro y bienvenida pública
+- [x] Enlace con nombre limpio en fragmento y página pública sin llamadas propias a la API.
+- [x] QR en Buscar cliente y Panel; cierre, foco, historial y bloqueo de teclas sin perder el teléfono.
+- [ ] Pruebas y revisión en celular, claro y oscuro.
+- [ ] Recorrido de Caja con sesión real: depende de acceso autenticado a la API existente.
+
 ## P29 — Claridad y actualización del cliente y Caja
 - [x] PIN POS y activación: etiquetas, confirmación y errores.
 - [x] Caja: legibilidad, premios, scroll, foco y teclado decimal compartido.

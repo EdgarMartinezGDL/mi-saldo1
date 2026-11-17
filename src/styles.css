@@ -48,6 +48,8 @@
   --radius-3xl: calc(var(--radius) + 20px);
 
   --color-background: var(--background);
+  --color-qr-fondo: var(--qr-fondo);
+  --color-qr-texto: var(--qr-texto);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
@@ -106,6 +108,8 @@
 }
 
 :root {
+  --qr-fondo: #FFFFFF;
+  --qr-texto: #000000;
   --radius: 0.75rem;
   --tecla: #FFFFFF;
   --tecla-foreground: #1E293B;

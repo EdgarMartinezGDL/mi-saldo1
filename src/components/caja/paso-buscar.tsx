@@ -2,6 +2,7 @@ import { Search, UserPlus } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { NumericKeypad } from "@/components/numeric-keypad";
 import { Button } from "@/components/ui/button";
+import { BotonQrRegistro } from "@/components/qr-registro";
 import { buscarCliente, type ClienteCaja } from "@/lib/api/caja";
 import { telefonoE164 } from "@/lib/api/client";
 import { avisarError, useCaja } from "./caja-contexto";
@@ -17,6 +18,7 @@ export function PasoBuscar({ inicial, onEncontrado, onAlta }: { inicial: string;
   const [tel, setTel] = useState(inicial);
   const [noExiste, setNoExiste] = useState(false);
   const [ocupado, setOcupado] = useState(false);
+  const [qrAbierto, setQrAbierto] = useState(false);
   const resultadoRef = useRef<HTMLDivElement>(null);
   useEffect(() => { if (noExiste) resultadoRef.current?.scrollIntoView?.({ behavior: "smooth", block: "start" }); }, [noExiste]);
 
@@ -35,13 +37,13 @@ export function PasoBuscar({ inicial, onEncontrado, onAlta }: { inicial: string;
   };
 
   const onKey = (k: string) => {
-    if (ocupado) return;
+    if (ocupado || qrAbierto) return;
     setNoExiste(false);
     if (k === "borrar") setTel((p) => p.slice(0, -1));
     else if (k === "limpiar") setTel("");
     else setTel((p) => p.length < 10 ? p + k : p);
   };
-  useDigitos(onKey, { activo: !ocupado });
+  useDigitos(onKey, { activo: !ocupado && !qrAbierto });
   useTecla((e) => {
     if (e.key === "Escape") { onKey("limpiar"); return true; }
     if (e.key === "Enter" && tel.length === 10) {
@@ -49,7 +51,7 @@ export function PasoBuscar({ inicial, onEncontrado, onAlta }: { inicial: string;
       return true;
     }
     return false;
-  }, { activo: !ocupado });
+  }, { activo: !ocupado && !qrAbierto });
   return (
     <div className="mx-auto flex w-full max-w-md flex-col gap-5">
       <div>
@@ -66,6 +68,7 @@ export function PasoBuscar({ inicial, onEncontrado, onAlta }: { inicial: string;
           <Search className="size-5" /> {ocupado ? "Buscando…" : "Buscar"}<Tecla>Enter</Tecla>
         </Button>
       </div>
+      <BotonQrRegistro onAbiertoChange={setQrAbierto} />
       {noExiste && (
         <div ref={resultadoRef} className="rounded-2xl bg-card p-5 ring-1 ring-border">
           <p className="text-lg font-semibold">Este teléfono aún no es cliente</p>

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { AppShell } from "@/components/app-shell";
+import { BotonQrRegistro } from "@/components/qr-registro";
 import { IconoTono, type Tono } from "@/components/fila-lista";
 import { Cargando, RequiereSesion } from "@/components/requiere-sesion";
 import { ApiError } from "@/lib/api/client";
@@ -128,9 +129,12 @@ function Panel() {
         >
           Ir a la caja
         </Link>
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Panel</h1>
-          <p className="mt-1 text-base text-muted-foreground">Cómo va tu negocio hoy.</p>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight">Panel</h1>
+            <p className="mt-1 text-base text-muted-foreground">Cómo va tu negocio hoy.</p>
+          </div>
+          <BotonQrRegistro />
         </div>
 
         {sinPinPos && !estadoAsistente?.pendientes_obligatorios.includes("pin_pos") && (

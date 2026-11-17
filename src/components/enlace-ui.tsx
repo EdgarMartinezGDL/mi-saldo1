@@ -26,17 +26,17 @@ export function useTokenFragmento() {
   return token;
 }
 
-export function TarjetaEnlace({ titulo, subtitulo, icono, children }: { titulo: string; subtitulo?: string; icono: ReactNode; children: ReactNode }) {
+export function TarjetaEnlace({ titulo, subtitulo, icono, children, encabezado }: { titulo: string; subtitulo?: string; icono: ReactNode; children: ReactNode; encabezado?: ReactNode }) {
   return (
     <main className="flex min-h-screen items-center justify-center px-4 py-10">
       <section className="w-full max-w-md rounded-2xl bg-card p-6 shadow-soft ring-1 ring-border">
-        <div className="mb-6 flex items-center gap-3">
+        {encabezado ?? <div className="mb-6 flex items-center gap-3">
           <div className="grid size-11 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">{icono}</div>
           <div>
             <h1 className="text-2xl font-semibold tracking-tight">{titulo}</h1>
             <p className="text-sm text-muted-foreground">{subtitulo ?? <><MarcaMiSaldo /> · By MicroFix Cloud</>}</p>
           </div>
-        </div>
+        </div>}
         {children}
       </section>
     </main>
