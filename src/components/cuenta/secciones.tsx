@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { ApiError } from "@/lib/api/client";
+import { preferenciasPush, guardarPreferenciasPush, type PreferenciasPush } from "@/lib/api/push";
 import { activarPush, desactivarPush, estadoPush } from "@/lib/push-dispositivo";
 import { useDesplazarAlAbrir } from "@/lib/use-desplazar";
 import { cn } from "@/lib/utils";
@@ -374,7 +375,27 @@ export function NotificacionesDispositivo() {
   const mostrar = useError();
   const { data: estado } = useQuery({ queryKey: ["push-estado"], queryFn: estadoPush });
   const { data: promo } = useQuery({ queryKey: ["promociones"], queryFn: promociones });
+  const preferencias = useQuery({
+    queryKey: ["push-preferencias"], queryFn: () => preferenciasPush(),
+    retry: false, enabled: estado === "activadas",
+  });
+  const [guardando, setGuardando] = useState<Partial<PreferenciasPush> | null>(null);
   const [ocupado, setOcupado] = useState(false);
+
+  const cambiarPreferencia = async (campo: keyof PreferenciasPush, valor: boolean) => {
+    if (guardando) return;
+    const body = { [campo]: valor };
+    setGuardando(body);
+    try {
+      const r = await guardarPreferenciasPush(body);
+      queryClient.setQueryData(["push-preferencias"], r);
+      toast.success("Listo, guardamos tu preferencia");
+    } catch (e) {
+      mostrar(e);
+    } finally {
+      setGuardando(null);
+    }
+  };
 
   if (!estado || estado === "no_disponible") return null;
 
@@ -415,6 +436,20 @@ export function NotificacionesDispositivo() {
       {estado === "activadas" && (
         <>
           <span className="pill-badge mt-3 inline-block text-success-texto">Activadas en este dispositivo</span>
+          {preferencias.isSuccess && !preferencias.isFetching && preferencias.data && (
+            <div className="mt-4 grid gap-3">
+              <h3 className="text-base font-semibold">¿De qué te avisamos?</h3>
+              <label className="flex min-h-14 items-center justify-between gap-4 rounded-xl bg-secondary px-4 py-3">
+                <span className="min-w-0 text-base">Compras y canjes<span className="mt-1 block text-sm text-muted-foreground">Cuando sumas cashback o usas tu saldo o tus recompensas.</span></span>
+                <Switch aria-label="Compras y canjes" checked={guardando?.movimientos ?? preferencias.data.movimientos} disabled={guardando !== null} onCheckedChange={(v) => void cambiarPreferencia("movimientos", v)} />
+              </label>
+              <label className="flex min-h-14 items-center justify-between gap-4 rounded-xl bg-secondary px-4 py-3">
+                <span className="min-w-0 text-base">Vencimientos<span className="mt-1 block text-sm text-muted-foreground">Antes de que venza tu saldo o una tarjeta de sellos.</span></span>
+                <Switch aria-label="Vencimientos" checked={guardando?.vencimientos ?? preferencias.data.vencimientos} disabled={guardando !== null} onCheckedChange={(v) => void cambiarPreferencia("vencimientos", v)} />
+              </label>
+              <p className="text-xs text-muted-foreground">Los avisos de seguridad (tu PIN y tus accesos) siempre llegan por WhatsApp y correo.</p>
+            </div>
+          )}
           {promo && !promo.acepta_promociones && (
             <p className="mt-2 text-sm text-muted-foreground">Para recibir las de este negocio, activa también <strong>Promociones</strong> aquí abajo.</p>
           )}

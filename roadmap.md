@@ -1,5 +1,10 @@
 # Roadmap
 
+## P35 — Preferencias de notificaciones
+- [x] GET/PUT nuevos y sección opcional únicamente con push activado; carga/errores de consulta ocultos y guardados fallidos revertidos.
+- [x] 523 pruebas pasan (8 nuevas P35), sin modificar las existentes; Cuenta revisada a 360/1280 px en claro/oscuro/personalizado con respuestas controladas: valores, guardado, bloqueo de ambos interruptores, reversión, 404/500 sin avisos y ausencia de GET cuando push está desactivado; compilación OK.
+- [ ] Sesión real y sincronización con GitHub sin verificar: Cuenta real redirige a Login y los remotos disponibles no son GitHub; cambios guardados en commit para sincronización automática de la plataforma.
+
 ## P34 — Contraste, tamaños y barra superior
 - [x] Ajustes de presentación y contraste de los temas, sin cambios de API ni funcionamiento.
 - [x] 515 pruebas pasan; revisión a 360/1280 px en los tres temas: entrada, recuperación, 404, Inicio, Cuenta, Reportes y Equipo; medidas de toque y contraste con axe. Revisión ampliada: 90 pantallas/estados sin hallazgos medidos de contraste o ARIA, incluyendo todos los empleados y estados de Referidos, Staff y tarjetas; Caja A/C/R, Enter/Esc y ayuda, activación y privacidad un paso después. Corregidas opacidades heredadas y texto sobre superficies teñidas.

@@ -1,5 +1,14 @@
 import { api } from "./client";
 
+export interface PreferenciasPush { movimientos: boolean; vencimientos: boolean }
+
+/** GET /api/push/preferencias — 404 mientras el backend no lo tenga: la sección se oculta. */
+export const preferenciasPush = () => api<PreferenciasPush>("/api/push/preferencias");
+
+/** PUT /api/push/preferencias — devuelve las preferencias ya guardadas. */
+export const guardarPreferenciasPush = (body: Partial<PreferenciasPush>) =>
+  api<PreferenciasPush>("/api/push/preferencias", { method: "PUT", body });
+
 export const llavePublica = () => api<{ llave_publica: string }>("/api/push/llave-publica");
 
 export const registrarSuscripcion = (s: PushSubscriptionJSON, dispositivo: string) =>
