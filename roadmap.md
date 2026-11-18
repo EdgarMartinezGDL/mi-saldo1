@@ -3,7 +3,7 @@
 ## P33 — Separación de Staff por sitio
 - [x] Clasificación compartida de sitios y filtros de perfiles, sin cambiar contratos de API.
 - [x] Guarda de sesión, rutas ocultas con la 404 existente y etiqueta de entrada admin.
-- [x] 490 pruebas pasan sin modificar las existentes; compilación OK. 404, avisos, cierre único y entrada admin verificados a 360/1280 px con respuestas simuladas.
+- [x] 490 pruebas pasan sin modificar las existentes; compilación OK. Revisión ampliada: 162 recorridos simulados a 360/1280 px en claro, oscuro y personalizado; perfiles, ausencia de perfiles, Cuenta, todas las rutas indicadas, cierre único, recuperación de PIN y navegación posterior comprobados sin errores del navegador.
 - [ ] Verificación con sesión real: /ajustes redirige a /login; requiere acceso autenticado a la API existente.
 
 ## P31 — Intentos y recomendaciones en Cuenta
