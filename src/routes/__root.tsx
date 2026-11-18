@@ -22,6 +22,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { TecladoVisible } from "@/lib/teclado-visible";
 import { ConexionContenido } from "@/components/sin-conexion";
 import { MarcaMiSaldo } from "@/components/marca";
+import { CambioPorAviso } from "@/components/cambio-por-aviso";
 import { registrarWorker } from "@/lib/pwa-registro";
 
 /** Card shell shared by the 404 and error boundaries: app styling, no AppShell chrome. */
@@ -163,7 +164,7 @@ function RootComponent() {
         <AuthProvider>
           {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
           <TotpProvider>
-            <ConexionContenido><ClientOnly><Outlet /></ClientOnly></ConexionContenido>
+            <ConexionContenido><ClientOnly><CambioPorAviso><Outlet /></CambioPorAviso></ClientOnly></ConexionContenido>
           </TotpProvider>
           <Toaster position="top-center" />
           <TecladoVisible />
