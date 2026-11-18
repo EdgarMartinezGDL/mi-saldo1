@@ -104,7 +104,7 @@ function ClienteInicio() {
             aria-label={`${textoEstadoHorario(ficha.data)}. Ver horario y ubicación de ${ficha.data.nombre_comercial}`}>
             <span aria-hidden="true" className={cn("size-2.5 shrink-0 rounded-full", ficha.data.abierto_ahora === true ? "bg-success" : "bg-muted-foreground")} />
             <span className="min-w-0 text-sm font-medium">{textoEstadoHorario(ficha.data)}</span>
-            <span className="ml-auto flex min-w-0 items-center gap-1 text-sm text-muted-foreground">Ver horario y ubicación<ChevronRight className="size-4 shrink-0" /></span>
+            <span className="ml-auto flex min-w-0 items-center gap-1 text-sm text-primary-texto">Ver horario y ubicación<ChevronRight className="size-4 shrink-0" /></span>
           </Link>
         )}
 

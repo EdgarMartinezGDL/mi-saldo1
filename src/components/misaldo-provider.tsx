@@ -127,11 +127,15 @@ export function MiSaldoProvider({ children }: { children: ReactNode }) {
       root.style.setProperty("--primary", color.fondo);
       root.style.setProperty("--primary-foreground", color.texto);
       root.style.setProperty("--primary-texto", colorTextoConContraste(customColor, "#1e293b"));
+      root.style.setProperty("--primary-etiqueta", colorTextoConContraste(customColor, "#3f423e"));
+      root.style.setProperty("--primary-aviso", colorTextoConContraste(customColor, "#3f423e"));
       root.style.setProperty("--ring", customColor);
     } else {
       root.style.removeProperty("--primary");
       root.style.removeProperty("--primary-foreground");
       root.style.removeProperty("--primary-texto");
+      root.style.removeProperty("--primary-etiqueta");
+      root.style.removeProperty("--primary-aviso");
       root.style.removeProperty("--ring");
     }
   }, [theme, customColor]);

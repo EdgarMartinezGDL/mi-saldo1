@@ -41,7 +41,7 @@ function Ficha() {
               {f.giro !== null && <p className="text-sm text-muted-foreground">{f.giro}</p>}
             </div>
           </div>
-          <p className={cn("mt-4 w-fit rounded-lg px-3 py-2 text-sm font-medium", f.abierto_ahora === true ? "bg-success/15 text-success" : "bg-secondary text-muted-foreground")}>{textoEstadoHorario(f)}</p>
+          <p className={cn("mt-4 w-fit rounded-lg px-3 py-2 text-sm font-medium", f.abierto_ahora === true ? "bg-success/15 text-success-texto" : "bg-secondary text-secondary-foreground")}>{textoEstadoHorario(f)}</p>
         </section>
         <section className="rounded-2xl bg-card p-5 ring-1 ring-border">
           <h2 className="text-lg font-semibold">Horario</h2>

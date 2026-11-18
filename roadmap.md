@@ -2,7 +2,7 @@
 
 ## P34 — Contraste, tamaños y barra superior
 - [x] Ajustes de presentación y contraste de los temas, sin cambios de API ni funcionamiento.
-- [x] 515 pruebas pasan; revisión a 360/1280 px en los tres temas: entrada, recuperación, 404, Inicio, Cuenta, Reportes y Equipo; medidas de toque y contraste con axe.
+- [x] 515 pruebas pasan; revisión a 360/1280 px en los tres temas: entrada, recuperación, 404, Inicio, Cuenta, Reportes y Equipo; medidas de toque y contraste con axe. Revisión ampliada: 90 pantallas/estados sin hallazgos medidos de contraste o ARIA, incluyendo todos los empleados y estados de Referidos, Staff y tarjetas; Caja A/C/R, Enter/Esc y ayuda, activación y privacidad un paso después. Corregidas opacidades heredadas y texto sobre superficies teñidas.
 - [ ] Sesión real: /ajustes redirige a /login; la revisión privada usó respuestas simuladas.
 - [ ] GitHub/publicación: no hay acceso directo verificable a GitHub ni scripts/publicar-frontend.sh; commit disponible para sincronización automática de la plataforma.
 

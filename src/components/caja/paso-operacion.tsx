@@ -28,7 +28,7 @@ function Opciones({ opciones, valor, onChange }: { opciones: Opcion[]; valor: st
         <button data-caja-opcion key={o.id} type="button" onClick={() => onChange(o.id)}
           className={cn("flex min-h-16 items-center gap-3 rounded-2xl p-4 text-left ring-1 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background", valor === o.id ? "bg-primary/12 ring-2 ring-primary" : "bg-card ring-border")}>
           <span className="shrink-0 text-primary-texto">{o.icono}</span>
-          <span className="min-w-0"><span className="block text-lg font-semibold">{o.titulo}</span><span className="block text-lg text-muted-foreground">{o.detalle}</span></span>
+          <span className="min-w-0"><span className="block text-lg font-semibold">{o.titulo}</span><span className={cn("block text-lg", valor === o.id ? "text-secondary-foreground" : "text-muted-foreground")}>{o.detalle}</span></span>
         </button>
       ))}
     </div>

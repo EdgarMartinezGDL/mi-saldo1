@@ -91,7 +91,7 @@ export function TarjetasSellos({ cfg }: { cfg: ConfiguracionNegocio }) {
           )}
           <ul className="mt-4 flex flex-col gap-3">
             {tarjetas.map((t) => (
-              <li key={t.tarjeta_digital_id} className={cn("rounded-xl p-4 ring-1 ring-border", !t.activa && "opacity-75")}>
+              <li key={t.tarjeta_digital_id} className="rounded-xl p-4 ring-1 ring-border">
                 <div className="flex items-center justify-between gap-2">
                   <p className="min-w-0 truncate text-base font-semibold">{t.nombre}</p>
                   <Chip tono={t.activa ? "verde" : "gris"}>{t.activa ? "Activa" : "Desactivada"}</Chip>

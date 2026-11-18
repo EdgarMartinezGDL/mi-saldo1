@@ -132,6 +132,9 @@
   --popover-foreground: #1e293b;
   --primary: #2563eb;
   --primary-texto: #2563eb;
+  --primary-etiqueta: #1d4ed8;
+  --success-etiqueta: #047857;
+  --warn-etiqueta: #b42318;
   --primary-foreground: #ffffff;
   --secondary: #f1f5f9;
   --secondary-foreground: #334155;
@@ -198,6 +201,9 @@
   --popover-foreground: #e2e8f0;
   --primary: #2563eb;
   --primary-texto: #60a5fa;
+  --primary-etiqueta: var(--primary-texto);
+  --success-etiqueta: #34d399;
+  --warn-etiqueta: #f5a35e;
   --primary-foreground: #ffffff;
   --secondary: #334155;
   --secondary-foreground: #e2e8f0;
@@ -429,4 +435,31 @@ select:focus-visible {
 }
 .pill-badge.text-warn-texto {
   background-color: color-mix(in oklab, var(--warn) 12%, transparent);
+}
+
+/* Tinted surfaces also need contrast against their tint, not only the plain card. */
+.text-primary-texto[class*="bg-primary/"] {
+  color: var(--primary-etiqueta);
+}
+.text-success-texto[class*="bg-success/"],
+.text-success-texto[class*="bg-success-fill/"],
+.pill-badge.text-success-texto {
+  color: var(--success-etiqueta);
+}
+.text-warn-texto[class*="bg-warn/"],
+.pill-badge.text-warn-texto {
+  color: var(--warn-etiqueta);
+}
+.dark .text-destructive:not(.bg-destructive) {
+  color: var(--destructive-texto);
+}
+.dark [class*="bg-warning/"] .text-primary-texto {
+  color: var(--primary-aviso, #93c5fd);
+}
+.dark [class*="bg-secondary/"] .text-primary-texto {
+  color: var(--primary-etiqueta);
+}
+.bg-secondary.text-muted-foreground,
+.bg-muted.text-muted-foreground {
+  color: var(--secondary-foreground);
 }

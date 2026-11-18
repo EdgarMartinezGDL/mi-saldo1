@@ -147,7 +147,7 @@ function Empleados() {
           ) : (
             <ul className="flex flex-col">
               {lista.map((emp) => (
-                <li key={emp.negocio_empleado_id} className={cn("group -mx-2 grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3 rounded-xl px-2 transition-colors active:bg-secondary", !emp.activo && "opacity-60")}>
+                <li key={emp.negocio_empleado_id} className="group -mx-2 grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3 rounded-xl px-2 transition-colors active:bg-secondary">
                   <Iniciales nombre={nombreCompleto(emp)} />
                   <div className="flex flex-wrap items-center justify-between gap-3 border-b border-separador py-3 group-last:border-b-0">
                     <div className="min-w-0">
