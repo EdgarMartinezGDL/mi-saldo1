@@ -166,11 +166,11 @@ export function MisDatos() {
       <div className="mt-4 grid gap-2 sm:grid-cols-2">
         <Button variant={abierto === "pin" ? "default" : "secondary"} size="lg" className="h-14 justify-start text-base" onClick={() => { limpiar(); setAbierto(abierto === "pin" ? null : "pin"); }}>
           <KeyRound className={cn("size-5", abierto !== "pin" && "text-primary-texto")} /> Cambiar PIN
-          {abierto === "pin" ? <ChevronDown className="ml-auto size-5 text-muted-foreground" /> : <ChevronRight className="ml-auto size-5 text-muted-foreground" />}
+          {abierto === "pin" ? <ChevronDown className="ml-auto size-5" /> : <ChevronRight className="ml-auto size-5 text-secondary-foreground" />}
         </Button>
         <Button variant={abierto === "correo" ? "default" : "secondary"} size="lg" className="h-14 justify-start text-base" onClick={() => { limpiar(); if (abierto !== "correo") setCorreo(correoSinConfirmar ?? ""); setAbierto(abierto === "correo" ? null : "correo"); }}>
           <Mail className={cn("size-5", abierto !== "correo" && "text-primary-texto")} /> {data?.correo ? "Cambiar correo" : correoSinConfirmar ? "Confirmar correo" : "Agregar correo"}
-          {abierto === "correo" ? <ChevronDown className="ml-auto size-5 text-muted-foreground" /> : <ChevronRight className="ml-auto size-5 text-muted-foreground" />}
+          {abierto === "correo" ? <ChevronDown className="ml-auto size-5" /> : <ChevronRight className="ml-auto size-5 text-secondary-foreground" />}
         </Button>
       </div>
 

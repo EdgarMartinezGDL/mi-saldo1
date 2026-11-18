@@ -2,7 +2,7 @@
 
 ## P36b — Recargas y legibilidad
 - [x] Conservar preferencias y código QR ya cargados durante recargas y errores posteriores; ajustar tamaños y contraste sin cambiar contratos ni dependencias.
-- [x] 561 pruebas pasan; recargas pendientes y errores posteriores revisados con respuestas controladas a 360/1280 px en claro/oscuro/personalizado, sin cambios del QR abierto ni pérdida de preferencias. Contraste axe sin hallazgos en 42 estados centrales y 90 adicionales; Caja conserva sus atajos. Sin activar conserva altura (71 px con etiqueta, 69 px sin ella).
+- [x] 561 pruebas pasan; recargas pendientes y errores posteriores revisados con respuestas controladas a 360/1280 px en claro/oscuro/personalizado, sin cambios del QR abierto ni pérdida de preferencias. Contraste axe sin hallazgos en 42 estados centrales y 90 adicionales; Caja conserva sus atajos. Sin activar conserva la diferencia de 2 px entre filas (más 1 px de separador si la comparación incluye la última fila). Revisión final: ambos botones de Mis datos y sus formularios en los seis tamaños/temas, corregidos sus íconos grises; QR sin éxito previo revisado en carga/404/200 en doce casos, con cierre y foco.
 - [x] Cambios guardados en commit. Pruebas previas: P24b/P24c actualizadas solo en clases afectadas; P36 actualizada para conservar registro durante la recarga, reemplazando el comportamiento anterior incompatible con este pedido.
 - [ ] Subida directa a GitHub bloqueada: no hay remoto GitHub configurado; sesión real sigue sin verificar, la revisión privada usa respuestas controladas.
 
