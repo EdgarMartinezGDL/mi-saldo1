@@ -74,7 +74,7 @@ export function TarjetasSellos({ cfg }: { cfg: ConfiguracionNegocio }) {
 
   return (
     <section className="rounded-2xl bg-card p-5 ring-1 ring-border">
-      <h2 className="flex items-center gap-2 text-lg font-semibold tracking-tight"><Stamp className="size-5 text-primary" /> Tarjetas de sellos</h2>
+      <h2 className="flex items-center gap-2 text-lg font-semibold tracking-tight"><Stamp className="size-5 text-primary-texto" /> Tarjetas de sellos</h2>
       {!cfg.modulos.includes("tarjetas_sellos") ? (
         <p className="mt-1 text-sm text-muted-foreground">Tu negocio no tiene activadas las tarjetas de sellos.</p>
       ) : (
@@ -86,7 +86,7 @@ export function TarjetasSellos({ cfg }: { cfg: ConfiguracionNegocio }) {
               <Button size="lg" className="tap-target h-12 w-full sm:w-auto" disabled={enLimite} onClick={() => setEditando("nueva")}>
                 <Plus className="size-5" /> Nueva tarjeta
               </Button>
-              {enLimite && <p className="mt-2 text-sm text-warn">Llegaste al límite de tu plan: desactiva una o pide más a soporte de Mi Saldo Vip</p>}
+              {enLimite && <p className="mt-2 text-sm text-warn-texto">Llegaste al límite de tu plan: desactiva una o pide más a soporte de Mi Saldo Vip</p>}
             </div>
           )}
           <ul className="mt-4 flex flex-col gap-3">
@@ -201,7 +201,7 @@ function Campos({ t, onGuardada, limite }: { t: TarjetaConfig | null; onGuardada
   return (
     <div ref={refCampos} className="mt-4 flex flex-col gap-4 px-1">
       {t && (
-        <p className="rounded-xl bg-warn/10 p-3 text-sm text-warn ring-1 ring-warn/30">
+        <p className="rounded-xl bg-warn/10 p-3 text-sm text-warn-texto ring-1 ring-warn/30">
           Los cambios aplican a las tarjetas nuevas: las que tus clientes ya tienen abiertas conservan su meta y su premio.
         </p>
       )}
@@ -234,7 +234,7 @@ function Campos({ t, onGuardada, limite }: { t: TarjetaConfig | null; onGuardada
             onClick={() => setTipo(v)}
             className={cn(
               "tap-target rounded-xl px-4 py-3 text-left text-base ring-1 disabled:cursor-not-allowed",
-              tipo === v ? "bg-primary/15 font-semibold text-primary ring-primary/50" : "ring-border",
+              tipo === v ? "bg-primary/15 font-semibold text-primary-texto ring-primary/50" : "ring-border",
               t && tipo !== v && "opacity-50",
             )}
           >

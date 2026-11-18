@@ -45,7 +45,7 @@ export function AsistenteInicial() {
       </div>
       <ol className="flex flex-col gap-3">
         {pasos.map((p, i) => <li key={p.paso} className="flex flex-wrap items-center gap-4 rounded-2xl bg-card p-5 ring-1 ring-border">
-          <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-secondary font-mono font-semibold text-primary shadow-soft">{i + 1}</span>
+          <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-secondary font-mono font-semibold text-primary-texto shadow-soft">{i + 1}</span>
           <div className="min-w-0 flex-1 basis-48">
             <h2 className="text-lg font-semibold">{PASOS_ASISTENTE[p.paso].titulo}</h2>
             <p className="mb-2 text-sm text-muted-foreground">{textoPaso(p)}</p>

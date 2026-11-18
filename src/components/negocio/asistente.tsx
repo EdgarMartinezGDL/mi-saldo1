@@ -46,7 +46,7 @@ export function textoPaso(paso: PasoAsistente) {
 export function EstadoPaso({ paso }: { paso: PasoAsistente }) {
   return <span className="flex flex-wrap items-center gap-2 text-sm">
     <span className="pill-badge text-muted-foreground">{paso.obligatorio ? "Obligatorio" : "Opcional"}</span>
-    <span className={cn("inline-flex items-center gap-1 font-medium", paso.completo ? "text-success" : "text-muted-foreground")}>
+    <span className={cn("inline-flex items-center gap-1 font-medium", paso.completo ? "text-success-texto" : "text-muted-foreground")}>
       {paso.completo && <Check aria-hidden="true" className="size-4" />}{paso.completo ? "Listo" : "Pendiente"}
     </span>
   </span>;

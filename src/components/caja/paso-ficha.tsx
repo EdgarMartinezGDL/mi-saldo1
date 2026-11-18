@@ -24,7 +24,7 @@ function Accion({ icono, texto, ayuda, disabled, onClick, tecla }: { tecla: stri
       <span className="shrink-0">{icono}</span>
       <span className="min-w-0">
         <span className="block text-xl font-semibold">{texto}</span>
-        {ayuda && <span className="block text-base opacity-80">{ayuda}</span>}
+        {ayuda && <span className="block text-base">{ayuda}</span>}
       </span>
       {conMouse && <span className="ml-auto shrink-0"><Tecla>{tecla}</Tecla></span>}
     </button>

@@ -127,7 +127,7 @@ function Historial() {
                       <p className="text-base font-medium">{describir(m)}</p>
                       <p className="text-sm text-muted-foreground">{instante(m.fecha)}</p>
                     </div>
-                    <span className={cn("shrink-0 text-base font-semibold tabular-nums", positivo ? "text-primary" : "text-destructive")}>
+                    <span className={cn("shrink-0 text-base font-semibold tabular-nums", positivo ? "text-primary-texto" : "text-destructive")}>
                       {m.monto_centavos !== undefined
                         ? `${positivo ? "+" : "−"}${pesos(Math.abs(m.monto_centavos))}`
                         : m.cantidad !== undefined

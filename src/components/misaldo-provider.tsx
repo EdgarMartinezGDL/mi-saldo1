@@ -14,15 +14,44 @@ export type ThemeMode = "claro" | "oscuro" | "personalizado";
 export const DEFAULT_THEME: ThemeMode = "oscuro";
 export const DEFAULT_PRIMARY = "#2563EB";
 
-/** Readable text color over a custom primary: dark on light colors, white on dark ones. */
-function readableForeground(hex: string) {
-  const clean = hex.replace("#", "");
-  if (clean.length !== 6) return "#ffffff";
-  const channels = [0, 2, 4].map((i) => parseInt(clean.slice(i, i + 2), 16) / 255);
-  const lin = (c: number) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
-  const luminance =
-    0.2126 * lin(channels[0] ?? 0) + 0.7152 * lin(channels[1] ?? 0) + 0.0722 * lin(channels[2] ?? 0);
-  return luminance > 0.45 ? "#1E293B" : "#ffffff";
+/** WCAG relative luminance for hexadecimal theme colors. */
+function luminancia(hex: string) {
+  const channels = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255);
+  const lin = (c: number) => c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+  return 0.2126 * lin(channels[0] ?? 0) + 0.7152 * lin(channels[1] ?? 0) + 0.0722 * lin(channels[2] ?? 0);
+}
+function contraste(a: string, b: string) {
+  const x = luminancia(a), y = luminancia(b);
+  return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05);
+}
+function ajustarLuminosidad(hex: string, fondo: string, aclarar: boolean) {
+  const [r = 0, g = 0, b = 0] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255);
+  const max = Math.max(r, g, b), min = Math.min(r, g, b), delta = max - min;
+  const l = (max + min) / 2;
+  const sat = delta === 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
+  const h = delta === 0 ? 0 : max === r ? ((g - b) / delta + 6) % 6 : max === g ? (b - r) / delta + 2 : (r - g) / delta + 4;
+  let color = hex;
+  for (let paso = 1; paso <= 50 && contraste(color, fondo) < 4.5; paso++) {
+    const luz = Math.max(0, Math.min(1, l + (aclarar ? 1 : -1) * paso * 0.02));
+    const c = (1 - Math.abs(2 * luz - 1)) * sat;
+    const x = c * (1 - Math.abs(h % 2 - 1)), m = luz - c / 2;
+    const rgb = h < 1 ? [c, x, 0] : h < 2 ? [x, c, 0] : h < 3 ? [0, c, x] : h < 4 ? [0, x, c] : h < 5 ? [x, 0, c] : [c, 0, x];
+    color = "#" + rgb.map((v) => Math.round((v + m) * 255).toString(16).padStart(2, "0")).join("");
+  }
+  return color;
+}
+
+/** Adjust only theme colors that need it to meet WCAG AA. */
+export function colorConContraste(hex: string) {
+  const color = /^#[0-9a-f]{6}$/i.test(hex) ? hex : DEFAULT_PRIMARY;
+  if (contraste(color, "#ffffff") >= 4.5) return { fondo: color, texto: "#ffffff" };
+  if (luminancia(color) > 0.45 && contraste(color, "#1E293B") >= 4.5) return { fondo: color, texto: "#1E293B" };
+  return { fondo: ajustarLuminosidad(color, "#ffffff", false), texto: "#ffffff" };
+}
+
+export function colorTextoConContraste(hex: string, tarjeta: string) {
+  const color = /^#[0-9a-f]{6}$/i.test(hex) ? hex : DEFAULT_PRIMARY;
+  return ajustarLuminosidad(color, tarjeta, luminancia(tarjeta) < 0.45);
 }
 
 type Business = {
@@ -94,12 +123,15 @@ export function MiSaldoProvider({ children }: { children: ReactNode }) {
     const root = document.documentElement;
     root.classList.toggle("dark", theme !== "claro");
     if (theme === "personalizado") {
-      root.style.setProperty("--primary", customColor);
-      root.style.setProperty("--primary-foreground", readableForeground(customColor));
+      const color = colorConContraste(customColor);
+      root.style.setProperty("--primary", color.fondo);
+      root.style.setProperty("--primary-foreground", color.texto);
+      root.style.setProperty("--primary-texto", colorTextoConContraste(customColor, "#1e293b"));
       root.style.setProperty("--ring", customColor);
     } else {
       root.style.removeProperty("--primary");
       root.style.removeProperty("--primary-foreground");
+      root.style.removeProperty("--primary-texto");
       root.style.removeProperty("--ring");
     }
   }, [theme, customColor]);

@@ -5,7 +5,7 @@ export function CasillasDigitos({ largo, llenos, activo = true, grande = false, 
   largo: number; llenos: number; activo?: boolean; grande?: boolean; className?: string; ariaLabel?: string;
 }) {
   return (
-    <span className={cn("flex", grande ? "gap-2" : "gap-1.5", className)} aria-label={ariaLabel ?? `${llenos} de ${largo} dígitos`}>
+    <span role="img" className={cn("flex", grande ? "gap-2" : "gap-1.5", className)} aria-label={ariaLabel ?? `${llenos} de ${largo} dígitos`}>
       {Array.from({ length: largo }, (_, i) => (
         <span key={i} className={cn(
           "flex-1 grid place-items-center transition-colors border-2",

@@ -32,7 +32,7 @@ function TarjetaEstado({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4 py-10">
       <div className="shadow-soft w-full max-w-sm rounded-2xl bg-card px-6 py-10 text-center ring-1 ring-border sm:px-8">
-        <p className="font-mono text-lg font-bold tracking-tight text-primary"><MarcaMiSaldo /></p>
+        <p className="font-mono text-lg font-bold tracking-tight text-primary-texto"><MarcaMiSaldo /></p>
         {children}
       </div>
     </div>

@@ -23,7 +23,7 @@ function PaginaAviso() {
       {aviso.data.provisional && <Alerta tono="aviso">Aviso provisional. La versión definitiva está en revisión legal.</Alerta>}
       <p className="break-words text-sm text-muted-foreground">Versión {aviso.data.version} · vigente desde {fechaAviso(aviso.data.vigente_desde)}</p>
       {aviso.data.secciones.map((s, i) => <section key={i} className="flex flex-col gap-2"><h2 className="text-lg font-semibold">{s.titulo}</h2>{s.parrafos.map((p, j) => <p key={j} className="text-sm leading-relaxed">{p}</p>)}</section>)}
-      <p className="text-sm">¿Dudas o quieres ejercer tus derechos ARCO? Escribe a <a href={`mailto:${aviso.data.contacto_arco}`} className="break-all font-semibold text-primary underline">{aviso.data.contacto_arco}</a></p>
+      <p className="text-sm">¿Dudas o quieres ejercer tus derechos ARCO? Escribe a <a href={`mailto:${aviso.data.contacto_arco}`} className="inline-flex min-h-11 items-center break-all font-semibold text-primary-texto underline">{aviso.data.contacto_arco}</a></p>
     </div>}
     <Button variant="secondary" className="mt-5" onClick={() => { if (window.history.length > 1) window.history.back(); else void navigate({ to: "/" }); }}>Volver</Button>
   </TarjetaEnlace>;

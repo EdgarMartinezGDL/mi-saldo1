@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 import { ConfirmarMotivo, NOTA_AUDITORIA, errorStaff, useStaffNav } from "./comun";
 
 const ESTADOS: Record<EstadoNotificacion, { etiqueta: string; total: string; color: string }> = {
-  enviado: { etiqueta: "Enviado", total: "Enviadas", color: "bg-success/10 text-success" },
+  enviado: { etiqueta: "Enviado", total: "Enviadas", color: "bg-success/10 text-success-texto" },
   fallido: { etiqueta: "Fallido", total: "Fallidas", color: "bg-destructive/10 text-destructive" },
   pendiente: { etiqueta: "Pendiente", total: "Pendientes", color: "bg-pending/10 text-pending" },
   reintentando: { etiqueta: "Reintentando", total: "Reintentando", color: "bg-pending/10 text-pending" },
@@ -20,8 +20,8 @@ const ESTADOS: Record<EstadoNotificacion, { etiqueta: string; total: string; col
 const ORDEN: EstadoNotificacion[] = ["enviado", "fallido", "pendiente", "reintentando"];
 const ENTREGAS: Record<EntregaNotificacion, { etiqueta: string; color: string }> = {
   sin_confirmar: { etiqueta: "Sin confirmar", color: "bg-secondary text-muted-foreground" },
-  entregado: { etiqueta: "Entregado", color: "bg-success/10 text-success" },
-  leido: { etiqueta: "Leído", color: "bg-success/10 text-success" },
+  entregado: { etiqueta: "Entregado", color: "bg-success/10 text-success-texto" },
+  leido: { etiqueta: "Leído", color: "bg-success/10 text-success-texto" },
   no_entregado: { etiqueta: "No entregado", color: "bg-destructive/10 text-destructive" },
   rebotado: { etiqueta: "Rebotó", color: "bg-destructive/10 text-destructive" },
   queja: { etiqueta: "Marcado como spam", color: "bg-destructive/10 text-destructive" },

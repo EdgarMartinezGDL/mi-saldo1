@@ -106,7 +106,7 @@ function Resumen({ r }: { r: ResumenPromociones }) {
           <ShieldCheck className="mt-0.5 size-5 shrink-0 text-warning-icono" />
           <p>
             Para enviar promociones necesitas la verificación en dos pasos (app autenticadora).{" "}
-            <Link to="/ajustes" className="font-medium text-primary underline">Activarla en Cuenta</Link>
+            <Link to="/ajustes" className="inline-flex min-h-11 items-center font-medium text-primary-texto underline">Activarla en Cuenta</Link>
           </p>
         </div>
       )}
@@ -293,7 +293,7 @@ function Historial() {
               </div>
               <div className="shrink-0 text-right">
                 <p className="tabular-nums"><strong>{p.enviados}</strong> de {p.destinatarios}</p>
-                <span className={cn("pill-badge", p.estado === "enviando" ? "text-primary" : "text-success")}>
+                <span className={cn("pill-badge", p.estado === "enviando" ? "text-primary-texto" : "text-success-texto")}>
                   {p.estado === "enviando" ? "Enviando" : "Enviada"}
                 </span>
               </div>

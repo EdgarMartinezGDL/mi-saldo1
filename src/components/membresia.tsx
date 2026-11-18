@@ -16,8 +16,8 @@ import { Domiciliado } from "@/components/domiciliado";
 
 type Metodo = ClaveMetodo | null;
 
-const VERDE = "bg-success-fill/15 text-success ring-success-fill/40";
-const AMBAR = "bg-warn/15 text-warn ring-warn/40";
+const VERDE = "bg-success-fill/15 text-success-texto ring-success-fill/40";
+const AMBAR = "bg-warn/15 text-warn-texto ring-warn/40";
 const ROJO = "bg-red-400/15 text-destructive ring-red-400/40";
 const ESTADO_MEMBRESIA: Record<Membresia["estado"], { texto: string; clases: string }> = {
   prueba: { texto: "Prueba gratis", clases: VERDE },
@@ -131,7 +131,7 @@ function Dato({ etiqueta, valor, mono = true }: { etiqueta: string; valor: strin
         type="button"
         onClick={() => void copiar(valor, etiqueta)}
         aria-label={`Copiar ${etiqueta.toLowerCase()}`}
-        className="tap-target shadow-soft grid size-11 shrink-0 place-items-center rounded-full border border-border bg-card text-muted-foreground transition-colors hover:text-primary active:shadow-none"
+        className="tap-target shadow-soft grid size-11 shrink-0 place-items-center rounded-full border border-border bg-card text-muted-foreground transition-colors hover:text-primary-texto active:shadow-none"
       >
         <Copy className="size-5" />
       </button>
@@ -190,7 +190,7 @@ function MetodoHeader({
       <span
         className={cn(
           "grid size-12 shrink-0 place-items-center rounded-full",
-          deshabilitado ? "bg-background/60 text-muted-foreground" : seleccionado ? "bg-primary/20" : "bg-primary/12 text-primary",
+          deshabilitado ? "bg-background/60 text-muted-foreground" : seleccionado ? "bg-primary/20" : "bg-primary/12 text-primary-texto",
         )}
       >
         {icono}
@@ -204,7 +204,7 @@ function MetodoHeader({
             </span>
           )}
         </span>
-        <span className={cn("mt-0.5 block text-sm", deshabilitado ? "text-muted-foreground" : seleccionado ? "text-primary-foreground/80" : "text-muted-foreground")}>
+        <span className={cn("mt-0.5 block text-sm", deshabilitado ? "text-muted-foreground" : seleccionado ? "text-primary-foreground" : "text-muted-foreground")}>
           {subtitulo}
         </span>
       </span>

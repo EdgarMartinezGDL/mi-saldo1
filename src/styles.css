@@ -56,6 +56,7 @@
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
+  --color-primary-texto: var(--primary-texto);
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
@@ -68,8 +69,12 @@
   --color-warning: var(--warning);
   --color-warning-foreground: var(--warning-foreground);
   --color-destructive: var(--destructive);
+  --color-destructive-texto: var(--destructive-texto);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-success: var(--success);
+  --color-success-texto: var(--success-texto);
+  --color-warn-texto: var(--warn-texto);
+  --color-barra-iniciales: var(--barra-iniciales);
   --color-success-fill: var(--success-fill);
   --color-barra: var(--barra);
   --color-barra-foreground: var(--barra-foreground);
@@ -126,12 +131,13 @@
   --popover: #ffffff;
   --popover-foreground: #1e293b;
   --primary: #2563eb;
+  --primary-texto: #2563eb;
   --primary-foreground: #ffffff;
   --secondary: #f1f5f9;
   --secondary-foreground: #334155;
   --muted: #f1f5f9;
   --muted-foreground: #64748b;
-  --accent: #f43f5e;
+  --accent: #e11d48;
   --accent-foreground: #ffffff;
   --separador: #cbd5e1;
   --warning-icono: #a16207;
@@ -139,8 +145,11 @@
   --warn: oklch(0.586 0.176 33);
   --warn-foreground: oklch(0.99 0.004 174);
   --destructive: oklch(0.55 0.21 27);
+  --destructive-texto: var(--destructive);
   --destructive-foreground: oklch(0.99 0.004 174);
   --success: #10b981;
+  --success-texto: #047857;
+  --warn-texto: #b42318;
   --success-fill: #10b981;
   --warning: #eab308;
   --warning-foreground: #1e293b;
@@ -150,6 +159,7 @@
   --ring: #2563eb;
   --barra: #2563eb;
   --barra-foreground: #ffffff;
+  --barra-iniciales: rgb(0 0 0 / 0.20);
   --chart-1: var(--primary);
   --chart-2: #f43f5e;
   --chart-3: #10b981;
@@ -186,13 +196,14 @@
   --card-foreground: #e2e8f0;
   --popover: #1e293b;
   --popover-foreground: #e2e8f0;
-  --primary: #3b82f6;
+  --primary: #2563eb;
+  --primary-texto: #60a5fa;
   --primary-foreground: #ffffff;
   --secondary: #334155;
   --secondary-foreground: #e2e8f0;
   --muted: #334155;
   --muted-foreground: #94a3b8;
-  --accent: #f43f5e;
+  --accent: #e11d48;
   --accent-foreground: #ffffff;
   --separador: #334155;
   --warning-icono: #fcd34d;
@@ -200,8 +211,11 @@
   --warn: oklch(0.72 0.15 55);
   --warn-foreground: oklch(0.2 0.02 264);
   --destructive: oklch(0.66 0.19 27);
+  --destructive-texto: #ff8178;
   --destructive-foreground: oklch(0.2 0.02 264);
   --success: #10b981;
+  --success-texto: var(--success);
+  --warn-texto: var(--warn);
   --success-fill: #10b981;
   --warning: #fcd34d;
   --warning-foreground: #1e293b;
@@ -209,8 +223,9 @@
   --border: #334155;
   --input: #475569;
   --ring: #3b82f6;
-  --barra: #3b82f6;
+  --barra: #2563eb;
   --barra-foreground: #ffffff;
+  --barra-iniciales: rgb(0 0 0 / 0.20);
   --chart-1: var(--primary);
   --chart-2: #f43f5e;
   --chart-3: #10b981;
@@ -407,4 +422,11 @@ select:focus-visible {
   color: var(--foreground);
   border-color: color-mix(in oklab, var(--foreground) 40%, transparent);
   background-color: color-mix(in oklab, var(--secondary) 60%, transparent);
+}
+
+.pill-badge.text-success-texto {
+  background-color: color-mix(in oklab, var(--success) 12%, transparent);
+}
+.pill-badge.text-warn-texto {
+  background-color: color-mix(in oklab, var(--warn) 12%, transparent);
 }

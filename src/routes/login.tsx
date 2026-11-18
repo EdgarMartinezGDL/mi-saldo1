@@ -113,7 +113,7 @@ function Login() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4 py-10">
+    <main className="flex min-h-screen items-center justify-center px-4 py-10">
       <div className="w-full max-w-sm rounded-2xl bg-card p-6 shadow-soft ring-1 ring-border">
         {logoError ? (
           <p className="mx-auto mb-4 text-center text-2xl font-semibold tracking-tight"><MarcaMiSaldo /></p>
@@ -155,7 +155,7 @@ function Login() {
             </div>
             <Button type="submit" size="lg" disabled={cargando}>{cargando ? "Entrando…" : "Entrar"}</Button>
             <Link to="/recuperar" search={telefono.replace(/\D/g, "").length === 10 ? { telefono: telefono.replace(/\D/g, "") } : {}}
-              className="text-center text-sm font-medium text-primary hover:underline">
+              className="inline-flex min-h-11 min-w-11 items-center justify-center text-center text-sm font-medium text-primary-texto hover:underline">
               Olvidé mi PIN
             </Link>
           </form>
@@ -185,6 +185,6 @@ function Login() {
           </AlertDialogContent>
         </AlertDialog>
       </div>
-    </div>
+    </main>
   );
 }

@@ -1,5 +1,11 @@
 # Roadmap
 
+## P34 — Contraste, tamaños y barra superior
+- [x] Ajustes de presentación y contraste de los temas, sin cambios de API ni funcionamiento.
+- [x] 515 pruebas pasan; revisión a 360/1280 px en los tres temas: entrada, recuperación, 404, Inicio, Cuenta, Reportes y Equipo; medidas de toque y contraste con axe.
+- [ ] Sesión real: /ajustes redirige a /login; la revisión privada usó respuestas simuladas.
+- [ ] GitHub/publicación: no hay acceso directo verificable a GitHub ni scripts/publicar-frontend.sh; commit disponible para sincronización automática de la plataforma.
+
 ## P33 — Separación de Staff por sitio
 - [x] Clasificación compartida de sitios y filtros de perfiles, sin cambiar contratos de API.
 - [x] Guarda de sesión, rutas ocultas con la 404 existente y etiqueta de entrada admin.

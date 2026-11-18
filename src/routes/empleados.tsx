@@ -133,7 +133,7 @@ function Empleados() {
           <button
             type="button"
             onClick={() => setForm(true)}
-            className="tap-target flex items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-border py-4 text-base font-semibold text-muted-foreground transition-colors hover:border-primary hover:text-primary"
+            className="tap-target flex items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-border py-4 text-base font-semibold text-muted-foreground transition-colors hover:border-primary hover:text-primary-texto"
           >
             <Plus className="size-5" /> Nuevo empleado
           </button>
@@ -164,13 +164,13 @@ function Empleados() {
                       </p>
                     </div>
                     {emp.activo && (
-                      <div className="flex gap-2">
+                      <div className="flex flex-wrap gap-2">
                         {!emp.cuenta_activada && (
-                          <Button size="sm" variant="secondary" onClick={() => void reenviar(emp.negocio_empleado_id)}>
+                          <Button size="lg" variant="secondary" onClick={() => void reenviar(emp.negocio_empleado_id)}>
                             Reenviar invitación
                           </Button>
                         )}
-                        <Button size="sm" variant="ghost" className="text-destructive" onClick={() => void baja(emp)}>
+                        <Button size="lg" variant="ghost" className="text-destructive-texto" onClick={() => void baja(emp)}>
                           Dar de baja
                         </Button>
                       </div>

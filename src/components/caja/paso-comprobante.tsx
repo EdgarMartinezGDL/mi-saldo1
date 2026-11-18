@@ -12,7 +12,7 @@ export function PasoComprobante({ comprobante, nombre, onNuevo, onSeguir }: { co
   return (
     <div className="mx-auto flex w-full max-w-md flex-col gap-5">
       <div className="rounded-2xl bg-primary/10 p-6 text-center ring-1 ring-primary/40">
-        <CheckCircle2 className="mx-auto size-14 text-primary" />
+        <CheckCircle2 className="mx-auto size-14 text-primary-texto" />
         <p className="mt-3 text-2xl font-semibold">{comprobante.titulo}</p>
         {comprobante.lineas.map((l) => <p key={l} className="mt-2 text-lg text-muted-foreground">{l}</p>)}
       </div>

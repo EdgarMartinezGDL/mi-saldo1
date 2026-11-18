@@ -55,7 +55,7 @@ export function useDigitos(onKey: (k: string) => void, opciones: OpcionesTecla =
 export function Tecla({ children }: { children: ReactNode }) {
   const conMouse = useConMouse();
   if (!conMouse) return null;
-  return <kbd className="ml-2 inline-flex min-w-7 items-center justify-center rounded-md border border-current/30 px-1.5 py-0.5 font-mono text-xs font-semibold opacity-80">{children}</kbd>;
+  return <kbd className="ml-2 inline-flex min-w-7 items-center justify-center rounded-md border border-current/30 px-1.5 py-0.5 font-mono text-xs font-semibold">{children}</kbd>;
 }
 
 /** Desktop-only focus; touch devices never open their keyboard automatically. */

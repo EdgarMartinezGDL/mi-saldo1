@@ -94,7 +94,7 @@ function ClienteInicio() {
             <p className="text-xs font-medium uppercase tracking-[0.12em] text-muted-foreground">Hola de nuevo</p>
             <h1 className="truncate text-2xl font-semibold tracking-tight">{yo?.nombre ?? "Cliente"}</h1>
           </div>
-          <span className="shrink-0 rounded-full border border-accent/40 bg-accent/15 px-3 py-1 text-xs font-semibold">
+          <span className="inline-flex min-h-11 items-center shrink-0 rounded-full border border-accent/40 bg-accent/15 px-3 py-1 text-xs font-semibold">
             {datos.negocio.nombre_comercial}
           </span>
         </div>
@@ -116,7 +116,7 @@ function ClienteInicio() {
             </div>
             <div className="relative">
               <div className="flex items-center justify-between gap-3">
-                <p className="text-xs uppercase tracking-[0.16em] opacity-75">Saldo disponible</p>
+                <p className="text-xs uppercase tracking-[0.16em]">Saldo disponible</p>
                 <span className="rounded-md bg-white/15 px-2 py-0.5 font-mono text-xs">
                   {Math.round(m.factor_cashback * 1000) / 10}% cashback
                 </span>
@@ -125,9 +125,9 @@ function ClienteInicio() {
                 <span className="font-mono text-5xl font-bold leading-none tracking-tighter sm:text-6xl">
                   {pesos(m.saldo_centavos, moneda)}
                 </span>
-                <span className="ml-1 text-lg opacity-70">{moneda}</span>
+                <span className="ml-1 text-lg">{moneda}</span>
               </p>
-              <p className="mt-2 text-sm opacity-80">{datos.negocio.nombre_comercial}</p>
+              <p className="mt-2 text-sm">{datos.negocio.nombre_comercial}</p>
               {m.en_retiro && (
                 <p className="mt-2 rounded-lg bg-white/15 px-3 py-2 text-xs">
                   Este negocio ya no da cashback: canjea lo que tienes antes del vencimiento.
@@ -144,7 +144,7 @@ function ClienteInicio() {
                     <Link to="/canjear">Canjear</Link>
                   </Button>
                 </div>
-                <span className={cn("text-xs", m.vence_pronto || m.vencido ? "rounded-md bg-warn px-2 py-0.5 font-semibold text-background" : "opacity-75")}>
+                <span className={cn("text-xs", m.vence_pronto || m.vencido ? "rounded-md bg-warn px-2 py-0.5 font-semibold text-background" : "")}>
                   {textoCaducidad(m)}
                 </span>
               </div>
@@ -161,7 +161,7 @@ function ClienteInicio() {
                 </p>
                 <p className="mt-1 text-xl font-bold">{p.premio_texto}</p>
                 <p className="text-sm font-medium">Premio listo · canjéalo en caja</p>
-                <p className={cn("mt-2 flex items-center gap-1.5 text-sm font-medium", p.vence_pronto ? "text-warn" : "text-muted-foreground")}>
+                <p className={cn("mt-2 flex items-center gap-1.5 text-sm font-medium", p.vence_pronto ? "text-warn-texto" : "text-muted-foreground")}>
                   {p.vence_pronto && <TriangleAlert className="size-4 shrink-0" />}
                   {p.fecha_vencimiento ? `Canjéalo antes del ${fechaTarjeta(p.fecha_vencimiento)}` : ""}
                 </p>
@@ -177,7 +177,7 @@ function ClienteInicio() {
               <span className="shrink-0 text-xs text-muted-foreground">Desliza →</span>
             </div>
             {tarjetas.length === 0 && <p className="text-sm text-muted-foreground">No hay tarjetas que coincidan.</p>}
-            <div className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-2 md:mx-0 md:px-0">
+            <div tabIndex={0} role="region" aria-label="Tus tarjetas de sellos" className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-2 md:mx-0 md:px-0">
               {tarjetas.map((card, index) => {
                 const total = card.en_curso?.sellos_requeridos ?? card.regla.sellos_requeridos;
                 const stamps = card.en_curso?.sellos_actuales ?? 0;
@@ -214,9 +214,9 @@ function ClienteInicio() {
                         );
                       })}
                     </div>
-                    {card.en_retiro && <p className="mt-2 text-xs font-medium text-warn">Ya no da sellos: canjea tus premios.</p>}
+                    {card.en_retiro && <p className="mt-2 text-xs font-medium text-warn-texto">Ya no da sellos: canjea tus premios.</p>}
                     {cad?.fecha_vencimiento && (
-                      <p className={cn("mt-3 flex items-center gap-1.5 text-sm font-semibold", cad.vence_pronto || cad.vencido ? "text-warn" : "text-muted-foreground")}>
+                      <p className={cn("mt-3 flex items-center gap-1.5 text-sm font-semibold", cad.vence_pronto || cad.vencido ? "text-warn-texto" : "text-muted-foreground")}>
                         {(cad.vence_pronto || cad.vencido) && <TriangleAlert className="size-4 shrink-0" />}
                         Vence el {fechaTarjeta(cad.fecha_vencimiento)} · cada compra renueva la fecha
                       </p>

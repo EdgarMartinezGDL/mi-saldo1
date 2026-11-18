@@ -107,7 +107,7 @@ export function AvisoPrivacidad({ valor, onChange, onVersion }: { valor: boolean
   return (
     <div className="flex flex-col gap-3">
       <div className="rounded-xl bg-secondary/50 p-3 text-sm text-muted-foreground">
-        {aviso.isError ? <><p>No pudimos cargar el aviso de privacidad.</p><Button variant="link" className="h-auto p-0" onClick={() => void aviso.refetch()}>Reintentar</Button></> : !disponible ? <p>Cargando aviso…</p> : <><p>{aviso.data?.resumen}</p><Link to="/aviso-privacidad" target="_blank" rel="noopener" className="mt-2 inline-block text-primary underline">Leer el aviso completo</Link></>}
+        {aviso.isError ? <><p>No pudimos cargar el aviso de privacidad.</p><Button variant="link" className="h-auto p-0" onClick={() => void aviso.refetch()}>Reintentar</Button></> : !disponible ? <p>Cargando aviso…</p> : <><p>{aviso.data?.resumen}</p><Link to="/aviso-privacidad" target="_blank" rel="noopener" className="mt-2 inline-flex min-h-11 items-center text-primary-texto underline">Leer el aviso completo</Link></>}
       </div>
       <div className="flex items-start gap-3 rounded-xl p-2">
         <Checkbox id={id} disabled={!disponible} checked={valor && disponible} onCheckedChange={(v) => onChange(v === true)} className="mt-0.5 size-6" />

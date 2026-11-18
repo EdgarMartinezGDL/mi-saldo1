@@ -13,7 +13,7 @@ export function Iniciales({ nombre, className }: { nombre: string; className?: s
   return (
     <span
       aria-hidden
-      className={cn("grid size-10 shrink-0 place-items-center rounded-full bg-primary/10 text-sm font-semibold text-primary", className)}
+      className={cn("grid size-10 shrink-0 place-items-center rounded-full bg-primary/10 text-sm font-semibold text-primary-texto", className)}
     >
       {letras || <User className="size-5" />}
     </span>
@@ -23,8 +23,8 @@ export function Iniciales({ nombre, className }: { nombre: string; className?: s
 export type Tono = "primary" | "success" | "warning" | "accent" | "neutro";
 
 const TONOS: Record<Tono, string> = {
-  primary: "bg-primary/10 text-primary",
-  success: "bg-success/12 text-success",
+  primary: "bg-primary/10 text-primary-texto",
+  success: "bg-success/12 text-success-texto",
   warning: "bg-warning/15 text-warning-icono",
   accent: "bg-accent/10 text-accent",
   neutro: "bg-muted text-muted-foreground",

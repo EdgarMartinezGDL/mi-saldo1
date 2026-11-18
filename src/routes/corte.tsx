@@ -120,7 +120,7 @@ function Jornada() {
                           {hora(m.fecha)} · {TIPO[m.tipo]}{m.tarjeta ? ` · ${m.tarjeta.nombre}` : ""} · {telefonoVisible(m.cliente.telefono)}
                         </p>
                       </div>
-                      <span className={cn("shrink-0 font-mono text-lg font-bold tabular-nums", negativo ? "text-warn" : "text-primary")}>{valor}</span>
+                      <span className={cn("shrink-0 font-mono text-lg font-bold tabular-nums", negativo ? "text-warn-texto" : "text-primary-texto")}>{valor}</span>
                     </li>
                   );
                 })}

@@ -64,7 +64,7 @@ export function TotpProvider({ children }: { children: ReactNode }) {
         <DialogContent>
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <ShieldCheck className="size-5 text-primary" /> Confirma con tu app autenticadora
+              <ShieldCheck className="size-5 text-primary-texto" /> Confirma con tu app autenticadora
             </DialogTitle>
             <DialogDescription>Escribe el código de 6 dígitos de tu app o un código de respaldo.</DialogDescription>
           </DialogHeader>

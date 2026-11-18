@@ -50,7 +50,7 @@ export function CalculadoraMonedero({ factor }: { factor: string | null }) {
             {sim.ejemplos.map((e, i) => (
               <tr key={`${e.monto_compra_centavos}-${i}`} className="border-t border-border">
                 <td className="py-2 font-mono tabular-nums">{pesos(e.monto_compra_centavos)}</td>
-                <td className="py-2 text-right font-mono font-semibold tabular-nums text-primary">{pesos(e.monedero_centavos)}</td>
+                <td className="py-2 text-right font-mono font-semibold tabular-nums text-primary-texto">{pesos(e.monedero_centavos)}</td>
               </tr>
             ))}
           </tbody>

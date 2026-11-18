@@ -8,7 +8,7 @@ export function FichaOxxo({ ficha }: { ficha: PagoMembresia["datos_pago"]["oxxo"
     {ficha.referencia && <p className="break-words font-mono text-2xl font-bold">{ficha.referencia}</p>}
     {ficha.vence && <p className="text-sm">Vence: {fechaAviso(ficha.vence)}</p>}
     {ficha.instrucciones && <p className="text-sm text-muted-foreground">{ficha.instrucciones}</p>}
-    {ficha.url_ficha && <a href={ficha.url_ficha} target="_blank" rel="noopener" className="text-primary underline">Ver ficha</a>}
+    {ficha.url_ficha && <a href={ficha.url_ficha} target="_blank" rel="noopener" className="inline-flex min-h-11 items-center text-primary-texto underline">Ver ficha</a>}
   </div>;
 }
 export const AvisoPagoPrueba = () => <Alerta tono="aviso">Modo de prueba: ningún cobro es real.</Alerta>;

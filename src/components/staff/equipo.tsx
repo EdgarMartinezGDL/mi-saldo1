@@ -75,7 +75,7 @@ function FilaMiembro({ m, yo, admin, onCambio }: { m: MiembroEquipo; yo: boolean
     <li className="flex flex-col gap-2 rounded-2xl bg-card p-4 ring-1 ring-border">
       <div className="flex flex-wrap items-center gap-2">
         <span className="text-base font-medium">{nombreCompleto(m)}{yo && " (tú)"}</span>
-        <span className={cn("rounded-full px-2.5 py-0.5 text-xs font-semibold", m.nivel === "admin" ? "bg-primary/15 text-primary" : "bg-secondary text-foreground")}>
+        <span className={cn("rounded-full px-2.5 py-0.5 text-xs font-semibold", m.nivel === "admin" ? "bg-primary/15 text-primary-texto" : "bg-secondary text-foreground")}>
           {m.nivel === "admin" ? "Admin" : "Soporte"}
         </span>
       </div>
@@ -84,10 +84,10 @@ function FilaMiembro({ m, yo, admin, onCambio }: { m: MiembroEquipo; yo: boolean
       {!m.activo && <p className="text-sm text-muted-foreground">Baja el {instante(m.baja_en)} por {quien(m.baja_por)}: {m.baja_motivo}</p>}
       {admin && (
         <div className="flex flex-wrap gap-2">
-          {m.activo && !m.cuenta_activada && <Button size="sm" variant="secondary" onClick={() => setAccion("reinvitar")}>Reenviar invitación</Button>}
-          {m.activo && !yo && <Button size="sm" variant="secondary" onClick={() => setAccion("nivel")}>Cambiar nivel</Button>}
-          {m.activo && !yo && <Button size="sm" variant="ghost" className="text-destructive" onClick={() => setAccion("baja")}>Dar de baja</Button>}
-          {!m.activo && !yo && <Button size="sm" variant="secondary" onClick={() => setAccion("reactivar")}>Reactivar</Button>}
+          {m.activo && !m.cuenta_activada && <Button size="lg" variant="secondary" onClick={() => setAccion("reinvitar")}>Reenviar invitación</Button>}
+          {m.activo && !yo && <Button size="lg" variant="secondary" onClick={() => setAccion("nivel")}>Cambiar nivel</Button>}
+          {m.activo && !yo && <Button size="lg" variant="ghost" className="text-destructive-texto" onClick={() => setAccion("baja")}>Dar de baja</Button>}
+          {!m.activo && !yo && <Button size="lg" variant="secondary" onClick={() => setAccion("reactivar")}>Reactivar</Button>}
         </div>
       )}
       <ConfirmarMotivo abierto={accion === "reinvitar"} onAbierto={(o) => !o && setAccion(null)} pideMotivo={false} titulo={`¿Reenviar la invitación a ${m.nombre}?`} boton="Sí, reenviar"

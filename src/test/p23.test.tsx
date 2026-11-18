@@ -79,22 +79,22 @@ describe("P23 branding", () => {
     const root = styles.match(/:root\s*\{([^}]+)\}/)?.[1];
     const dark = styles.match(/\.dark\s*\{([^}]+)\}/)?.[1];
     expect(root).toMatch(/--primary:\s*#2563eb\s*;/i);
-    expect(dark).toMatch(/--primary:\s*#3b82f6\s*;/i);
+    expect(dark).toMatch(/--primary:\s*#2563eb\s*;/i);
   });
 
   it("barra azul en ambos modos", () => {
     const root = styles.match(/:root\s*\{([^}]+)\}/)?.[1];
     const dark = styles.match(/\.dark\s*\{([^}]+)\}/)?.[1];
     expect(root).toMatch(/--barra:\s*#2563eb\s*;/i);
-    expect(dark).toMatch(/--barra:\s*#3b82f6\s*;/i);
+    expect(dark).toMatch(/--barra:\s*#2563eb\s*;/i);
   });
 
   it("acento Coral y advertencia Amarillo en ambos modos", () => {
     const root = styles.match(/:root\s*\{([^}]+)\}/)?.[1];
     const dark = styles.match(/\.dark\s*\{([^}]+)\}/)?.[1];
-    expect(root).toMatch(/--accent:\s*#f43f5e\s*;/i);
+    expect(root).toMatch(/--accent:\s*#e11d48\s*;/i);
     expect(root).toMatch(/--warning:\s*#eab308\s*;/i);
-    expect(dark).toMatch(/--accent:\s*#f43f5e\s*;/i);
+    expect(dark).toMatch(/--accent:\s*#e11d48\s*;/i);
     expect(dark).toMatch(/--warning:\s*#fcd34d\s*;/i);
   });
 

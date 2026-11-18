@@ -226,7 +226,7 @@ function Selector({ onCerrar, abierto }: { onCerrar: () => void; abierto: boolea
                 className="h-14 text-center font-mono text-xl tracking-[0.3em]"
               />
             </label>
-            <button type="button" className="self-start text-sm text-primary underline-offset-4 hover:underline" onClick={() => { setRespaldo((v) => !v); setCodigo(""); }}>
+            <button type="button" className="self-start text-sm text-primary-texto underline-offset-4 hover:underline" onClick={() => { setRespaldo((v) => !v); setCodigo(""); }}>
               {respaldo ? "Usar el código de la app" : "Usar un código de respaldo"}
             </button>
           </div>
@@ -257,7 +257,7 @@ function Selector({ onCerrar, abierto }: { onCerrar: () => void; abierto: boolea
           aria-current={c.actual ? "true" : undefined}
           className={cn(
             "tap-target flex min-h-14 w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-base transition-colors",
-            c.actual ? "bg-primary/12 font-semibold text-primary" : "bg-secondary shadow-soft hover:text-primary",
+            c.actual ? "bg-primary/12 font-semibold text-primary-texto" : "bg-secondary shadow-soft hover:text-primary-texto",
           )}
         >
           <span className="min-w-0 flex-1 truncate">{etiquetaContexto(c)}</span>

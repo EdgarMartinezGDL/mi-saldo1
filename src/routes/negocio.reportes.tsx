@@ -106,7 +106,7 @@ function TarjetaReporte({ tipo, negocio }: { tipo: Reporte; negocio: string }) {
   const fecha = "h-12 rounded-xl border border-border bg-card px-3 text-base shadow-soft";
   return (
     <section className="rounded-2xl bg-card p-5 ring-1 ring-border">
-      <h2 className="flex items-center gap-2 text-lg font-semibold tracking-tight"><c.icono className="size-5 text-primary" /> {c.titulo}</h2>
+      <h2 className="flex items-center gap-2 text-lg font-semibold tracking-tight"><c.icono className="size-5 text-primary-texto" /> {c.titulo}</h2>
       <p className="mt-3 text-base font-medium">{c.rango}</p>
       <div className="mt-2 flex flex-wrap items-center gap-2">
         <input type="date" aria-label="Desde" max={tipo === "inactivos" ? hoyMx() : undefined} value={desde} onChange={(e) => { setRango([e.target.value, hasta]); setConteo(null); }} className={fecha} />
@@ -114,7 +114,7 @@ function TarjetaReporte({ tipo, negocio }: { tipo: Reporte; negocio: string }) {
         <input type="date" aria-label="Hasta" max={tipo === "inactivos" ? hoyMx() : undefined} value={hasta} onChange={(e) => { setRango([desde, e.target.value]); setConteo(null); }} className={fecha} />
       </div>
       {tipo === "cumpleaneros" && (
-        <label className="mt-3 flex items-center gap-3 text-sm font-medium">
+        <label className="mt-3 flex min-h-11 items-center gap-3 text-sm font-medium">
           <Checkbox checked={incluir_archivados} onCheckedChange={(v) => { setIncluirArchivados(v === true); setConteo(null); }} aria-label="Incluir archivados" />
           Incluir archivados
         </label>

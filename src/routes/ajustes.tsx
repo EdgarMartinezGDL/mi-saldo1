@@ -41,7 +41,7 @@ const THEMES: { value: ThemeMode; label: string; icon: typeof Sun }[] = [
 
 const PRESETS = ["#F43F5E", "#7c3f2f", "#1d4ed8", "#b3261e", "#6b21a8", "#2563EB"];
 
-const enlace = "tap-target flex min-h-14 items-center gap-3 rounded-xl bg-secondary px-4 py-3 text-base font-medium shadow-soft hover:text-primary";
+const enlace = "tap-target flex min-h-14 items-center gap-3 rounded-xl bg-secondary px-4 py-3 text-base font-medium shadow-soft hover:text-primary-texto";
 
 function Cuenta() {
   const { theme, setTheme, customColor, setCustomColor } = useMiSaldo();
@@ -63,7 +63,7 @@ function Cuenta() {
 
         {negocios.varios && (
           <button type="button" onClick={negocios.abrir} className={enlace}>
-            <ArrowLeftRight className="size-5 text-primary" />
+            <ArrowLeftRight className="size-5 text-primary-texto" />
             <span className="flex-1 text-left">Cambiar de negocio</span>
             <ChevronRight className="size-5 text-muted-foreground" />
           </button>
@@ -77,12 +77,12 @@ function Cuenta() {
             <Promociones />
             <div className="flex flex-col gap-2">
               {hayReferidos && <Link to="/referidos" className={enlace}>
-                <Gift className="size-5 text-primary" />
+                <Gift className="size-5 text-primary-texto" />
                 <span className="flex-1">Recomienda y gana</span>
                 <ChevronRight className="size-5 text-muted-foreground" />
               </Link>}
               <Link to="/reclamaciones" className={enlace}>
-                <MessageSquareWarning className="size-5 text-primary" />
+                <MessageSquareWarning className="size-5 text-primary-texto" />
                 <span className="flex-1">Mis reclamaciones</span>
                 <ChevronRight className="size-5 text-muted-foreground" />
               </Link>

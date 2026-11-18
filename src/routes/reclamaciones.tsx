@@ -34,8 +34,8 @@ export const Route = createFileRoute("/reclamaciones")({
 });
 
 const ESTADO_STYLE: Record<EstadoReclamacion, string> = {
-  pendiente: "text-warn",
-  aprobada: "text-primary",
+  pendiente: "text-warn-texto",
+  aprobada: "text-primary-texto",
   rechazada: "text-destructive",
   cancelada: "text-muted-foreground",
 };
@@ -117,7 +117,7 @@ function MisReclamaciones() {
                 )}
 
                 {r.estado === "pendiente" && (
-                  <p className="mt-3 text-sm font-medium text-warn">
+                  <p className="mt-3 text-sm font-medium text-warn-texto">
                     En revisión por el negocio. Te avisaremos cuando haya respuesta.
                   </p>
                 )}

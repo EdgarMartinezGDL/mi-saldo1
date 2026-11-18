@@ -65,8 +65,8 @@ export const Route = createFileRoute("/staff")({
 
 const ESTADOS: Record<EstadoMembresia, { l: string; c: string }> = {
   prueba: { l: "Prueba", c: "bg-secondary text-foreground" },
-  activa: { l: "Activa", c: "bg-primary/15 text-primary" },
-  gracia: { l: "Gracia", c: "bg-warn/15 text-warn" },
+  activa: { l: "Activa", c: "bg-primary/15 text-primary-texto" },
+  gracia: { l: "Gracia", c: "bg-warn/15 text-warn-texto" },
   vencida: { l: "Vencida", c: "bg-destructive/10 text-destructive" },
   suspendida: { l: "Suspendida", c: "bg-destructive text-destructive-foreground" },
 };
@@ -121,7 +121,7 @@ function Staff() {
             <button type="button" onClick={() => setTab("whatsapp")}
               className={cn("col-span-2 rounded-2xl p-4 text-left ring-1 lg:col-span-4",
                 resumen.whatsapp.alerta_capacidad ? "bg-destructive/10 ring-destructive/50" : "bg-card ring-border")}>
-              <p className="flex items-center gap-2 text-base font-semibold"><MessageCircle className="size-5 text-primary" /> WhatsApp</p>
+              <p className="flex items-center gap-2 text-base font-semibold"><MessageCircle className="size-5 text-primary-texto" /> WhatsApp</p>
               <p className="mt-1 text-sm">{resumen.whatsapp.lugares_libres} lugares libres · {resumen.whatsapp.negocios_sin_whatsapp} negocios sin número</p>
               {resumen.whatsapp.alerta_capacidad && <p className="mt-1 text-sm font-medium text-destructive">Quedan pocos lugares: da de alta otro portafolio</p>}
             </button>
@@ -249,11 +249,11 @@ function Negocios({ onCambio, onIrWhatsapp }: { onCambio: () => void; onIrWhatsa
                   </p>
                 </button>
                 {!esAdmin ? null : n.membresia.estado === "suspendida" ? (
-                  <Button size="sm" variant="secondary" onClick={() => abrirAccion(n, "reactivar")}>
+                  <Button size="lg" variant="secondary" onClick={() => abrirAccion(n, "reactivar")}>
                     Reactivar
                   </Button>
                 ) : (
-                  <Button size="sm" variant="ghost" className="text-destructive" onClick={() => abrirAccion(n, "suspender")}>
+                  <Button size="lg" variant="ghost" className="text-destructive-texto" onClick={() => abrirAccion(n, "suspender")}>
                     Suspender
                   </Button>
                 )}
@@ -430,7 +430,7 @@ function Ficha({ ficha, onCerrar, onActualizada }: { ficha: FichaPersona; onCerr
               <div className="flex items-center justify-between gap-2">
                 <span className="min-w-0 flex-1 truncate text-base font-medium">{c.negocio.nombre_comercial}</span>
                 {esAdmin && !ficha.eliminada && (
-                  <Button size="sm" variant="secondary" className="shrink-0" onClick={() => setAjustar(c.negocio.negocio_id)}>Ajustar</Button>
+                  <Button size="lg" variant="secondary" className="shrink-0" onClick={() => setAjustar(c.negocio.negocio_id)}>Ajustar</Button>
                 )}
                 <span className={cn("shrink-0 rounded-full px-2.5 py-0.5 text-xs font-semibold", ESTADOS[c.negocio.membresia].c)}>
                   {c.negocio.membresia === "gracia" ? "Pago pendiente" : ESTADOS[c.negocio.membresia].l}
@@ -453,7 +453,7 @@ function Ficha({ ficha, onCerrar, onActualizada }: { ficha: FichaPersona; onCerr
                       {t.tarjeta} · <span className="font-mono">{t.sellos_actuales}/{t.sellos_requeridos}</span>
                       {t.fecha_vencimiento && <span className="text-muted-foreground"> · vence el {fechaCorta(t.fecha_vencimiento)}</span>}
                     </span>
-                    {t.estado === "completa" && <span className="rounded-full bg-primary/15 px-2.5 py-0.5 text-xs font-semibold text-primary">Premio listo</span>}
+                    {t.estado === "completa" && <span className="rounded-full bg-primary/15 px-2.5 py-0.5 text-xs font-semibold text-primary-texto">Premio listo</span>}
                   </p>
                   <div className="h-1.5 overflow-hidden rounded-full bg-secondary">
                     <div className="h-full rounded-full bg-primary" style={{ width: `${Math.min(100, (t.sellos_actuales / Math.max(1, t.sellos_requeridos)) * 100)}%` }} />
@@ -465,7 +465,7 @@ function Ficha({ ficha, onCerrar, onActualizada }: { ficha: FichaPersona; onCerr
                 {c.acepta_promociones === false && " · No acepta promociones"}
               </p>
               {c.reclamaciones_pendientes > 0 && (
-                <p className="text-xs font-medium text-warn">
+                <p className="text-xs font-medium text-warn-texto">
                   {c.reclamaciones_pendientes} {c.reclamaciones_pendientes === 1 ? "reclamación pendiente" : "reclamaciones pendientes"}
                 </p>
               )}

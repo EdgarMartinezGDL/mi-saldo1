@@ -23,8 +23,8 @@ import { plural } from "@/lib/plural";
 
 const CHIP: Record<EstadoPortafolio, { l: string; c: string }> = {
   preparando: { l: "Preparando", c: "bg-secondary text-foreground" },
-  activo: { l: "Activo", c: "bg-primary/15 text-primary" },
-  pausado: { l: "Pausado", c: "bg-warn/15 text-warn" },
+  activo: { l: "Activo", c: "bg-primary/15 text-primary-texto" },
+  pausado: { l: "Pausado", c: "bg-warn/15 text-warn-texto" },
   retirado: { l: "Retirado", c: "bg-destructive/10 text-destructive" },
 };
 

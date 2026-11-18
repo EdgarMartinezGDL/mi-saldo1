@@ -91,12 +91,12 @@ function AccesoValidaciones() {
   const { data } = useMisValidaciones();
   const pendientes = data?.validaciones?.filter((v) => v.estado === "pendiente").length ?? 0;
   if (estado !== "autenticado") return null;
-  if (pendientes === 0) return <span className="max-w-28 text-xs opacity-70">Mi Saldo Vip · By MicroFix Cloud</span>;
+  if (pendientes === 0) return <span className="hidden max-w-28 text-xs text-barra-foreground min-[400px]:inline">Mi Saldo Vip · By MicroFix Cloud</span>;
   return (
     <Link
       to="/validaciones"
       aria-label={pendientes ? `Solicitudes por confirmar: ${pendientes}` : "Solicitudes por confirmar"}
-      className="tap-target relative grid size-11 place-items-center rounded-full border border-white/25 bg-white/10 text-white transition-colors hover:bg-white/20"
+      className="tap-target relative grid size-11 place-items-center rounded-full border border-barra-foreground/25 bg-barra-foreground/10 text-barra-foreground transition-colors hover:bg-barra-foreground/20"
     >
       <UserCheck className="size-5" />
       {pendientes > 0 && (
@@ -141,13 +141,13 @@ function AppBar() {
                 className="size-14 shrink-0 rounded-full object-cover ring-1 ring-barra-foreground/30"
               />
             ) : (
-              <div className="grid size-14 shrink-0 place-items-center rounded-full bg-barra-foreground/15 text-base font-bold text-barra-foreground ring-1 ring-barra-foreground/30">
+              <div className="grid size-14 shrink-0 place-items-center rounded-full bg-barra-iniciales text-base font-bold text-barra-foreground ring-1 ring-barra-foreground/30">
                 {initials || "MS"}
               </div>
             )
           ) : (
             logoError ? (
-              <p className="shrink-0 text-lg font-bold text-white"><MarcaMiSaldo /></p>
+              <p className="shrink-0 text-lg font-bold text-barra-foreground"><MarcaMiSaldo /></p>
             ) : (
               <img src={LOGO_MARCA} alt="Mi Saldo Vip" height={48} decoding="async"
                 onError={() => setLogoError(true)} className="h-12 w-auto object-contain shrink-0" />
@@ -161,17 +161,17 @@ function AppBar() {
                     type="button"
                     onClick={abrir}
                     aria-label={`${nombre}. Cambiar de negocio`}
-                    className="flex max-w-full items-center gap-1 rounded-lg text-left text-lg font-bold text-white hover:text-white/80"
+                    className="flex min-h-11 min-w-11 max-w-full items-center gap-1 rounded-lg text-left text-lg font-bold text-barra-foreground hover:text-barra-foreground"
                   >
                     <span className="truncate">{nombre}</span>
                     <ChevronDown className="size-5 shrink-0" />
                   </button>
                 ) : (
-                  <p className="truncate text-lg font-bold text-white">{nombre}</p>
+                  <p className="truncate text-lg font-bold text-barra-foreground">{nombre}</p>
                 )}
               </>
             ) : (
-              <p className="truncate text-lg font-bold text-white">
+              <p className="truncate text-lg font-bold text-barra-foreground">
                 <MarcaMiSaldo />
               </p>
             )}
@@ -261,7 +261,7 @@ export function AppShell({ children, volver, volverTexto, amplio = false }: { ch
                 aria-current={active ? "page" : undefined}
                 className={cn(
                   "relative flex min-h-[64px] flex-col items-center justify-center gap-1 transition-colors",
-                  active ? "text-primary" : "text-muted-foreground/80 hover:text-foreground",
+                  active ? "text-primary-texto" : "text-muted-foreground hover:text-foreground",
                 )}
               >
                 <span
@@ -273,7 +273,7 @@ export function AppShell({ children, volver, volverTexto, amplio = false }: { ch
                 >
                   <item.icon className={cn("shrink-0", item.destacado ? "size-7" : "size-[22px]")} strokeWidth={active ? 2.2 : 1.7} />
                 </span>
-                <span className={cn("text-[11px] tracking-tight", active || item.destacado ? "font-semibold" : "font-medium")}>
+                <span className={cn("text-xs leading-tight whitespace-nowrap", active || item.destacado ? "font-semibold" : "font-medium")}>
                   {item.label}
                 </span>
                 {!item.destacado && (

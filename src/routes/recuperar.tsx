@@ -115,7 +115,7 @@ function Recuperar() {
   const campo = "h-12 text-center font-mono text-xl tracking-[0.3em]";
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4 py-10">
+    <main className="flex min-h-screen items-center justify-center px-4 py-10">
       <div ref={refPaso} className="w-full max-w-sm rounded-2xl bg-card p-6 shadow-soft ring-1 ring-border">
         <div className="mb-6 flex items-center gap-3">
           <div className="grid size-11 place-items-center rounded-full bg-primary text-primary-foreground"><LifeBuoy className="size-5" /></div>
@@ -208,6 +208,6 @@ function Recuperar() {
           </Button>
         )}
       </div>
-    </div>
+    </main>
   );
 }

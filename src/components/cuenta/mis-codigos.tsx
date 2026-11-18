@@ -88,7 +88,7 @@ export function TarjetaMisCodigos() {
   const bloqueoFuturo = datos?.codigo_canje_bloqueado_hasta && new Date(datos.codigo_canje_bloqueado_hasta).getTime() > Date.now();
 
   return (
-    <Tarjeta titulo="Mis códigos" icono={<KeyRound className="size-5 text-primary" />}>
+    <Tarjeta titulo="Mis códigos" icono={<KeyRound className="size-5 text-primary-texto" />}>
       {!datos ? (
         <div className="mt-3 grid gap-3">
           <p className="text-base text-muted-foreground">Escribe tu PIN para ver tu código de acumulación y el estado de tu código de canje.</p>
@@ -120,9 +120,9 @@ export function TarjetaMisCodigos() {
             )}
             <p className="mt-1 text-sm text-muted-foreground">Para usar tu saldo o cobrar premios. No lo mostramos por seguridad: si lo olvidaste, cámbialo.</p>
             {datos.codigo_canje_requiere_cambio ? (
-              <p className="mt-2 flex gap-2 text-sm font-medium text-warn"><TriangleAlert className="size-4 shrink-0" />Tu código de canje está bloqueado por muchos intentos fallidos. Para desbloquearlo, cámbialo.</p>
+              <p className="mt-2 flex gap-2 text-sm font-medium text-warn-texto"><TriangleAlert className="size-4 shrink-0" />Tu código de canje está bloqueado por muchos intentos fallidos. Para desbloquearlo, cámbialo.</p>
             ) : bloqueoFuturo ? (
-              <p className="mt-2 flex gap-2 text-sm font-medium text-warn"><TriangleAlert className="size-4 shrink-0" /><span>{`Tu código de canje está bloqueado hasta el ${instante(datos.codigo_canje_bloqueado_hasta)}`} <span>Si no fuiste tú quien lo intentó, cámbialo ahora.</span></span></p>
+              <p className="mt-2 flex gap-2 text-sm font-medium text-warn-texto"><TriangleAlert className="size-4 shrink-0" /><span>{`Tu código de canje está bloqueado hasta el ${instante(datos.codigo_canje_bloqueado_hasta)}`} <span>Si no fuiste tú quien lo intentó, cámbialo ahora.</span></span></p>
             ) : null}
           </div>
 

@@ -164,11 +164,11 @@ export function MisDatos() {
       <p className="mt-2 text-xs text-muted-foreground">Tu nombre lo corrige el negocio o soporte de Mi Saldo Vip.</p>
       <div className="mt-4 grid gap-2 sm:grid-cols-2">
         <Button variant={abierto === "pin" ? "default" : "secondary"} size="lg" className="h-14 justify-start text-base" onClick={() => { limpiar(); setAbierto(abierto === "pin" ? null : "pin"); }}>
-          <KeyRound className={cn("size-5", abierto !== "pin" && "text-primary")} /> Cambiar PIN
+          <KeyRound className={cn("size-5", abierto !== "pin" && "text-primary-texto")} /> Cambiar PIN
           {abierto === "pin" ? <ChevronDown className="ml-auto size-5 text-muted-foreground" /> : <ChevronRight className="ml-auto size-5 text-muted-foreground" />}
         </Button>
         <Button variant={abierto === "correo" ? "default" : "secondary"} size="lg" className="h-14 justify-start text-base" onClick={() => { limpiar(); if (abierto !== "correo") setCorreo(correoSinConfirmar ?? ""); setAbierto(abierto === "correo" ? null : "correo"); }}>
-          <Mail className={cn("size-5", abierto !== "correo" && "text-primary")} /> {data?.correo ? "Cambiar correo" : correoSinConfirmar ? "Confirmar correo" : "Agregar correo"}
+          <Mail className={cn("size-5", abierto !== "correo" && "text-primary-texto")} /> {data?.correo ? "Cambiar correo" : correoSinConfirmar ? "Confirmar correo" : "Agregar correo"}
           {abierto === "correo" ? <ChevronDown className="ml-auto size-5 text-muted-foreground" /> : <ChevronRight className="ml-auto size-5 text-muted-foreground" />}
         </Button>
       </div>
@@ -230,7 +230,7 @@ export function Seguridad({ staff = false }: { staff?: boolean }) {
   };
 
   return (
-    <Tarjeta titulo="Seguridad" icono={<ShieldCheck className="size-5 text-primary" />}>
+    <Tarjeta titulo="Seguridad" icono={<ShieldCheck className="size-5 text-primary-texto" />}>
       <p className="mt-1 text-sm text-muted-foreground">
         Verificación en dos pasos: {activo ? (staff ? "activada (obligatoria para Staff)" : "activada") : "desactivada"}. {activo ? "Al entrar te pediremos el código de tu app autenticadora." : "Pide un código de tu app autenticadora al entrar y en acciones importantes."}
       </p>
@@ -358,7 +358,7 @@ export function Promociones() {
   };
 
   return (
-    <Tarjeta titulo="Promociones" icono={<Megaphone className="size-5 text-primary" />}>
+    <Tarjeta titulo="Promociones" icono={<Megaphone className="size-5 text-primary-texto" />}>
       <label className="mt-3 flex min-h-14 items-center justify-between gap-4 rounded-xl bg-secondary px-4 py-3">
         <span className="text-base">Quiero recibir promociones de este negocio (cumpleaños, ofertas)</span>
         <Switch checked={acepta} disabled={ocupado || !data} onCheckedChange={(v) => void cambiar(v)} aria-label="Recibir promociones" />
@@ -393,7 +393,7 @@ export function NotificacionesDispositivo() {
   };
 
   return (
-    <Tarjeta titulo="Notificaciones" icono={<BellRing className="size-5 text-primary" />}>
+    <Tarjeta titulo="Notificaciones" icono={<BellRing className="size-5 text-primary-texto" />}>
       {estado === "instalar_ios" && (
         <p className="mt-3 text-sm text-muted-foreground">
           Para recibir avisos en tu iPhone, primero agrega Mi Saldo Vip a tu pantalla de inicio: toca Compartir y luego <strong>Agregar a inicio</strong>.
@@ -414,7 +414,7 @@ export function NotificacionesDispositivo() {
       )}
       {estado === "activadas" && (
         <>
-          <span className="pill-badge mt-3 inline-block text-success">Activadas en este dispositivo</span>
+          <span className="pill-badge mt-3 inline-block text-success-texto">Activadas en este dispositivo</span>
           {promo && !promo.acepta_promociones && (
             <p className="mt-2 text-sm text-muted-foreground">Para recibir las de este negocio, activa también <strong>Promociones</strong> aquí abajo.</p>
           )}
