@@ -2,7 +2,7 @@
 
 ## P35 — Preferencias de notificaciones
 - [x] GET/PUT nuevos y sección opcional únicamente con push activado; carga/errores de consulta ocultos y guardados fallidos revertidos.
-- [x] 523 pruebas pasan (8 nuevas P35), sin modificar las existentes; Cuenta revisada a 360/1280 px en claro/oscuro/personalizado con respuestas controladas: valores, guardado, bloqueo de ambos interruptores, reversión, 404/500 sin avisos y ausencia de GET cuando push está desactivado; compilación OK.
+- [x] 523 pruebas pasan (8 nuevas P35), sin modificar las existentes; Cuenta revisada a 360/1280 px en claro/oscuro/personalizado con respuestas controladas: ambos campos guardan y revierten, bloqueo de ambos interruptores, valores conservados tras recargar, carga y 404/500 sin sección ni avisos, ausencia de GET con push desactivado; filas contrastadas con Promociones, ubicación y textos comprobados; compilación OK y sin errores del navegador.
 - [ ] Sesión real y sincronización con GitHub sin verificar: Cuenta real redirige a Login y los remotos disponibles no son GitHub; cambios guardados en commit para sincronización automática de la plataforma.
 
 ## P34 — Contraste, tamaños y barra superior
