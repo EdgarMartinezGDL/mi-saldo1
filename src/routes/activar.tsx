@@ -1,16 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { UserCheck } from "lucide-react";
 import { useEffect, useState, type FormEvent } from "react";
-import { ContinuarSesion, tituloPaso } from "@/components/continuar-sesion";
-import { Alerta, AvisoPrivacidad, CampoDigitos, EnlaceNoValido, TarjetaEnlace, useTokenFragmento } from "@/components/enlace-ui";
+import { CompletarActivacion } from "@/components/completar-activacion";
+import { Alerta, CampoDigitos, EnlaceNoValido, TarjetaEnlace, useTokenFragmento } from "@/components/enlace-ui";
 import { ExternalEntryLoading } from "@/components/external-entry-loading";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import type { RespuestaLogin } from "@/lib/api/auth";
 import { ApiError, telefonoE164 } from "@/lib/api/client";
-import { completarActivacion, solicitarCodigoActivacion, verificarCodigoActivacion, verificarEnlaceActivacion } from "@/lib/api/enlaces";
-import { useConsentimiento } from "@/lib/api/privacidad";
+import { solicitarCodigoActivacion, verificarCodigoActivacion, verificarEnlaceActivacion } from "@/lib/api/enlaces";
 
 export const Route = createFileRoute("/activar")({
   head: () => ({
@@ -39,8 +37,7 @@ type Paso =
   | { tipo: "formulario"; token: string }
   | { tipo: "solicitar" }
   | { tipo: "codigo"; telefono: string }
-  | { tipo: "ya_activa" }
-  | { tipo: "sesion"; respuesta: RespuestaLogin; advertencias: string[] };
+  ;
 
 function Activar() {
   const token = useTokenFragmento();
@@ -77,90 +74,13 @@ function Activar() {
           onListo={(t) => { setError(null); setPaso({ tipo: "formulario", token: t }); }} />
       )}
       {paso.tipo === "formulario" && (
-        <Formulario token={paso.token} onError={setError}
-          onYaActiva={() => setPaso({ tipo: "ya_activa" })}
-          onExpirado={(m) => setPaso({ tipo: "sin_enlace", error: m })}
-          onListo={(respuesta, advertencias) => { setError(null); setPaso({ tipo: "sesion", respuesta, advertencias }); }} />
-      )}
-      {paso.tipo === "ya_activa" && (
-        <>
-          <Alerta tono="ok">Tu cuenta ya está activa.</Alerta>
-          <Button asChild size="lg" className="w-full"><Link to="/login">Ir a Entrar</Link></Button>
-        </>
-      )}
-      {paso.tipo === "sesion" && (
-        <>
-          {paso.advertencias.map((a) => <Alerta key={a} tono="aviso">{a}</Alerta>)}
-          <ContinuarSesion respuesta={paso.respuesta} onPaso={(r) => setTitulo(tituloPaso(r))}
-            onReiniciar={(m) => setPaso({ tipo: "sin_enlace", error: m })} />
-        </>
+        <CompletarActivacion token={paso.token} onTitulo={setTitulo}
+          onExpirado={(m) => { setError(null); setTitulo(null); setPaso({ tipo: "sin_enlace", error: m }); }} />
       )}
     </TarjetaEnlace>
   );
 }
 
-function Formulario({ token, onError, onListo, onYaActiva, onExpirado }: {
-  token: string; onError: (m: string | null) => void;
-  onListo: (r: RespuestaLogin, adv: string[]) => void; onYaActiva: () => void; onExpirado: (m: string) => void;
-}) {
-  const [pin, setPin] = useState("");
-  const [acumulacion, setAcumulacion] = useState("");
-  const [canje, setCanje] = useState("");
-  const [correo, setCorreo] = useState("");
-  const { aviso, setAviso, version, setVersion, desactualizado } = useConsentimiento();
-  const [campo, setCampo] = useState<"pin" | "acum" | "canje" | null>("pin");
-  const [cargando, setCargando] = useState(false);
-
-  const listo = pin.length === 6 && acumulacion.length === 4 && canje.length === 4 && aviso && !!version;
-
-  const enviar = async (e: FormEvent) => {
-    e.preventDefault();
-    if (!listo || !version) return onError("Completa el PIN, los dos códigos y acepta el aviso de privacidad.");
-    setCargando(true);
-    onError(null);
-    try {
-      const r = await completarActivacion({
-        token_activacion: token, pin, codigo_acumulacion: acumulacion, codigo_canje: canje,
-        correo: correo.trim() || null, acepta_aviso_privacidad: true,
-        version_aviso: version,
-      });
-      onListo(r.sesion, r.advertencias ?? []);
-    } catch (err) {
-      if (desactualizado(err)) return onError(err instanceof ApiError ? String(err.extras["message"] ?? err.message) : msg(err));
-      if (err instanceof ApiError && err.codigo === "ya_activada") return onYaActiva();
-      if (err instanceof ApiError && (err.codigo === "token_invalido" || err.codigo === "enlace_invalido")) return onExpirado(msg(err));
-      onError(msg(err));
-    } finally {
-      setCargando(false);
-    }
-  };
-
-  return (
-    <form onSubmit={enviar} className="flex flex-col gap-4">
-      <div className="rounded-xl bg-secondary p-3 text-sm">
-        <p className="font-semibold">Vas a crear 3 claves:</p>
-        <p><strong>PIN de la app:</strong> para entrar a Mi Saldo Vip.</p>
-        <p><strong>Código de acumulación (4 dígitos):</strong> se lo dices al cajero para que te sume saldo o sellos.</p>
-        <p><strong>Código de canje (4 dígitos):</strong> se lo dices al cajero para usar tu saldo o tus premios. No lo compartas.</p>
-      </div>
-      <CampoDigitos etiqueta="Tu PIN (6 dígitos)" ayuda="Con él entras a la app." valor={pin} onChange={setPin} largo={6}
-        activo={campo === "pin"} onActivar={() => setCampo("pin")} />
-      <CampoDigitos etiqueta="Código de acumulación (4 dígitos)" ayuda="4 dígitos, por ejemplo 5821. Lo dices en caja para que te acumulen."
-        valor={acumulacion} onChange={setAcumulacion} largo={4} activo={campo === "acum"} onActivar={() => setCampo("acum")} />
-      <CampoDigitos etiqueta="Código de canje (4 dígitos)" ayuda="4 dígitos, por ejemplo 7394. Solo tú lo conoces; protege tu saldo."
-        valor={canje} onChange={setCanje} largo={4} activo={campo === "canje"} onActivar={() => setCampo("canje")} />
-      <p className="text-sm text-muted-foreground">Evita secuencias (1234) y números repetidos (0000)</p>
-      {acumulacion.length === 4 && canje === acumulacion && <Alerta tono="aviso">Tus códigos de acumulación y canje son iguales.</Alerta>}
-      <div className="flex flex-col gap-2">
-        <Label htmlFor="correo">Correo (opcional)</Label>
-        <Input id="correo" type="email" autoComplete="email" className="h-12 text-lg" value={correo}
-          onFocus={() => setCampo(null)} onChange={(e) => setCorreo(e.target.value)} />
-      </div>
-      <AvisoPrivacidad valor={aviso} onChange={setAviso} onVersion={setVersion} />
-      <Button type="submit" size="lg" disabled={cargando || !listo}>{cargando ? "Activando…" : "Activar mi cuenta"}</Button>
-    </form>
-  );
-}
 
 function Solicitar({ onError, onListo }: { onError: (m: string | null) => void; onListo: (tel: string) => void }) {
   const [tel, setTel] = useState("");

@@ -62,9 +62,9 @@ export function EnlaceNoValido({ mensaje = "Este enlace no es válido." }: { men
 }
 
 /** Digit entry with the existing big numeric keypad. */
-export function CampoDigitos({ etiqueta, ayuda, valor, onChange, largo, limite = largo, activo, onActivar, tecladoFisico = false, compacto = false, botonRef }: {
+export function CampoDigitos({ etiqueta, ayuda, valor, onChange, largo, limite = largo, activo, onActivar, tecladoFisico = false, compacto = false, botonRef, autoComplete }: {
   etiqueta: string; ayuda?: string; valor: string; onChange: (v: string) => void; largo: number; limite?: number; activo: boolean; onActivar: () => void;
-  tecladoFisico?: boolean; compacto?: boolean; botonRef?: RefObject<HTMLButtonElement | null>;
+  tecladoFisico?: boolean; compacto?: boolean; botonRef?: RefObject<HTMLButtonElement | null>; autoComplete?: "one-time-code";
 }) {
   const interno = useRef<HTMLButtonElement>(null);
   const ref = botonRef ?? interno;
@@ -76,6 +76,8 @@ export function CampoDigitos({ etiqueta, ayuda, valor, onChange, largo, limite =
   useDigitos(onKey, { activo: tecladoFisico && activo, ref });
   return (
     <div className="flex flex-col gap-2">
+      {autoComplete && <input aria-label={etiqueta} autoComplete={autoComplete} inputMode="numeric" maxLength={limite}
+        className="sr-only" value={valor} onChange={(e) => onChange(e.target.value.replace(/\D/g, "").slice(0, limite))} />}
       <button ref={ref} type="button" onClick={onActivar}
         className={cn("rounded-xl p-3 text-left ring-1 transition-colors", activo ? "ring-2 ring-primary" : "ring-border")}>
         <span className="block text-sm font-medium">{etiqueta}</span>

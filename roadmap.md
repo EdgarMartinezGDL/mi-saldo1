@@ -1,5 +1,10 @@
 # Roadmap
 
+## P36 — Auto-registro por QR
+- [x] API nueva, activación compartida, página pública y QR con bienvenida como respaldo; contratos existentes, dependencias y worker intactos.
+- [x] 551 pruebas pasan, las existentes intactas; registro y activación revisados a 360/1280 px en claro/oscuro/personalizado con respuestas controladas: solicitud exacta, consentimiento, 429, reenvío, código inválido, vencimiento, cuenta existente, login y formulario original. QR revisado con 404/200 en las seis combinaciones, Esc, atrás y foco. Servicio real muestra Registro no disponible y elimina el fragmento.
+- [ ] Activación real pendiente del servicio futuro; GitHub/publicación sin verificar: no hay remoto GitHub ni scripts/publicar-frontend.sh, se guarda commit para sincronización automática de la plataforma.
+
 ## P35 — Preferencias de notificaciones
 - [x] GET/PUT nuevos y sección opcional únicamente con push activado; carga/errores de consulta ocultos y guardados fallidos revertidos.
 - [x] 523 pruebas pasan (8 nuevas P35), sin modificar las existentes; Cuenta revisada a 360/1280 px en claro/oscuro/personalizado con respuestas controladas: ambos campos guardan y revierten, bloqueo de ambos interruptores, valores conservados tras recargar, carga y 404/500 sin sección ni avisos, ausencia de GET con push desactivado; filas contrastadas con Promociones, ubicación y textos comprobados; compilación OK y sin errores del navegador.

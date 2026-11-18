@@ -1,0 +1,1 @@
+- Registration and invitation share CompletarActivacion; inherited consent is reused only for the current privacy version and discarded on 409. Why: activation stays consistent without accepting an outdated notice.

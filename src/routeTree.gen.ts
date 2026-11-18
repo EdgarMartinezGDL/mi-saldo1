@@ -31,6 +31,7 @@ import { Route as PanelRouteImport } from './routes/panel'
 import { Route as ReclamacionesRouteImport } from './routes/reclamaciones'
 import { Route as RecuperarRouteImport } from './routes/recuperar'
 import { Route as ReferidosRouteImport } from './routes/referidos'
+import { Route as RegistroRouteImport } from './routes/registro'
 import { Route as RestablecerPinRouteImport } from './routes/restablecer-pin'
 import { Route as StaffRouteImport } from './routes/staff'
 import { Route as ValidacionesRouteImport } from './routes/validaciones'
@@ -161,6 +162,11 @@ const ReferidosRoute = ReferidosRouteImport.update({
   path: '/referidos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RegistroRoute = RegistroRouteImport.update({
+  id: '/registro',
+  path: '/registro',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RestablecerPinRoute = RestablecerPinRouteImport.update({
   id: '/restablecer-pin',
   path: '/restablecer-pin',
@@ -280,6 +286,7 @@ export interface FileRoutesByFullPath {
   '/reclamaciones': typeof ReclamacionesRoute
   '/recuperar': typeof RecuperarRoute
   '/referidos': typeof ReferidosRoute
+  '/registro': typeof RegistroRoute
   '/restablecer-pin': typeof RestablecerPinRoute
   '/staff': typeof StaffRoute
   '/validaciones': typeof ValidacionesRoute
@@ -322,6 +329,7 @@ export interface FileRoutesByTo {
   '/reclamaciones': typeof ReclamacionesRoute
   '/recuperar': typeof RecuperarRoute
   '/referidos': typeof ReferidosRoute
+  '/registro': typeof RegistroRoute
   '/restablecer-pin': typeof RestablecerPinRoute
   '/staff': typeof StaffRoute
   '/validaciones': typeof ValidacionesRoute
@@ -366,6 +374,7 @@ export interface FileRoutesById {
   '/reclamaciones': typeof ReclamacionesRoute
   '/recuperar': typeof RecuperarRoute
   '/referidos': typeof ReferidosRoute
+  '/registro': typeof RegistroRoute
   '/restablecer-pin': typeof RestablecerPinRoute
   '/staff': typeof StaffRoute
   '/validaciones': typeof ValidacionesRoute
@@ -411,6 +420,7 @@ export interface FileRouteTypes {
     | '/reclamaciones'
     | '/recuperar'
     | '/referidos'
+    | '/registro'
     | '/restablecer-pin'
     | '/staff'
     | '/validaciones'
@@ -453,6 +463,7 @@ export interface FileRouteTypes {
     | '/reclamaciones'
     | '/recuperar'
     | '/referidos'
+    | '/registro'
     | '/restablecer-pin'
     | '/staff'
     | '/validaciones'
@@ -496,6 +507,7 @@ export interface FileRouteTypes {
     | '/reclamaciones'
     | '/recuperar'
     | '/referidos'
+    | '/registro'
     | '/restablecer-pin'
     | '/staff'
     | '/validaciones'
@@ -540,6 +552,7 @@ export interface RootRouteChildren {
   ReclamacionesRoute: typeof ReclamacionesRoute
   RecuperarRoute: typeof RecuperarRoute
   ReferidosRoute: typeof ReferidosRoute
+  RegistroRoute: typeof RegistroRoute
   RestablecerPinRoute: typeof RestablecerPinRoute
   StaffRoute: typeof StaffRoute
   ValidacionesRoute: typeof ValidacionesRoute
@@ -702,6 +715,13 @@ declare module '@tanstack/react-router' {
       path: '/referidos'
       fullPath: '/referidos'
       preLoaderRoute: typeof ReferidosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/registro': {
+      id: '/registro'
+      path: '/registro'
+      fullPath: '/registro'
+      preLoaderRoute: typeof RegistroRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/restablecer-pin': {
@@ -898,6 +918,7 @@ const rootRouteChildren: RootRouteChildren = {
   ReclamacionesRoute: ReclamacionesRoute,
   RecuperarRoute: RecuperarRoute,
   ReferidosRoute: ReferidosRoute,
+  RegistroRoute: RegistroRoute,
   RestablecerPinRoute: RestablecerPinRoute,
   StaffRoute: StaffRoute,
   ValidacionesRoute: ValidacionesRoute,

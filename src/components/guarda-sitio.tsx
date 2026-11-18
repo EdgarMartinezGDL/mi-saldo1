@@ -20,7 +20,7 @@ export function AvisoSitio({ sitio, onEntendido }: { sitio: TipoSitio; onEntendi
   );
 }
 
-const PUBLICAS_CLIENTE = new Set(["/bienvenida", "/activar", "/invitacion", "/confirmar-alta", "/baja"]);
+const PUBLICAS_CLIENTE = new Set(["/registro", "/bienvenida", "/activar", "/invitacion", "/confirmar-alta", "/baja"]);
 
 /** Client-only presentation boundary: never replaces the server's authorization. */
 export function GuardaSitio({ children }: { children: ReactNode }) {
