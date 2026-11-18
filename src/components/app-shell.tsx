@@ -261,7 +261,7 @@ export function AppShell({ children, volver, volverTexto, amplio = false }: { ch
                 aria-current={active ? "page" : undefined}
                 className={cn(
                   "relative flex min-h-[64px] flex-col items-center justify-center gap-1 transition-colors",
-                  active ? "text-primary-texto" : "text-muted-foreground hover:text-foreground",
+                  active ? "text-primary-texto" : "text-secondary-foreground hover:text-foreground",
                 )}
               >
                 <span

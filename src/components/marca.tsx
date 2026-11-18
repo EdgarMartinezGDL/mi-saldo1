@@ -7,7 +7,7 @@ export function MarcaMiSaldo() {
   return (
     <span>
       Mi Saldo
-      <span className="ml-1 align-baseline text-[0.7em] [font-size:max(12px,0.7em)] font-medium">Vip</span>
+      <span className="ml-1 align-baseline text-[max(12px,0.7em)] font-medium">Vip</span>
     </span>
   );
 }

@@ -109,9 +109,9 @@ function MisReclamaciones() {
                             : `Reclamaste ${r.cantidad_reclamada} sellos; no se abonó nada.`}
                       </p>
                     )}
-                    {r.resolucion_nota && <p className="mt-1 text-muted-foreground">{r.resolucion_nota}</p>}
+                    {r.resolucion_nota && <p className="mt-1 text-secondary-foreground">{r.resolucion_nota}</p>}
                     {r.resuelto_en && (
-                      <p className="mt-1 text-xs text-muted-foreground">Resuelta el {instante(r.resuelto_en)}</p>
+                      <p className="mt-1 text-xs text-secondary-foreground">Resuelta el {instante(r.resuelto_en)}</p>
                     )}
                   </div>
                 )}

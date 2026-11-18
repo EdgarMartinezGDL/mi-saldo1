@@ -130,7 +130,7 @@ export function Chip({ tono, children }: { tono: "verde" | "ambar" | "rojo" | "g
     verde: "bg-success-fill/15 text-success-texto ring-success-fill/40",
     ambar: "bg-warn/15 text-warn-texto ring-warn/40",
     rojo: "bg-red-400/15 text-destructive ring-red-400/40",
-    gris: "bg-muted text-muted-foreground ring-border",
+    gris: "bg-muted text-secondary-foreground ring-border",
   }[tono];
   return <span className={cn("inline-flex shrink-0 rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1", clases)}>{children}</span>;
 }
@@ -205,7 +205,7 @@ export function Pestanas<T extends string>({ valor, onChange, opciones }: { valo
     <div className="flex gap-2" role="tablist">
       {opciones.map(([v, t]) => (
         <button key={v} type="button" role="tab" aria-selected={valor === v} onClick={() => onChange(v)}
-          className={cn("tap-target rounded-full px-4 py-2 text-sm font-semibold", valor === v ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground")}>
+          className={cn("tap-target rounded-full px-4 py-2 text-sm font-semibold", valor === v ? "bg-primary text-primary-foreground" : "bg-muted text-secondary-foreground")}>
           {t}
         </button>
       ))}

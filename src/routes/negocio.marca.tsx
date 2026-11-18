@@ -121,7 +121,7 @@ function Marca({ cfg }: { cfg: ConfiguracionNegocio }) {
               {valores.logo ? (
                 <img src={valores.logo} alt="Logotipo del negocio" className="size-20 shrink-0 rounded-2xl object-cover ring-1 ring-border" />
               ) : (
-                <div className="grid size-20 shrink-0 place-items-center rounded-2xl bg-secondary text-sm text-muted-foreground">Sin logo</div>
+                <div className="grid size-20 shrink-0 place-items-center rounded-2xl bg-secondary text-sm text-secondary-foreground">Sin logo</div>
               )}
               <div className="flex min-w-0 flex-1 flex-col gap-2">
                 <Label htmlFor="logo" className="text-base">Enlace del logotipo (https://)</Label>
@@ -222,7 +222,7 @@ function Marca({ cfg }: { cfg: ConfiguracionNegocio }) {
               {guardado.logo ? (
                 <img src={guardado.logo} alt="Logotipo del negocio" className="size-20 shrink-0 rounded-2xl object-cover ring-1 ring-border" />
               ) : (
-                <div className="grid size-20 shrink-0 place-items-center rounded-2xl bg-secondary text-sm text-muted-foreground">Sin logo</div>
+                <div className="grid size-20 shrink-0 place-items-center rounded-2xl bg-secondary text-sm text-secondary-foreground">Sin logo</div>
               )}
             </div>
           </VistaLectura>

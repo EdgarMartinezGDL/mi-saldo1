@@ -35,7 +35,7 @@ describe("P24b teclado y casillas", () => {
     render(<PinPos onAbierta={() => {}} />);
     const abrir = screen.getByRole("button", { name: /Abrir caja/ });
     expect(abrir).toBeDisabled();
-    expect(abrir).toHaveClass("disabled:bg-muted", "disabled:text-muted-foreground", "disabled:opacity-100", "disabled:shadow-none");
+    expect(abrir).toHaveClass("disabled:bg-muted", "disabled:text-secondary-foreground", "disabled:opacity-100", "disabled:shadow-none");
     expect(abrir).not.toHaveClass("disabled:opacity-50");
     fireEvent.click(screen.getByRole("button", { name: "1" }));
     fireEvent.click(screen.getByRole("button", { name: "2" }));

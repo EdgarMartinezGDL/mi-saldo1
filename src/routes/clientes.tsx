@@ -218,7 +218,7 @@ function Clientes() {
                         <p className="truncate text-base font-medium">{nombreCompleto(c)}</p>
                         <p className="flex min-w-0 items-center gap-2 text-sm text-muted-foreground">
                           <span className="shrink-0 tabular-nums">{telefonoVisible(c.telefono)}</span>
-                          {!c.cuenta_activada && <span className="pill-badge shrink-0 py-0.5 text-[11px] leading-4 text-warning-icono">Sin activar</span>}
+                          {!c.cuenta_activada && <span className="pill-badge shrink-0 py-0.5 text-xs leading-4 text-secondary-foreground">Sin activar</span>}
                           {c.archivado && <Badge variant="secondary" className="shrink-0 py-0.5 text-[11px] leading-4">Archivado</Badge>}
                           {c.archivado && <span className="min-w-0 truncate">desde {diaDeInstante(c.archivado_en)}</span>}
                         </p>

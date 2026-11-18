@@ -167,7 +167,7 @@ function Panel() {
             <div className="mb-4 flex gap-2" role="tablist">
               {(["saldo", "sellos"] as const).map((v) => (
                 <button key={v} type="button" role="tab" aria-selected={vista === v} onClick={() => setVista(v)}
-                  className={cn("tap-target rounded-full px-4 py-2 text-sm font-semibold", vista === v ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground")}>
+                  className={cn("tap-target rounded-full px-4 py-2 text-sm font-semibold", vista === v ? "bg-primary text-primary-foreground" : "bg-muted text-secondary-foreground")}>
                   {v === "saldo" ? "Ventas con saldo" : "Sellos"}
                 </button>
               ))}

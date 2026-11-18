@@ -14,7 +14,7 @@ export function PasoComprobante({ comprobante, nombre, onNuevo, onSeguir }: { co
       <div className="rounded-2xl bg-primary/10 p-6 text-center ring-1 ring-primary/40">
         <CheckCircle2 className="mx-auto size-14 text-primary-texto" />
         <p className="mt-3 text-2xl font-semibold">{comprobante.titulo}</p>
-        {comprobante.lineas.map((l) => <p key={l} className="mt-2 text-lg text-muted-foreground">{l}</p>)}
+        {comprobante.lineas.map((l) => <p key={l} className="mt-2 text-lg text-secondary-foreground">{l}</p>)}
       </div>
       <Button size="lg" className="h-16 w-full text-xl" onClick={onNuevo}><Users className="size-6" /> Nuevo cliente<Tecla>N</Tecla></Button>
       {nombre && <Button size="lg" variant="outline" className="h-16 w-full text-xl" onClick={onSeguir}><UserRound className="size-6" /> Seguir con {nombre}<Tecla>Enter</Tecla></Button>}

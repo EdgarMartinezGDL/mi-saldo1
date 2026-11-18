@@ -27,7 +27,7 @@ const TONOS: Record<Tono, string> = {
   success: "bg-success/12 text-success-texto",
   warning: "bg-warning/15 text-warning-icono",
   accent: "bg-accent/10 text-accent",
-  neutro: "bg-muted text-muted-foreground",
+  neutro: "bg-muted text-secondary-foreground",
 };
 
 /** Icon tile with a 10–12 % tinted background in the given tone. */

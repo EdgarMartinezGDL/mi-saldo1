@@ -32,7 +32,7 @@ export const Route = createFileRoute("/referidos")({
 const ESTADO: Record<EstadoReferido, { l: string; c: string }> = {
   pendiente: { l: "Pendiente", c: "bg-warn/15 text-warn-texto" },
   cumplido: { l: "Ganaste", c: "bg-primary/15 text-primary-texto" },
-  cumplido_sin_premio: { l: "Sin premio", c: "bg-secondary text-muted-foreground" },
+  cumplido_sin_premio: { l: "Sin premio", c: "bg-secondary text-secondary-foreground" },
   vencido: { l: "Venció", c: "bg-destructive/10 text-destructive" },
 };
 

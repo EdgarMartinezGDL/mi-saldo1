@@ -108,7 +108,7 @@ export function TarjetaMisCodigos() {
             ) : (
               <p className="mt-1 text-base">Aún no tienes código de acumulación</p>
             )}
-            <p className="mt-1 text-sm text-muted-foreground">Para sumar saldo o sellos</p>
+            <p className="mt-1 text-sm text-secondary-foreground">Para sumar saldo o sellos</p>
           </div>
 
           <div className="rounded-xl bg-secondary p-4">
@@ -118,7 +118,7 @@ export function TarjetaMisCodigos() {
             ) : (
               <p className="mt-1 text-base">Aún no tienes código de canje</p>
             )}
-            <p className="mt-1 text-sm text-muted-foreground">Para usar tu saldo o cobrar premios. No lo mostramos por seguridad: si lo olvidaste, cámbialo.</p>
+            <p className="mt-1 text-sm text-secondary-foreground">Para usar tu saldo o cobrar premios. No lo mostramos por seguridad: si lo olvidaste, cámbialo.</p>
             {datos.codigo_canje_requiere_cambio ? (
               <p className="mt-2 flex gap-2 text-sm font-medium text-warn-texto"><TriangleAlert className="size-4 shrink-0" />Tu código de canje está bloqueado por muchos intentos fallidos. Para desbloquearlo, cámbialo.</p>
             ) : bloqueoFuturo ? (

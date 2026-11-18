@@ -30,7 +30,7 @@ export function OtpCode({ code, className }: { code: string; className?: string 
             key={i}
             className={cn(
               "grid h-16 flex-1 place-items-center rounded-xl bg-secondary font-mono text-3xl font-bold tabular-nums transition-all sm:h-20 sm:text-4xl",
-              visible ? "text-foreground" : "text-muted-foreground blur-[6px]",
+              visible ? "text-foreground" : "text-secondary-foreground blur-[6px]",
             )}
           >
             {visible ? digit : "•"}

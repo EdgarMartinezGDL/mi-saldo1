@@ -62,7 +62,7 @@ function EstadoMembresia() {
   if (fallo)
     return (
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl bg-secondary/70 px-4 py-3">
-        <p className="text-sm text-muted-foreground">No pudimos consultar tu membresía.</p>
+        <p className="text-sm text-secondary-foreground">No pudimos consultar tu membresía.</p>
         <Button size="sm" variant="secondary" onClick={() => void consulta.refetch()}>Intentar de nuevo</Button>
       </div>
     );
@@ -74,7 +74,7 @@ function EstadoMembresia() {
     <>
       <div className="mt-4 flex items-center justify-between gap-3 rounded-xl bg-secondary/70 px-4 py-3">
         <div className="min-w-0">
-          <p className="text-xs uppercase tracking-wide text-muted-foreground">Estado de tu membresía</p>
+          <p className="text-xs uppercase tracking-wide text-secondary-foreground">Estado de tu membresía</p>
           <p className="mt-0.5 text-sm text-foreground">{textoEstado(datos)}</p>
         </div>
         <span className={cn("shrink-0 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide ring-1", estilo.clases)}>
@@ -124,7 +124,7 @@ function Dato({ etiqueta, valor, mono = true }: { etiqueta: string; valor: strin
   return (
     <div className="flex items-center justify-between gap-3 rounded-xl bg-secondary/70 px-4 py-3">
       <div className="min-w-0">
-        <p className="text-xs uppercase tracking-wide text-muted-foreground">{etiqueta}</p>
+        <p className="text-xs uppercase tracking-wide text-secondary-foreground">{etiqueta}</p>
         <p className={cn("text-base font-semibold", mono ? "break-all font-mono tracking-wide" : "truncate")}>{valor}</p>
       </div>
       <button
@@ -204,7 +204,7 @@ function MetodoHeader({
             </span>
           )}
         </span>
-        <span className={cn("mt-0.5 block text-sm", deshabilitado ? "text-muted-foreground" : seleccionado ? "text-primary-foreground" : "text-muted-foreground")}>
+        <span className={cn("mt-0.5 block text-sm", deshabilitado ? "text-secondary-foreground" : seleccionado ? "text-primary-foreground" : "text-secondary-foreground")}>
           {subtitulo}
         </span>
       </span>
@@ -273,7 +273,7 @@ export function SeccionMembresia() {
                 <BotonWhatsApp href={pago.data?.whatsapp?.enlace} />
               </div>}
               {m.clave === "oxxo_deposito" && o && <div className="flex flex-col gap-3 p-2 pt-3">
-                <p className="rounded-xl bg-secondary/70 px-4 py-3 text-sm text-muted-foreground">Tarjeta <span className="font-semibold text-foreground">Spin by OXXO</span> (+ comisión por establecimiento).</p>
+                <p className="rounded-xl bg-secondary/70 px-4 py-3 text-sm text-secondary-foreground">Tarjeta <span className="font-semibold text-foreground">Spin by OXXO</span> (+ comisión por establecimiento).</p>
                 {o.tarjeta && <Dato etiqueta="Número de tarjeta" valor={o.tarjeta} />}
                 {o.titular && <Dato etiqueta="Titular de la tarjeta" valor={o.titular} mono={false} />}
                 <BotonWhatsApp href={pago.data?.whatsapp?.enlace} />

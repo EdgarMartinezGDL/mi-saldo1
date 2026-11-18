@@ -122,11 +122,11 @@ export function AjusteStaff({ negocioId, personaId, onCerrar }: { negocioId: str
             {resultado ? (
               <div className="flex flex-col gap-2 rounded-xl bg-secondary p-4">
                 <p className="text-xl font-semibold">Listo: {aplicado(resultado, esSaldo)}</p>
-                {resultado.duplicado && <p className="text-sm text-muted-foreground">Este ajuste ya estaba aplicado.</p>}
+                {resultado.duplicado && <p className="text-sm text-secondary-foreground">Este ajuste ya estaba aplicado.</p>}
                 {esSaldo && resultado.saldo_centavos !== undefined && <p>Saldo nuevo: {pesos(resultado.saldo_centavos)}</p>}
                 {!esSaldo && resultado.tarjeta && <p>{resultado.tarjeta_nombre ?? nombreObj}: {resultado.tarjeta.sellos_actuales}/{resultado.tarjeta.sellos_requeridos}</p>}
                 {resultado.topado && resultado.aviso && <p className="text-sm text-warn">{resultado.aviso}</p>}
-                {resultado.referencia_soporte && <p className="text-sm text-muted-foreground">Referencia: {resultado.referencia_soporte}</p>}
+                {resultado.referencia_soporte && <p className="text-sm text-secondary-foreground">Referencia: {resultado.referencia_soporte}</p>}
                 <Button onClick={() => { setResultado(null); setSigno(null); setCantidad(""); setMotivo(""); setRef(""); }}>Hacer otro ajuste</Button>
               </div>
             ) : opciones.length === 0 ? (

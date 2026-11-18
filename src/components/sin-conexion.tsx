@@ -22,8 +22,8 @@ export function PantallaSinConexion() {
         <section className="rounded-xl bg-secondary p-4">
           <h2 className="text-sm font-medium">Código de acumulación</h2>
           {copia.codigo_acumulacion ? <><p className="mt-2 font-mono text-5xl font-bold tabular-nums">{copia.codigo_acumulacion}</p>
-            <p className="mt-2 text-sm text-muted-foreground">Díctalo en caja para sumar saldo o sellos.</p></> :
-            <p className="mt-2 text-sm text-muted-foreground">Abre «Mis códigos» con conexión para guardarlo en este teléfono.</p>}
+            <p className="mt-2 text-sm text-secondary-foreground">Díctalo en caja para sumar saldo o sellos.</p></> :
+            <p className="mt-2 text-sm text-secondary-foreground">Abre «Mis códigos» con conexión para guardarlo en este teléfono.</p>}
         </section>
         {copia.negocios.map((n) => <article key={n.negocio_id} className="rounded-2xl bg-card p-5 ring-1 ring-border">
           <h2 className="text-lg font-semibold">{n.nombre_comercial}</h2>

@@ -261,7 +261,7 @@ function Selector({ onCerrar, abierto }: { onCerrar: () => void; abierto: boolea
           )}
         >
           <span className="min-w-0 flex-1 truncate">{etiquetaContexto(c)}</span>
-          {c.actual ? <Check className="size-5 shrink-0" aria-label="Actual" /> : <ChevronRight className="size-5 shrink-0 text-muted-foreground" />}
+          {c.actual ? <Check className="size-5 shrink-0" aria-label="Actual" /> : <ChevronRight className="size-5 shrink-0 text-secondary-foreground" />}
         </button>
       ))}
     </div>

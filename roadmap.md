@@ -1,5 +1,11 @@
 # Roadmap
 
+## P36b — Recargas y legibilidad
+- [x] Conservar preferencias y código QR ya cargados durante recargas y errores posteriores; ajustar tamaños y contraste sin cambiar contratos ni dependencias.
+- [x] 561 pruebas pasan; recargas pendientes y errores posteriores revisados con respuestas controladas a 360/1280 px en claro/oscuro/personalizado, sin cambios del QR abierto ni pérdida de preferencias. Contraste axe sin hallazgos en 42 estados centrales y 90 adicionales; Caja conserva sus atajos. Sin activar conserva altura (71 px con etiqueta, 69 px sin ella).
+- [x] Cambios guardados en commit. Pruebas previas: P24b/P24c actualizadas solo en clases afectadas; P36 actualizada para conservar registro durante la recarga, reemplazando el comportamiento anterior incompatible con este pedido.
+- [ ] Subida directa a GitHub bloqueada: no hay remoto GitHub configurado; sesión real sigue sin verificar, la revisión privada usa respuestas controladas.
+
 ## P36 — Auto-registro por QR
 - [x] API nueva, activación compartida, página pública y QR con bienvenida como respaldo; contratos existentes, dependencias y worker intactos.
 - [x] 552 pruebas pasan, las existentes intactas; registro y activación revisados a 360/1280 px en claro/oscuro/personalizado con respuestas controladas: solicitud exacta, consentimiento, 429, reenvío, código inválido, vencimiento, cuenta existente, login y formulario original. Revisión ampliada: carga, 404/500, nombre como texto plano, 409 en solicitud y activación, cambiar número conservando datos/promociones, OTP, cuenta ya activa, selector y reinicio de sesión; admin muestra 404 sin llamadas de registro y vuelve a Entrada; Caja conserva A/C/R, Enter, Esc y ayuda. QR revisado en carga/404/200, Esc, atrás y foco; corregido respaldo durante una recarga con código anterior en caché. Servicio real muestra Registro no disponible y elimina el fragmento.

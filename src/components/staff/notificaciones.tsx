@@ -19,7 +19,7 @@ const ESTADOS: Record<EstadoNotificacion, { etiqueta: string; total: string; col
 };
 const ORDEN: EstadoNotificacion[] = ["enviado", "fallido", "pendiente", "reintentando"];
 const ENTREGAS: Record<EntregaNotificacion, { etiqueta: string; color: string }> = {
-  sin_confirmar: { etiqueta: "Sin confirmar", color: "bg-secondary text-muted-foreground" },
+  sin_confirmar: { etiqueta: "Sin confirmar", color: "bg-secondary text-secondary-foreground" },
   entregado: { etiqueta: "Entregado", color: "bg-success/10 text-success-texto" },
   leido: { etiqueta: "Leído", color: "bg-success/10 text-success-texto" },
   no_entregado: { etiqueta: "No entregado", color: "bg-destructive/10 text-destructive" },
@@ -178,7 +178,7 @@ export function PestanaNotificaciones() {
           return cadena && cadena !== "cargando" ? <ul className="mt-2 flex flex-col gap-2 rounded-xl bg-secondary/50 p-3">
             {cadena.avisos.map((a) => <li key={a.notificacion_id} className="flex flex-col gap-1">
               <p className="text-sm font-medium">{a.reintento_num === 0 ? "Original" : `Reintento ${a.reintento_num}`}{a.notificacion_id === n.notificacion_id ? " · este aviso" : ""}</p>
-              <p className="text-xs text-muted-foreground">{instante(a.creado_en)}</p>
+              <p className="text-xs text-secondary-foreground">{instante(a.creado_en)}</p>
               <div className="flex flex-wrap items-center gap-2">
                 <span className={cn("rounded-full px-2.5 py-0.5 text-xs font-semibold", ESTADOS[a.estado].color)}>{ESTADOS[a.estado].etiqueta}</span>
                 {a.estado === "enviado" && <span className={cn("rounded-full px-2.5 py-0.5 text-xs font-semibold", ENTREGAS[a.entrega].color)}>{ENTREGAS[a.entrega].etiqueta}</span>}
