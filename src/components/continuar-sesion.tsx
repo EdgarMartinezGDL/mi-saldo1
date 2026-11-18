@@ -8,6 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { elegirContexto, validarTotp, type RespuestaLogin } from "@/lib/api/auth";
 import { ApiError } from "@/lib/api/client";
+import { rolPermitido, sitioActual } from "@/lib/sitio";
+import { AvisoSitio } from "@/components/guarda-sitio";
 
 const ROL_LABEL = { cliente: "cliente", empleado: "cajero", dueno: "dueño", staff: "Staff Mi Saldo Vip" } as const;
 
@@ -82,11 +84,17 @@ export function ContinuarSesion({
 
   if (actual.estado === "seleccionar_contexto") {
     const token = actual.token_seleccion;
+    const sitio = sitioActual();
+    const permitidos = actual.contextos.filter((c) => rolPermitido(sitio, c.rol));
+    if (permitidos.length === 0) return <AvisoSitio sitio={sitio} onEntendido={() => {
+      onReiniciar("");
+      void navigate({ to: "/login", replace: true });
+    }} />;
     return (
       <>
         {alerta}
         <ul className="flex flex-col gap-2">
-          {actual.contextos.map((c) => (
+          {permitidos.map((c) => (
             <li key={`${c.rol}-${c.negocio_id}`}>
               <Button variant="outline" size="lg" disabled={cargando} className="h-auto w-full justify-start py-3 text-left"
                 onClick={() => correr(() => elegirContexto(token, c.rol, c.negocio_id))}>

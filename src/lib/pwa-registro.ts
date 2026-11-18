@@ -1,7 +1,7 @@
+import { esVistaPreviaLovable } from "@/lib/sitio";
+
 export function permiteWorker(prod: boolean, hostname: string, enMarco: boolean, apagar: boolean) {
-  return prod && !enMarco && !apagar && !hostname.startsWith("id-preview--") && !hostname.startsWith("preview--") &&
-    !/(^|\.)lovable(project)?\.(app|com)$/.test(hostname) && !/(^|\.)lovableproject-dev\.com$/.test(hostname) &&
-    !/(^|\.)(lovableproject-dev\.com|beta\.lovable\.dev)$/.test(hostname);
+  return prod && !enMarco && !apagar && !esVistaPreviaLovable(hostname);
 }
 
 /** Register only the worker maintained by the application's server; never generate a cache here. */

@@ -20,6 +20,7 @@ import { login, type RespuestaLogin } from "@/lib/api/auth";
 import { ApiError, setSesion, telefonoE164, type Sesion } from "@/lib/api/client";
 import { MarcaMiSaldo } from "@/components/marca";
 import { LOGO_CIRCULAR } from "@/lib/marca";
+import { sitioActual } from "@/lib/sitio";
 
 export const Route = createFileRoute("/login")({
   validateSearch: (s: Record<string, unknown>): { volver?: string } => {
@@ -40,6 +41,7 @@ export const Route = createFileRoute("/login")({
 });
 
 function Login() {
+  const admin = sitioActual() === "admin";
   const navigate = useNavigate();
   const { volver } = Route.useSearch();
   const [sesionPendiente, setSesionPendiente] = useState<RespuestaLogin | null>(null);
@@ -137,6 +139,8 @@ function Login() {
           </p>
         )}
 
+        {admin && <p className="mb-4 flex items-center gap-2 text-sm font-medium text-muted-foreground"><ShieldCheck className="size-4" />Panel de Staff</p>}
+
         {!sesionPendiente && (
           <form onSubmit={pedirConfirmacion} className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
@@ -162,7 +166,7 @@ function Login() {
             onReiniciar={(m) => { setError(m); setSesionPendiente(null); }} />
         )}
 
-        {accesoModoDiseno}
+        {!admin && accesoModoDiseno}
 
         <AlertDialog open={confirmando} onOpenChange={setConfirmando}>
           <AlertDialogContent>

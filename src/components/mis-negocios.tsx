@@ -14,6 +14,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { cambiarContexto, contextos, type ContextoDisponible } from "@/lib/api/auth";
 import { ApiError, type Rol } from "@/lib/api/client";
 import { cn } from "@/lib/utils";
+import { rolPermitido, sitioActual } from "@/lib/sitio";
 
 export const ROL_TEXTO: Record<Rol, string> = { cliente: "Cliente", empleado: "Empleado", dueno: "Dueño", staff: "Staff Mi Saldo Vip" };
 const INICIO: Record<Rol, string> = { cliente: "/", empleado: "/caja", dueno: "/panel", staff: "/staff" };
@@ -30,7 +31,8 @@ export function useContextos() {
     enabled: estado === "autenticado",
     staleTime: 5 * 60_000,
   });
-  const lista = q.data?.contextos ?? [];
+  const sitio = sitioActual();
+  const lista = (q.data?.contextos ?? []).filter((c) => rolPermitido(sitio, c.rol));
   return { ...q, lista, varios: lista.length > 1 };
 }
 

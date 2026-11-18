@@ -24,6 +24,8 @@ import { ConexionContenido } from "@/components/sin-conexion";
 import { MarcaMiSaldo } from "@/components/marca";
 import { CambioPorAviso } from "@/components/cambio-por-aviso";
 import { registrarWorker } from "@/lib/pwa-registro";
+import { GuardaSitio } from "@/components/guarda-sitio";
+import { PaginaNoEncontrada } from "@/components/pagina-no-encontrada";
 
 /** Card shell shared by the 404 and error boundaries: app styling, no AppShell chrome. */
 function TarjetaEstado({ children }: { children: ReactNode }) {
@@ -52,25 +54,6 @@ function BotonInicio() {
     <Button size="lg" asChild>
       <Link to={to}>Ir al inicio</Link>
     </Button>
-  );
-}
-
-function NotFoundComponent() {
-  useEffect(() => {
-    document.title = "Página no encontrada · Mi Saldo Vip";
-  }, []);
-
-  return (
-    <TarjetaEstado>
-      <h1 className="mt-4 text-6xl font-bold tracking-tight text-foreground">404</h1>
-      <h2 className="mt-3 text-xl font-semibold text-foreground">Página no encontrada</h2>
-      <p className="mt-2 text-sm text-muted-foreground">
-        La página que buscas no existe o cambió de dirección.
-      </p>
-      <div className="mt-8">
-        <BotonInicio />
-      </div>
-    </TarjetaEstado>
   );
 }
 
@@ -136,7 +119,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   }),
   shellComponent: RootShell,
   component: RootComponent,
-  notFoundComponent: NotFoundComponent,
+  notFoundComponent: PaginaNoEncontrada,
   errorComponent: ErrorComponent,
 });
 
@@ -164,7 +147,7 @@ function RootComponent() {
         <AuthProvider>
           {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
           <TotpProvider>
-            <ConexionContenido><ClientOnly><CambioPorAviso><Outlet /></CambioPorAviso></ClientOnly></ConexionContenido>
+            <ConexionContenido><ClientOnly><GuardaSitio><CambioPorAviso><Outlet /></CambioPorAviso></GuardaSitio></ClientOnly></ConexionContenido>
           </TotpProvider>
           <Toaster position="top-center" />
           <TecladoVisible />
