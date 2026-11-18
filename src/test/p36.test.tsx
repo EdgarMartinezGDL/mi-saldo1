@@ -134,4 +134,14 @@ describe("P36 registro", () => {
     expect(screen.getByLabelText("Código QR de registro")).toHaveAttribute("data-value", `${location.origin}/${disponible ? "registro#c=ABC123" : "bienvenida#n=Barber%C3%ADa%20Demo"}`);
     fireEvent.keyDown(window, { key: "Escape" });
   });
+  it("QR mantiene bienvenida durante una consulta aunque haya un código anterior en caché", async () => {
+    m.api.mockReturnValue(new Promise(() => {}));
+    const client = new QueryClient(); clients.push(client);
+    client.setQueryData(["mi-codigo-registro"], { codigo: "ABC123" }, { updatedAt: Date.now() - 6 * 60_000 });
+    render(<QueryClientProvider client={client}><BotonQrRegistro /></QueryClientProvider>);
+    await waitFor(() => expect(m.api).toHaveBeenCalledWith("/api/registro/mi-codigo"));
+    fireEvent.click(screen.getByRole("button", { name: "Mostrar QR de registro" }));
+    expect(screen.getByLabelText("Código QR de registro")).toHaveAttribute("data-value", `${location.origin}/bienvenida#n=Barber%C3%ADa%20Demo`);
+    fireEvent.keyDown(window, { key: "Escape" });
+  });
 });

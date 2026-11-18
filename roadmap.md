@@ -2,7 +2,7 @@
 
 ## P36 — Auto-registro por QR
 - [x] API nueva, activación compartida, página pública y QR con bienvenida como respaldo; contratos existentes, dependencias y worker intactos.
-- [x] 551 pruebas pasan, las existentes intactas; registro y activación revisados a 360/1280 px en claro/oscuro/personalizado con respuestas controladas: solicitud exacta, consentimiento, 429, reenvío, código inválido, vencimiento, cuenta existente, login y formulario original. QR revisado con 404/200 en las seis combinaciones, Esc, atrás y foco. Servicio real muestra Registro no disponible y elimina el fragmento.
+- [x] 552 pruebas pasan, las existentes intactas; registro y activación revisados a 360/1280 px en claro/oscuro/personalizado con respuestas controladas: solicitud exacta, consentimiento, 429, reenvío, código inválido, vencimiento, cuenta existente, login y formulario original. Revisión ampliada: carga, 404/500, nombre como texto plano, 409 en solicitud y activación, cambiar número conservando datos/promociones, OTP, cuenta ya activa, selector y reinicio de sesión; admin muestra 404 sin llamadas de registro y vuelve a Entrada; Caja conserva A/C/R, Enter, Esc y ayuda. QR revisado en carga/404/200, Esc, atrás y foco; corregido respaldo durante una recarga con código anterior en caché. Servicio real muestra Registro no disponible y elimina el fragmento.
 - [ ] Activación real pendiente del servicio futuro; GitHub/publicación sin verificar: no hay remoto GitHub ni scripts/publicar-frontend.sh, se guarda commit para sincronización automática de la plataforma.
 
 ## P35 — Preferencias de notificaciones

@@ -15,7 +15,7 @@ export function BotonQrRegistro({ onAbiertoChange }: { onAbiertoChange?: (abiert
   const compartido = useContext(QueryClientContext);
   const [aislado] = useState(() => new QueryClient());
   const registro = useQuery({ queryKey: ["mi-codigo-registro"], queryFn: miCodigoRegistro, retry: false, staleTime: 5 * 60_000, enabled: permitido && !!nombre }, compartido ?? aislado);
-  const codigo = !registro.isError ? registro.data?.codigo : undefined;
+  const codigo = !registro.isError && !registro.isFetching ? registro.data?.codigo : undefined;
   const [abierto, setAbierto] = useState(false);
   const boton = useRef<HTMLButtonElement>(null);
   const cerrar = useRef<HTMLButtonElement>(null);
