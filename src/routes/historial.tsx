@@ -12,6 +12,7 @@ import { instante, pesos } from "@/lib/api/formato";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/components/auth-provider";
 import { useRecargaVisible } from "@/lib/use-recarga-visible";
+import { plural } from "@/lib/plural";
 
 export const Route = createFileRoute("/historial")({
   head: () => ({
@@ -52,6 +53,14 @@ function describir(m: Movimiento) {
       return `Ajuste del negocio: ${m.motivo ?? ""}`;
     case "referido":
       return "Premio por recomendar a alguien";
+    case "expiracion":
+      return m.monto_centavos === undefined ? "Venció tu saldo" : `Venció tu saldo: ${monto}`;
+    case "vencimiento": {
+      const r = m.remanente_centavos ?? 0;
+      const titulo = `Venció tu tarjeta ${m.tarjeta ?? "tu tarjeta"}`;
+      if (sellos > 0) return `${titulo}: ${plural(sellos, "sello", "sellos")}${r > 0 ? ` y ${pesos(r)} hacia el siguiente` : ""}`;
+      return r > 0 ? `${titulo}: ${pesos(r)} hacia el siguiente sello` : titulo;
+    }
     default:
       return saldo ? "Venció tu saldo" : "Vencieron tus sellos";
   }

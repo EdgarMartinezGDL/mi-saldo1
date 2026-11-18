@@ -1,5 +1,11 @@
 # Roadmap
 
+## P37 — Mensajes de vencimiento
+- [x] Mostrar saldo vencido, tarjeta, sellos y avance remanente; ampliar solo los tipos de respuesta sin alterar llamadas, dependencias ni worker.
+- [x] 578 pruebas pasan (17 nuevas P37), sin modificar pruebas existentes; compilación OK. Historial, Movimientos y detalle de Reclamaciones revisados a 360/1280 px en claro/oscuro/personalizado con respuestas controladas, filtros y cierre posterior; sellos a la derecha intactos y sin $0.00 por remanente ausente.
+- [x] Guardar commit con los tipos, mensajes, pruebas y roadmap.
+- [ ] Subida directa a GitHub no disponible sin remoto GitHub; sincronización de la plataforma y sesión real sin verificar.
+
 ## P36b — Recargas y legibilidad
 - [x] Conservar preferencias y código QR ya cargados durante recargas y errores posteriores; ajustar tamaños y contraste sin cambiar contratos ni dependencias.
 - [x] 561 pruebas pasan; recargas pendientes y errores posteriores revisados con respuestas controladas a 360/1280 px en claro/oscuro/personalizado, sin cambios del QR abierto ni pérdida de preferencias. Contraste axe sin hallazgos en 42 estados centrales y 90 adicionales; Caja conserva sus atajos. Sin activar conserva la diferencia de 2 px entre filas (más 1 px de separador si la comparación incluye la última fila). Revisión final: ambos botones de Mis datos y sus formularios en los seis tamaños/temas, corregidos sus íconos grises; QR sin éxito previo revisado en carga/404/200 en doce casos, con cierre y foco.

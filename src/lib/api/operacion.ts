@@ -25,6 +25,7 @@ export interface Movimiento {
   monto_compra_centavos?: number;
   saldo_resultante_centavos?: number;
   cantidad?: number;
+  remanente_centavos?: number;
   tarjeta?: string;
   tarjeta_digital_id?: string;
   motivo?: string;

@@ -96,8 +96,15 @@ function tituloMovimiento(m: Movimiento) {
     case "ajuste_manual":
       return `Ajuste: ${m.motivo ?? ""}`;
     case "expiracion":
+      return `Venció ${pesos(Math.abs(monto))}`;
     case "vencimiento":
-      return `Venció ${enSellos ? sellos(cant) : pesos(Math.abs(monto))}`;
+      {
+        const n = Math.abs(cant);
+        const r = m.remanente_centavos ?? 0;
+        const t = m.tarjeta ?? "tu tarjeta";
+        if (r > 0) return `Venció ${n > 0 ? `${sellos(n)} y ` : ""}${pesos(r)} de avance en ${t}`;
+        return `Venció ${sellos(n)} en ${t}`;
+      }
     case "referido":
       return "Premio por recomendar";
   }
