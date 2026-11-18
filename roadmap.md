@@ -4,6 +4,7 @@
 - [x] Mostrar saldo vencido, tarjeta, sellos y avance remanente; ampliar solo los tipos de respuesta sin alterar llamadas, dependencias ni worker.
 - [x] 578 pruebas pasan (17 nuevas P37), sin modificar pruebas existentes; compilación OK. Historial, Movimientos y detalle de Reclamaciones revisados a 360/1280 px en claro/oscuro/personalizado con respuestas controladas, filtros y cierre posterior; sellos a la derecha intactos y sin $0.00 por remanente ausente.
 - [x] Guardar commit con los tipos, mensajes, pruebas y roadmap.
+- [x] Revisión final contra el pedido: los cuatro vencimientos, singular con avance, tarjeta ausente y saldo con/sin monto comprobados también en Reclamaciones en las seis combinaciones; Movimientos conserva mensajes al recargar y Reclamaciones al cerrar/reabrir. 578 pruebas vuelven a pasar; no se requieren correcciones de la aplicación.
 - [ ] Subida directa a GitHub no disponible sin remoto GitHub; sincronización de la plataforma y sesión real sin verificar.
 
 ## P36b — Recargas y legibilidad
