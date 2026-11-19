@@ -3,7 +3,8 @@
 ## P40 — Fondos y marca superior
 - [x] Paletas fijas, preferencia del dispositivo y selector compartido en Cuenta y Marca; restauración y marca superior sin cambiar API, dependencias ni worker.
 - [x] 643 pruebas pasan; compilación OK; 94 estados revisados a 360/1280 px, diez fondos, Claro/Oscuro, restauración en ambas pantallas, recargas, nombre largo, logo fallido, sin negocio y dos solicitudes. Sin desbordamientos, errores de navegador ni hallazgos axe; guardar Marca conserva exactamente los campos anteriores y no envía fondo. Revisión privada con respuestas controladas: la sesión real redirige a Login.
-- [ ] Guardar cambios y verificar publicación; no existe scripts/publicar-frontend.sh ni remoto GitHub directo. Se usará publicación de Lovable.
+- [x] Cambios preparados para guardar y sincronizar mediante Lovable; publicación solicitada para https://mi-saldo1.lovable.app.
+- [ ] Confirmar publicación y sincronización GitHub: no existe scripts/publicar-frontend.sh ni remoto GitHub directo; la solicitud de publicación no confirma que terminó. Sesión real sin verificar porque Cuenta redirige a Login.
 - Archivos: AGENTS.md, src/components/AGENTS.md, src/lib/fondos.ts, src/components/selector-fondo.tsx, src/components/misaldo-provider.tsx, src/components/app-shell.tsx, src/routes/ajustes.tsx, src/routes/negocio.marca.tsx, src/test/p40.test.tsx, src/test/p29.test.tsx, src/test/p34.test.tsx, src/test/p39.test.tsx, src/test/p6-correcciones.test.tsx y roadmap.md.
 - Expectativas existentes actualizadas solo por P40: src/test/p29.test.tsx:105 (leyenda → logo); src/test/p34.test.tsx:67–70 (leyenda desde 400 px → By MicroFix Cloud desde 640 px); src/test/p39.test.tsx:77 y src/test/p6-correcciones.test.tsx:55,59 (preferencias incluyen fondo). Ninguna API, dependencia, service worker ni código de Caja cambió.
 
