@@ -150,3 +150,9 @@ describe("P38 etiqueta ámbar", () => {
     expect(estilos).toMatch(/\.dark\s*\{[^}]*--warning-etiqueta: #fcd34d/s);
   });
 });
+
+describe("P38 impresión", () => {
+  it("quita del flujo avisos y controles externos a la hoja", () => {
+    expect(estilos).toMatch(/\*:not\(\.cartel-hoja\):not\(\.cartel-hoja \*\):not\(:has\(\.cartel-hoja\)\)\s*\{\s*display: none !important/);
+  });
+});

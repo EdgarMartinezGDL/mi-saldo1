@@ -480,6 +480,16 @@ select:focus-visible {
   @page { size: letter; margin: 12mm; }
   body:has(.cartel-hoja) { background: var(--qr-fondo); }
   body:has(.cartel-hoja) * { visibility: hidden; }
+  body:has(.cartel-hoja) *:not(.cartel-hoja):not(.cartel-hoja *):not(:has(.cartel-hoja)) {
+    display: none !important;
+  }
+  body:has(.cartel-hoja),
+  body:has(.cartel-hoja) *:has(.cartel-hoja) {
+    min-height: 0 !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
   body:has(.cartel-hoja) .cartel-hoja,
   body:has(.cartel-hoja) .cartel-hoja * { visibility: visible; }
   body:has(.cartel-hoja) header,

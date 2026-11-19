@@ -7,6 +7,7 @@
 - [x] Guardar cambios en commit para sincronización de la plataforma.
 - [ ] Subida directa/publicación bloqueadas: no hay remoto GitHub ni scripts/publicar-frontend.sh; sesión real redirige el cartel a Login. Instalación nativa no verificada: pruebas del evento y dispositivo son controladas.
 - Compatibilidad: P30/P25/P36 intactas y código QR previamente exitoso conservado según P36b, incluso durante recargas/error; sin éxito previo usa bienvenida. Además de las tres expectativas anunciadas por P38, fue necesario actualizar solo el tono duplicado en P24c y «Venció 0 sellos en Café» en P37 a «Venció una tarjeta en Café» para satisfacer el nuevo texto; ninguna llamada de API ni dependencia modificada.
+- [x] Auditoría ampliada contra P38: 96 estados en seis combinaciones con axe sin fallas; logo válido/fallido, nombre largo/sin nombre, configuración cargando, captura del evento antes de Inicio y appinstalled con recarga. Detectado y corregido que avisos invisibles aún ocupaban espacio al imprimir: ahora se eliminan del flujo y el PDF vuelve a una sola hoja carta incluso con un aviso externo de 4000 px. 603 pruebas pasan; compilación OK. Ajuste limitado a styles.css, p38.test.tsx y roadmap.md.
 
 ## P37 — Mensajes de vencimiento
 - [x] Mostrar saldo vencido, tarjeta, sellos y avance remanente; ampliar solo los tipos de respuesta sin alterar llamadas, dependencias ni worker.
