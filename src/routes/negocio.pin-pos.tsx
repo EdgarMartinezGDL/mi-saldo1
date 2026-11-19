@@ -1,3 +1,4 @@
+import { CampoPin } from "@/components/campo-pin";
 import { textoIntentos } from "@/lib/plural";
 import { useInvalidarAsistente, validarBusquedaAsistente } from "@/components/negocio/asistente";
 import { createFileRoute } from "@tanstack/react-router";
@@ -7,7 +8,6 @@ import { toast } from "sonner";
 import { ConConfig, mostrarError, SeccionNegocio, useConfigNegocio } from "@/components/negocio/comun";
 import { useConTotp } from "@/components/totp-provider";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type { ConfiguracionNegocio } from "@/lib/api/caja";
 import { cambiarPinPos } from "@/lib/api/dueno";
@@ -79,18 +79,18 @@ function PinPos({ cfg }: { cfg: ConfiguracionNegocio }) {
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
         <div className="flex flex-col gap-2">
           <Label htmlFor="pin" className="text-base">Tu PIN de acceso (con el que entras a la app)</Label>
-          <Input id="pin" type="password" inputMode="numeric" maxLength={128} value={pin} onChange={(e) => setPin(e.target.value)} className="h-14 text-center font-mono text-xl tracking-[0.4em]" />
+          <CampoPin id="pin" inputMode="numeric" maxLength={128} value={pin} onChange={(e) => setPin(e.target.value)} className="h-14 text-center font-mono text-xl tracking-[0.4em]" />
           <p className="text-sm text-muted-foreground">Lo pedimos para confirmar que eres tú.</p>
           {errorPin && <div role="alert" className="text-base font-semibold text-destructive"><p>{errorPin}</p>{intentos !== null && <p>{textoIntentos(intentos)}</p>}</div>}
         </div>
         <div className="flex flex-col gap-2">
           <Label htmlFor="pinpos" className="text-base">Nuevo PIN POS para abrir las cajas</Label>
-          <Input id="pinpos" type="password" inputMode="numeric" maxLength={6} value={pinPos} onChange={(e) => setPinPos(e.target.value.replace(/\D/g, ""))} className="h-14 text-center font-mono text-xl tracking-[0.4em]" />
+          <CampoPin etiquetaMostrar="PIN POS" id="pinpos" inputMode="numeric" maxLength={6} value={pinPos} onChange={(e) => setPinPos(e.target.value.replace(/\D/g, ""))} className="h-14 text-center font-mono text-xl tracking-[0.4em]" />
           <p className="text-sm text-muted-foreground">6 dígitos. No uses secuencias (123456) ni el mismo dígito (111111).</p>
         </div>
         <div className="flex flex-col gap-2">
           <Label htmlFor="pinpos-confirmar" className="text-base">Confirma el nuevo PIN POS</Label>
-          <Input id="pinpos-confirmar" type="password" inputMode="numeric" maxLength={6} value={confirmacion} onChange={(e) => setConfirmacion(e.target.value.replace(/\D/g, ""))} className="h-14 text-center font-mono text-xl tracking-[0.4em]" />
+          <CampoPin etiquetaMostrar="PIN POS" id="pinpos-confirmar" inputMode="numeric" maxLength={6} value={confirmacion} onChange={(e) => setConfirmacion(e.target.value.replace(/\D/g, ""))} className="h-14 text-center font-mono text-xl tracking-[0.4em]" />
           {confirmacion.length === 6 && confirmacion !== pinPos && <p role="alert" className="text-base font-semibold text-destructive">Los dos PIN POS no coinciden</p>}
         </div>
       </div>

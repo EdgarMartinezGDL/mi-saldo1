@@ -1,9 +1,9 @@
+import { CampoPin } from "@/components/campo-pin";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { KeyRound } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Alerta, EnlaceNoValido, TarjetaEnlace, useTokenFragmento } from "@/components/enlace-ui";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ApiError } from "@/lib/api/client";
 import { consultarRestablecimiento, completarRestablecimiento } from "@/lib/api/recuperacion";
@@ -57,8 +57,8 @@ function RestablecerPin() {
       {!datos ? <>{!error ? <p className="text-muted-foreground">Cargando…</p> : <Button disabled={ocupado} onClick={() => void consultar()}>Reintentar</Button>}</> :
         <form className="grid gap-4" onSubmit={(e) => { e.preventDefault(); void guardar(); }}>
           <p className="text-muted-foreground">Define tu nuevo PIN de acceso (6 dígitos).</p>
-          <div className="grid gap-2"><Label htmlFor="rest-pin">PIN nuevo</Label><Input id="rest-pin" type="password" inputMode="numeric" autoComplete="new-password" maxLength={6} className={campo} value={pin} onChange={(e) => setPin(e.target.value.replace(/\D/g, "").slice(0, 6))} /></div>
-          <div className="grid gap-2"><Label htmlFor="rest-repite">Repite el PIN</Label><Input id="rest-repite" type="password" inputMode="numeric" autoComplete="new-password" maxLength={6} className={campo} value={repite} onChange={(e) => setRepite(e.target.value.replace(/\D/g, "").slice(0, 6))} /></div>
+          <div className="grid gap-2"><Label htmlFor="rest-pin">PIN nuevo</Label><CampoPin id="rest-pin" inputMode="numeric" autoComplete="new-password" maxLength={6} className={campo} value={pin} onChange={(e) => setPin(e.target.value.replace(/\D/g, "").slice(0, 6))} /></div>
+          <div className="grid gap-2"><Label htmlFor="rest-repite">Repite el PIN</Label><CampoPin id="rest-repite" inputMode="numeric" autoComplete="new-password" maxLength={6} className={campo} value={repite} onChange={(e) => setRepite(e.target.value.replace(/\D/g, "").slice(0, 6))} /></div>
           <Button type="submit" size="lg" disabled={ocupado || !pinRestablecimientoValido(pin, repite)}>Guardar PIN</Button>
         </form>}
     </>}

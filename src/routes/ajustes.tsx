@@ -1,18 +1,19 @@
 import { useQuery } from "@tanstack/react-query";
 import { referidos, tieneReferidos } from "@/lib/api/cliente";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeftRight, ChevronRight, Gift, LogOut, MessageSquareWarning, Moon, Palette, Sun } from "lucide-react";
+import { ArrowLeftRight, ChevronRight, Gift, LogOut, MessageSquareWarning, Moon, Palette, RotateCcw, Sun } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { useDesplazarAlAbrir } from "@/lib/use-desplazar";
 import { useAuth } from "@/components/auth-provider";
 import { useCerrarSesion } from "@/components/cerrar-sesion";
 import { Encabezado, MisDatos, NotificacionesDispositivo, Promociones, Seguridad, Tarjeta } from "@/components/cuenta/secciones";
 import { useMisNegocios } from "@/components/mis-negocios";
-import { useMiSaldo, type ThemeMode } from "@/components/misaldo-provider";
+import { DEFAULT_PRIMARY, useMiSaldo, type ThemeMode } from "@/components/misaldo-provider";
 import { RequiereSesion } from "@/components/requiere-sesion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/ajustes")({
@@ -44,7 +45,8 @@ const PRESETS = ["#F43F5E", "#7c3f2f", "#1d4ed8", "#b3261e", "#6b21a8", "#2563EB
 const enlace = "tap-target flex min-h-14 items-center gap-3 rounded-xl bg-secondary px-4 py-3 text-base font-medium shadow-soft hover:text-primary-texto";
 
 function Cuenta() {
-  const { theme, setTheme, customColor, setCustomColor } = useMiSaldo();
+  const { theme, setTheme, customColor, setCustomColor, restoreDefaultColors } = useMiSaldo();
+  const coloresPorDefecto = theme === "oscuro" && customColor.toLowerCase() === DEFAULT_PRIMARY.toLowerCase();
   const { estado, sesion, conectado } = useAuth();
   const rol = sesion?.contexto.rol;
   const refs = useQuery({ queryKey: ["cliente-referidos"], queryFn: referidos, enabled: !!sesion && rol === "cliente" && conectado !== false, retry: false });
@@ -107,6 +109,13 @@ function Cuenta() {
                 <span className="text-base font-semibold">{t.label}</span>
               </button>
             ))}
+          </div>
+          <div className="mt-4">
+            <Button type="button" variant="outline" className="min-h-12 w-full text-base sm:w-auto" disabled={coloresPorDefecto}
+              onClick={() => { restoreDefaultColors(); toast.success("Colores restaurados", { description: "Volviste a los colores de Mi Saldo Vip." }); }}>
+              <RotateCcw className="size-5" /> Restaurar colores por defecto
+            </Button>
+            {coloresPorDefecto && <p className="mt-2 text-sm text-muted-foreground">Ya tienes los colores por defecto.</p>}
           </div>
           {theme === "personalizado" && (
             <div ref={refCustom} className="mt-5 border-t border-border pt-5">

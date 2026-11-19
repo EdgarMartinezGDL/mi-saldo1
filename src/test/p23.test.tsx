@@ -58,13 +58,13 @@ describe("P23 branding", () => {
     expect(logo.className).not.toMatch(/rounded-|overflow-hidden/);
   });
 
-  it("logo de Entrada de 128 px", () => {
+  it("logo de Entrada de 176 px", () => {
     const Login = (LoginRoute as unknown as { options: { component: ComponentType } }).options.component;
     render(<Login />);
     const logo = screen.getByRole("img", { name: "Mi Saldo Vip" });
-    expect(logo).toHaveAttribute("width", "128");
-    expect(logo).toHaveAttribute("height", "128");
-    expect(logo).toHaveClass("size-32", "object-contain");
+    expect(logo).toHaveAttribute("width", "176");
+    expect(logo).toHaveAttribute("height", "176");
+    expect(logo).toHaveClass("size-44", "object-contain");
   });
 
   it("logo de Cuenta de 96 px", () => {

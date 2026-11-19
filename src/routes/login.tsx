@@ -1,3 +1,4 @@
+import { CampoPin } from "@/components/campo-pin";
 import { textoIntentos } from "@/lib/plural";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { KeyRound, ShieldCheck } from "lucide-react";
@@ -114,27 +115,27 @@ function Login() {
 
   return (
     <main className="flex min-h-screen items-center justify-center px-4 py-10">
-      <div className="w-full max-w-sm rounded-2xl bg-card p-6 shadow-soft ring-1 ring-border">
+      <div className="w-full max-w-md rounded-2xl bg-card p-6 sm:p-8 shadow-soft ring-1 ring-border">
         {logoError ? (
-          <p className="mx-auto mb-4 text-center text-2xl font-semibold tracking-tight"><MarcaMiSaldo /></p>
+          <p className="mx-auto mb-4 text-center text-3xl font-semibold tracking-tight"><MarcaMiSaldo /></p>
         ) : (
-          <img src={LOGO_CIRCULAR} alt="Mi Saldo Vip" width={128} height={128} decoding="async"
-            onError={() => setLogoError(true)} className="mx-auto mb-4 size-32 rounded-full object-contain" />
+          <img src={LOGO_CIRCULAR} alt="Mi Saldo Vip" width={176} height={176} decoding="async"
+            onError={() => setLogoError(true)} className="mx-auto mb-4 size-44 rounded-full object-contain" />
         )}
         <div className="mb-6 flex items-center gap-3">
-          <div className="grid size-11 place-items-center rounded-full bg-primary text-primary-foreground">
-            {paso.tipo === "totp" ? <ShieldCheck className="size-5" /> : <KeyRound className="size-5" />}
+          <div className="grid size-14 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
+            {paso.tipo === "totp" ? <ShieldCheck className="size-7" /> : <KeyRound className="size-7" />}
           </div>
-          <div>
-            <h1 className="text-2xl font-semibold tracking-tight">
+          <div className="min-w-0">
+            <h1 className="text-3xl font-semibold tracking-tight">
               {paso.tipo === "credenciales" ? "Entrar" : paso.tipo === "contexto" ? "¿Con qué perfil?" : "Verificación"}
             </h1>
-            <p className="text-sm text-muted-foreground"><MarcaMiSaldo /> · By MicroFix Cloud</p>
+            <p className="text-base text-muted-foreground"><MarcaMiSaldo /> · By MicroFix Cloud</p>
           </div>
         </div>
 
         {error && (
-          <p role="alert" className="mb-4 rounded-xl bg-destructive/10 p-3 text-sm font-medium text-destructive">
+          <p role="alert" className="mb-4 rounded-xl bg-destructive/10 p-3 text-base font-medium text-destructive">
             {error}
           </p>
         )}
@@ -144,18 +145,18 @@ function Login() {
         {!sesionPendiente && (
           <form onSubmit={pedirConfirmacion} className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
-              <Label htmlFor="tel">Teléfono (10 dígitos)</Label>
-              <Input id="tel" inputMode="numeric" autoComplete="tel" placeholder="55 1234 5678" className="h-12 text-lg"
+              <Label htmlFor="tel" className="text-lg font-medium">Teléfono (10 dígitos)</Label>
+              <Input id="tel" inputMode="numeric" autoComplete="tel" placeholder="55 1234 5678" className="h-14 text-xl md:text-xl"
                 value={telefono} onChange={(e) => setTelefono(e.target.value.replace(/[^\d ]/g, ""))} />
             </div>
             <div className="flex flex-col gap-2">
-              <Label htmlFor="pin">PIN</Label>
-              <Input id="pin" type="password" inputMode="numeric" autoComplete="current-password" maxLength={128} className="h-12 text-lg"
+              <Label htmlFor="pin" className="text-lg font-medium">PIN</Label>
+              <CampoPin id="pin" inputMode="numeric" autoComplete="current-password" maxLength={128} className="h-14 text-xl md:text-xl"
                 value={pin} onChange={(e) => setPin(e.target.value)} />
             </div>
-            <Button type="submit" size="lg" disabled={cargando}>{cargando ? "Entrando…" : "Entrar"}</Button>
+            <Button type="submit" size="lg" className="h-14 w-full text-lg" disabled={cargando}>{cargando ? "Entrando…" : "Entrar"}</Button>
             <Link to="/recuperar" search={telefono.replace(/\D/g, "").length === 10 ? { telefono: telefono.replace(/\D/g, "") } : {}}
-              className="inline-flex min-h-11 min-w-11 items-center justify-center text-center text-sm font-medium text-primary-texto hover:underline">
+              className="inline-flex min-h-11 min-w-11 items-center justify-center text-center text-base font-medium text-primary-texto hover:underline">
               Olvidé mi PIN
             </Link>
           </form>

@@ -1,3 +1,4 @@
+import { CampoPin } from "@/components/campo-pin";
 import { useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { TriangleAlert } from "lucide-react";
@@ -10,7 +11,6 @@ import {
   AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { ApiError, setSesion } from "@/lib/api/client";
 import { pesos } from "@/lib/api/formato";
 import { eliminarCuenta, vistaEliminacion, type VistaEliminacion } from "@/lib/api/recuperacion";
@@ -129,7 +129,7 @@ function Formulario({ onHecha }: { onHecha: () => void }) {
             <p className="mt-4 text-sm text-muted-foreground">
               Tu cuenta, tu teléfono y tu correo se borran de Mi Saldo Vip en todos tus negocios. No se puede deshacer.
             </p>
-            <Input className="mt-3 h-12 text-center font-mono text-xl tracking-[0.4em]" type="password" inputMode="numeric" maxLength={128}
+            <CampoPin className="mt-3 h-12 text-center font-mono text-xl tracking-[0.4em]" inputMode="numeric" maxLength={128}
               placeholder="PIN" aria-label="Tu PIN" value={pin} onChange={(e) => setPin(e.target.value)} />
             <Button variant="destructive" size="lg" className="mt-4 h-auto min-h-12 w-full whitespace-normal" disabled={pin.length < 4 || enviando} onClick={() => setConfirmar(true)}>
               Sí, eliminar mi cuenta y perder todo

@@ -1,8 +1,8 @@
 import { cn } from "@/lib/utils";
 
 /** Digit slots: empty wells, filled with a dot, and the next one highlighted while entry is active. */
-export function CasillasDigitos({ largo, llenos, activo = true, grande = false, className, ariaLabel }: {
-  largo: number; llenos: number; activo?: boolean; grande?: boolean; className?: string; ariaLabel?: string;
+export function CasillasDigitos({ largo, llenos, activo = true, grande = false, className, ariaLabel, digitos }: {
+  largo: number; llenos: number; activo?: boolean; grande?: boolean; className?: string; ariaLabel?: string; digitos?: string | undefined;
 }) {
   return (
     <span role="img" className={cn("flex", grande ? "gap-2" : "gap-1.5", className)} aria-label={ariaLabel ?? `${llenos} de ${largo} dígitos`}>
@@ -13,7 +13,7 @@ export function CasillasDigitos({ largo, llenos, activo = true, grande = false, 
           i < llenos || (activo && i === llenos && llenos < largo) ? "bg-card border-primary" : "bg-casilla border-casilla-borde",
           activo && i === llenos && llenos < largo && "ring-4 ring-primary/15 dark:ring-primary/40",
         )}>
-          {i < llenos && <span className="size-3.5 rounded-full bg-primary" />}
+          {i < llenos && (digitos !== undefined ? <span aria-hidden="true" className="font-mono text-xl font-bold">{digitos[i]}</span> : <span className="size-3.5 rounded-full bg-primary" />)}
         </span>
       ))}
     </span>

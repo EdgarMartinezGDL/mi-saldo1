@@ -1,5 +1,13 @@
 # Roadmap
 
+## P39 — Entrada, secretos y apariencia
+- [x] Ampliar Entrada y confirmaciones; compartir ojos para PIN y casillas solo en las pantallas solicitadas.
+- [x] Restaurar colores desde Apariencia en todos los temas.
+- [x] 627 pruebas pasan y compilación OK; 204 estados a 360/1280 px en claro/oscuro/personalizado, sin desbordamientos, errores de navegador ni hallazgos axe al medir tras las animaciones. Ojos, foco, submit, restauración y recarga revisados con respuestas controladas; auditoría adicional de Baja y Mis códigos realizada antes del bloqueo de la fixture de Staff.
+- [x] Guardar cambios para sincronización de la plataforma. Expectativas de logo actualizadas solo en src/test/p23.test.tsx:61–67 (128 → 176 y size-32 → size-44).
+- [ ] Verificación real y publicación: la sesión real redirige a Login; la revisión visual de Staff no pudo completarse con la fixture controlada. No hay remoto GitHub ni scripts/publicar-frontend.sh; subida directa y publicación no verificadas. Los enlaces de prueba necesitaron conservar el fragmento durante la doble ejecución de efectos de desarrollo; no se modificó ese comportamiento previo.
+- Archivos: src/components/campo-pin.tsx, casillas-digitos.tsx, enlace-ui.tsx, completar-activacion.tsx, mis-negocios.tsx, cuenta/secciones.tsx, cuenta/mis-codigos.tsx, staff/precio-membresia.tsx, ui/alert-dialog.tsx; src/routes/login.tsx, ajustes.tsx, baja.tsx, eliminar-cuenta.tsx, recuperar.tsx, restablecer-pin.tsx, negocio.pin-pos.tsx, invitacion.tsx, validaciones.tsx; src/test/p39.test.tsx, p23.test.tsx; src/components/AGENTS.md y roadmap.md. API, dependencias, worker, Caja, registro.tsx y activar.tsx sin modificaciones.
+
 ## P38 — Cartel e instalación
 - [x] Compartir enlace QR, cartel imprimible y acceso del dueño; invitación de instalación del cliente sin modificar worker, API ni dependencias.
 - [x] Corregir vencimientos y etiqueta ámbar.

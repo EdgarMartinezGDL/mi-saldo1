@@ -1,3 +1,4 @@
+import { CampoPin } from "@/components/campo-pin";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, LifeBuoy } from "lucide-react";
 import { useState } from "react";
@@ -174,18 +175,18 @@ function Recuperar() {
           <form className="flex flex-col gap-4" onSubmit={(e) => { e.preventDefault(); void guardar(); }}>
             <div className="flex flex-col gap-2">
               <Label htmlFor="p1">PIN nuevo (6 dígitos)</Label>
-              <Input id="p1" type="password" inputMode="numeric" autoComplete="new-password" maxLength={6} className={campo}
+              <CampoPin id="p1" inputMode="numeric" autoComplete="new-password" maxLength={6} className={campo}
                 value={pin} onChange={(e) => setPin(e.target.value.replace(/\D/g, ""))} />
             </div>
             <div className="flex flex-col gap-2">
               <Label htmlFor="p2">Repite el PIN nuevo</Label>
-              <Input id="p2" type="password" inputMode="numeric" autoComplete="new-password" maxLength={6} className={campo}
+              <CampoPin id="p2" inputMode="numeric" autoComplete="new-password" maxLength={6} className={campo}
                 value={pin2} onChange={(e) => setPin2(e.target.value.replace(/\D/g, ""))} />
             </div>
             {verif.puede_cambiar_codigo_canje && (
               <div className="flex flex-col gap-2">
                 <Label htmlFor="canje">Nuevo código de canje (4 dígitos)</Label>
-                <Input id="canje" type="password" inputMode="numeric" maxLength={4} className={campo}
+                <CampoPin etiquetaMostrar="código de canje" id="canje" inputMode="numeric" maxLength={4} className={campo}
                   value={canje} onChange={(e) => setCanje(e.target.value.replace(/\D/g, ""))} />
                 <p className="text-xs text-muted-foreground">Si también olvidaste tu código de canje, cámbialo aquí</p>
               </div>

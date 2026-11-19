@@ -1,5 +1,6 @@
+import { CampoPin } from "@/components/campo-pin";
 import { KeyRound, TriangleAlert } from "lucide-react";
-import { useState } from "react";
+import { useState, type ComponentProps } from "react";
 import { toast } from "sonner";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
@@ -13,6 +14,10 @@ import { useDesplazarAlAbrir } from "@/lib/use-desplazar";
 import { cambiarCodigos, consultarCodigos, type MisCodigos } from "./cuenta-api";
 import { Tarjeta, useError } from "./secciones";
 import { escritorCopia } from "@/lib/sin-conexion-sesion";
+
+function CampoCodigo({ tipo, ...props }: Omit<ComponentProps<typeof Input>, "type"> & { tipo: Tipo }) {
+  return tipo === "canje" ? <CampoPin etiquetaMostrar="código de canje" {...props} /> : <Input type="text" {...props} />;
+}
 
 const soloDigitos = (v: string) => v.replace(/\D/g, "");
 const campo = "h-14 text-center font-mono text-xl tracking-[0.4em]";
@@ -93,7 +98,7 @@ export function TarjetaMisCodigos() {
         <div className="mt-3 grid gap-3">
           <p className="text-base text-muted-foreground">Escribe tu PIN para ver tu código de acumulación y el estado de tu código de canje.</p>
           <label className="grid gap-2 font-medium">Tu PIN
-            <Input type="password" inputMode="numeric" maxLength={128} value={pin} onChange={(e) => setPin(e.target.value)} className={campo} />
+            <CampoPin inputMode="numeric" maxLength={128} value={pin} onChange={(e) => setPin(e.target.value)} className={campo} />
           </label>
           <Button size="lg" className="h-14 text-base" disabled={ocupado || pin.length < 4} onClick={() => void ver()}>
             {ocupado ? "Revisando…" : "Ver mis códigos"}
@@ -130,10 +135,10 @@ export function TarjetaMisCodigos() {
             <div ref={refCambio} className="grid gap-3 border-t border-border pt-4">
               <p className="font-semibold">Cambiar código de {NOMBRE[cambiando]}</p>
               <label className="grid gap-2 font-medium">Código nuevo
-                <Input type={cambiando === "canje" ? "password" : "text"} inputMode="numeric" maxLength={4} value={nuevo} onChange={(e) => setNuevo(soloDigitos(e.target.value).slice(0, 4))} className={campo} />
+                <CampoCodigo tipo={cambiando} inputMode="numeric" maxLength={4} value={nuevo} onChange={(e) => setNuevo(soloDigitos(e.target.value).slice(0, 4))} className={campo} />
               </label>
               <label className="grid gap-2 font-medium">Repite el código nuevo
-                <Input type={cambiando === "canje" ? "password" : "text"} inputMode="numeric" maxLength={4} value={repite} onChange={(e) => setRepite(soloDigitos(e.target.value).slice(0, 4))} className={campo} />
+                <CampoCodigo tipo={cambiando} inputMode="numeric" maxLength={4} value={repite} onChange={(e) => setRepite(soloDigitos(e.target.value).slice(0, 4))} className={campo} />
               </label>
               <div className="flex gap-2">
                 <Button variant="outline" size="lg" className="h-14 flex-1" onClick={() => setCambiando(null)}>Cancelar</Button>

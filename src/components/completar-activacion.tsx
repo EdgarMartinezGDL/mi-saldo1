@@ -84,11 +84,11 @@ function Formulario({ token, versionAvisoAceptada, onError, onListo, onYaActiva,
         <p><strong>Código de acumulación (4 dígitos):</strong> se lo dices al cajero para que te sume saldo o sellos.</p>
         <p><strong>Código de canje (4 dígitos):</strong> se lo dices al cajero para usar tu saldo o tus premios. No lo compartas.</p>
       </div>
-      <CampoDigitos etiqueta="Tu PIN (6 dígitos)" ayuda="Con él entras a la app." valor={pin} onChange={setPin} largo={6}
+      <CampoDigitos revelable etiqueta="Tu PIN (6 dígitos)" ayuda="Con él entras a la app." valor={pin} onChange={setPin} largo={6}
         activo={campo === "pin"} onActivar={() => setCampo("pin")} />
-      <CampoDigitos etiqueta="Código de acumulación (4 dígitos)" ayuda="4 dígitos, por ejemplo 5821. Lo dices en caja para que te acumulen."
+      <CampoDigitos revelable etiquetaMostrar="código de acumulación" etiqueta="Código de acumulación (4 dígitos)" ayuda="4 dígitos, por ejemplo 5821. Lo dices en caja para que te acumulen."
         valor={acumulacion} onChange={setAcumulacion} largo={4} activo={campo === "acum"} onActivar={() => setCampo("acum")} />
-      <CampoDigitos etiqueta="Código de canje (4 dígitos)" ayuda="4 dígitos, por ejemplo 7394. Solo tú lo conoces; protege tu saldo."
+      <CampoDigitos revelable etiquetaMostrar="código de canje" etiqueta="Código de canje (4 dígitos)" ayuda="4 dígitos, por ejemplo 7394. Solo tú lo conoces; protege tu saldo."
         valor={canje} onChange={setCanje} largo={4} activo={campo === "canje"} onActivar={() => setCampo("canje")} />
       <p className="text-sm text-muted-foreground">Evita secuencias (1234) y números repetidos (0000)</p>
       {acumulacion.length === 4 && canje === acumulacion && <Alerta tono="aviso">Tus códigos de acumulación y canje son iguales.</Alerta>}

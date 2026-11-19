@@ -115,9 +115,9 @@ function Formulario({ datos, onListo, onYaActiva, onExpirado }: {
     <form onSubmit={enviar} className="flex flex-col gap-4">
       <p className="text-lg font-medium">Hola {datos.nombre}, te invitaron a {datos.negocio}.</p>
       {error && <Alerta>{error}</Alerta>}
-      <CampoDigitos etiqueta="Crea tu PIN (6 dígitos)" valor={pin} onChange={setPin} largo={6}
+      <CampoDigitos revelable etiqueta="Crea tu PIN (6 dígitos)" valor={pin} onChange={setPin} largo={6}
         activo={campo === "pin"} onActivar={() => setCampo("pin")} />
-      <CampoDigitos etiqueta="Repite tu PIN" valor={pin2} onChange={setPin2} largo={6}
+      <CampoDigitos revelable etiqueta="Repite tu PIN" valor={pin2} onChange={setPin2} largo={6}
         activo={campo === "pin2"} onActivar={() => setCampo("pin2")} />
       <div className="flex flex-col gap-2">
         <Label htmlFor="correo">Correo</Label>

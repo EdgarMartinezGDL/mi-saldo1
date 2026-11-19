@@ -1,3 +1,4 @@
+import { CampoPin } from "@/components/campo-pin";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { TriangleAlert } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -5,7 +6,6 @@ import { toast } from "sonner";
 import { AppShell } from "@/components/app-shell";
 import { Cargando, RequiereSesion } from "@/components/requiere-sesion";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { ApiError, setSesion } from "@/lib/api/client";
 import { darmeDeBaja, vistaBaja, type VistaBaja } from "@/lib/api/cliente";
 import { pesos } from "@/lib/api/formato";
@@ -100,9 +100,8 @@ function Formulario({ onHecha }: { onHecha: () => void }) {
               {vista.cuenta_se_elimina && <li>Tu cuenta de Mi Saldo Vip se elimina por completo.</li>}
             </ul>
             <p className="mt-4 text-sm text-muted-foreground">Es inmediato y no se puede deshacer. Escribe tu PIN para confirmar.</p>
-            <Input
+            <CampoPin
               className="mt-2 h-12 text-center font-mono text-xl tracking-[0.4em]"
-              type="password"
               inputMode="numeric"
               maxLength={128}
               placeholder="PIN"

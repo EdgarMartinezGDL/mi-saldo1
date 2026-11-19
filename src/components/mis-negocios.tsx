@@ -1,3 +1,4 @@
+import { CampoPin } from "@/components/campo-pin";
 import { textoIntentos } from "@/lib/plural";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
@@ -202,8 +203,7 @@ function Selector({ onCerrar, abierto }: { onCerrar: () => void; abierto: boolea
         {falta.pin && (
           <label className="flex flex-col gap-2 text-base font-medium">
             Tu PIN de acceso
-            <Input
-              type="password"
+            <CampoPin
               inputMode="numeric"
               autoComplete="current-password"
               maxLength={128}

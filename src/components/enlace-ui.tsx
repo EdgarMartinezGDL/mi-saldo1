@@ -3,6 +3,7 @@ import { useEffect, useRef, useState, type ReactNode, type RefObject } from "rea
 import { useDigitos } from "@/components/caja/teclado";
 import { NumericKeypad } from "@/components/numeric-keypad";
 import { CasillasDigitos } from "@/components/casillas-digitos";
+import { OjoSecreto, useRevelarSecreto } from "@/components/campo-pin";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -62,12 +63,14 @@ export function EnlaceNoValido({ mensaje = "Este enlace no es válido." }: { men
 }
 
 /** Digit entry with the existing big numeric keypad. */
-export function CampoDigitos({ etiqueta, ayuda, valor, onChange, largo, limite = largo, activo, onActivar, tecladoFisico = false, compacto = false, botonRef, autoComplete }: {
+export function CampoDigitos({ etiqueta, ayuda, valor, onChange, largo, limite = largo, activo, onActivar, tecladoFisico = false, compacto = false, botonRef, autoComplete, revelable = false, etiquetaMostrar = "PIN" }: {
   etiqueta: string; ayuda?: string; valor: string; onChange: (v: string) => void; largo: number; limite?: number; activo: boolean; onActivar: () => void;
-  tecladoFisico?: boolean; compacto?: boolean; botonRef?: RefObject<HTMLButtonElement | null>; autoComplete?: "one-time-code";
+  tecladoFisico?: boolean; compacto?: boolean; botonRef?: RefObject<HTMLButtonElement | null>; autoComplete?: "one-time-code"; revelable?: boolean; etiquetaMostrar?: string;
 }) {
   const interno = useRef<HTMLButtonElement>(null);
   const ref = botonRef ?? interno;
+  const id = useId();
+  const { visible, setVisible } = useRevelarSecreto(ref);
   const onKey = (k: string) => {
     if (k === "borrar") onChange(valor.slice(0, -1));
     else if (k === "limpiar") onChange("");
@@ -78,11 +81,15 @@ export function CampoDigitos({ etiqueta, ayuda, valor, onChange, largo, limite =
     <div className="flex flex-col gap-2">
       {autoComplete && <input aria-label={etiqueta} autoComplete={autoComplete} inputMode="numeric" maxLength={limite}
         className="sr-only" value={valor} onChange={(e) => onChange(e.target.value.replace(/\D/g, "").slice(0, limite))} />}
-      <button ref={ref} type="button" onClick={onActivar}
+      {revelable && <div className="flex min-h-11 items-center justify-between gap-2">
+        <span className="text-sm font-medium">{etiqueta}</span>
+        <OjoSecreto visible={visible} etiqueta={etiquetaMostrar} controls={id} onClick={() => setVisible((v) => !v)} />
+      </div>}
+      <button id={id} ref={ref} type="button" onClick={onActivar} aria-label={revelable ? etiqueta : undefined}
         className={cn("rounded-xl p-3 text-left ring-1 transition-colors", activo ? "ring-2 ring-primary" : "ring-border")}>
-        <span className="block text-sm font-medium">{etiqueta}</span>
+        {!revelable && <span className="block text-sm font-medium">{etiqueta}</span>}
         {ayuda && <span className="block text-xs text-muted-foreground">{ayuda}</span>}
-        <CasillasDigitos className="mt-2" largo={largo} llenos={Math.min(valor.length, largo)} activo={activo} ariaLabel={`${valor.length} de ${limite} dígitos`} />
+        <CasillasDigitos className="mt-2" largo={largo} llenos={Math.min(valor.length, largo)} activo={activo} ariaLabel={`${valor.length} de ${limite} dígitos`} digitos={revelable && visible ? valor : undefined} />
         {limite > largo && valor.length > largo && (
           <span className="mt-2 block text-sm text-muted-foreground">{valor.length} dígitos</span>
         )}

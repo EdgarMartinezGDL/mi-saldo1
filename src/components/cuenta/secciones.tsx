@@ -1,3 +1,4 @@
+import { CampoPin } from "@/components/campo-pin";
 import { textoIntentos } from "@/lib/plural";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
@@ -176,9 +177,9 @@ export function MisDatos() {
 
       {abierto === "pin" && (
         <div ref={refPin} className="mt-4 grid gap-3 border-t border-border pt-4">
-          <label className="grid gap-2 font-medium">PIN actual<Input type="password" inputMode="numeric" maxLength={128} value={actual} onChange={(e) => setActual(e.target.value)} className={campoPin} /></label>
-          <label className="grid gap-2 font-medium">PIN nuevo (6 dígitos)<Input type="password" inputMode="numeric" maxLength={6} value={nuevo} onChange={(e) => setNuevo(soloDigitos(e.target.value))} className={campoPin} /></label>
-          <label className="grid gap-2 font-medium">Repite el PIN nuevo<Input type="password" inputMode="numeric" maxLength={6} value={repite} onChange={(e) => setRepite(soloDigitos(e.target.value))} className={campoPin} /></label>
+          <label className="grid gap-2 font-medium">PIN actual<CampoPin inputMode="numeric" maxLength={128} value={actual} onChange={(e) => setActual(e.target.value)} className={campoPin} /></label>
+          <label className="grid gap-2 font-medium">PIN nuevo (6 dígitos)<CampoPin inputMode="numeric" maxLength={6} value={nuevo} onChange={(e) => setNuevo(soloDigitos(e.target.value))} className={campoPin} /></label>
+          <label className="grid gap-2 font-medium">Repite el PIN nuevo<CampoPin inputMode="numeric" maxLength={6} value={repite} onChange={(e) => setRepite(soloDigitos(e.target.value))} className={campoPin} /></label>
           <Button size="lg" className="h-14 text-base" disabled={ocupado || actual.length < 4 || nuevo.length !== 6 || repite.length !== 6} onClick={() => void guardarPin()}>
             {ocupado ? "Guardando…" : "Guardar PIN nuevo"}
           </Button>
@@ -190,7 +191,7 @@ export function MisDatos() {
           {!esperandoCodigo ? (
             <>
               <label className="grid gap-2 font-medium">Correo nuevo<Input type="email" inputMode="email" value={correo} onChange={(e) => setCorreo(e.target.value)} className="h-14 text-base" placeholder="tucorreo@ejemplo.mx" /></label>
-              <label className="grid gap-2 font-medium">Tu PIN<Input type="password" inputMode="numeric" maxLength={128} value={actual} onChange={(e) => setActual(e.target.value)} className={campoPin} /></label>
+              <label className="grid gap-2 font-medium">Tu PIN<CampoPin inputMode="numeric" maxLength={128} value={actual} onChange={(e) => setActual(e.target.value)} className={campoPin} /></label>
               <Button size="lg" className="h-14 text-base" disabled={ocupado || !/^\S+@\S+\.\S+$/.test(correo.trim()) || actual.length < 4} onClick={() => void pedirCodigo()}>
                 {ocupado ? "Enviando…" : "Enviar código"}
               </Button>
@@ -280,7 +281,7 @@ export function Seguridad({ staff = false }: { staff?: boolean }) {
 
       {paso === "pin" && (
         <div className="mt-4 grid gap-3">
-          <label className="grid gap-2 font-medium">Tu PIN<Input type="password" inputMode="numeric" maxLength={128} value={pin} onChange={(e) => setPin(e.target.value)} className={campoPin} /></label>
+          <label className="grid gap-2 font-medium">Tu PIN<CampoPin inputMode="numeric" maxLength={128} value={pin} onChange={(e) => setPin(e.target.value)} className={campoPin} /></label>
           <div className="flex gap-2">
             <Button variant="outline" size="lg" className="h-14 flex-1" onClick={() => setPaso("nada")}>Cancelar</Button>
             <Button size="lg" className="h-14 flex-1" disabled={ocupado || pin.length < 4} onClick={() => void correr(async () => { setQr(await activarTotp(pin)); setPin(""); setPaso("qr"); })}>
@@ -318,7 +319,7 @@ export function Seguridad({ staff = false }: { staff?: boolean }) {
 
       {paso === "desactivar" && (
         <div className="mt-4 grid gap-3">
-          <label className="grid gap-2 font-medium">Tu PIN<Input type="password" inputMode="numeric" maxLength={128} value={pin} onChange={(e) => setPin(e.target.value)} className={campoPin} /></label>
+          <label className="grid gap-2 font-medium">Tu PIN<CampoPin inputMode="numeric" maxLength={128} value={pin} onChange={(e) => setPin(e.target.value)} className={campoPin} /></label>
           <label className="grid gap-2 font-medium">Código de tu app<Input inputMode="numeric" autoComplete="one-time-code" maxLength={6} value={codigo} onChange={(e) => setCodigo(soloDigitos(e.target.value))} className={campoPin} /></label>
           <div className="flex gap-2">
             <Button variant="outline" size="lg" className="h-14 flex-1" onClick={() => setPaso("nada")}>Cancelar</Button>

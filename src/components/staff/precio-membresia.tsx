@@ -1,5 +1,6 @@
+import { CampoPin } from "@/components/campo-pin";
 import { textoIntentos } from "@/lib/plural";
-import { useRef, useState } from "react";
+import { useRef, useState, type ComponentProps } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -13,6 +14,10 @@ import { ApiError } from "@/lib/api/client";
 import { aCentavos, pesos } from "@/lib/api/formato";
 import { fijarPrecioMembresia, precioMembresia, type PrecioMembresia } from "@/lib/api/staff";
 import { useNivelStaff } from "./comun";
+
+function CampoFactor({ factor, ...props }: Omit<ComponentProps<typeof Input>, "type"> & { factor: "pin" | "totp" }) {
+  return factor === "pin" ? <CampoPin {...props} /> : <Input type="text" {...props} />;
+}
 
 const fechaPrecio = (iso: string) => new Intl.DateTimeFormat("es-MX", {
   day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit", timeZone: "America/Mexico_City",
@@ -116,7 +121,7 @@ function DialogoPrecio({ vigente, onCerrar }: { vigente: PrecioMembresia | null;
           <div className="flex flex-col gap-1.5"><Label htmlFor="precio-motivo">Motivo del cambio</Label><Textarea id="precio-motivo" name="motivo" autoComplete="off" value={motivo} maxLength={200} placeholder="Precio de lanzamiento" onChange={cambiarMotivo} onInput={cambiarMotivo} /><p className="text-xs text-muted-foreground">{motivo.length}/200 caracteres</p></div>
           <fieldset className="flex flex-col gap-2"><legend className="mb-2 text-sm font-medium">Confirma que eres tú</legend>
             {([ ["totp", "Código del autenticador"], ["pin", "Mi PIN"] ] as const).map(([f, texto]) => <label key={f} className="flex items-center gap-2 text-sm"><input type="radio" name="precio-factor" value={f} checked={factor === f} onChange={() => { setFactor(f); setSecreto(""); setError(null); }} />{texto}</label>)}
-            <Input key={factor} name="secreto" aria-label={factor === "totp" ? "Código del autenticador" : "Mi PIN"} type={factor === "pin" ? "password" : "text"} inputMode="numeric" autoComplete={factor === "totp" ? "one-time-code" : "off"} data-1p-ignore={factor === "pin" ? "true" : undefined} data-lpignore={factor === "pin" ? "true" : undefined} maxLength={factor === "totp" ? 6 : 128} value={secreto} onChange={cambiarSecreto} onInput={cambiarSecreto} />
+            <CampoFactor key={factor} factor={factor} name="secreto" aria-label={factor === "totp" ? "Código del autenticador" : "Mi PIN"} inputMode="numeric" autoComplete={factor === "totp" ? "one-time-code" : "off"} data-1p-ignore={factor === "pin" ? "true" : undefined} data-lpignore={factor === "pin" ? "true" : undefined} maxLength={factor === "totp" ? 6 : 128} value={secreto} onChange={cambiarSecreto} onInput={cambiarSecreto} />
           </fieldset>
         </fieldset>
         {precioValido && centavos !== vigente?.precio_mensual_centavos && <p className="text-sm">El precio cambia de {vigente ? `${pesos(vigente.precio_mensual_centavos)} MXN` : "sin precio"} a {pesos(centavos)} MXN. Las órdenes que ya existen conservan su monto.</p>}

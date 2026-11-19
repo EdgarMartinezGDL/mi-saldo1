@@ -129,7 +129,7 @@ function Pendiente({ v, onResuelta, onSesionCerrada }: { v: Validacion; onResuel
         {error && <Alerta>{error}</Alerta>}
         {pidiendoPin ? (
           <div ref={refPin} className="flex flex-col gap-3">
-            <CampoDigitos etiqueta="Escribe tu PIN para confirmar" valor={pin} onChange={setPin} largo={6} limite={128} activo onActivar={() => {}} />
+            <CampoDigitos revelable etiqueta="Escribe tu PIN para confirmar" valor={pin} onChange={setPin} largo={6} limite={128} activo onActivar={() => {}} />
             <Button size="lg" disabled={cargando || pin.length < 4 || pin.length > 128}
               onClick={() => void correr(() => confirmarMiValidacion(v.validacion_id, pin))}>
               {cargando ? "Confirmando…" : "Confirmar"}
