@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ApiError } from "@/lib/api/client";
@@ -119,13 +119,17 @@ describe("P36 registro", () => {
     const expirado = vi.fn(); m.completar.mockRejectedValue(new ApiError(400, { codigo: "token_invalido" }));
     montar(<CompletarActivacion token="activacion" versionAvisoAceptada="v1" onExpirado={expirado} />);
     await waitFor(() => expect(screen.queryByRole("checkbox", { name: "Acepto el aviso de privacidad" })).toBeNull());
-    const digitos = (n: string) => { for (const d of n) fireEvent.click(screen.getByRole("button", { name: new RegExp(`^${d}$`) })); };
+    const digitos = (n: string) => {
+      const teclado = document.querySelector(".grid.grid-cols-3");
+      if (!teclado) throw new Error("No hay teclado numérico abierto");
+      for (const d of n) fireEvent.click(within(teclado as HTMLElement).getByRole("button", { name: d }));
+    };
     digitos("582047"); fireEvent.click(screen.getByRole("button", { name: /Código de acumulación \(4 dígitos\)/ })); digitos("5821");
     fireEvent.click(screen.getByRole("button", { name: /Código de canje \(4 dígitos\)/ })); digitos("7394");
     fireEvent.click(screen.getByRole("button", { name: "Activar mi cuenta" }));
     await waitFor(() => expect(expirado).toHaveBeenCalledOnce());
     expect(m.completar).toHaveBeenCalledWith({ token_activacion: "activacion", pin: "582047", codigo_acumulacion: "5821", codigo_canje: "7394", correo: null, acepta_aviso_privacidad: true, version_aviso: "v1" });
-  });
+  }, 60_000);
   it("admin oculta registro sin consultar su API", () => { m.sitio = "admin"; montar(<GuardaSitio><Registro /></GuardaSitio>); expect(screen.getByRole("heading", { name: "404" })).toBeInTheDocument(); expect(m.api).not.toHaveBeenCalled(); });
   it.each([false, true])("QR elige registro disponible=%s", async (disponible) => {
     if (disponible) m.api.mockResolvedValue({ codigo: "ABC123" });

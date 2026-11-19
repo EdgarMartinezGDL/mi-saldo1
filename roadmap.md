@@ -1,5 +1,13 @@
 # Roadmap
 
+## P41 — Logo derecho y prueba de activación
+- [x] Ampliar solo el logo derecho con negocio a 56×56; conservar alto, respaldo y truncado.
+- [x] Acotar dígitos P36 al teclado abierto con nombres exactos y límite propio de 60 s; actualizar expectativas P40 de tamaño.
+- [x] 643 pruebas pasan; 24 estados de barra revisados a 360/1280 px en claro/oscuro/personalizado con respuestas controladas: logos 56×56, alto intacto de 73 px, solicitudes, nombre largo truncado, recarga, navegación a solicitudes y respaldo sin desbordamientos ni errores. Sesión real redirige a Login.
+- [x] Cambios preparados para commit y sincronización de Lovable.
+- [ ] Confirmar sincronización GitHub: no hay remoto GitHub directo y el estado de integración solo está disponible en la interfaz de Lovable.
+- Archivos: src/components/app-shell.tsx, src/test/p36.test.tsx, src/test/p40.test.tsx y roadmap.md.
+
 ## P40 — Fondos y marca superior
 - [x] Paletas fijas, preferencia del dispositivo y selector compartido en Cuenta y Marca; restauración y marca superior sin cambiar API, dependencias ni worker.
 - [x] 643 pruebas pasan; compilación OK; 94 estados revisados a 360/1280 px, diez fondos, Claro/Oscuro, restauración en ambas pantallas, recargas, nombre largo, logo fallido, sin negocio y dos solicitudes. Sin desbordamientos, errores de navegador ni hallazgos axe; guardar Marca conserva exactamente los campos anteriores y no envía fondo. Revisión privada con respuestas controladas: la sesión real redirige a Login.

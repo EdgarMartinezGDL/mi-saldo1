@@ -184,8 +184,8 @@ function AppBar() {
           {nombre && (marcaError ? (
             <span className="text-sm font-bold text-barra-foreground"><MarcaMiSaldo /></span>
           ) : (
-            <img src={LOGO_MARCA} alt="Mi Saldo Vip" width={40} height={40} decoding="async"
-              onError={() => setMarcaError(true)} className="size-10 shrink-0 rounded-full object-contain ring-1 ring-barra-foreground/30" />
+            <img src={LOGO_MARCA} alt="Mi Saldo Vip" width={56} height={56} decoding="async"
+              onError={() => setMarcaError(true)} className="size-14 shrink-0 rounded-full object-contain ring-1 ring-barra-foreground/30" />
           ))}
         </div>
       </div>

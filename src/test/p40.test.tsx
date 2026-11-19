@@ -77,11 +77,11 @@ describe("P40 proveedor y selector", () => {
 });
 describe("P40 barra", () => {
   it("con negocio muestra co-marca derecha y respaldo de imagen", () => {
-    render(<MiSaldoProvider><AppShell>Cuenta</AppShell></MiSaldoProvider>); const logo = screen.getByRole("img", { name: "Mi Saldo Vip" }); expect(logo).toHaveAttribute("width", "40"); expect(logo).toHaveAttribute("height", "40");
+    render(<MiSaldoProvider><AppShell>Cuenta</AppShell></MiSaldoProvider>); const logo = screen.getByRole("img", { name: "Mi Saldo Vip" }); expect(logo).toHaveClass("size-14"); expect(logo).toHaveAttribute("width", "56"); expect(logo).toHaveAttribute("height", "56");
     expect(screen.queryByText("Mi Saldo Vip · By MicroFix Cloud")).toBeNull(); fireEvent.error(logo); expect(screen.queryByRole("img", { name: "Mi Saldo Vip" })).toBeNull(); expect(screen.getByText("Mi Saldo")).toBeInTheDocument();
   });
   it("sin negocio no repite logo", () => {
-    m.nombre = null; render(<MiSaldoProvider><AppShell>Staff</AppShell></MiSaldoProvider>); expect(screen.getAllByRole("img", { name: "Mi Saldo Vip" })).toHaveLength(1); expect(screen.getByRole("img", { name: "Mi Saldo Vip" })).not.toHaveAttribute("width", "40");
+    m.nombre = null; render(<MiSaldoProvider><AppShell>Staff</AppShell></MiSaldoProvider>); expect(screen.getAllByRole("img", { name: "Mi Saldo Vip" })).toHaveLength(1); expect(screen.getByRole("img", { name: "Mi Saldo Vip" })).not.toHaveAttribute("width", "56");
   });
   it("dos pendientes conviven con el logo", () => {
     m.pendientes = 2; render(<MiSaldoProvider><AppShell>Cuenta</AppShell></MiSaldoProvider>); expect(screen.getByRole("link", { name: "Solicitudes por confirmar: 2" })).toHaveAttribute("href", "/validaciones"); expect(screen.getByRole("img", { name: "Mi Saldo Vip" })).toBeInTheDocument();
