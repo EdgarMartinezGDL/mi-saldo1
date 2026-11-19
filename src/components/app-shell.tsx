@@ -91,7 +91,7 @@ function AccesoValidaciones() {
   const { data } = useMisValidaciones();
   const pendientes = data?.validaciones?.filter((v) => v.estado === "pendiente").length ?? 0;
   if (estado !== "autenticado") return null;
-  if (pendientes === 0) return <span className="hidden max-w-28 text-xs text-barra-foreground min-[400px]:inline">Mi Saldo Vip · By MicroFix Cloud</span>;
+  if (pendientes === 0) return null;
   return (
     <Link
       to="/validaciones"
@@ -119,6 +119,7 @@ function AppBar() {
   useEffect(() => { if (negocioActivo) updateBusiness({ name: negocioActivo.nombre_comercial, logo: negocioActivo.logo_url }); }, [negocioActivo, updateBusiness]);
   const { abrir, varios, dialogo } = useMisNegocios();
   const [logoError, setLogoError] = useState(false);
+  const [marcaError, setMarcaError] = useState(false);
   const nombre = rol && rol !== "staff" && sesion?.contexto.nombre_comercial ? sesion.contexto.nombre_comercial : null;
   const logo = nombre ? (negocioId ? negocioActivo?.logo_url : business.logo) : undefined;
   const initials = (nombre ?? "")
@@ -179,6 +180,13 @@ function AppBar() {
         </div>
         <div className="flex shrink-0 items-center gap-3">
           <AccesoValidaciones />
+          <span className="hidden whitespace-nowrap text-xs text-barra-foreground sm:inline">By MicroFix Cloud</span>
+          {nombre && (marcaError ? (
+            <span className="text-sm font-bold text-barra-foreground"><MarcaMiSaldo /></span>
+          ) : (
+            <img src={LOGO_MARCA} alt="Mi Saldo Vip" width={40} height={40} decoding="async"
+              onError={() => setMarcaError(true)} className="size-10 shrink-0 rounded-full object-contain ring-1 ring-barra-foreground/30" />
+          ))}
         </div>
       </div>
       {dialogo}

@@ -74,7 +74,7 @@ describe("P39 restauración", () => {
   localStorage.setItem("misaldo-prefs", JSON.stringify({ theme, customColor: "#16a34a" })); const Ajustes = routeComponent(AjustesRoute); render(<MiSaldoProvider><Ajustes /><Preferencias /></MiSaldoProvider>);
   await waitFor(() => expect(screen.getByLabelText("Preferencias")).toHaveTextContent(`${theme}/#16a34a`)); fireEvent.click(screen.getByRole("button", { name: "Restaurar colores por defecto" }));
   expect(screen.getByLabelText("Preferencias")).toHaveTextContent("oscuro/#2563EB"); expect(m.success).toHaveBeenCalledWith("Colores restaurados", { description: "Volviste a los colores de Mi Saldo Vip." }); expect(screen.getByRole("button", { name: "Restaurar colores por defecto" })).toBeDisabled();
-  expect(JSON.parse(localStorage.getItem("misaldo-prefs") ?? "{}")).toEqual({ theme: "oscuro", customColor: "#2563EB" });
+  expect(JSON.parse(localStorage.getItem("misaldo-prefs") ?? "{}")).toEqual({ theme: "oscuro", customColor: "#2563EB", fondo: "azul-noche" });
  });
  it("deshabilitado sin importar mayúsculas", () => {
   localStorage.setItem("misaldo-prefs", JSON.stringify({ theme: "oscuro", customColor: "#2563eb" })); const Ajustes = routeComponent(AjustesRoute); render(<MiSaldoProvider><Ajustes /></MiSaldoProvider>);

@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import type { ConfiguracionNegocio } from "@/lib/api/caja";
 import { actualizarNegocio } from "@/lib/api/dueno";
+import { SelectorFondo } from "@/components/selector-fondo";
 
 export const Route = createFileRoute("/negocio/marca")({
   validateSearch: validarBusquedaAsistente,
@@ -181,6 +182,9 @@ function Marca({ cfg }: { cfg: ConfiguracionNegocio }) {
             </div>
             {theme === "personalizado" && (
               <div className="rounded-xl p-4 ring-1 ring-border">
+                <SelectorFondo />
+                <p className="mt-3 text-sm text-muted-foreground">El fondo se guarda solo en este dispositivo.</p>
+                <div className="my-5 border-t border-border" />
                 <h3 className="text-base font-semibold">Color de tu marca</h3>
                 <p className="mt-1 text-sm text-muted-foreground">Se aplica en esta aplicación.</p>
                 <div className="mt-4 flex flex-wrap items-center gap-3">

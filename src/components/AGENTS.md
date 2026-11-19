@@ -2,3 +2,4 @@
 - QR dialog and printable poster share useEnlaceRegistro and preserve successful cached codes. Why: both destinations stay identical during refresh failures.
 - Installation events are captured once at root and dismissal is device-scoped in instalacion. Why: early prompts survive navigation without changing push or worker registration.
 - Secret inputs use CampoPin and opt-in CampoDigitos with form-submit visibility reset; Caja and one-time codes stay unchanged. Why: shared accessible reveal without persistent visibility.
+- Custom backgrounds use fixed palettes from fondos and the shared SelectorFondo; only device preferences persist them. Why: both appearance screens stay consistent without changing business API contracts.

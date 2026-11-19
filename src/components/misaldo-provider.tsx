@@ -8,6 +8,7 @@ import {
   type ReactNode,
 } from "react";
 import type { Role } from "@/lib/misaldo-data";
+import { DEFAULT_FONDO, obtenerFondo, VARIABLES_FONDO, type FondoId } from "@/lib/fondos";
 
 export type ThemeMode = "claro" | "oscuro" | "personalizado";
 
@@ -69,6 +70,8 @@ type MiSaldoState = {
   setTheme: (theme: ThemeMode) => void;
   customColor: string;
   setCustomColor: (hex: string) => void;
+  fondo: FondoId;
+  setFondo: (fondo: FondoId) => void;
   restoreDefaultColors: () => void;
   resetSessionData: () => void;
   business: Business;
@@ -83,6 +86,7 @@ export function MiSaldoProvider({ children }: { children: ReactNode }) {
   const [role, setRole] = useState<Role>("cliente");
   const [theme, setTheme] = useState<ThemeMode>(DEFAULT_THEME);
   const [customColor, setCustomColor] = useState(DEFAULT_PRIMARY);
+  const [fondo, setFondo] = useState<FondoId>(DEFAULT_FONDO);
   const [preferencesReady, setPreferencesReady] = useState(false);
   const [business, setBusiness] = useState<Business>({
     name: "Taquería La Cuna",
@@ -100,9 +104,11 @@ export function MiSaldoProvider({ children }: { children: ReactNode }) {
       const saved = JSON.parse(raw) as Partial<{
         theme: ThemeMode;
         customColor: string;
+        fondo: FondoId;
       }>;
       if (saved.theme) setTheme(saved.theme);
       if (saved.customColor) setCustomColor(saved.customColor);
+      setFondo(obtenerFondo(saved.fondo).id);
     } catch {
       /* ignore corrupted prefs */
     } finally {
@@ -113,22 +119,30 @@ export function MiSaldoProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!preferencesReady) return;
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ theme, customColor }));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ theme, customColor, fondo }));
     } catch {
       /* storage unavailable */
     }
-  }, [theme, customColor, preferencesReady]);
+  }, [theme, customColor, fondo, preferencesReady]);
 
   useEffect(() => {
     const root = document.documentElement;
-    root.classList.toggle("dark", theme !== "claro");
+    const fondoActual = obtenerFondo(fondo);
+    root.classList.toggle("dark", theme === "personalizado" ? fondoActual.modo === "oscuro" : theme === "oscuro");
+    VARIABLES_FONDO.forEach((variable) => root.style.removeProperty(`--${variable}`));
     if (theme === "personalizado") {
+      const superficie = fondoActual.colores ?? fondoActual;
+      if (fondoActual.colores) {
+        Object.entries(fondoActual.colores).forEach(([variable, valor]) => root.style.setProperty(`--${variable}`, valor));
+        root.style.setProperty("--popover", fondoActual.colores.card);
+        root.style.setProperty("--muted", fondoActual.colores.secondary);
+      }
       const color = colorConContraste(customColor);
       root.style.setProperty("--primary", color.fondo);
       root.style.setProperty("--primary-foreground", color.texto);
-      root.style.setProperty("--primary-texto", colorTextoConContraste(customColor, "#1e293b"));
-      root.style.setProperty("--primary-etiqueta", colorTextoConContraste(customColor, "#3f423e"));
-      root.style.setProperty("--primary-aviso", colorTextoConContraste(customColor, "#3f423e"));
+      root.style.setProperty("--primary-texto", colorTextoConContraste(customColor, superficie.card));
+      root.style.setProperty("--primary-etiqueta", colorTextoConContraste(customColor, superficie.secondary));
+      root.style.setProperty("--primary-aviso", colorTextoConContraste(customColor, superficie.secondary));
       root.style.setProperty("--ring", customColor);
     } else {
       root.style.removeProperty("--primary");
@@ -138,7 +152,7 @@ export function MiSaldoProvider({ children }: { children: ReactNode }) {
       root.style.removeProperty("--primary-aviso");
       root.style.removeProperty("--ring");
     }
-  }, [theme, customColor]);
+  }, [theme, customColor, fondo]);
 
   const updateBusiness = useCallback((patch: Partial<Business>) => {
     setBusiness((prev) => ({ ...prev, ...patch }));
@@ -147,6 +161,7 @@ export function MiSaldoProvider({ children }: { children: ReactNode }) {
   const restoreDefaultColors = useCallback(() => {
     setCustomColor(DEFAULT_PRIMARY);
     setTheme(DEFAULT_THEME);
+    setFondo(DEFAULT_FONDO);
   }, []);
 
   /** Clears business/role left by the previous session; keeps theme and color. */
@@ -163,12 +178,14 @@ export function MiSaldoProvider({ children }: { children: ReactNode }) {
       setTheme,
       customColor,
       setCustomColor,
+      fondo,
+      setFondo,
       restoreDefaultColors,
       resetSessionData,
       business,
       updateBusiness,
     }),
-    [role, theme, customColor, business, updateBusiness, restoreDefaultColors, resetSessionData],
+    [role, theme, customColor, fondo, business, updateBusiness, restoreDefaultColors, resetSessionData],
   );
 
   return <MiSaldoContext.Provider value={value}>{children}</MiSaldoContext.Provider>;
@@ -181,6 +198,8 @@ const FALLBACK: MiSaldoState = {
   setTheme: () => {},
   customColor: DEFAULT_PRIMARY,
   setCustomColor: () => {},
+  fondo: DEFAULT_FONDO,
+  setFondo: () => {},
   restoreDefaultColors: () => {},
   resetSessionData: () => {},
   business: {

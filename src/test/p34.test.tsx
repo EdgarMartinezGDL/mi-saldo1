@@ -64,8 +64,9 @@ describe("P34 regiones principales", () => {
 });
 
 describe("P34 barra superior e inferior", () => {
-  it("la marca se oculta antes de 400 px y se muestra a partir de 400 px", () => {
-    expect(appShell).toMatch(/className="hidden [^"]*min-\[400px\]:inline">Mi Saldo Vip · By MicroFix Cloud/);
+  it("la co-marca usa logo y la leyenda solo se muestra desde 640 px", () => {
+    expect(appShell).toContain('text-xs text-barra-foreground sm:inline">By MicroFix Cloud');
+    expect(appShell).not.toContain("Mi Saldo Vip · By MicroFix Cloud");
   });
   it("las etiquetas inferiores usan 12 px y no se parten", () => {
     expect(appShell).toContain('"text-xs leading-tight whitespace-nowrap"');

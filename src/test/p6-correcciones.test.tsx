@@ -52,10 +52,10 @@ describe("P6: almacenamiento visual", () => {
     let estado: ReturnType<typeof useMiSaldo> | undefined;
     function Estado() { estado = useMiSaldo(); return <p>{estado.role}</p>; }
     render(<MiSaldoProvider><Estado /></MiSaldoProvider>);
-    await waitFor(() => expect(JSON.parse(localStorage.getItem("misaldo-prefs") ?? "{}")).toEqual({ theme: "claro", customColor: "#123456" }));
+    await waitFor(() => expect(JSON.parse(localStorage.getItem("misaldo-prefs") ?? "{}")).toEqual({ theme: "claro", customColor: "#123456", fondo: "azul-noche" }));
     expect(estado?.role).toBe("cliente");
     expect(estado?.business.name).not.toBe("Negocio anterior");
     act(() => { estado?.setRole("dueno"); estado?.updateBusiness({ name: "Negocio actual" }); });
-    expect(JSON.parse(localStorage.getItem("misaldo-prefs") ?? "{}")).toEqual({ theme: "claro", customColor: "#123456" });
+    expect(JSON.parse(localStorage.getItem("misaldo-prefs") ?? "{}")).toEqual({ theme: "claro", customColor: "#123456", fondo: "azul-noche" });
   });
 });

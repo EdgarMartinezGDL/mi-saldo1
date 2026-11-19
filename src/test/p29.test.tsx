@@ -102,7 +102,7 @@ describe("P29 vencimiento", () => {
   });
 });
 describe("P29 barra y logo", () => {
-  it("sin pendientes muestra marca y no enlace", () => { envolver(<AppShell>Contenido</AppShell>); expect(screen.queryByRole("link", { name: /Solicitudes por confirmar/ })).toBeNull(); expect(screen.getByText("Mi Saldo Vip · By MicroFix Cloud")).toBeInTheDocument(); });
+  it("sin pendientes muestra logo de marca y no enlace", () => { envolver(<AppShell>Contenido</AppShell>); expect(screen.queryByRole("link", { name: /Solicitudes por confirmar/ })).toBeNull(); expect(screen.getByRole("img", { name: "Mi Saldo Vip" })).toBeInTheDocument(); });
   it("con un pendiente muestra enlace y contador", () => { m.pendientes = 1; envolver(<AppShell>Contenido</AppShell>); expect(screen.getByRole("link", { name: "Solicitudes por confirmar: 1" })).toHaveAttribute("href", "/validaciones"); });
   it("empleado ve logo de configuración", async () => { m.rol = "empleado"; pagina(CajaRoute); expect(await screen.findByRole("img", { name: "Logo de Negocio a" })).toHaveAttribute("src", cfg.negocio.logo_url); });
   it("cliente ve logo nuevo al cambiar contexto y recargar otra ruta", async () => {

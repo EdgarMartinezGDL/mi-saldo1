@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { SelectorFondo } from "@/components/selector-fondo";
 
 export const Route = createFileRoute("/ajustes")({
   head: () => ({
@@ -45,8 +46,8 @@ const PRESETS = ["#F43F5E", "#7c3f2f", "#1d4ed8", "#b3261e", "#6b21a8", "#2563EB
 const enlace = "tap-target flex min-h-14 items-center gap-3 rounded-xl bg-secondary px-4 py-3 text-base font-medium shadow-soft hover:text-primary-texto";
 
 function Cuenta() {
-  const { theme, setTheme, customColor, setCustomColor, restoreDefaultColors } = useMiSaldo();
-  const coloresPorDefecto = theme === "oscuro" && customColor.toLowerCase() === DEFAULT_PRIMARY.toLowerCase();
+  const { theme, setTheme, customColor, setCustomColor, restoreDefaultColors, fondo } = useMiSaldo();
+  const coloresPorDefecto = theme === "oscuro" && customColor.toLowerCase() === DEFAULT_PRIMARY.toLowerCase() && fondo === "azul-noche";
   const { estado, sesion, conectado } = useAuth();
   const rol = sesion?.contexto.rol;
   const refs = useQuery({ queryKey: ["cliente-referidos"], queryFn: referidos, enabled: !!sesion && rol === "cliente" && conectado !== false, retry: false });
@@ -119,6 +120,8 @@ function Cuenta() {
           </div>
           {theme === "personalizado" && (
             <div ref={refCustom} className="mt-5 border-t border-border pt-5">
+              <SelectorFondo />
+              <div className="my-5 border-t border-border" />
               <Label htmlFor="color" className="text-base">Color principal</Label>
               <div className="mt-3 flex flex-wrap items-center gap-3">
                 <input id="color" type="color" value={customColor} onChange={(e) => setCustomColor(e.target.value)} className="size-14 shrink-0 cursor-pointer rounded-xl border border-border bg-transparent" />
