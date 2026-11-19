@@ -5,6 +5,7 @@
 - [x] Acotar dígitos P36 al teclado abierto con nombres exactos y límite propio de 60 s; actualizar expectativas P40 de tamaño.
 - [x] 643 pruebas pasan; 24 estados de barra revisados a 360/1280 px en claro/oscuro/personalizado con respuestas controladas: logos 56×56, alto intacto de 73 px, solicitudes, nombre largo truncado, recarga, navegación a solicitudes y respaldo sin desbordamientos ni errores. Sesión real redirige a Login.
 - [x] Cambios preparados para commit y sincronización de Lovable.
+- [x] Auditoría ampliada contra el pedido: 120 estados a 360/1280 px, Claro/Oscuro y los diez fondos personalizados; ambos logos, solicitudes, recarga, navegación posterior y respaldo comprobados sin desbordamientos ni errores. Caja conserva A/C/R, Enter, Esc y ayuda en las 24 combinaciones. 643 pruebas vuelven a pasar; no se requieren cambios adicionales de aplicación.
 - [ ] Confirmar sincronización GitHub: no hay remoto GitHub directo y el estado de integración solo está disponible en la interfaz de Lovable.
 - Archivos: src/components/app-shell.tsx, src/test/p36.test.tsx, src/test/p40.test.tsx y roadmap.md.
 
