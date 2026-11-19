@@ -32,7 +32,7 @@ describe("P37 historial del cliente", () => {
     [{ cantidad: -1, remanente_centavos: 0 }, "Venció tu tarjeta Café: 1 sello"],
     [{ cantidad: 0, remanente_centavos: 1250 }, "Venció tu tarjeta Café: $12.50 hacia el siguiente sello"],
     [{ cantidad: 0, remanente_centavos: 0 }, "Venció tu tarjeta Café"],
-    [{ tarjeta: undefined }, "Venció tu tarjeta tu tarjeta: 2 sellos"],
+    [{ tarjeta: undefined }, "Venció tu tarjeta: 2 sellos"],
     [{ remanente_centavos: undefined }, "Venció tu tarjeta Café: 2 sellos"],
     [{ modulo: "monedero", tipo: "expiracion", monto_centavos: -1250 }, "Venció tu saldo: $12.50"],
     [{ modulo: "monedero", tipo: "expiracion", monto_centavos: undefined }, "Venció tu saldo"],
@@ -51,9 +51,9 @@ describe("P37 movimientos del dueño y reclamaciones", () => {
     [{ cantidad: -1, remanente_centavos: 1250 }, "Venció 1 sello y $12.50 de avance en Café", "−1"],
     [{ cantidad: -1, remanente_centavos: 0 }, "Venció 1 sello en Café", "−1"],
     [{ cantidad: 0, remanente_centavos: 1250 }, "Venció $12.50 de avance en Café", "0"],
-    [{ cantidad: 0, remanente_centavos: 0 }, "Venció 0 sellos en Café", "0"],
+    [{ cantidad: 0, remanente_centavos: 0 }, "Venció una tarjeta en Café", "0"],
     [{ remanente_centavos: undefined }, "Venció 2 sellos en Café", "−2"],
-    [{ tarjeta: undefined }, "Venció 2 sellos en tu tarjeta", "−2"],
+    [{ tarjeta: undefined }, "Venció 2 sellos", "−2"],
     [{ modulo: "monedero", tipo: "expiracion", monto_centavos: -1250 }, "Venció $12.50", "−$12.50"],
   ] satisfies [Campos, string, string][])("conserva título y número %#", (campos, esperado, valor) => {
     render(<ul><FilaMovimiento m={{ ...movimiento(campos), jornada: "2026-11-17" }} /></ul>);

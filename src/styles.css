@@ -81,6 +81,7 @@
   --color-pending: var(--pending);
   --color-separador: var(--separador);
   --color-warning-icono: var(--warning-icono);
+  --color-warning-etiqueta: var(--warning-etiqueta);
   --color-esqueleto: var(--esqueleto);
   --color-border: var(--border);
   --color-input: var(--input);
@@ -144,6 +145,7 @@
   --accent-foreground: #ffffff;
   --separador: #cbd5e1;
   --warning-icono: #a16207;
+  --warning-etiqueta: #92400e;
   --esqueleto: #e2e8f0;
   --warn: oklch(0.586 0.176 33);
   --warn-foreground: oklch(0.99 0.004 174);
@@ -213,6 +215,7 @@
   --accent-foreground: #ffffff;
   --separador: #334155;
   --warning-icono: #fcd34d;
+  --warning-etiqueta: #fcd34d;
   --esqueleto: #334155;
   --warn: oklch(0.72 0.15 55);
   --warn-foreground: oklch(0.2 0.02 264);
@@ -462,4 +465,55 @@ select:focus-visible {
 .bg-secondary.text-muted-foreground,
 .bg-muted.text-muted-foreground {
   color: var(--secondary-foreground);
+}
+
+.cartel-hoja { container-type: inline-size; }
+.cartel-contenido {
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 640px;
+  height: 828.2353px;
+  zoom: calc(100cqw / 640px);
+}
+
+@media print {
+  @page { size: letter; margin: 12mm; }
+  body:has(.cartel-hoja) { background: var(--qr-fondo); }
+  body:has(.cartel-hoja) * { visibility: hidden; }
+  body:has(.cartel-hoja) .cartel-hoja,
+  body:has(.cartel-hoja) .cartel-hoja * { visibility: visible; }
+  body:has(.cartel-hoja) header,
+  body:has(.cartel-hoja) aside,
+  body:has(.cartel-hoja) nav,
+  body:has(.cartel-hoja) [data-sonner-toaster],
+  body:has(.cartel-hoja) .cartel-controles { display: none !important; }
+  body:has(.cartel-hoja) main { padding: 0; }
+  .cartel-hoja {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    max-width: none;
+    height: 255mm;
+    aspect-ratio: auto;
+    padding: 0;
+    gap: 6mm;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: var(--qr-fondo);
+    color: var(--qr-texto);
+    break-inside: avoid;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .cartel-hoja .cartel-qr { width: 12cm; height: 12cm; }
+  .cartel-hoja .cartel-contenido {
+    position: static;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    gap: 6mm;
+    zoom: 1;
+  }
 }

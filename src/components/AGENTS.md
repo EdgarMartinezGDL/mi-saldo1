@@ -1,1 +1,3 @@
 - Registration and invitation share CompletarActivacion; inherited consent is reused only for the current privacy version and discarded on 409. Why: activation stays consistent without accepting an outdated notice.
+- QR dialog and printable poster share useEnlaceRegistro and preserve successful cached codes. Why: both destinations stay identical during refresh failures.
+- Installation events are captured once at root and dismissal is device-scoped in instalacion. Why: early prompts survive navigation without changing push or worker registration.

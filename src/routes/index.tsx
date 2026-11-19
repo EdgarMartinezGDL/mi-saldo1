@@ -12,6 +12,7 @@ import { pesos, textoCaducidad, textoEstadoHorario } from "@/lib/api/formato";
 import { cn } from "@/lib/utils";
 import { useRecargaVisible } from "@/lib/use-recarga-visible";
 import { fechaTarjeta } from "@/lib/fecha-tarjeta";
+import { InvitarInstalar } from "@/components/invitar-instalar";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -98,6 +99,8 @@ function ClienteInicio() {
             {datos.negocio.nombre_comercial}
           </span>
         </div>
+
+        <InvitarInstalar />
 
         {ficha.data && !ficha.isError && !ficha.isPending && (
           <Link to="/mi-negocio" className="flex items-center gap-3 rounded-xl bg-card p-3 ring-1 ring-border"

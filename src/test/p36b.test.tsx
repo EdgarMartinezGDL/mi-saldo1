@@ -65,7 +65,7 @@ describe("P36b datos ya cargados", () => {
 
 describe("P36b clases solicitadas", () => {
   it("Sin activar conserva su altura con text-xs", () => {
-    expect(clientes).toContain('className="pill-badge shrink-0 py-0.5 text-xs leading-4 text-secondary-foreground">Sin activar');
+    expect(clientes).toContain('className="pill-badge shrink-0 py-0.5 text-xs leading-4 text-warning-etiqueta">Sin activar');
   });
   it("Vip tiene una sola regla de tamaño con mínimo de 12 px", () => {
     expect(marca).toContain("text-[max(12px,0.7em)]");

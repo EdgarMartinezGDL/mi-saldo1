@@ -68,7 +68,7 @@ describe("P24c listas, títulos, cargas y vacíos", () => {
   });
 
   it("Clientes muestra «Sin activar» como pill y filas tocables", () => {
-    expect(clientes).toContain('pill-badge shrink-0 py-0.5 text-xs leading-4 text-secondary-foreground">Sin activar</span>');
+    expect(clientes).toContain('pill-badge shrink-0 py-0.5 text-xs leading-4 text-warning-etiqueta">Sin activar</span>');
     expect(clientes).not.toContain("sin activar");
     expect(clientes).toContain("active:bg-secondary");
     expect(clientes).not.toContain("divide-y");

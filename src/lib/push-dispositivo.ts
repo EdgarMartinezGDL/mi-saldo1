@@ -1,14 +1,7 @@
 import { bajaSuscripcion, llavePublica, registrarSuscripcion } from "@/lib/api/push";
+import { esIos, instalada } from "@/lib/instalacion";
 
 export type EstadoPush = "no_disponible" | "instalar_ios" | "bloqueadas" | "desactivadas" | "activadas";
-
-const esIos = () =>
-  /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-  (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
-
-const instalada = () =>
-  window.matchMedia("(display-mode: standalone)").matches ||
-  (navigator as { standalone?: boolean }).standalone === true;
 
 /** Active /sw.js registration, or null when push can't work here (preview, old browser). */
 async function registro(): Promise<ServiceWorkerRegistration | null> {

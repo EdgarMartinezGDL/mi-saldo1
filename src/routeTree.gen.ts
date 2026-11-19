@@ -38,6 +38,7 @@ import { Route as ValidacionesRouteImport } from './routes/validaciones'
 import { Route as MembresiaDomiciliadoRouteImport } from './routes/membresia.domiciliado'
 import { Route as NegocioIndexRouteImport } from './routes/negocio.index'
 import { Route as NegocioAsistenteRouteImport } from './routes/negocio.asistente'
+import { Route as NegocioCartelRouteImport } from './routes/negocio.cartel'
 import { Route as NegocioHorariosRouteImport } from './routes/negocio.horarios'
 import { Route as NegocioMarcaRouteImport } from './routes/negocio.marca'
 import { Route as NegocioMembresiaRouteImport } from './routes/negocio.membresia'
@@ -197,6 +198,11 @@ const NegocioAsistenteRoute = NegocioAsistenteRouteImport.update({
   path: '/asistente',
   getParentRoute: () => NegocioRoute,
 } as any)
+const NegocioCartelRoute = NegocioCartelRouteImport.update({
+  id: '/cartel',
+  path: '/cartel',
+  getParentRoute: () => NegocioRoute,
+} as any)
 const NegocioHorariosRoute = NegocioHorariosRouteImport.update({
   id: '/horarios',
   path: '/horarios',
@@ -292,6 +298,7 @@ export interface FileRoutesByFullPath {
   '/validaciones': typeof ValidacionesRoute
   '/membresia/domiciliado': typeof MembresiaDomiciliadoRoute
   '/negocio/asistente': typeof NegocioAsistenteRoute
+  '/negocio/cartel': typeof NegocioCartelRoute
   '/negocio/horarios': typeof NegocioHorariosRoute
   '/negocio/marca': typeof NegocioMarcaRoute
   '/negocio/membresia': typeof NegocioMembresiaRoute
@@ -335,6 +342,7 @@ export interface FileRoutesByTo {
   '/validaciones': typeof ValidacionesRoute
   '/membresia/domiciliado': typeof MembresiaDomiciliadoRoute
   '/negocio/asistente': typeof NegocioAsistenteRoute
+  '/negocio/cartel': typeof NegocioCartelRoute
   '/negocio/horarios': typeof NegocioHorariosRoute
   '/negocio/marca': typeof NegocioMarcaRoute
   '/negocio/membresia': typeof NegocioMembresiaRoute
@@ -380,6 +388,7 @@ export interface FileRoutesById {
   '/validaciones': typeof ValidacionesRoute
   '/membresia/domiciliado': typeof MembresiaDomiciliadoRoute
   '/negocio/asistente': typeof NegocioAsistenteRoute
+  '/negocio/cartel': typeof NegocioCartelRoute
   '/negocio/horarios': typeof NegocioHorariosRoute
   '/negocio/marca': typeof NegocioMarcaRoute
   '/negocio/membresia': typeof NegocioMembresiaRoute
@@ -426,6 +435,7 @@ export interface FileRouteTypes {
     | '/validaciones'
     | '/membresia/domiciliado'
     | '/negocio/asistente'
+    | '/negocio/cartel'
     | '/negocio/horarios'
     | '/negocio/marca'
     | '/negocio/membresia'
@@ -469,6 +479,7 @@ export interface FileRouteTypes {
     | '/validaciones'
     | '/membresia/domiciliado'
     | '/negocio/asistente'
+    | '/negocio/cartel'
     | '/negocio/horarios'
     | '/negocio/marca'
     | '/negocio/membresia'
@@ -513,6 +524,7 @@ export interface FileRouteTypes {
     | '/validaciones'
     | '/membresia/domiciliado'
     | '/negocio/asistente'
+    | '/negocio/cartel'
     | '/negocio/horarios'
     | '/negocio/marca'
     | '/negocio/membresia'
@@ -766,6 +778,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NegocioAsistenteRouteImport
       parentRoute: typeof NegocioRoute
     }
+    '/negocio/cartel': {
+      id: '/negocio/cartel'
+      path: '/cartel'
+      fullPath: '/negocio/cartel'
+      preLoaderRoute: typeof NegocioCartelRouteImport
+      parentRoute: typeof NegocioRoute
+    }
     '/negocio/horarios': {
       id: '/negocio/horarios'
       path: '/horarios'
@@ -862,6 +881,7 @@ declare module '@tanstack/react-router' {
 
 interface NegocioRouteChildren {
   NegocioAsistenteRoute: typeof NegocioAsistenteRoute
+  NegocioCartelRoute: typeof NegocioCartelRoute
   NegocioHorariosRoute: typeof NegocioHorariosRoute
   NegocioMarcaRoute: typeof NegocioMarcaRoute
   NegocioMembresiaRoute: typeof NegocioMembresiaRoute
@@ -878,6 +898,7 @@ interface NegocioRouteChildren {
 
 const NegocioRouteChildren: NegocioRouteChildren = {
   NegocioAsistenteRoute: NegocioAsistenteRoute,
+  NegocioCartelRoute: NegocioCartelRoute,
   NegocioHorariosRoute: NegocioHorariosRoute,
   NegocioMarcaRoute: NegocioMarcaRoute,
   NegocioMembresiaRoute: NegocioMembresiaRoute,

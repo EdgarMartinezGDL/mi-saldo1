@@ -24,6 +24,7 @@ import { ConexionContenido } from "@/components/sin-conexion";
 import { MarcaMiSaldo } from "@/components/marca";
 import { CambioPorAviso } from "@/components/cambio-por-aviso";
 import { registrarWorker } from "@/lib/pwa-registro";
+import { escucharInstalacion } from "@/lib/instalacion";
 import { GuardaSitio } from "@/components/guarda-sitio";
 import { PaginaNoEncontrada } from "@/components/pagina-no-encontrada";
 
@@ -140,6 +141,7 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   useEffect(() => registrarWorker(), []);
+  useEffect(() => escucharInstalacion(), []);
 
   return (
     <QueryClientProvider client={queryClient}>

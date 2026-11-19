@@ -101,9 +101,9 @@ function tituloMovimiento(m: Movimiento) {
       {
         const n = Math.abs(cant);
         const r = m.remanente_centavos ?? 0;
-        const t = m.tarjeta ?? "tu tarjeta";
-        if (r > 0) return `Venció ${n > 0 ? `${sellos(n)} y ` : ""}${pesos(r)} de avance en ${t}`;
-        return `Venció ${sellos(n)} en ${t}`;
+        const en = m.tarjeta ? ` en ${m.tarjeta}` : "";
+        if (r > 0) return `Venció ${n > 0 ? `${sellos(n)} y ` : ""}${pesos(r)} de avance${en}`;
+        return `Venció ${n > 0 ? sellos(n) : "una tarjeta"}${en}`;
       }
     case "referido":
       return "Premio por recomendar";

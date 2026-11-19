@@ -1,11 +1,13 @@
 import { PendientesAsistente, useAsistente } from "@/components/negocio/asistente";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { Archive, MessageSquareWarning, Stamp, TrendingUp, UserPlus, Users, type LucideIcon } from "lucide-react";
+import { Archive, MessageSquareWarning, Printer, Stamp, TrendingUp, UserPlus, Users, type LucideIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { AppShell } from "@/components/app-shell";
 import { BotonQrRegistro } from "@/components/qr-registro";
+import { useAuth } from "@/components/auth-provider";
+import { Button } from "@/components/ui/button";
 import { IconoTono, type Tono } from "@/components/fila-lista";
 import { Cargando, RequiereSesion } from "@/components/requiere-sesion";
 import { ApiError } from "@/lib/api/client";
@@ -51,6 +53,7 @@ const etiquetaPesos = (centavos: number) => {
 const DIA = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 
 function Panel() {
+  const { sesion } = useAuth();
   const { data: estadoAsistente } = useAsistente();
   const navigate = useNavigate();
   useEffect(() => {
@@ -134,7 +137,10 @@ function Panel() {
             <h1 className="text-3xl font-bold tracking-tight">Panel</h1>
             <p className="mt-1 text-base text-muted-foreground">Cómo va tu negocio hoy.</p>
           </div>
-          <BotonQrRegistro />
+          <div className="flex flex-wrap gap-3">
+            <BotonQrRegistro />
+            {sesion?.contexto.rol === "dueno" && <Button variant="secondary" className="min-h-12 text-base" asChild><Link to="/negocio/cartel"><Printer /> Imprimir cartel</Link></Button>}
+          </div>
         </div>
 
         {sinPinPos && !estadoAsistente?.pendientes_obligatorios.includes("pin_pos") && (

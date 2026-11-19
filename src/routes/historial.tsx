@@ -57,7 +57,7 @@ function describir(m: Movimiento) {
       return m.monto_centavos === undefined ? "Venció tu saldo" : `Venció tu saldo: ${monto}`;
     case "vencimiento": {
       const r = m.remanente_centavos ?? 0;
-      const titulo = `Venció tu tarjeta ${m.tarjeta ?? "tu tarjeta"}`;
+      const titulo = m.tarjeta ? `Venció tu tarjeta ${m.tarjeta}` : "Venció tu tarjeta";
       if (sellos > 0) return `${titulo}: ${plural(sellos, "sello", "sellos")}${r > 0 ? ` y ${pesos(r)} hacia el siguiente` : ""}`;
       return r > 0 ? `${titulo}: ${pesos(r)} hacia el siguiente sello` : titulo;
     }

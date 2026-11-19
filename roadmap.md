@@ -1,5 +1,13 @@
 # Roadmap
 
+## P38 — Cartel e instalación
+- [x] Compartir enlace QR, cartel imprimible y acceso del dueño; invitación de instalación del cliente sin modificar worker, API ni dependencias.
+- [x] Corregir vencimientos y etiqueta ámbar.
+- [x] 602 pruebas pasan; 66 pantallas/estados auditados con axe sin fallas a 360/1280 px en claro/oscuro/personalizado, sin errores del navegador; Panel, QR, cartel, logo fallido, Clientes, vencimientos, rechazo/aceptación/cierre de instalación e instrucciones iPhone comprobados con respuestas controladas, recarga y navegación posterior. PDF de una sola hoja carta en los tres temas, QR de 12 cm y solo el cartel visible; ayuda de Caja intacta.
+- [x] Guardar cambios en commit para sincronización de la plataforma.
+- [ ] Subida directa/publicación bloqueadas: no hay remoto GitHub ni scripts/publicar-frontend.sh; sesión real redirige el cartel a Login. Instalación nativa no verificada: pruebas del evento y dispositivo son controladas.
+- Compatibilidad: P30/P25/P36 intactas y código QR previamente exitoso conservado según P36b, incluso durante recargas/error; sin éxito previo usa bienvenida. Además de las tres expectativas anunciadas por P38, fue necesario actualizar solo el tono duplicado en P24c y «Venció 0 sellos en Café» en P37 a «Venció una tarjeta en Café» para satisfacer el nuevo texto; ninguna llamada de API ni dependencia modificada.
+
 ## P37 — Mensajes de vencimiento
 - [x] Mostrar saldo vencido, tarjeta, sellos y avance remanente; ampliar solo los tipos de respuesta sin alterar llamadas, dependencias ni worker.
 - [x] 578 pruebas pasan (17 nuevas P37), sin modificar pruebas existentes; compilación OK. Historial, Movimientos y detalle de Reclamaciones revisados a 360/1280 px en claro/oscuro/personalizado con respuestas controladas, filtros y cierre posterior; sellos a la derecha intactos y sin $0.00 por remanente ausente.
