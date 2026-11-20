@@ -2,7 +2,7 @@ import { CampoPin } from "@/components/campo-pin";
 import { textoIntentos } from "@/lib/plural";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { KeyRound, ShieldCheck } from "lucide-react";
-import { useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { ContinuarSesion, destinoSeguro } from "@/components/continuar-sesion";
 import {
   AlertDialog,
@@ -24,9 +24,10 @@ import { LOGO_CIRCULAR } from "@/lib/marca";
 import { sitioActual } from "@/lib/sitio";
 
 export const Route = createFileRoute("/login")({
-  validateSearch: (s: Record<string, unknown>): { volver?: string } => {
+  validateSearch: (s: Record<string, unknown>): { volver?: string; telefono?: string } => {
     const v = destinoSeguro(typeof s["volver"] === "string" ? s["volver"] : null);
-    return v ? { volver: v } : {};
+    const t = typeof s["telefono"] === "string" || typeof s["telefono"] === "number" ? String(s["telefono"]) : "";
+    return { ...(v ? { volver: v } : {}), ...(/^\d{10}$/.test(t) ? { telefono: t } : {}) };
   },
   head: () => ({
     meta: [
@@ -44,9 +45,11 @@ export const Route = createFileRoute("/login")({
 function Login() {
   const admin = sitioActual() === "admin";
   const navigate = useNavigate();
-  const { volver } = Route.useSearch();
+  const { volver, telefono: telefonoInicial } = Route.useSearch();
+  const campoPin = useRef<HTMLInputElement>(null);
+  useEffect(() => { if (telefonoInicial) campoPin.current?.focus(); }, [telefonoInicial]);
   const [sesionPendiente, setSesionPendiente] = useState<RespuestaLogin | null>(null);
-  const [telefono, setTelefono] = useState("");
+  const [telefono, setTelefono] = useState(telefonoInicial ?? "");
   const [pin, setPin] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [cargando, setCargando] = useState(false);
@@ -151,7 +154,7 @@ function Login() {
             </div>
             <div className="flex flex-col gap-2">
               <Label htmlFor="pin" className="text-lg font-medium">PIN</Label>
-              <CampoPin id="pin" inputMode="numeric" autoComplete="current-password" maxLength={128} className="h-14 text-xl md:text-xl"
+              <CampoPin ref={campoPin} id="pin" inputMode="numeric" autoComplete="current-password" maxLength={128} className="h-14 text-xl md:text-xl"
                 value={pin} onChange={(e) => setPin(e.target.value)} />
             </div>
             <Button type="submit" size="lg" className="h-14 w-full text-lg" disabled={cargando}>{cargando ? "Entrando…" : "Entrar"}</Button>

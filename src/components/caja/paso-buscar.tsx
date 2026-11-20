@@ -1,8 +1,8 @@
-import { Search, UserPlus } from "lucide-react";
+import { QrCode, Search, UserPlus } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { NumericKeypad } from "@/components/numeric-keypad";
 import { Button } from "@/components/ui/button";
-import { BotonQrRegistro } from "@/components/qr-registro";
+import { BotonQrRegistro, useEnlaceRegistro } from "@/components/qr-registro";
 import { aprobarSolicitudRegistro, buscarCliente, rechazarSolicitudRegistro, type ClienteCaja, type SolicitudRegistro } from "@/lib/api/caja";
 import { ApiError, telefonoE164 } from "@/lib/api/client";
 import type { AltaRespuesta } from "./caja-extra";
@@ -25,6 +25,9 @@ export function PasoBuscar({ inicial, onEncontrado, onAlta, onAltaHecha }: { ini
   const bloqueo = useRef(false);
   const [ocupado, setOcupado] = useState(false);
   const [qrAbierto, setQrAbierto] = useState(false);
+  const [qrCelular, setQrCelular] = useState(false);
+  const { conRegistro } = useEnlaceRegistro();
+  const botonCelular = useRef<HTMLButtonElement>(null);
   const resultadoRef = useRef<HTMLDivElement>(null);
   useEffect(() => { if (noExiste) resultadoRef.current?.scrollIntoView?.({ behavior: "smooth", block: "start" }); }, [noExiste]);
 
@@ -100,6 +103,7 @@ export function PasoBuscar({ inicial, onEncontrado, onAlta, onAltaHecha }: { ini
         </Button>
       </div>
       <BotonQrRegistro onAbiertoChange={setQrAbierto} />
+      <BotonQrRegistro sinBoton abierto={qrCelular} onSolicitarCambio={(v) => { setQrCelular(v); if (!v) requestAnimationFrame(() => botonCelular.current?.focus({ preventScroll: true })); }} onAbiertoChange={setQrAbierto} />
       {noExiste && (
         <div ref={resultadoRef} className="rounded-2xl bg-card p-5 ring-1 ring-border">
           {solicitud ? <>
@@ -116,6 +120,12 @@ export function PasoBuscar({ inicial, onEncontrado, onAlta, onAltaHecha }: { ini
           <Button size="lg" className="mt-4 h-14 w-full text-lg" onClick={() => onAlta(tel)}>
             <UserPlus className="size-5" /> Dar de alta<Tecla>Enter</Tecla>
           </Button>
+          {conRegistro && <>
+            <Button ref={botonCelular} variant="secondary" className="mt-3 min-h-12 h-auto w-full whitespace-normal py-3 text-base" onClick={() => setQrCelular(true)}>
+              <QrCode className="size-5" /> Que se registre desde su celular
+            </Button>
+            <p className="mt-2 text-sm text-muted-foreground">Le muestras el QR, él llena sus datos y tú lo apruebas aquí mismo.</p>
+          </>}
           </>}
         </div>
       )}

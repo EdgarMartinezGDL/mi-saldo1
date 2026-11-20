@@ -24,9 +24,15 @@ export function useEnlaceRegistro() {
   return { nombre, enlace, conRegistro: !!enlace && !!codigo };
 }
 
-export function BotonQrRegistro({ onAbiertoChange }: { onAbiertoChange?: (abierto: boolean) => void }) {
+export function BotonQrRegistro({ onAbiertoChange, abierto: abiertoExterno, onSolicitarCambio, sinBoton = false }: { onAbiertoChange?: (abierto: boolean) => void; abierto?: boolean; onSolicitarCambio?: (abierto: boolean) => void; sinBoton?: boolean }) {
   const { nombre, enlace, conRegistro } = useEnlaceRegistro();
-  const [abierto, setAbierto] = useState(false);
+  const [abiertoInterno, setAbiertoInterno] = useState(false);
+  const abierto = abiertoExterno ?? abiertoInterno;
+  const solicitar = useRef(onSolicitarCambio);
+  solicitar.current = onSolicitarCambio;
+  const setAbierto = (v: boolean) => { if (abiertoExterno === undefined) setAbiertoInterno(v); solicitar.current?.(v); };
+  const setAbiertoRef = useRef(setAbierto);
+  setAbiertoRef.current = setAbierto;
   const boton = useRef<HTMLButtonElement>(null);
   const cerrar = useRef<HTMLButtonElement>(null);
   const capa = useRef<HTMLDivElement>(null);
@@ -51,10 +57,10 @@ export function BotonQrRegistro({ onAbiertoChange }: { onAbiertoChange?: (abiert
         else bloqueo = solicitado;
       } catch { /* Mantener la pantalla encendida es opcional. */ }
     })();
-    const atras = () => { if (history.state?.qrRegistro !== entrada) setAbierto(false); };
+    const atras = () => { if (history.state?.qrRegistro !== entrada) setAbiertoRef.current(false); };
     const tecla = (e: KeyboardEvent) => {
       e.stopImmediatePropagation();
-      if (e.key === "Escape") { e.preventDefault(); setAbierto(false); }
+      if (e.key === "Escape") { e.preventDefault(); setAbiertoRef.current(false); }
       if (e.key === "Tab") {
         const controles = Array.from(capa.current?.querySelectorAll<HTMLElement>('input, button:not(:disabled)') ?? []);
         const indice = controles.indexOf(document.activeElement as HTMLElement);
@@ -78,9 +84,9 @@ export function BotonQrRegistro({ onAbiertoChange }: { onAbiertoChange?: (abiert
 
   if (!nombre || !enlace) return null;
   return <>
-    <Button ref={boton} variant="secondary" className="min-h-12 text-base" onClick={() => setAbierto(true)}>
+    {!sinBoton && <Button ref={boton} variant="secondary" className="min-h-12 text-base" onClick={() => setAbierto(true)}>
       <QrCode /> Mostrar QR de registro
-    </Button>
+    </Button>}
     {visible && createPortal(
       <div ref={capa} role="dialog" aria-modal="true" aria-label="QR de registro"
         className="fixed inset-0 z-[1000] flex flex-col items-center justify-between gap-3 overflow-y-auto bg-qr-fondo p-4 text-center text-qr-texto sm:p-6">
@@ -90,7 +96,7 @@ export function BotonQrRegistro({ onAbiertoChange }: { onAbiertoChange?: (abiert
         </div>
         <div className="shrink-0">
           <p className="text-xl font-semibold">Escanea este código con la cámara de tu celular</p>
-          {conRegistro && <div className="mx-auto mt-3 flex max-w-md flex-col items-center gap-2"><CopiarEnlace enlace={enlace} campoVisible enQr /><p className="text-sm">Compártelo por WhatsApp o Messenger si el cliente no puede escanear.</p></div>}
+          {conRegistro && <div className="mx-auto mt-3 flex max-w-md flex-col items-center gap-2"><CopiarEnlace enlace={enlace} campoVisible enQr nombreNegocio={nombre} /><p className="text-sm">Envíaselo al cliente si no puede escanear el código.</p></div>}
           <p className="mt-2 text-sm">{conRegistro ? "Regístrate en Mi Saldo Vip desde tu celular" : "Te explica cómo registrarte en Mi Saldo Vip"}</p>
         </div>
         <Button ref={cerrar} variant="secondary" className="min-h-14 w-full max-w-md shrink-0 border-qr-texto bg-qr-fondo text-xl text-qr-texto hover:bg-qr-fondo" onClick={() => setAbierto(false)}>Cerrar</Button>

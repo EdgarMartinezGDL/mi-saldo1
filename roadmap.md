@@ -168,3 +168,6 @@ Pendiente fuera de alcance: publicar y verificar con sesiones reales (el backend
 ## P32 — Bienvenida sin doble decodificación
 - [x] `limpiarNombreNegocio` ya no decodifica: solo limpia controles/dirección, junta espacios, recorta y corta a 150
 - [x] Pruebas p30 actualizadas: literales con `%`, ida y vuelta con `URLSearchParams`, botón QR con "Café 100% natural" y página con fragmento codificado (429 pruebas en verde, build OK)
+
+## P43 · Compartir, QR desde Caja y login con teléfono
+- [x] Compartir, botón de Caja, número grande, login con teléfono, prueba P20 más rápida, P43 (683 pruebas).

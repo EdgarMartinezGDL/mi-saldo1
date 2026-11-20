@@ -69,7 +69,7 @@ export function CartelRegistro() {
       </section>
       <div className="cartel-controles mt-4 space-y-2 print:hidden">
         <p className="break-all text-sm text-muted-foreground">Este cartel abre: {enlace}</p>
-        <CopiarEnlace enlace={enlace} campoVisible={conRegistro} />
+        <CopiarEnlace enlace={enlace} campoVisible={conRegistro} nombreNegocio={nombre} />
         {sesion?.contexto.rol === "dueno" && <Button variant="secondary" className="min-h-12 text-base" disabled={ocupado} onClick={() => setConfirmando(true)}><RefreshCw />Generar enlace nuevo</Button>}
         {!enlace.startsWith("https://") && <p className="text-sm text-warn-texto">Ojo: estás en una dirección de prueba. Imprime el cartel desde la dirección final de la app.</p>}
       </div>

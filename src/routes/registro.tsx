@@ -41,6 +41,7 @@ function useEspera() {
   return { segundos, iniciar: (n: number) => { const now = Date.now(); setAhora(now); setHasta(now + Math.max(0, n) * 1000); } };
 }
 
+const formatoTel = (t: string) => { const d = t.replace(/\D/g, ""); return [d.slice(0, 2), d.slice(2, 6), d.slice(6, 10)].filter(Boolean).join(" "); };
 const meses = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
 export function nacimientoValido(dia: number, mes: number) {
   const limite = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][mes - 1];
@@ -69,9 +70,9 @@ export function Registro() {
   const [ocupado, setOcupado] = useState(false);
   const bloqueo = useRef(false);
   const solicitud = useEspera();
-  const iniciarSesion = () => {
+  const iniciarSesion = (telefono?: string) => {
     try { if (codigoNegocio) sessionStorage.setItem(CLAVE_REGISTRO, codigoNegocio); } catch { /* Optional device storage. */ }
-    void navigate({ to: "/login" });
+    void navigate(telefono && /^\d{10}$/.test(telefono) ? { to: "/login", search: { telefono } } : { to: "/login" });
   };
   const manejarError = (err: unknown) => {
     if (err instanceof ApiError) {
@@ -140,18 +141,20 @@ export function Registro() {
         finally { setResultado(null); setAviso(false); setError(null); setOcupado(false); }
       }}>No soy yo: cerrar sesión</Button>
     </div> : resultado?.estado === "pendiente" ? <div className="flex flex-col gap-4">
+      <div><p>Dile este número al cajero:</p><p className="mt-1 font-mono text-[28px] font-bold tabular-nums tracking-wider sm:text-3xl">{formatoTel(datos.telefono)}</p></div>
       <p>Cuando vayas a <strong>{nombreNegocio}</strong>, dale tu número de celular al cajero para activar tu registro.</p>
       <p>Tienes hasta el {new Date(resultado.expira_en).toLocaleString("es-MX", { dateStyle: "short", timeStyle: "short" })} (24 horas). Después tendrás que llenarlo otra vez.</p>
+      <p className="text-sm text-muted-foreground">Toma una captura de esta pantalla para tenerla a la mano.</p>
       <p>Al aprobarlo te llegará un WhatsApp para activar tu app.</p>
       <Button variant="secondary" className="min-h-12" onClick={() => { setResultado(null); setError(null); }}>Corregir mis datos</Button>
     </div> : resultado?.estado === "cuenta_existente" ? <div className="flex flex-col gap-4">
       <p>Entra con tu número y tu PIN para unirte a {nombreNegocio}.</p>
-      <Button className="min-h-12" onClick={iniciarSesion}>Iniciar sesión</Button>
+      <Button className="min-h-12" onClick={() => iniciarSesion(datos.telefono.replace(/\D/g, ""))}>Iniciar sesión</Button>
       <Button asChild variant="secondary" className="min-h-12"><Link to="/recuperar" search={{ telefono: datos.telefono.replace(/\D/g, "") }}>Olvidé mi PIN</Link></Button>
       <Button asChild variant="secondary" className="min-h-12"><Link to="/activar">Nunca activé mi cuenta</Link></Button>
       <p className="text-sm text-muted-foreground">También puedes pedirle al cajero que te registre con tu número.</p>
     </div> : <form noValidate onSubmit={solicitar} className="flex flex-col gap-4">
-      <div className="border-b border-border pb-3"><Button type="button" variant="secondary" className="min-h-12 h-auto w-full whitespace-normal py-3" onClick={iniciarSesion}>¿Ya tienes Mi Saldo Vip? Inicia sesión</Button></div>
+      <div className="border-b border-border pb-3"><Button type="button" variant="secondary" className="min-h-12 h-auto w-full whitespace-normal py-3" onClick={() => iniciarSesion(datos.telefono.replace(/\D/g, ""))}>¿Ya tienes Mi Saldo Vip? Inicia sesión</Button></div>
       {([['nombre', 'Nombre', 'given-name'], ['apellido_paterno', 'Apellido paterno', 'family-name'], ['apellido_materno', 'Apellido materno (opcional)', 'additional-name']] as const).map(([key, label, autocomplete]) => <div key={key} className="flex flex-col gap-2"><Label htmlFor={key}>{label}</Label><Input id={key} name={key} required={key !== "apellido_materno"} maxLength={100} autoComplete={autocomplete} className="h-12 text-base md:text-base" value={datos[key]} onChange={(e) => cambiarDato(key, e.target.value)} /></div>)}
       <div className="flex flex-col gap-2"><Label htmlFor="telefono">Tu celular (10 dígitos)</Label><Input id="telefono" name="telefono" inputMode="numeric" autoComplete="tel" placeholder="55 1234 5678" className="h-14 text-xl md:text-xl" value={datos.telefono} onChange={(e) => cambiarDato("telefono", e.target.value.replace(/[^\d ]/g, ""))} /></div>
       <fieldset className="min-w-0"><legend className="mb-2 font-medium">Tu cumpleaños</legend><div className="grid grid-cols-2 gap-3">
