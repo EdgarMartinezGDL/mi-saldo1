@@ -22,12 +22,12 @@ import { ApiError, setSesion, telefonoE164, type Sesion } from "@/lib/api/client
 import { MarcaMiSaldo } from "@/components/marca";
 import { LOGO_CIRCULAR } from "@/lib/marca";
 import { sitioActual } from "@/lib/sitio";
+import { guardarTelefonoPrellenado, leerTelefonoPrellenado, olvidarTelefonoPrellenado } from "@/lib/telefono-prellenado";
 
 export const Route = createFileRoute("/login")({
-  validateSearch: (s: Record<string, unknown>): { volver?: string; telefono?: string } => {
+  validateSearch: (s: Record<string, unknown>): { volver?: string } => {
     const v = destinoSeguro(typeof s["volver"] === "string" ? s["volver"] : null);
-    const t = typeof s["telefono"] === "string" || typeof s["telefono"] === "number" ? String(s["telefono"]) : "";
-    return { ...(v ? { volver: v } : {}), ...(/^\d{10}$/.test(t) ? { telefono: t } : {}) };
+    return v ? { volver: v } : {};
   },
   head: () => ({
     meta: [
@@ -45,9 +45,11 @@ export const Route = createFileRoute("/login")({
 function Login() {
   const admin = sitioActual() === "admin";
   const navigate = useNavigate();
-  const { volver, telefono: telefonoInicial } = Route.useSearch();
+  const { volver } = Route.useSearch();
+  // QR-A8: el teléfono llega por sessionStorage (nunca en la URL) y se borra al leerlo.
+  const [telefonoInicial] = useState(leerTelefonoPrellenado);
   const campoPin = useRef<HTMLInputElement>(null);
-  useEffect(() => { if (telefonoInicial) campoPin.current?.focus(); }, [telefonoInicial]);
+  useEffect(() => { olvidarTelefonoPrellenado(); if (telefonoInicial) campoPin.current?.focus(); }, [telefonoInicial]);
   const [sesionPendiente, setSesionPendiente] = useState<RespuestaLogin | null>(null);
   const [telefono, setTelefono] = useState(telefonoInicial ?? "");
   const [pin, setPin] = useState("");
@@ -158,7 +160,7 @@ function Login() {
                 value={pin} onChange={(e) => setPin(e.target.value)} />
             </div>
             <Button type="submit" size="lg" className="h-14 w-full text-lg" disabled={cargando}>{cargando ? "Entrando…" : "Entrar"}</Button>
-            <Link to="/recuperar" search={telefono.replace(/\D/g, "").length === 10 ? { telefono: telefono.replace(/\D/g, "") } : {}}
+            <Link to="/recuperar" onClick={() => guardarTelefonoPrellenado(telefono)}
               className="inline-flex min-h-11 min-w-11 items-center justify-center text-center text-base font-medium text-primary-texto hover:underline">
               Olvidé mi PIN
             </Link>

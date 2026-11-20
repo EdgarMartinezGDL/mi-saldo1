@@ -26,7 +26,7 @@ beforeEach(() => {
   vi.resetAllMocks(); m.sesion = false; m.sitio = "desarrollo"; history.replaceState(null, "", "/registro#c=ABC123");
   m.api.mockImplementation(async (path: string) => {
     if (path === "/api/aviso-privacidad") return aviso;
-    if (path === "/api/registro/negocio/ABC123") return { nombre_comercial: "Barbería Demo" };
+    if (path === "/api/registro/negocio") return { nombre_comercial: "Barbería Demo" };
     if (path === "/api/registro/solicitar") return { estado: "pendiente", expira_en: "2026-11-21T00:00:00Z" };
     if (path === "/api/registro/verificar") return { estado: "ya_registrado" };
     if (path === "/api/registro/reenviar") return { reenviar_en_seg: 5 };
@@ -51,7 +51,7 @@ describe("P36 código y contrato", () => {
   it.each(["#c=ABCDE", `#c=${"A".repeat(33)}`, "#c=a%2Bb123", "#c=", "#n=ABC123", ""])("rechaza %s", (hash) => expect(leerCodigoRegistro(hash)).toBeNull());
   it("codifica el negocio y conserva los contratos vigentes de API", async () => {
     m.api.mockResolvedValue({});
-    await negocioRegistro("A/B+ C"); expect(m.api).toHaveBeenLastCalledWith("/api/registro/negocio/A%2FB%2B%20C", { auth: false });
+    await negocioRegistro("A/B+ C"); expect(m.api).toHaveBeenLastCalledWith("/api/registro/negocio", { method: "POST", body: { codigo: "A/B+ C" }, auth: false }); // Claude: QR-A12, el código en el cuerpo
     const cuerpo = { codigo: "ABC123", nombre: "Ana López", telefono: "+525512345678", acepta_aviso_privacidad: true as const, version_aviso: "v1", apellido_paterno: "López", nacimiento_dia: 29, nacimiento_mes: 2, correo: "ana@example.mx" };
     await solicitarRegistro(cuerpo); expect(m.api).toHaveBeenLastCalledWith("/api/registro/solicitar", { auth: false, method: "POST", body: cuerpo });
     await miCodigoRegistro(); expect(m.api).toHaveBeenLastCalledWith("/api/registro/mi-codigo");

@@ -14,6 +14,7 @@ import { ApiError, telefonoE164 } from "@/lib/api/client";
 import { cambiarContexto, logout } from "@/lib/api/auth";
 import { useConsentimiento } from "@/lib/api/privacidad";
 import { leerCodigoRegistro, negocioRegistro, solicitarRegistro, unirmeNegocio, type RegistroSolicitado } from "@/lib/api/registro";
+import { guardarTelefonoPrellenado } from "@/lib/telefono-prellenado";
 
 export const Route = createFileRoute("/registro")({
   head: () => ({ meta: [
@@ -72,7 +73,8 @@ export function Registro() {
   const solicitud = useEspera();
   const iniciarSesion = (telefono?: string) => {
     try { if (codigoNegocio) sessionStorage.setItem(CLAVE_REGISTRO, codigoNegocio); } catch { /* Optional device storage. */ }
-    void navigate(telefono && /^\d{10}$/.test(telefono) ? { to: "/login", search: { telefono } } : { to: "/login" });
+    guardarTelefonoPrellenado(telefono ?? "");
+    void navigate({ to: "/login" });
   };
   const manejarError = (err: unknown) => {
     if (err instanceof ApiError) {
@@ -150,7 +152,7 @@ export function Registro() {
     </div> : resultado?.estado === "cuenta_existente" ? <div className="flex flex-col gap-4">
       <p>Entra con tu número y tu PIN para unirte a {nombreNegocio}.</p>
       <Button className="min-h-12" onClick={() => iniciarSesion(datos.telefono.replace(/\D/g, ""))}>Iniciar sesión</Button>
-      <Button asChild variant="secondary" className="min-h-12"><Link to="/recuperar" search={{ telefono: datos.telefono.replace(/\D/g, "") }}>Olvidé mi PIN</Link></Button>
+      <Button asChild variant="secondary" className="min-h-12"><Link to="/recuperar" onClick={() => guardarTelefonoPrellenado(datos.telefono)}>Olvidé mi PIN</Link></Button>
       <Button asChild variant="secondary" className="min-h-12"><Link to="/activar">Nunca activé mi cuenta</Link></Button>
       <p className="text-sm text-muted-foreground">También puedes pedirle al cajero que te registre con tu número.</p>
     </div> : <form noValidate onSubmit={solicitar} className="flex flex-col gap-4">

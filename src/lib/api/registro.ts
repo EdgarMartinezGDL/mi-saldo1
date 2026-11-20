@@ -14,7 +14,8 @@ export interface DatosRegistro {
 }
 export type RegistroSolicitado = { estado: "pendiente"; expira_en: string } | { estado: "cuenta_existente" };
 export interface Unido { estado: "unido" | "ya_es_cliente"; negocio_id: string; nombre_comercial: string }
-export const negocioRegistro = (codigo: string) => api<{ nombre_comercial: string }>(`/api/registro/negocio/${encodeURIComponent(codigo)}`, { auth: false });
+/** QR-A12: el código va en el cuerpo, no en la ruta (no queda en los registros de acceso). */
+export const negocioRegistro = (codigo: string) => api<{ nombre_comercial: string }>("/api/registro/negocio", { method: "POST", body: { codigo }, auth: false });
 export const solicitarRegistro = (datos: DatosRegistro) => {
   const { apellido_materno, ...resto } = datos;
   return api<RegistroSolicitado>("/api/registro/solicitar", { method: "POST", body: { ...resto, ...(apellido_materno?.trim() ? { apellido_materno: apellido_materno.trim() } : {}) }, auth: false });

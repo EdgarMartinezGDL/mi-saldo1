@@ -28,11 +28,11 @@ const dueno = (nombre = "Barbería Demo") => { m.sesion = { contexto: { rol: "du
 const enlace = "https://x.test/registro#c=ABC123";
 let miCodigo404 = false;
 beforeEach(() => {
-  vi.resetAllMocks(); m.sesion = null; m.search = {}; miCodigo404 = false; history.replaceState(null, "", "/registro#c=ABC123");
+  vi.resetAllMocks(); sessionStorage.clear(); m.sesion = null; m.search = {}; miCodigo404 = false; history.replaceState(null, "", "/registro#c=ABC123");
   m.api.mockImplementation(async (path: string) => {
     if (path === "/api/registro/mi-codigo") { if (miCodigo404) throw new ApiError(404, {}); return { codigo: "ABC123" }; }
     if (path === "/api/clientes/busqueda") return { encontrado: false };
-    if (path === "/api/registro/negocio/ABC123") return { nombre_comercial: "Barbería Demo" };
+    if (path === "/api/registro/negocio") return { nombre_comercial: "Barbería Demo" };
     if (path === "/api/aviso-privacidad") return { version: "v1", resumen: "Aviso vigente", vigente: true };
     if (path === "/api/registro/solicitar") return { estado: "pendiente", expira_en: "2026-11-20T20:00:00Z" };
     throw new Error(path);
@@ -102,13 +102,17 @@ describe("P43 Registro y login", () => {
     montar(<Registro />); await llenar(); fireEvent.change(screen.getByLabelText("Tu celular (10 dígitos)"), { target: { value: "5510000021" } });
     m.api.mockResolvedValueOnce({ estado: "cuenta_existente" }); fireEvent.click(screen.getByRole("button", { name: "Enviar mi registro" }));
     fireEvent.click(await screen.findByRole("button", { name: "Iniciar sesión" }));
-    expect(m.navigate).toHaveBeenCalledWith({ to: "/login", search: { telefono: "5510000021" } });
-    cleanup(); m.search = validar({ telefono: "5510000021" }); render(<Login />);
+    // Claude: QR-A8, el teléfono viaja en sessionStorage y no en la URL; se borra al leerlo.
+    expect(m.navigate).toHaveBeenCalledWith({ to: "/login" });
+    expect(sessionStorage.getItem("misaldo.telefono-prellenado")).toBe("5510000021");
+    cleanup(); m.search = validar({}); render(<Login />);
     expect(screen.getByLabelText("Teléfono (10 dígitos)")).toHaveValue("5510000021");
     await waitFor(() => expect(screen.getByLabelText("PIN")).toHaveFocus());
+    expect(sessionStorage.getItem("misaldo.telefono-prellenado")).toBeNull();
   });
   it("telefono inválido se ignora", () => {
-    m.search = validar({ telefono: "123" }); expect(m.search).toEqual({}); render(<Login />);
+    sessionStorage.setItem("misaldo.telefono-prellenado", "123");
+    m.search = validar({ telefono: "5510000021" }); expect(m.search).toEqual({}); render(<Login />); // Claude: QR-A8, ?telefono= ya no se lee
     expect(screen.getByLabelText("Teléfono (10 dígitos)")).toHaveValue(""); expect(screen.getByLabelText("PIN")).not.toHaveFocus();
   });
 });

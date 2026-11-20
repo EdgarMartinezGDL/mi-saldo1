@@ -29,7 +29,7 @@ beforeEach(() => {
     if (path === "/api/negocio/membresia") return {};
     if (path === "/api/negocio/configuracion") return { negocio: { pin_pos_configurado: true } };
     if (path === "/api/registro/mi-codigo") { if (m.codigo404) throw new ApiError(404, {}); return { codigo: "ABC123" }; }
-    if (path === "/api/registro/negocio/ABC123") return { nombre_comercial: "Café & Pan" };
+    if (path === "/api/registro/negocio") return { nombre_comercial: "Café & Pan" };
     if (path === "/api/aviso-privacidad") return { version: "v1", resumen: "Aviso vigente", vigente: true };
     if (path === "/api/registro/solicitar") return { estado: m.resultado, expira_en: "2026-11-21T02:00:00Z" };
     throw new Error(path);

@@ -186,3 +186,9 @@ Pendiente fuera de alcance: publicar y verificar con sesiones reales (el backend
 
 ## P43 · Compartir, QR desde Caja y login con teléfono
 - [x] Compartir, botón de Caja, número grande, login con teléfono, prueba P20 más rápida, P43 (683 pruebas).
+
+## Claude · Correcciones del comité al pre-registro por QR (2026-11-20, sin Lovable, opción C)
+- [x] QR-A5: en Caja, Enter ya no aprueba una solicitud del QR; el botón dice "Aprobar a {nombre}" y pide confirmar que es la persona que está enfrente (`paso-buscar.tsx`).
+- [x] QR-A8: el teléfono entre registro, login y "Olvidé mi PIN" viaja en `sessionStorage` (`src/lib/telefono-prellenado.ts`) y no en la URL; `/login` y `/recuperar` ya no leen `?telefono=`.
+- [x] QR-A12: el encabezado del registro consulta `POST /api/registro/negocio` con el código en el cuerpo (antes `GET /api/registro/negocio/{codigo}`).
+- [x] Pruebas: p36, p42, p43 y p44 actualizadas solo en lo que cambió; `claude-telefono-prellenado.test.ts` nueva.

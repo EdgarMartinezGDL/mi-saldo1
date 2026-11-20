@@ -81,7 +81,10 @@ export function PasoBuscar({ inicial, onEncontrado, onAlta, onAltaHecha }: { ini
   useTecla((e) => {
     if (e.key === "Escape") { onKey("limpiar"); return true; }
     if (e.key === "Enter" && tel.length === 10) {
-      if (solicitud) void aprobar(); else if (noExiste) onAlta(tel); else void buscar();
+      // QR-A5 (comité, 2026-11-20): una solicitud del QR solo se aprueba con el botón,
+      // después de confirmar que es la persona que está en la caja.
+      if (solicitud) return true;
+      if (noExiste) onAlta(tel); else void buscar();
       return true;
     }
     return false;
@@ -112,7 +115,8 @@ export function PasoBuscar({ inicial, onEncontrado, onAlta, onAltaHecha }: { ini
             <p className="mt-2">Cumpleaños: {solicitud.nacimiento_dia} de {new Date(2000, solicitud.nacimiento_mes - 1, 1).toLocaleString("es-MX", { month: "long" })}</p>
             <p className="break-words">Correo: {solicitud.correo_enmascarado}</p>
             <p className="mt-1 text-sm text-muted-foreground">Vence: {new Date(solicitud.expira_en).toLocaleTimeString("es-MX", { hour: "2-digit", minute: "2-digit" })}</p>
-            <Button className="mt-4 min-h-14 w-full text-lg" disabled={ocupado} onClick={() => void aprobar()}>Aprobar registro<Tecla>Enter</Tecla></Button>
+            <p className="mt-4 font-semibold">¿Es la persona que tienes enfrente? Confirma su nombre antes de aprobar.</p>
+            <Button className="mt-3 min-h-14 h-auto w-full whitespace-normal py-3 text-lg" disabled={ocupado} onClick={() => void aprobar()}>Aprobar a {solicitud.nombre}</Button>
             <Button variant="secondary" className="mt-3 min-h-12 w-full" disabled={ocupado} onClick={() => setRechazando(true)}>Rechazar</Button>
             <Button variant="link" className="mt-2 min-h-11 w-full whitespace-normal" disabled={ocupado} onClick={() => onAlta(tel)}>Mejor capturarlo a mano</Button>
           </> : <><p className="text-lg font-semibold">Este teléfono aún no es cliente</p>

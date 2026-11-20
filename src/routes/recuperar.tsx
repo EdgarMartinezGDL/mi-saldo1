@@ -1,7 +1,7 @@
 import { CampoPin } from "@/components/campo-pin";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, LifeBuoy } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { ContinuarSesion } from "@/components/continuar-sesion";
 import { Button } from "@/components/ui/button";
@@ -13,13 +13,9 @@ import { instante } from "@/lib/api/formato";
 import { completarRecuperacion, solicitarRecuperacion, verificarRecuperacion, type Canal, type Verificacion } from "@/lib/api/recuperacion";
 import { useDesplazarAlAbrir } from "@/lib/use-desplazar";
 import { cn } from "@/lib/utils";
+import { leerTelefonoPrellenado, olvidarTelefonoPrellenado } from "@/lib/telefono-prellenado";
 
 export const Route = createFileRoute("/recuperar")({
-  validateSearch: (s: Record<string, unknown>): { telefono?: string } => {
-    const v = s["telefono"];
-    const t = typeof v === "string" || typeof v === "number" ? String(v).replace(/\D/g, "") : "";
-    return t.length === 10 ? { telefono: t } : {};
-  },
   head: () => ({
     meta: [
       { title: "Olvidé mi PIN · Mi Saldo Vip" },
@@ -37,7 +33,9 @@ const NOMBRE: Record<Canal, string> = { whatsapp: "WhatsApp", correo: "correo" }
 const PIN_SIMPLE = (p: string) => /^(\d)\1{5}$/.test(p) || "0123456789".includes(p) || "9876543210".includes(p);
 
 function Recuperar() {
-  const inicial = String(Route.useSearch().telefono ?? "");
+  // QR-A8: el teléfono llega por sessionStorage (nunca en la URL) y se borra al leerlo.
+  const [inicial] = useState(leerTelefonoPrellenado);
+  useEffect(() => { olvidarTelefonoPrellenado(); }, []);
   const [paso, setPaso] = useState<"telefono" | "codigo" | "aviso" | "pin" | "sesion">("telefono");
   const [telefono, setTelefono] = useState(inicial);
   const [canal, setCanal] = useState<Canal>("whatsapp");
