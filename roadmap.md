@@ -3,6 +3,7 @@
 ## P44 — Clientes e invitación en Panel y pasos del registro
 - [x] Añadir conteos e invitación exclusiva del dueño con enlace de registro; explicar tres pasos solo en el formulario público.
 - [x] 690 pruebas pasan; compilación OK. 312 estados con respuestas controladas a 360/1280 px en Claro, Oscuro y los diez fondos personalizados: axe sin fallas, sin desbordamientos ni errores. Conteos, cero sin aviso, copia, destino de Compartir, navegación a Clientes, formulario, pendiente, cuenta existente, corregir, login con teléfono, unión con sesión y código ausente revisados. Caja, API, dependencias y worker sin cambios.
+- [x] Revisión final ampliada: 504 estados en las mismas 24 combinaciones, axe sin fallas. Ambos enlaces nuevos, QR/cierre, cartel/impresión/regreso, archivados/filtro, solicitudes pendientes y acceso restringido del empleado comprobados. Corregido contraste del texto de solicitudes (4.43:1 antes), conservando fondo, orden y comportamiento; corregida ruta de configuración en el mock P44. Las 690 pruebas siguen pasando; capturas de Panel/Registro revisadas en cada apariencia.
 - [x] Guardar cambios mediante commit para sincronización de Lovable.
 - [ ] Confirmar GitHub: no hay remoto GitHub configurado; no se puede verificar la subida desde aquí.
 - [ ] Verificar sesión real: /api/auth/refrescar responde 404; los recorridos autenticados se revisaron con respuestas controladas.

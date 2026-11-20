@@ -27,7 +27,7 @@ beforeEach(() => {
   m.api.mockImplementation(async (path: string) => {
     if (path.startsWith("/api/dashboard")) return { periodo: { hasta: "2026-11-20" }, clientes: { atendidos: 3, altas: m.altas, activos_total: 57, archivados_total: 0, bajas: 0 }, reclamaciones: { pendientes: 0 }, validaciones_alta: { pendientes: 0 }, cajeros: [], serie: [] };
     if (path === "/api/negocio/membresia") return {};
-    if (path === "/api/caja/configuracion") return { negocio: { pin_pos_configurado: true } };
+    if (path === "/api/negocio/configuracion") return { negocio: { pin_pos_configurado: true } };
     if (path === "/api/registro/mi-codigo") { if (m.codigo404) throw new ApiError(404, {}); return { codigo: "ABC123" }; }
     if (path === "/api/registro/negocio/ABC123") return { nombre_comercial: "Café & Pan" };
     if (path === "/api/aviso-privacidad") return { version: "v1", resumen: "Aviso vigente", vigente: true };

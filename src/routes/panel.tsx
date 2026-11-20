@@ -160,7 +160,7 @@ function Panel() {
               <>
                 {c.aviso ? <c.icon className="size-6 shrink-0 text-warn-foreground" /> : <IconoTono icono={c.icon} tono={c.tono} className="size-10 [&_svg]:size-5" />}
                 <p className="mt-3 font-mono text-2xl font-bold tabular-nums sm:text-3xl">{c.value}</p>
-                <p className={cn("mt-1 text-sm", c.aviso ? "text-warn-foreground" : "text-muted-foreground")}>{c.label}</p>
+                <p className={cn("mt-1 text-sm", c.aviso ? "text-barra-foreground dark:text-warn-foreground" : "text-muted-foreground")}>{c.label}</p>
               </>
             );
             return c.to ? (
