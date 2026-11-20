@@ -1,11 +1,12 @@
 import { PendientesAsistente, useAsistente } from "@/components/negocio/asistente";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { Archive, MessageSquareWarning, Printer, Stamp, TrendingUp, UserPlus, Users, type LucideIcon } from "lucide-react";
+import { Archive, Megaphone, MessageSquareWarning, Printer, Stamp, TrendingUp, UserPlus, UserRoundPlus, Users, type LucideIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { AppShell } from "@/components/app-shell";
-import { BotonQrRegistro } from "@/components/qr-registro";
+import { BotonQrRegistro, useEnlaceRegistro } from "@/components/qr-registro";
+import { CopiarEnlace } from "@/components/copiar-enlace";
 import { useAuth } from "@/components/auth-provider";
 import { Button } from "@/components/ui/button";
 import { IconoTono, type Tono } from "@/components/fila-lista";
@@ -54,6 +55,7 @@ const DIA = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 
 function Panel() {
   const { sesion } = useAuth();
+  const { nombre, enlace, conRegistro } = useEnlaceRegistro();
   const { data: estadoAsistente } = useAsistente();
   const navigate = useNavigate();
   useEffect(() => {
@@ -97,6 +99,8 @@ function Panel() {
   const cards: Array<{ label: string; value: string; icon: LucideIcon; tono: Tono; aviso: boolean; to?: "/clientes" | "/negocio/reclamaciones" | "/negocio/solicitudes" | undefined; search?: { archivados: "solo" } }> = [
     ...ventasCards.map((c) => ({ ...c, tono: "success" as const, aviso: false, to: undefined })),
     { label: "Clientes atendidos", value: String(hoy.clientes.atendidos), icon: Users, tono: "primary", aviso: false, to: undefined },
+    { label: "Clientes nuevos hoy", value: String(hoy.clientes.altas), icon: UserRoundPlus, tono: "success", aviso: false, to: "/clientes" },
+    { label: "Clientes en total", value: String(hoy.clientes.activos_total), icon: Users, tono: "neutro", aviso: false, to: "/clientes" },
     ...(hoy.clientes.archivados_total > 0 ? [{ label: "Clientes archivados", value: String(hoy.clientes.archivados_total), icon: Archive, tono: "neutro" as const, aviso: false, to: "/clientes" as const, search: { archivados: "solo" as const } }] : []),
     { label: "Sellos entregados", value: String(hoy.tarjetas?.sellos_otorgados ?? 0), icon: Stamp, tono: "warning", aviso: false, to: undefined },
     { label: "Reclamaciones pendientes", value: String(hoy.reclamaciones.pendientes), icon: MessageSquareWarning, tono: "accent", aviso: false, to: "/negocio/reclamaciones" },
@@ -167,6 +171,14 @@ function Panel() {
           })}
         </div>
         {ambos && hoy.nota_ventas && <p className="-mt-3 text-xs text-muted-foreground">{hoy.nota_ventas}</p>}
+
+        {sesion?.contexto.rol === "dueno" && conRegistro && enlace && nombre && (
+          <section className="rounded-2xl bg-card p-5 ring-1 ring-border">
+            <h2 className="flex items-center gap-2 text-lg font-semibold tracking-tight"><Megaphone aria-hidden="true" className="size-5 shrink-0 text-primary-texto" />Invita a tus clientes</h2>
+            <p className="my-3 text-sm text-muted-foreground">Comparte tu enlace en tus estados de WhatsApp, Facebook o grupos. Cada cliente llena sus datos y tú lo apruebas en la Caja.</p>
+            <CopiarEnlace enlace={enlace} nombreNegocio={nombre} campoVisible />
+          </section>
+        )}
 
         <section className="rounded-2xl bg-card p-5 ring-1 ring-border">
           {ambos && (

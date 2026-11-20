@@ -1,5 +1,13 @@
 # Roadmap
 
+## P44 — Clientes e invitación en Panel y pasos del registro
+- [x] Añadir conteos e invitación exclusiva del dueño con enlace de registro; explicar tres pasos solo en el formulario público.
+- [x] 690 pruebas pasan; compilación OK. 312 estados con respuestas controladas a 360/1280 px en Claro, Oscuro y los diez fondos personalizados: axe sin fallas, sin desbordamientos ni errores. Conteos, cero sin aviso, copia, destino de Compartir, navegación a Clientes, formulario, pendiente, cuenta existente, corregir, login con teléfono, unión con sesión y código ausente revisados. Caja, API, dependencias y worker sin cambios.
+- [x] Guardar cambios mediante commit para sincronización de Lovable.
+- [ ] Confirmar GitHub: no hay remoto GitHub configurado; no se puede verificar la subida desde aquí.
+- [ ] Verificar sesión real: /api/auth/refrescar responde 404; los recorridos autenticados se revisaron con respuestas controladas.
+- Archivos: src/routes/panel.tsx, src/routes/registro.tsx, src/test/p44.test.tsx y roadmap.md.
+
 ## P42 — Registro pendiente, aprobación y enlaces
 - [x] Actualizar contratos permitidos y registro público con cumpleaños, correo y consentimiento; retomar tras iniciar sesión.
 - [x] Reusar el resultado de alta en Caja para aprobar solicitudes y confirmar su rechazo.

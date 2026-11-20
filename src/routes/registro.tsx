@@ -154,6 +154,17 @@ export function Registro() {
       <Button asChild variant="secondary" className="min-h-12"><Link to="/activar">Nunca activé mi cuenta</Link></Button>
       <p className="text-sm text-muted-foreground">También puedes pedirle al cajero que te registre con tu número.</p>
     </div> : <form noValidate onSubmit={solicitar} className="flex flex-col gap-4">
+      <div>
+        <p className="mb-2 text-base font-bold">¿Cómo funciona?</p>
+        <ol className="flex flex-col gap-2">
+          {["Llena tus datos aquí.", `En tu próxima compra en ${nombreNegocio}, dale tu número de celular al cajero.`, "Te llega un WhatsApp para activar tu app y empiezas a ganar cashback."].map((paso, i) => (
+            <li key={i} className="flex items-start gap-2 text-sm text-foreground">
+              <span aria-hidden="true" className="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">{i + 1}</span>
+              <span className="min-w-0 break-words">{paso}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
       <div className="border-b border-border pb-3"><Button type="button" variant="secondary" className="min-h-12 h-auto w-full whitespace-normal py-3" onClick={() => iniciarSesion(datos.telefono.replace(/\D/g, ""))}>¿Ya tienes Mi Saldo Vip? Inicia sesión</Button></div>
       {([['nombre', 'Nombre', 'given-name'], ['apellido_paterno', 'Apellido paterno', 'family-name'], ['apellido_materno', 'Apellido materno (opcional)', 'additional-name']] as const).map(([key, label, autocomplete]) => <div key={key} className="flex flex-col gap-2"><Label htmlFor={key}>{label}</Label><Input id={key} name={key} required={key !== "apellido_materno"} maxLength={100} autoComplete={autocomplete} className="h-12 text-base md:text-base" value={datos[key]} onChange={(e) => cambiarDato(key, e.target.value)} /></div>)}
       <div className="flex flex-col gap-2"><Label htmlFor="telefono">Tu celular (10 dígitos)</Label><Input id="telefono" name="telefono" inputMode="numeric" autoComplete="tel" placeholder="55 1234 5678" className="h-14 text-xl md:text-xl" value={datos.telefono} onChange={(e) => cambiarDato("telefono", e.target.value.replace(/[^\d ]/g, ""))} /></div>
