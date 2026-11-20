@@ -1,5 +1,15 @@
 # Roadmap
 
+## P42 — Registro pendiente, aprobación y enlaces
+- [x] Actualizar contratos permitidos y registro público con cumpleaños, correo y consentimiento; retomar tras iniciar sesión.
+- [x] Reusar el resultado de alta en Caja para aprobar solicitudes y confirmar su rechazo.
+- [x] Copiar enlaces en QR/cartel, renovar código con confirmación sin cambiar impresión.
+- [x] 673 pruebas pasan (38 nuevas P42); compilación OK. 171 estados a 360/770/1280 px en Claro/Oscuro/Personalizado con respuestas controladas, axe sin fallas ni desbordamientos/errores. Registro, cumpleaños inválido/29 febrero, corregir, 429, cuenta existente, login y retorno real por UI, cierre de sesión, aprobación 201/202/404, rechazo, foco y copia/fallo, renovación comprobados. PDF carta de una hoja sin controles en las tres apariencias; corregido contraste del campo QR contra la regla global oscura. Atajos existentes conservados y pruebas P15/P30 pasan.
+- [x] Cambios preparados para commit y sincronización de Lovable. API solo en contratos permitidos; backend, dependencias y worker sin cambios. P38 conserva sus pruebas con mock parcial para la nueva función compartida.
+- [ ] Verificar sesión del servicio real: /api/auth/refrescar responde 404; recorridos privados probados con respuestas controladas.
+- [ ] Confirmar subida a GitHub: no hay remoto GitHub directo; sincronización depende de la integración de Lovable.
+- Archivos: src/lib/api/registro.ts, src/lib/api/caja.ts, src/routes/registro.tsx, src/routes/__root.tsx, src/routes/caja.tsx, src/routes/negocio.cartel.tsx, src/components/retomar-registro.tsx, src/components/copiar-enlace.tsx, src/components/qr-registro.tsx, src/components/caja/paso-buscar.tsx, src/components/AGENTS.md, src/test/p36.test.tsx, src/test/p38.test.tsx, src/test/p42.test.tsx y roadmap.md.
+
 ## P41 — Logo derecho y prueba de activación
 - [x] Ampliar solo el logo derecho con negocio a 56×56; conservar alto, respaldo y truncado.
 - [x] Acotar dígitos P36 al teclado abierto con nombres exactos y límite propio de 60 s; actualizar expectativas P40 de tamaño.

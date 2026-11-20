@@ -1,18 +1,19 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { UserPlus } from "lucide-react";
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { CompletarActivacion } from "@/components/completar-activacion";
-import { Alerta, AvisoPrivacidad, CampoDigitos, TarjetaEnlace } from "@/components/enlace-ui";
+import { toast } from "sonner";
+import { useAuth } from "@/components/auth-provider";
+import { Alerta, AvisoPrivacidad, TarjetaEnlace } from "@/components/enlace-ui";
 import { ExternalEntryLoading } from "@/components/external-entry-loading";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { CLAVE_REGISTRO } from "@/components/retomar-registro";
 import { ApiError, telefonoE164 } from "@/lib/api/client";
+import { cambiarContexto, logout } from "@/lib/api/auth";
 import { useConsentimiento } from "@/lib/api/privacidad";
-import { leerCodigoRegistro, negocioRegistro, reenviarRegistro, solicitarRegistro, verificarRegistro } from "@/lib/api/registro";
-import { textoIntentos } from "@/lib/plural";
+import { leerCodigoRegistro, negocioRegistro, solicitarRegistro, unirmeNegocio, type RegistroSolicitado } from "@/lib/api/registro";
 
 export const Route = createFileRoute("/registro")({
   head: () => ({ meta: [
@@ -24,9 +25,6 @@ export const Route = createFileRoute("/registro")({
   ] }),
   component: Registro,
 });
-
-type Paso = { tipo: "datos" } | { tipo: "codigo"; token: string; telefono: string; version: string } |
-  { tipo: "activar"; token: string; version: string } | { tipo: "ya_registrado" };
 
 /** Cooldowns use a deadline so a background tab cannot extend the server's waiting time. */
 function useEspera() {
@@ -43,7 +41,16 @@ function useEspera() {
   return { segundos, iniciar: (n: number) => { const now = Date.now(); setAhora(now); setHasta(now + Math.max(0, n) * 1000); } };
 }
 
+const meses = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+export function nacimientoValido(dia: number, mes: number) {
+  const limite = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][mes - 1];
+  return limite !== undefined && Number.isInteger(dia) && Number.isInteger(mes) && dia >= 1 && dia <= limite;
+}
+
 export function Registro() {
+  const { sesion, estado } = useAuth();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [codigoNegocio, setCodigoNegocio] = useState<string | null | undefined>();
   const leido = useRef(false);
   useEffect(() => {
@@ -54,96 +61,104 @@ export function Registro() {
     setCodigoNegocio(codigo);
   }, []);
   const negocio = useQuery({ queryKey: ["registro-negocio", codigoNegocio], queryFn: () => negocioRegistro(codigoNegocio ?? ""), enabled: !!codigoNegocio, retry: false });
-  const [paso, setPaso] = useState<Paso>({ tipo: "datos" });
-  const [nombre, setNombre] = useState("");
-  const [telefono, setTelefono] = useState("");
-  const [promociones, setPromociones] = useState(false);
+  const [resultado, setResultado] = useState<RegistroSolicitado | null>(null);
+  const [datos, setDatos] = useState({ nombre: "", apellido_paterno: "", apellido_materno: "", telefono: "", nacimiento_dia: "", nacimiento_mes: "", correo: "" });
   const { aviso, setAviso, version, setVersion, desactualizado } = useConsentimiento();
   const [error, setError] = useState<string | null>(null);
-  const [titulo, setTitulo] = useState<string | null>(null);
+  const [noDisponible, setNoDisponible] = useState(false);
   const [ocupado, setOcupado] = useState(false);
   const bloqueo = useRef(false);
-  const [codigo, setCodigo] = useState("");
   const solicitud = useEspera();
-  const reenvio = useEspera();
-  const volver = (mensaje?: string) => { setPaso({ tipo: "datos" }); setCodigo(""); setTitulo(null); setError(mensaje ?? null); };
-  const mensaje = (e: unknown) => e instanceof ApiError ? e.message : "Algo salió mal. Intenta de nuevo.";
-  const cooldown = (e: unknown, espera: ReturnType<typeof useEspera>) => {
-    if (e instanceof ApiError && e.status === 429) { espera.iniciar(e.retryAfter ?? 60); return true; }
-    return false;
+  const iniciarSesion = () => {
+    try { if (codigoNegocio) sessionStorage.setItem(CLAVE_REGISTRO, codigoNegocio); } catch { /* Optional device storage. */ }
+    void navigate({ to: "/login" });
   };
-
+  const manejarError = (err: unknown) => {
+    if (err instanceof ApiError) {
+      if (err.status === 404) return setNoDisponible(true);
+      if (err.status === 401) return iniciarSesion();
+      if (err.status === 429) { solicitud.iniciar(err.retryAfter ?? 60); return; }
+      if (err.codigo === "tope_negocio") return setError("Este negocio tiene muchas solicitudes pendientes: pide al cajero que te registre con tu número.");
+      if (err.codigo === "nacimiento_invalido") return setError("Esa fecha no existe");
+      if (err.codigo === "cliente_dado_de_baja") return setError("Ya fuiste cliente de este negocio y se dio de baja: acude con el negocio para revisarlo.");
+      desactualizado(err);
+    }
+    setError(err instanceof ApiError ? err.message : "Algo salió mal. Intenta de nuevo.");
+  };
   const solicitar = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (bloqueo.current || solicitud.segundos || !codigoNegocio) return;
-    const datos = new FormData(e.currentTarget);
-    const nombreLimpio = String(datos.get("nombre") ?? "").trim();
-    const tel = String(datos.get("telefono") ?? "");
-    setNombre(nombreLimpio); setTelefono(tel);
-    if (nombreLimpio.length < 2 || nombreLimpio.length > 80) return setError("Escribe tu nombre y apellido (de 2 a 80 caracteres).");
-    if (tel.replace(/\D/g, "").length !== 10) return setError("Escribe los 10 dígitos de tu teléfono.");
+    const form = new FormData(e.currentTarget);
+    const nuevos = Object.fromEntries(Object.keys(datos).map((key) => [key, String(form.get(key) ?? "").trim()])) as typeof datos;
+    setDatos(nuevos);
+    if (![nuevos.nombre, nuevos.apellido_paterno].every((v) => v.length >= 1 && v.length <= 100) || nuevos.apellido_materno.length > 100) return setError("Escribe tu nombre y apellido (de 1 a 100 caracteres).");
+    if (nuevos.telefono.replace(/\D/g, "").length !== 10) return setError("Escribe los 10 dígitos de tu teléfono.");
+    if (!nuevos.nacimiento_dia || !nuevos.nacimiento_mes) return setError("Elige el día y el mes de tu cumpleaños.");
+    if (!nacimientoValido(Number(nuevos.nacimiento_dia), Number(nuevos.nacimiento_mes))) return setError("Esa fecha no existe");
+    if (nuevos.correo.length > 255 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(nuevos.correo)) return setError("Revisa tu correo electrónico.");
     if (!aviso || !version) return setError("Acepta el aviso de privacidad.");
     bloqueo.current = true; setOcupado(true); setError(null);
     try {
-      const r = await solicitarRegistro({ codigo: codigoNegocio, nombre: nombreLimpio, telefono: telefonoE164(tel), acepta_aviso_privacidad: true, version_aviso: version, acepta_promociones: promociones });
-      setCodigo(""); reenvio.iniciar(r.reenviar_en_seg);
-      setPaso({ tipo: "codigo", token: r.token_registro, telefono: tel.replace(/\D/g, ""), version });
-    } catch (err) {
-      if (desactualizado(err)) setError(mensaje(err));
-      else if (!cooldown(err, solicitud)) setError(mensaje(err));
-    } finally { bloqueo.current = false; setOcupado(false); }
-  };
-
-  const verificar = async (valor: string) => {
-    setCodigo(valor);
-    if (valor.length !== 6 || paso.tipo !== "codigo" || bloqueo.current) return;
-    bloqueo.current = true; setOcupado(true); setError(null);
-    try {
-      const r = await verificarRegistro(paso.token, valor);
-      if (r.estado === "ya_registrado") setPaso({ tipo: "ya_registrado" });
-      else setPaso({ tipo: "activar", token: r.token_activacion, version: paso.version });
-    } catch (err) {
-      setCodigo("");
-      if (err instanceof ApiError && err.codigo === "token_invalido") volver("El código venció. Pide uno nuevo.");
-      else if (err instanceof ApiError && err.codigo === "codigo_invalido") {
-        const restantes = err.extras["intentos_restantes"];
-        setError(`El código no es correcto.${typeof restantes === "number" ? ` ${textoIntentos(restantes)}` : ""}`);
-      } else setError(mensaje(err));
-    } finally { bloqueo.current = false; setOcupado(false); }
-  };
-  const reenviar = async () => {
-    if (paso.tipo !== "codigo" || bloqueo.current || reenvio.segundos) return;
-    bloqueo.current = true; setOcupado(true); setError(null);
-    try { const r = await reenviarRegistro(paso.token); reenvio.iniciar(r.reenviar_en_seg); }
-    catch (err) { if (!cooldown(err, reenvio)) setError(mensaje(err)); }
+      setResultado(await solicitarRegistro({ codigo: codigoNegocio, nombre: nuevos.nombre, apellido_paterno: nuevos.apellido_paterno,
+        ...(nuevos.apellido_materno ? { apellido_materno: nuevos.apellido_materno } : {}), telefono: telefonoE164(nuevos.telefono),
+        nacimiento_dia: Number(nuevos.nacimiento_dia), nacimiento_mes: Number(nuevos.nacimiento_mes), correo: nuevos.correo,
+        acepta_aviso_privacidad: true, version_aviso: version }));
+    } catch (err) { manejarError(err); }
     finally { bloqueo.current = false; setOcupado(false); }
   };
-
-  if (codigoNegocio === undefined || (codigoNegocio && negocio.isPending)) return <ExternalEntryLoading label="Estamos revisando el código." />;
-  if (!codigoNegocio || negocio.isError || !negocio.data) return <TarjetaEnlace titulo="Registro no disponible" icono={<UserPlus className="size-5" />}>
-    <p className="text-muted-foreground">Por ahora el registro se hace en caja: dale tu número de celular al cajero y te llegará un enlace para activar tu cuenta.</p>
+  const unirme = async () => {
+    if (bloqueo.current || solicitud.segundos || !codigoNegocio || !aviso || !version) return;
+    bloqueo.current = true; setOcupado(true); setError(null);
+    try {
+      const r = await unirmeNegocio(codigoNegocio, version);
+      try { await cambiarContexto({ rol: "cliente", negocio_id: r.negocio_id }); }
+      catch (err) { if (!(err instanceof ApiError && err.status === 409 && err.codigo === "mismo_contexto")) throw err; }
+      queryClient.clear();
+      await navigate({ to: "/" });
+      toast.success(`Ya eres cliente de ${r.nombre_comercial}`);
+    } catch (err) { manejarError(err); }
+    finally { bloqueo.current = false; setOcupado(false); }
+  };
+  if (codigoNegocio === undefined || (codigoNegocio && negocio.isPending) || estado === "comprobando") return <ExternalEntryLoading label="Estamos revisando el código." />;
+  if (!codigoNegocio || negocio.isError || !negocio.data || noDisponible) return <TarjetaEnlace titulo="Registro no disponible" icono={<UserPlus className="size-5" />}>
+    <p className="text-muted-foreground">Este código ya no funciona. Pide al negocio su QR nuevo o dale tu número de celular al cajero.</p>
     <Button asChild variant="link" className="mt-3 min-h-11 w-full whitespace-normal"><Link to="/login">¿Ya tienes cuenta? Entra aquí</Link></Button>
   </TarjetaEnlace>;
-
-  return <TarjetaEnlace titulo={titulo ?? (paso.tipo === "ya_registrado" ? "Ya tienes cuenta en Mi Saldo Vip" : paso.tipo === "activar" ? "Activa tu cuenta" : `Únete a ${negocio.data.nombre_comercial}`)}
-    {...(paso.tipo === "datos" ? { subtitulo: "Gana cashback y premios en cada compra" } : {})} icono={<UserPlus className="size-5" />}>
+  const nombreNegocio = negocio.data.nombre_comercial;
+  const cambiarDato = (key: keyof typeof datos, value: string) => setDatos((d) => ({ ...d, [key]: value }));
+  const privacidad = <AvisoPrivacidad valor={aviso} onChange={setAviso} onVersion={setVersion} />;
+  const espera = solicitud.segundos > 0 && <p role="status" className="text-sm text-muted-foreground">Espera {solicitud.segundos} s para volver a intentar.</p>;
+  return <TarjetaEnlace titulo={sesion ? `¿Unirte a ${nombreNegocio}?` : resultado?.estado === "pendiente" ? `¡Listo, ${datos.nombre}!` : resultado?.estado === "cuenta_existente" ? "Ya existe una cuenta con este número" : `Únete a ${nombreNegocio}`}
+    {...(!sesion && !resultado ? { subtitulo: "Gana cashback y premios en cada compra" } : {})} icono={<UserPlus className="size-5" />}>
     {error && <Alerta>{error}</Alerta>}
-    {paso.tipo === "datos" && <form onSubmit={solicitar} className="flex flex-col gap-4">
-      <div className="flex flex-col gap-2"><Label htmlFor="nombre">¿Cómo te llamas?</Label><Input id="nombre" name="nombre" autoComplete="name" maxLength={80} className="h-12 text-lg" value={nombre} onChange={(e) => setNombre(e.target.value)} /></div>
-      <div className="flex flex-col gap-2"><Label htmlFor="telefono">Tu celular (10 dígitos)</Label><Input id="telefono" name="telefono" inputMode="numeric" autoComplete="tel" placeholder="55 1234 5678" className="h-12 text-lg" value={telefono} onChange={(e) => setTelefono(e.target.value.replace(/[^\d ]/g, ""))} /></div>
-      <AvisoPrivacidad valor={aviso} onChange={setAviso} onVersion={setVersion} />
-      <div className="flex items-start gap-3 rounded-xl p-2"><Checkbox id="promociones" checked={promociones} onCheckedChange={(v) => setPromociones(v === true)} className="mt-0.5 size-6" /><Label htmlFor="promociones" className="text-base leading-snug">Quiero recibir promociones de {negocio.data.nombre_comercial} (cumpleaños, ofertas)</Label></div>
-      {solicitud.segundos > 0 && <p role="status" className="text-sm text-muted-foreground">Espera {solicitud.segundos} s para volver a intentar.</p>}
-      <Button type="submit" size="lg" disabled={ocupado || solicitud.segundos > 0}>Enviarme el código</Button>
+    {sesion ? <div className="flex flex-col gap-4">
+      <p>Quedarás como cliente de {nombreNegocio} para ganar cashback y premios. Tu cuenta y tus otros negocios siguen igual.</p>
+      {privacidad}{espera}
+      <Button className="min-h-12" disabled={ocupado || !aviso || !version || solicitud.segundos > 0} onClick={() => void unirme()}>{ocupado ? "Enviando…" : "Unirme"}</Button>
+      <Button variant="link" className="min-h-11 whitespace-normal" disabled={ocupado} onClick={async () => {
+        setOcupado(true); try { await logout(); } catch { /* logout clears the local session even if offline. */ }
+        finally { setResultado(null); setAviso(false); setError(null); setOcupado(false); }
+      }}>No soy yo: cerrar sesión</Button>
+    </div> : resultado?.estado === "pendiente" ? <div className="flex flex-col gap-4">
+      <p>Cuando vayas a <strong>{nombreNegocio}</strong>, dale tu número de celular al cajero para activar tu registro.</p>
+      <p>Tienes hasta el {new Date(resultado.expira_en).toLocaleString("es-MX", { dateStyle: "short", timeStyle: "short" })} (24 horas). Después tendrás que llenarlo otra vez.</p>
+      <p>Al aprobarlo te llegará un WhatsApp para activar tu app.</p>
+      <Button variant="secondary" className="min-h-12" onClick={() => { setResultado(null); setError(null); }}>Corregir mis datos</Button>
+    </div> : resultado?.estado === "cuenta_existente" ? <div className="flex flex-col gap-4">
+      <p>Entra con tu número y tu PIN para unirte a {nombreNegocio}.</p>
+      <Button className="min-h-12" onClick={iniciarSesion}>Iniciar sesión</Button>
+      <Button asChild variant="secondary" className="min-h-12"><Link to="/recuperar" search={{ telefono: datos.telefono.replace(/\D/g, "") }}>Olvidé mi PIN</Link></Button>
+      <Button asChild variant="secondary" className="min-h-12"><Link to="/activar">Nunca activé mi cuenta</Link></Button>
+      <p className="text-sm text-muted-foreground">También puedes pedirle al cajero que te registre con tu número.</p>
+    </div> : <form noValidate onSubmit={solicitar} className="flex flex-col gap-4">
+      <div className="border-b border-border pb-3"><Button type="button" variant="secondary" className="min-h-12 h-auto w-full whitespace-normal py-3" onClick={iniciarSesion}>¿Ya tienes Mi Saldo Vip? Inicia sesión</Button></div>
+      {([['nombre', 'Nombre', 'given-name'], ['apellido_paterno', 'Apellido paterno', 'family-name'], ['apellido_materno', 'Apellido materno (opcional)', 'additional-name']] as const).map(([key, label, autocomplete]) => <div key={key} className="flex flex-col gap-2"><Label htmlFor={key}>{label}</Label><Input id={key} name={key} required={key !== "apellido_materno"} maxLength={100} autoComplete={autocomplete} className="h-12 text-base md:text-base" value={datos[key]} onChange={(e) => cambiarDato(key, e.target.value)} /></div>)}
+      <div className="flex flex-col gap-2"><Label htmlFor="telefono">Tu celular (10 dígitos)</Label><Input id="telefono" name="telefono" inputMode="numeric" autoComplete="tel" placeholder="55 1234 5678" className="h-14 text-xl md:text-xl" value={datos.telefono} onChange={(e) => cambiarDato("telefono", e.target.value.replace(/[^\d ]/g, ""))} /></div>
+      <fieldset className="min-w-0"><legend className="mb-2 font-medium">Tu cumpleaños</legend><div className="grid grid-cols-2 gap-3">
+        {([['nacimiento_dia', 'Día'], ['nacimiento_mes', 'Mes']] as const).map(([key, label]) => <div key={key} className="flex min-w-0 flex-col gap-2"><Label htmlFor={key}>{label}</Label><select id={key} name={key} required value={datos[key]} onChange={(e) => cambiarDato(key, e.target.value)} className="h-12 w-full rounded-md border border-input bg-background px-3 text-base text-foreground focus-visible:outline-ring"><option value="">{label}</option>{key === "nacimiento_dia" ? Array.from({ length: 31 }, (_, i) => <option key={i + 1} value={i + 1}>{i + 1}</option>) : meses.map((mes, i) => <option key={mes} value={i + 1}>{mes}</option>)}</select></div>)}
+      </div><p className="mt-2 text-sm text-muted-foreground">Solo día y mes, para tus promociones de cumpleaños</p></fieldset>
+      <div className="flex flex-col gap-2"><Label htmlFor="correo">Correo electrónico</Label><Input id="correo" name="correo" required type="email" autoComplete="email" maxLength={255} className="h-12 text-base md:text-base" value={datos.correo} onChange={(e) => cambiarDato("correo", e.target.value)} /><p className="text-sm text-muted-foreground">Te avisamos aquí si WhatsApp falla</p></div>
+      {privacidad}{espera}<Button type="submit" className="min-h-12" disabled={ocupado || solicitud.segundos > 0}>{ocupado ? "Enviando…" : "Enviar mi registro"}</Button>
     </form>}
-    {paso.tipo === "codigo" && <div className="flex flex-col gap-4">
-      <p>Te enviamos un código por WhatsApp al {paso.telefono.replace(/^(\d{2})(\d{4})(\d{4})$/, "$1 $2 $3")}.</p>
-      <fieldset disabled={ocupado} className="min-w-0"><CampoDigitos etiqueta="Código que te llegó (6 dígitos)" valor={codigo} onChange={(v) => { void verificar(v); }} largo={6} autoComplete="one-time-code" tecladoFisico activo onActivar={() => {}} /></fieldset>
-      {reenvio.segundos > 0 && <p role="status" className="text-sm text-muted-foreground">Espera {reenvio.segundos} s para volver a intentar.</p>}
-      <Button variant="secondary" size="lg" disabled={ocupado || reenvio.segundos > 0} onClick={() => void reenviar()}>Reenviar código</Button>
-      <Button variant="link" disabled={ocupado} onClick={() => volver()}>Cambiar mi número</Button>
-    </div>}
-    {paso.tipo === "activar" && <CompletarActivacion token={paso.token} versionAvisoAceptada={paso.version} onTitulo={setTitulo} onExpirado={() => volver("Pasaron más de 15 minutos. Vuelve a pedir el código.")} />}
-    {paso.tipo === "ya_registrado" && <><p className="mb-4 text-muted-foreground">Entra con tu teléfono y tu PIN. Si no lo recuerdas, usa Olvidé mi PIN.</p><Button asChild size="lg" className="w-full"><Link to="/login">Entrar</Link></Button></>}
   </TarjetaEnlace>;
 }

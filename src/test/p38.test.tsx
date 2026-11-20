@@ -12,7 +12,7 @@ import clientes from "@/routes/clientes.tsx?raw";
 
 const m = vi.hoisted(() => ({ rol: "dueno", conectado: true, codigo: vi.fn(), logo: null as string | null, movimientos: vi.fn() }));
 vi.mock("@/components/auth-provider", () => ({ useAuth: () => ({ conectado: m.conectado, sesion: { contexto: { rol: m.rol, nombre_comercial: "Café 100% natural" } } }) }));
-vi.mock("@/lib/api/registro", () => ({ miCodigoRegistro: m.codigo }));
+vi.mock("@/lib/api/registro", async (original) => ({ ...await original<typeof import("@/lib/api/registro")>(), miCodigoRegistro: m.codigo }));
 vi.mock("@/components/negocio/comun", () => ({ useConfigNegocio: () => ({ data: { negocio: { logo_url: m.logo } } }) }));
 vi.mock("@/components/app-shell", () => ({ AppShell: ({ children }: { children: ReactNode }) => <>{children}</> }));
 vi.mock("@/components/requiere-sesion", () => ({ RequiereSesion: ({ children }: { children: ReactNode }) => <>{children}</>, Cargando: () => null }));

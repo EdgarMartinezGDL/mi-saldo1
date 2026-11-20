@@ -148,7 +148,7 @@ function Caja() {
 
   const nuevoCliente = () => { setFicha(null); setTelefono(""); setComprobante(null); setPaso("buscar"); };
   const terminado = (c: Comprobante) => { setComprobante(c); setPaso("comprobante"); void recargarFicha(telefono); };
-  const altaHecha = async (r: AltaRespuesta) => {
+  const altaHecha = async (r: AltaRespuesta, tel = telefono) => {
     if (r.pendiente) {
       setFicha(null);
       setComprobante({ titulo: "Solicitud enviada", lineas: ["Este número ya está registrado con otro nombre. Le pedimos al titular que confirme."] });
@@ -160,7 +160,7 @@ function Caja() {
       r.correo_capturado === "conservado_anterior" ? "Ya tenía un correo registrado; se conservó." : "",
     ].filter(Boolean).join(" ");
     toast.success("Cliente dado de alta", { description: description || undefined });
-    await recargarFicha(telefono);
+    await recargarFicha(tel);
     setPaso("ficha");
   };
 
@@ -190,7 +190,7 @@ function Caja() {
       <>
         <FranjaCaja venceEn={venceEn} zona={ctx.zona} gracia={config?.negocio.membresia_estado === "gracia"}
           onCerrada={() => { setVenceEn(null); nuevoCliente(); setEstado("cerrada"); }} />
-        {paso === "buscar" && <PasoBuscar inicial={telefono} onEncontrado={(t, c) => { setTelefono(t); setFicha(c); setPaso("ficha"); }} onAlta={(t) => { setTelefono(t); setPaso("alta"); }} />}
+        {paso === "buscar" && <PasoBuscar inicial={telefono} onEncontrado={(t, c) => { setTelefono(t); setFicha(c); setPaso("ficha"); }} onAlta={(t) => { setTelefono(t); setPaso("alta"); }} onAltaHecha={(t, r) => { setTelefono(t); void altaHecha(r, t); }} />}
         {paso === "alta" && <PasoAlta telefono={telefono} onVolver={() => setPaso("buscar")} onHecha={(r) => void altaHecha(r)} />}
         {paso === "ficha" && ficha && <PasoFicha ficha={ficha} onVolver={nuevoCliente} onAccion={(a) => setPaso(a)} onRefrescar={async () => {
           const r = await ejecutar(() => buscarCliente(telefonoE164(telefono)));

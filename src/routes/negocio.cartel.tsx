@@ -1,7 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Printer } from "lucide-react";
+import { Printer, RefreshCw } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { useAuth } from "@/components/auth-provider";
+import { CopiarEnlace } from "@/components/copiar-enlace";
+import { nuevoCodigoRegistro } from "@/lib/api/registro";
+import { ApiError } from "@/lib/api/client";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { QRCodeSVG } from "qrcode.react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { AppShell } from "@/components/app-shell";
 import { RequiereSesion } from "@/components/requiere-sesion";
 import { useConfigNegocio } from "@/components/negocio/comun";
@@ -21,6 +28,23 @@ export const Route = createFileRoute("/negocio/cartel")({
 });
 
 export function CartelRegistro() {
+  const { sesion } = useAuth();
+  const queryClient = useQueryClient();
+  const [confirmando, setConfirmando] = useState(false);
+  const [ocupado, setOcupado] = useState(false);
+  const bloqueo = useRef(false);
+  const renovar = async () => {
+    if (bloqueo.current) return;
+    bloqueo.current = true; setOcupado(true);
+    try {
+      const codigo = await nuevoCodigoRegistro();
+      queryClient.setQueryData(["mi-codigo-registro"], codigo);
+      setConfirmando(false);
+      toast.success("Listo: el enlace anterior ya no funciona");
+    } catch (e) {
+      toast.error(e instanceof ApiError && e.status === 429 ? "Ya generaste varios enlaces en la última hora. Intenta más tarde." : e instanceof ApiError ? e.message : "No pudimos generar el enlace. Intenta de nuevo.");
+    } finally { bloqueo.current = false; setOcupado(false); }
+  };
   const { nombre, enlace, conRegistro } = useEnlaceRegistro();
   const cfg = useConfigNegocio();
   const [logoFallido, setLogoFallido] = useState<string | null>(null);
@@ -45,8 +69,15 @@ export function CartelRegistro() {
       </section>
       <div className="cartel-controles mt-4 space-y-2 print:hidden">
         <p className="break-all text-sm text-muted-foreground">Este cartel abre: {enlace}</p>
+        <CopiarEnlace enlace={enlace} />
+        {sesion?.contexto.rol === "dueno" && <Button variant="secondary" className="min-h-12 text-base" disabled={ocupado} onClick={() => setConfirmando(true)}><RefreshCw />Generar enlace nuevo</Button>}
         {!enlace.startsWith("https://") && <p className="text-sm text-warn-texto">Ojo: estás en una dirección de prueba. Imprime el cartel desde la dirección final de la app.</p>}
       </div>
     </>}
+    <AlertDialog open={confirmando} onOpenChange={(v) => { if (!ocupado) setConfirmando(v); }}>
+      <AlertDialogContent><AlertDialogHeader><AlertDialogTitle>¿Generar un enlace nuevo?</AlertDialogTitle><AlertDialogDescription>El QR impreso y los enlaces que ya compartiste dejarán de funcionar. Tendrás que imprimir el cartel otra vez.</AlertDialogDescription></AlertDialogHeader>
+        <AlertDialogFooter><AlertDialogCancel disabled={ocupado}>Cancelar</AlertDialogCancel><AlertDialogAction disabled={ocupado} onClick={(e) => { e.preventDefault(); void renovar(); }}>Generar enlace nuevo</AlertDialogAction></AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   </AppShell>;
 }

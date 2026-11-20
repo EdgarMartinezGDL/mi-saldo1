@@ -27,6 +27,7 @@ import { registrarWorker } from "@/lib/pwa-registro";
 import { escucharInstalacion } from "@/lib/instalacion";
 import { GuardaSitio } from "@/components/guarda-sitio";
 import { PaginaNoEncontrada } from "@/components/pagina-no-encontrada";
+import { RetomarRegistro } from "@/components/retomar-registro";
 
 /** Card shell shared by the 404 and error boundaries: app styling, no AppShell chrome. */
 function TarjetaEstado({ children }: { children: ReactNode }) {
@@ -152,6 +153,7 @@ function RootComponent() {
             <ConexionContenido><ClientOnly><GuardaSitio><CambioPorAviso><Outlet /></CambioPorAviso></GuardaSitio></ClientOnly></ConexionContenido>
           </TotpProvider>
           <Toaster position="top-center" />
+          <RetomarRegistro />
           <TecladoVisible />
         </AuthProvider>
       </MiSaldoProvider>

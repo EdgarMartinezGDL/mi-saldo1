@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientContext, useQuery } from "@tanstack/react-query";
-import { miCodigoRegistro } from "@/lib/api/registro";
+import { enlaceRegistro, miCodigoRegistro } from "@/lib/api/registro";
+import { CopiarEnlace } from "@/components/copiar-enlace";
 import { QrCode } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import { useContext, useEffect, useRef, useState } from "react";
@@ -18,7 +19,7 @@ export function useEnlaceRegistro() {
   const codigo = registro.data?.codigo;
   const origen = typeof window === "undefined" ? null : window.location.origin;
   const enlace = permitido && nombre && origen
-    ? codigo ? `${origen}/registro#c=${encodeURIComponent(codigo)}` : enlaceBienvenida(origen, nombre)
+    ? codigo ? enlaceRegistro(origen, codigo) : enlaceBienvenida(origen, nombre)
     : null;
   return { nombre, enlace, conRegistro: !!enlace && !!codigo };
 }
@@ -28,6 +29,7 @@ export function BotonQrRegistro({ onAbiertoChange }: { onAbiertoChange?: (abiert
   const [abierto, setAbierto] = useState(false);
   const boton = useRef<HTMLButtonElement>(null);
   const cerrar = useRef<HTMLButtonElement>(null);
+  const capa = useRef<HTMLDivElement>(null);
   const cambio = useRef(onAbiertoChange);
   cambio.current = onAbiertoChange;
   const visible = abierto && !!enlace && !!nombre;
@@ -53,7 +55,12 @@ export function BotonQrRegistro({ onAbiertoChange }: { onAbiertoChange?: (abiert
     const tecla = (e: KeyboardEvent) => {
       e.stopImmediatePropagation();
       if (e.key === "Escape") { e.preventDefault(); setAbierto(false); }
-      if (e.key === "Tab") { e.preventDefault(); cerrar.current?.focus(); }
+      if (e.key === "Tab") {
+        const controles = Array.from(capa.current?.querySelectorAll<HTMLElement>('input, button:not(:disabled)') ?? []);
+        const indice = controles.indexOf(document.activeElement as HTMLElement);
+        e.preventDefault();
+        controles[(indice + (e.shiftKey ? -1 : 1) + controles.length) % controles.length]?.focus();
+      }
     };
     window.addEventListener("popstate", atras);
     window.addEventListener("keydown", tecla, true);
@@ -75,7 +82,7 @@ export function BotonQrRegistro({ onAbiertoChange }: { onAbiertoChange?: (abiert
       <QrCode /> Mostrar QR de registro
     </Button>
     {visible && createPortal(
-      <div role="dialog" aria-modal="true" aria-label="QR de registro"
+      <div ref={capa} role="dialog" aria-modal="true" aria-label="QR de registro"
         className="fixed inset-0 z-[1000] flex flex-col items-center justify-between gap-3 overflow-y-auto bg-qr-fondo p-4 text-center text-qr-texto sm:p-6">
         <h2 className="line-clamp-2 w-full shrink-0 break-words text-3xl font-bold [overflow-wrap:anywhere]">{nombre}</h2>
         <div className="shrink-0 [&_svg]:!size-[min(85vw,60vh)]">
@@ -83,6 +90,7 @@ export function BotonQrRegistro({ onAbiertoChange }: { onAbiertoChange?: (abiert
         </div>
         <div className="shrink-0">
           <p className="text-xl font-semibold">Escanea este código con la cámara de tu celular</p>
+          {conRegistro && <div className="mx-auto mt-3 flex max-w-md flex-col items-center gap-2"><CopiarEnlace enlace={enlace} campoVisible enQr /><p className="text-sm">Compártelo por WhatsApp o Messenger si el cliente no puede escanear.</p></div>}
           <p className="mt-2 text-sm">{conRegistro ? "Regístrate en Mi Saldo Vip desde tu celular" : "Te explica cómo registrarte en Mi Saldo Vip"}</p>
         </div>
         <Button ref={cerrar} variant="secondary" className="min-h-14 w-full max-w-md shrink-0 border-qr-texto bg-qr-fondo text-xl text-qr-texto hover:bg-qr-fondo" onClick={() => setAbierto(false)}>Cerrar</Button>

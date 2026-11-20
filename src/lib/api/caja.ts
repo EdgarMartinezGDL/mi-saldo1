@@ -1,4 +1,5 @@
 import { api } from "./client";
+import type { AltaRespuesta } from "@/components/caja/caja-extra";
 
 export interface EstadoPos {
   pin_pos_configurado: boolean;
@@ -60,7 +61,13 @@ export interface ClienteCaja {
   tarjetas?: TarjetaCliente[];
 }
 
-export type Busqueda = { encontrado: false } | ({ encontrado: true } & ClienteCaja);
+export interface SolicitudRegistro {
+  solicitud_id: string; nombre: string; apellido_paterno: string; apellido_materno: string | null;
+  nacimiento_dia: number; nacimiento_mes: number; correo_enmascarado: string; creada_en: string; expira_en: string;
+}
+export type Busqueda = { encontrado: false; solicitud_registro?: SolicitudRegistro } | ({ encontrado: true } & ClienteCaja);
+export const aprobarSolicitudRegistro = (id: string) => api<AltaRespuesta>(`/api/clientes/solicitudes-registro/${encodeURIComponent(id)}/aprobacion`, { method: "POST" });
+export const rechazarSolicitudRegistro = (id: string) => api<void>(`/api/clientes/solicitudes-registro/${encodeURIComponent(id)}`, { method: "DELETE" });
 
 export interface CorreoClienteCaja {
   estado: "confirmado" | "sin_confirmar" | "sin_correo";

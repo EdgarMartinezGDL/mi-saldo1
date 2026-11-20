@@ -1,5 +1,6 @@
-- Registration and invitation share CompletarActivacion; inherited consent is reused only for the current privacy version and discarded on 409. Why: activation stays consistent without accepting an outdated notice.
+- Activation and invitation share CompletarActivacion; public registration keeps pending data and RetomarRegistro consumes its device return code after session navigation. Why: login paths converge without duplicating activation or losing the QR destination.
 - QR dialog and printable poster share useEnlaceRegistro and preserve successful cached codes. Why: both destinations stay identical during refresh failures.
+- QR and poster share CopiarEnlace; approvals reuse Caja's altaHecha callback and POS execution wrapper. Why: clipboard fallback, pending owner validation and manual/QR activation outcomes stay consistent.
 - Installation events are captured once at root and dismissal is device-scoped in instalacion. Why: early prompts survive navigation without changing push or worker registration.
 - Secret inputs use CampoPin and opt-in CampoDigitos with form-submit visibility reset; Caja and one-time codes stay unchanged. Why: shared accessible reveal without persistent visibility.
 - Custom backgrounds use fixed palettes from fondos and the shared SelectorFondo; only device preferences persist them. Why: both appearance screens stay consistent without changing business API contracts.
