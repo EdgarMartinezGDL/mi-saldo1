@@ -38,7 +38,7 @@ async function confirmar() {
   fireEvent.click(screen.getByRole("button", { name: "Sí, reintentar" }));
 }
 describe("P20 reintentos", () => {
-  it("requiere 5 caracteres y reintenta con el id y filtros aplicados", async () => {
+  it("el botón pide 5 caracteres en el motivo", async () => {
     await abrir();
     fireEvent.change(screen.getByLabelText("Canal"), { target: { value: "whatsapp" } });
     fireEvent.change(screen.getByLabelText("Evento"), { target: { value: "compra_monedero" } });
@@ -53,6 +53,17 @@ describe("P20 reintentos", () => {
     expect(boton).toBeDisabled();
     fireEvent.change(campoMotivo, { target: { value: "abcde" } });
     expect(boton).toBeEnabled();
+  });
+  it("reintenta con el id y vuelve a cargar con los filtros aplicados", async () => {
+    await abrir();
+    fireEvent.change(screen.getByLabelText("Canal"), { target: { value: "whatsapp" } });
+    fireEvent.change(screen.getByLabelText("Evento"), { target: { value: "compra_monedero" } });
+    fireEvent.click(screen.getByRole("button", { name: "Buscar" }));
+    await waitFor(() => expect(m.listar).toHaveBeenLastCalledWith({ canal: "whatsapp", evento: "compra_monedero" }));
+    fireEvent.click(screen.getByRole("button", { name: "Reintentar" }));
+    const dialogo = (await screen.findByRole("heading", { name: "¿Reintentar este aviso?" })).closest<HTMLElement>('[role="alertdialog"],[role="dialog"]') ?? document.body;
+    const boton = within(dialogo).getByRole("button", { name: "Sí, reintentar" });
+    const campoMotivo = within(dialogo).getByLabelText("Motivo");
     fireEvent.change(campoMotivo, { target: { value: motivo } });
     const antes = m.listar.mock.calls.length;
     fireEvent.click(boton);

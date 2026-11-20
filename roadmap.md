@@ -1,5 +1,11 @@
 # Roadmap
 
+## P45 — Clientes nuevos y lista vacía
+- [ ] Añadir etiqueta de los últimos siete días e invitación sin búsqueda ni archivados, reutilizando los controles existentes.
+- [ ] Ajustar únicamente las pruebas solicitadas P15/P20 y añadir P45; ejecutar todas las pruebas y revisar Clientes con axe.
+- [ ] Guardar mediante commit; confirmar GitHub si la integración lo permite (sin remoto directo disponible).
+
+
 ## P44 — Clientes e invitación en Panel y pasos del registro
 - [x] Añadir conteos e invitación exclusiva del dueño con enlace de registro; explicar tres pasos solo en el formulario público.
 - [x] 690 pruebas pasan; compilación OK. 312 estados con respuestas controladas a 360/1280 px en Claro, Oscuro y los diez fondos personalizados: axe sin fallas, sin desbordamientos ni errores. Conteos, cero sin aviso, copia, destino de Compartir, navegación a Clientes, formulario, pendiente, cuenta existente, corregir, login con teléfono, unión con sesión y código ausente revisados. Caja, API, dependencias y worker sin cambios.

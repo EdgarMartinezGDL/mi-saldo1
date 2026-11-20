@@ -124,7 +124,8 @@ describe("P15 teclado de Caja", () => {
     m.buscar.mockResolvedValue({ encontrado: false }); const alta = vi.fn();
     caja(<PasoBuscar inicial="" onEncontrado={() => {}} onAlta={alta} />);
     escribir("5512345678"); tecla("Enter"); await screen.findByText("Este teléfono aún no es cliente"); tecla("Enter");
-    expect(alta).toHaveBeenCalledWith("5512345678"); expect(m.buscar).toHaveBeenCalledOnce();
+    await waitFor(() => expect(alta).toHaveBeenCalledWith("5512345678"));
+    await waitFor(() => expect(m.buscar).toHaveBeenCalledOnce());
   });
   it("PIN POS limita a seis dígitos y Enter abre una sola vez", async () => {
     const abierta = vi.fn(); render(<PinPos onAbierta={abierta} />);

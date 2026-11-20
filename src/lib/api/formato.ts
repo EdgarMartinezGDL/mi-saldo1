@@ -8,6 +8,12 @@ export const aCentavos = (texto: string) => {
   return Number.isFinite(n) && n > 0 ? Math.round(n * 100) : 0;
 };
 
+/** Visual recency only; device time never authorizes business operations. */
+export function esClienteNuevo(clienteDesde: string, ahora = new Date()): boolean {
+  const diferencia = ahora.getTime() - new Date(clienteDesde).getTime();
+  return diferencia >= 0 && diferencia < 604_800_000;
+}
+
 /** AAAA-MM-DD (business day) → "29 dic 2026". */
 export const fechaCorta = (f: string | null | undefined) => {
   if (!f) return "";
