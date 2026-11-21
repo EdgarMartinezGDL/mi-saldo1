@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -29,7 +30,9 @@ const ficha: FichaCliente = { cliente: { persona_id: "pruebas", nombre: cliente.
 function datos(archivados_total: number): Dashboard {
   return { periodo: { desde: "2026-10-22", hasta: "2026-10-22", jornadas: 1, zona_horaria: "America/Mexico_City", en_curso: true }, monedero: null, tarjetas: null, clientes: { atendidos: 0, altas: 0, bajas: 0, activos_total: 1, archivados_total }, cajeros: [], serie: [], reclamaciones: { pendientes: 0, mas_antigua_en: null }, validaciones_alta: { pendientes: 0 }, nota_ventas: "" };
 }
-function clientes() { const Component = ClientesRoute.options.component; if (Component) render(<Component />); }
+// Claude (2026-11-20): la ficha ahora lee el cumpleaños con React Query (la app ya tiene el proveedor en la raíz).
+vi.mock("@/lib/api/cumpleanos", async (o) => ({ ...await o<typeof import("@/lib/api/cumpleanos")>(), fechaCumpleCliente: async () => ({ dia: null, mes: null, propia: false, cambio_disponible: false }) }));
+function clientes() { const Component = ClientesRoute.options.component; if (Component) render(<QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false, gcTime: 0 } } })}><Component /></QueryClientProvider>); }
 function reportes() { const Component = ReportesRoute.options.component; if (Component) render(<Component />); }
 function panel() { const Component = PanelRoute.options.component; if (Component) render(<Component />); }
 
