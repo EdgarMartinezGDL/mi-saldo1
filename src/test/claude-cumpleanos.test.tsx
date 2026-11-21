@@ -6,6 +6,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ApiError } from "@/lib/api/client";
 import { FranjaCumpleanos } from "@/components/caja/franja-cumpleanos";
 import { BeneficioCumpleanos } from "@/components/negocio/beneficio-cumpleanos";
+import { CumpleanosCliente } from "@/components/negocio/cumpleanos-cliente";
 import type { CumpleanosCaja } from "@/lib/api/cumpleanos";
 
 const m = vi.hoisted(() => ({ api: vi.fn(), toast: vi.fn(), info: vi.fn(), rol: "empleado", refrescar: vi.fn() }));
@@ -99,5 +100,32 @@ describe("Promociones: configuración del beneficio de cumpleaños", () => {
     fireEvent.click(await screen.findByRole("button", { name: "Guardar" }));
     expect(screen.getByRole("alert")).toHaveTextContent("Escribe el beneficio");
     expect(m.api).toHaveBeenCalledTimes(1); // solo la lectura
+  });
+});
+
+describe("Ficha del dueño: cambiar cumpleaños (oculto hasta el aviso al cliente)", () => {
+  it("apagado: muestra la fecha pero no el botón", async () => {
+    m.api.mockResolvedValue({ dia: 14, mes: 3, propia: false, cambio_disponible: false });
+    montar(<CumpleanosCliente negocioClienteId="nc-1" />);
+    expect(await screen.findByText("Cumpleaños: 14 de marzo")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Cambiar cumpleaños" })).not.toBeInTheDocument();
+  });
+
+  it("encendido: cambia la fecha (31 de abril no se puede) y respeta el mensaje genérico", async () => {
+    m.api.mockImplementation(async (_path: string, opts?: { method?: string }) => {
+      if (opts?.method === "PUT") throw new ApiError(409, { codigo: "cambio_no_permitido", message: "La fecha de este cliente ya no se puede cambiar este año" });
+      return { dia: 14, mes: 3, propia: true, cambio_disponible: true };
+    });
+    montar(<CumpleanosCliente negocioClienteId="nc-1" />);
+    expect(await screen.findByText("Cumpleaños: 14 de marzo (corregido en tu negocio)")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Cambiar cumpleaños" }));
+    fireEvent.change(await screen.findByLabelText("Día"), { target: { value: "31" } });
+    fireEvent.change(screen.getByLabelText("Mes"), { target: { value: "4" } });
+    expect(screen.getByRole("button", { name: "Guardar" })).toBeDisabled();
+    fireEvent.change(screen.getByLabelText("Día"), { target: { value: "29" } });
+    fireEvent.change(screen.getByLabelText("Mes"), { target: { value: "2" } });
+    fireEvent.click(screen.getByRole("button", { name: "Guardar" }));
+    await waitFor(() => expect(m.api).toHaveBeenCalledWith("/api/cumpleanos/clientes/nc-1/fecha", { method: "PUT", body: { dia: 29, mes: 2 } }));
+    expect(await screen.findByRole("alert")).toHaveTextContent("La fecha de este cliente ya no se puede cambiar este año");
   });
 });

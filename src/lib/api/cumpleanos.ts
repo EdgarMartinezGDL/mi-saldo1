@@ -27,3 +27,16 @@ export const VIGENCIAS: { valor: VigenciaCumpleanos; nombre: string; ayuda: stri
 
 export const fechaCumple = (dia: number, mes: number) =>
   `${dia} de ${new Date(2000, mes - 1, 1).toLocaleString("es-MX", { month: "long" })}`;
+
+/** Ficha del cliente (dueño): fecha efectiva en este negocio y si se puede ofrecer el cambio (0063). */
+export interface FechaCliente { dia: number | null; mes: number | null; propia: boolean; cambio_disponible: boolean }
+export const fechaCumpleCliente = (negocioClienteId: string) =>
+  api<FechaCliente>(`/api/cumpleanos/clientes/${encodeURIComponent(negocioClienteId)}/fecha`);
+export const cambiarFechaCumpleCliente = (negocioClienteId: string, dia: number, mes: number) =>
+  api<{ dia: number; mes: number }>(`/api/cumpleanos/clientes/${encodeURIComponent(negocioClienteId)}/fecha`, { method: "PUT", body: { dia, mes } });
+
+/** Igual que el backend: el 29 de febrero vale; el 31 de abril no. */
+export const fechaValida = (dia: number, mes: number) => {
+  const d = new Date(2000, mes - 1, dia);
+  return mes >= 1 && mes <= 12 && dia >= 1 && d.getMonth() === mes - 1 && d.getDate() === dia;
+};

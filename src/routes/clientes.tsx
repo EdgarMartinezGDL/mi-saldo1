@@ -15,6 +15,7 @@ import { consultarClientes, fichaCliente, type ClienteLista, type FichaCliente, 
 import { diaDeInstante, fechaCorta, instante, nombreCompleto, pesos, telefonoVisible } from "@/lib/api/formato";
 import { plural } from "@/lib/plural";
 import { useDesplazarAlAbrir } from "@/lib/use-desplazar";
+import { CumpleanosCliente } from "@/components/negocio/cumpleanos-cliente";
 
 export const Route = createFileRoute("/clientes")({
   validateSearch: (s: Record<string, unknown>): { archivados?: "incluir" | "solo" } =>
@@ -155,6 +156,7 @@ function Clientes() {
             </ul>
             <div className="mt-3 grid gap-1 text-sm text-muted-foreground">
               <p>Cliente desde {instante(ficha.resumen.cliente_desde)}</p>
+              {fichaId && <CumpleanosCliente negocioClienteId={fichaId} />}
               <p>Última compra: {ficha.resumen.ultima_compra_en ? instante(ficha.resumen.ultima_compra_en) : "sin compras"}</p>
               {ficha.resumen.archivado && <p>Última compra o canje: {ficha.resumen.ultima_actividad_en ? instante(ficha.resumen.ultima_actividad_en) : "sin compras ni canjes"}</p>}
               {!ficha.resumen.acepta_promociones && <p>No acepta promociones.</p>}

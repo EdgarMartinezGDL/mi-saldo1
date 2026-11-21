@@ -199,3 +199,4 @@ Pendiente fuera de alcance: publicar y verificar con sesiones reales (el backend
 - [x] Promociones: sección "Beneficio de cumpleaños" (activar, qué le das, cuándo vale) en `/negocio/promociones` (`components/negocio/beneficio-cumpleanos.tsx`), sin ruta nueva.
 - [x] API `src/lib/api/cumpleanos.ts`; prueba `claude-cumpleanos.test.tsx`.
 - [ ] Pendiente: "Cambiar cumpleaños" en la ficha del cliente para el dueño, Excel conectado, notificación de cumpleaños.
+- [x] Ficha del cliente (dueño, `/clientes`): "Cumpleaños: …" y "Cambiar cumpleaños" (día y mes, solo este negocio). El botón **solo aparece si el backend responde `cambio_disponible: true`**: hoy está apagado hasta que exista el aviso al cliente (`components/negocio/cumpleanos-cliente.tsx`).
