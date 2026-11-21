@@ -49,7 +49,7 @@ export function BloqueDueno({ d, admin }: { d: DetalleNegocioStaff; admin: boole
       <h3 className="text-base font-semibold">Dueño</h3>
       <p className="text-base">{nombreCompleto(du)}</p>
       <p className="text-sm text-muted-foreground">{telefonoVisible(du.telefono)}</p>
-      {du.correo ? <p className="break-all text-sm text-muted-foreground">{du.correo}</p> : <p className="text-sm font-medium text-warn">Sin correo: no podrá recuperar su acceso</p>}
+      {du.correo ? <p className="break-all text-sm text-muted-foreground">{du.correo}</p> : <p className="text-sm font-medium text-warn-texto">Sin correo: no podrá recuperar su acceso</p>}
       <p className="text-sm">{du.cuenta_activada ? "Cuenta activada" : "Invitación pendiente"} · {du.tiene_2fa ? "Con 2FA" : "Sin 2FA"}</p>
       {admin && !du.cuenta_activada && (
         <Button size="sm" variant="secondary" className="mt-2 self-start" disabled={enviando} onClick={() => setConfirmar(true)}>Reenviar invitación</Button>

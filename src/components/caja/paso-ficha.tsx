@@ -83,7 +83,7 @@ export function PasoFicha({ ficha, onAccion, onVolver, onRefrescar }: { ficha: C
       {ficha.cumpleanos && <FranjaCumpleanos cumple={ficha.cumpleanos} nombre={c.nombre} onRefrescar={onRefrescar} />}
       {c.correo && <div className="flex flex-col gap-3">
         <div className="flex flex-wrap items-center gap-2 text-sm">
-          <p className={c.correo.estado === "sin_correo" ? "text-warn" : "text-muted-foreground"}>
+          <p className={c.correo.estado === "sin_correo" ? "text-warn-texto" : "text-muted-foreground"}>
             {c.correo.estado === "confirmado" ? "Correo confirmado" : c.correo.estado === "sin_confirmar" ? `Correo: ${c.correo.enmascarado} (sin confirmar)` : "Sin correo: no recibe avisos por correo"}
           </p>
           {c.correo.estado !== "confirmado" && !editando && <Button size="sm" variant="secondary" onClick={() => { setCorreo(""); setEditando(true); }}>

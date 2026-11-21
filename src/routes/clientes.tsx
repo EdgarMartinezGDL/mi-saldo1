@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { AppShell } from "@/components/app-shell";
 import { EstadoVacio } from "@/components/estado-vacio";
+import { CopiarEnlace } from "@/components/copiar-enlace";
+import { useEnlaceRegistro } from "@/components/qr-registro";
 import { Iniciales } from "@/components/fila-lista";
 import { AjusteManual } from "@/components/negocio/ajuste-manual";
 import { Cargando, RequiereSesion } from "@/components/requiere-sesion";
@@ -12,7 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { ApiError } from "@/lib/api/client";
 import { consultarClientes, fichaCliente, type ClienteLista, type FichaCliente, type Siguiente } from "@/lib/api/dueno";
-import { diaDeInstante, fechaCorta, instante, nombreCompleto, pesos, telefonoVisible } from "@/lib/api/formato";
+import { diaDeInstante, esClienteNuevo, fechaCorta, instante, nombreCompleto, pesos, telefonoVisible } from "@/lib/api/formato";
 import { plural } from "@/lib/plural";
 import { useDesplazarAlAbrir } from "@/lib/use-desplazar";
 import { CumpleanosCliente } from "@/components/negocio/cumpleanos-cliente";
@@ -47,6 +49,7 @@ const busquedaValida = (q: string) => {
 
 function Clientes() {
   const { archivados } = Route.useSearch();
+  const { nombre, enlace, conRegistro } = useEnlaceRegistro();
   const navigate = useNavigate();
   const elegir = (v: string) => {
     if (v !== "activos" && v !== "incluir" && v !== "solo") return;
@@ -194,6 +197,17 @@ function Clientes() {
         <section ref={refLista} className="rounded-2xl bg-card p-5 ring-1 ring-border">
           {!lista ? (
             <Cargando />
+          ) : lista.length === 0 && !q.trim() && archivados === undefined ? (
+            <EstadoVacio
+              icono={Users}
+              titulo="Aún no tienes clientes"
+              texto="Comparte tu enlace de registro o da de alta a tus clientes en la Caja."
+              accion={conRegistro && enlace && nombre ? (
+                <CopiarEnlace enlace={enlace} nombreNegocio={nombre} />
+              ) : (
+                <Button variant="secondary" asChild><Link to="/caja">Ir a la Caja</Link></Button>
+              )}
+            />
           ) : lista.length === 0 ? (
             <EstadoVacio
               icono={Users}
@@ -216,8 +230,11 @@ function Clientes() {
                   >
                     <Iniciales nombre={nombreCompleto(c)} />
                     <div className="col-span-2 grid grid-cols-subgrid items-center gap-3 border-b border-separador py-3 group-last:border-b-0">
-                      <div className="min-w-0">
-                        <p className="truncate text-base font-medium">{nombreCompleto(c)}</p>
+                      <div className="min-w-0 [&>p]:flex-wrap [&>p]:gap-y-1">
+                        <div className="flex min-w-0 items-center gap-2">
+                          <p className="min-w-0 truncate text-base font-medium">{nombreCompleto(c)}</p>
+                          {!c.archivado && esClienteNuevo(c.cliente_desde) && <span className="pill-badge shrink-0 py-0.5 text-xs leading-4 text-success-texto">Nuevo</span>}
+                        </div>
                         <p className="flex min-w-0 items-center gap-2 text-sm text-muted-foreground">
                           <span className="shrink-0 tabular-nums">{telefonoVisible(c.telefono)}</span>
                           {!c.cuenta_activada && <span className="pill-badge shrink-0 py-0.5 text-xs leading-4 text-warning-etiqueta">Sin activar</span>}

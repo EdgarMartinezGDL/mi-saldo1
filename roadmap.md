@@ -1,9 +1,13 @@
 # Roadmap
 
 ## P45 — Clientes nuevos y lista vacía
-- [ ] Añadir etiqueta de los últimos siete días e invitación sin búsqueda ni archivados, reutilizando los controles existentes.
-- [ ] Ajustar únicamente las pruebas solicitadas P15/P20 y añadir P45; ejecutar todas las pruebas y revisar Clientes con axe.
-- [ ] Guardar mediante commit; confirmar GitHub si la integración lo permite (sin remoto directo disponible).
+- [x] Añadir etiqueta de los últimos siete días e invitación sin búsqueda ni archivados, reutilizando los controles existentes.
+- [x] Cambiar solo los dos avisos «Sin correo» de Caja y Staff a text-warn-texto.
+- [x] Añadir P45 sin modificar P15/P20: 720 pruebas pasan; compilación OK. Clientes (lista llena/vacía con código 200/404) y ficha sin correo: 16 escenarios a 360/1280 px en claro/oscuro, axe sin fallas, sin desbordamientos ni errores con respuestas controladas; búsqueda por teclado y Enter comprobadas en Caja.
+- [x] Guardar mediante commit para sincronización de Lovable.
+- [ ] Confirmar GitHub: no hay remoto directo configurado; la subida no se puede verificar desde aquí.
+- [ ] Verificar sesión real: /api/auth/refrescar responde 404; revisión privada realizada con respuestas controladas.
+- Archivos: src/routes/clientes.tsx, src/components/caja/paso-ficha.tsx, src/components/staff/plan-negocio.tsx, src/test/p45.test.tsx y roadmap.md. esClienteNuevo, P15/P20, API, estilos, dependencias y service worker intactos.
 
 
 ## P44 — Clientes e invitación en Panel y pasos del registro
