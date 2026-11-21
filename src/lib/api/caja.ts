@@ -1,5 +1,6 @@
 import { api } from "./client";
 import type { AltaRespuesta } from "@/components/caja/caja-extra";
+import type { CumpleanosCaja } from "./cumpleanos";
 
 export interface EstadoPos {
   pin_pos_configurado: boolean;
@@ -59,6 +60,8 @@ export interface ClienteCaja {
   };
   monedero?: { saldo_centavos: number; fecha_vencimiento: string | null; acumula: boolean };
   tarjetas?: TarjetaCliente[];
+  /** Claude (0061): solo si hoy le aplica su beneficio de cumpleaños o ya lo recibió. */
+  cumpleanos?: CumpleanosCaja;
 }
 
 export interface SolicitudRegistro {

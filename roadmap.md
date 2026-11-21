@@ -193,3 +193,9 @@ Pendiente fuera de alcance: publicar y verificar con sesiones reales (el backend
 - [x] QR-A12: el encabezado del registro consulta `POST /api/registro/negocio` con el código en el cuerpo (antes `GET /api/registro/negocio/{codigo}`).
 - [x] Pruebas: p36, p42, p43 y p44 actualizadas solo en lo que cambió; `claude-telefono-prellenado.test.ts` nueva.
 - [x] H3 (comité, 2026-11-20): cerrar sesión da de baja las notificaciones de este navegador (servidor y `PushManager`) antes de `/auth/logout`; si falla, el cierre sigue (`src/lib/api/auth.ts`, `claude-logout-push.test.ts`).
+
+## Claude · Beneficio de cumpleaños, primeras pantallas (2026-11-20, backend 0061)
+- [x] Caja: franja "Cumpleaños de {nombre}" en la ficha con "Entregar beneficio de cumpleaños" (confirmación), "Ya recibió… (cajero)" y "Anular: no se entregó" solo para el dueño el mismo día (`components/caja/franja-cumpleanos.tsx`).
+- [x] Promociones: sección "Beneficio de cumpleaños" (activar, qué le das, cuándo vale) en `/negocio/promociones` (`components/negocio/beneficio-cumpleanos.tsx`), sin ruta nueva.
+- [x] API `src/lib/api/cumpleanos.ts`; prueba `claude-cumpleanos.test.tsx`.
+- [ ] Pendiente: "Cambiar cumpleaños" en la ficha del cliente para el dueño, Excel conectado, notificación de cumpleaños.

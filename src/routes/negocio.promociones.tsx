@@ -11,6 +11,7 @@ import { useError } from "@/components/cuenta/secciones";
 import { EstadoVacio } from "@/components/estado-vacio";
 import { IconoTono } from "@/components/fila-lista";
 import { SeccionNegocio } from "@/components/negocio/comun";
+import { BeneficioCumpleanos } from "@/components/negocio/beneficio-cumpleanos";
 import { NumericKeypad } from "@/components/numeric-keypad";
 import { Cargando } from "@/components/requiere-sesion";
 import { Button } from "@/components/ui/button";
@@ -71,6 +72,7 @@ export function PromocionesNegocio() {
       <Resumen r={resumen.data} />
       <Formulario r={resumen.data} negocio={negocio} />
       <Historial />
+      <BeneficioCumpleanos />
     </>
   );
 }

@@ -11,6 +11,7 @@ import { fechaCorta, pesos } from "@/lib/api/formato";
 import { cn } from "@/lib/utils";
 import { Tecla, useConMouse, useFocoCaja, useTecla } from "./teclado";
 import { avisarError, EncabezadoPaso, nombreCliente, useCaja } from "./caja-contexto";
+import { FranjaCumpleanos } from "./franja-cumpleanos";
 
 export const puedeAcumular = (c: ClienteCaja) => !!c.monedero?.acumula || (c.tarjetas ?? []).some((t) => t.acumula);
 export const puedeCanjear = (c: ClienteCaja) =>
@@ -79,6 +80,7 @@ export function PasoFicha({ ficha, onAccion, onVolver, onRefrescar }: { ficha: C
 
       <div className="grid gap-5 lg:gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
       <div className="flex min-w-0 flex-col gap-5">
+      {ficha.cumpleanos && <FranjaCumpleanos cumple={ficha.cumpleanos} nombre={c.nombre} onRefrescar={onRefrescar} />}
       {c.correo && <div className="flex flex-col gap-3">
         <div className="flex flex-wrap items-center gap-2 text-sm">
           <p className={c.correo.estado === "sin_correo" ? "text-warn" : "text-muted-foreground"}>
