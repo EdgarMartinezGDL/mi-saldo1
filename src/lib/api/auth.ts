@@ -1,5 +1,6 @@
 import { api, setSesion, type Contexto, type Rol, type Sesion } from "./client";
 import { terminarCopia } from "@/lib/sin-conexion-sesion";
+import { desactivarPush } from "@/lib/push-dispositivo";
 
 export type RespuestaLogin =
   | ({ estado: "autenticado" } & Sesion)
@@ -56,6 +57,10 @@ export const cambiarContexto = (body: {
 
 export async function logout() {
   terminarCopia();
+  // Claude (H3 del comité, 2026-11-20): en un celular compartido, quien cierra
+  // sesión deja de recibir sus notificaciones aquí. Se da de baja antes de
+  // /auth/logout (la baja necesita la sesión); si falla, sigue el cierre.
+  await desactivarPush().catch(() => undefined);
   try {
     await api<void>("/api/auth/logout", { method: "POST" });
   } finally {

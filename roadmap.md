@@ -192,3 +192,4 @@ Pendiente fuera de alcance: publicar y verificar con sesiones reales (el backend
 - [x] QR-A8: el teléfono entre registro, login y "Olvidé mi PIN" viaja en `sessionStorage` (`src/lib/telefono-prellenado.ts`) y no en la URL; `/login` y `/recuperar` ya no leen `?telefono=`.
 - [x] QR-A12: el encabezado del registro consulta `POST /api/registro/negocio` con el código en el cuerpo (antes `GET /api/registro/negocio/{codigo}`).
 - [x] Pruebas: p36, p42, p43 y p44 actualizadas solo en lo que cambió; `claude-telefono-prellenado.test.ts` nueva.
+- [x] H3 (comité, 2026-11-20): cerrar sesión da de baja las notificaciones de este navegador (servidor y `PushManager`) antes de `/auth/logout`; si falla, el cierre sigue (`src/lib/api/auth.ts`, `claude-logout-push.test.ts`).
