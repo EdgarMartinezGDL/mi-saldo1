@@ -204,3 +204,8 @@ Pendiente fuera de alcance: publicar y verificar con sesiones reales (el backend
 - [x] API `src/lib/api/cumpleanos.ts`; prueba `claude-cumpleanos.test.tsx`.
 - [ ] Pendiente: "Cambiar cumpleaños" en la ficha del cliente para el dueño, Excel conectado, notificación de cumpleaños.
 - [x] Ficha del cliente (dueño, `/clientes`): "Cumpleaños: …" y "Cambiar cumpleaños" (día y mes, solo este negocio). El botón **solo aparece si el backend responde `cambio_disponible: true`**: hoy está apagado hasta que exista el aviso al cliente (`components/negocio/cumpleanos-cliente.tsx`).
+
+## Claude · Errores de la Caja con explicación (2026-11-21, prueba de campo, opción C)
+- [x] `avisarError` (`components/caja/caja-contexto.tsx`): si el mensaje no cabe en el título (más de 26 caracteres), el título queda "No se pudo completar" y el texto completo va en la descripción (antes se perdía). Se conservan las pistas de intentos y "Disponible".
+- [x] `sin_configuracion` en Caja: título "Falta configurar" y "El dueño debe configurarlo en Negocio antes de usarlo en la Caja." (en la prueba, Nevería sin monedero configurado solo decía "No se pudo completar").
+- [x] Prueba `claude-caja-errores.test.ts` (3 de 4 fallan con el código anterior).
