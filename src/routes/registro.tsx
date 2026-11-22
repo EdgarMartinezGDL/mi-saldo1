@@ -150,9 +150,9 @@ export function Registro() {
       <p>Al aprobarlo te llegará un WhatsApp para activar tu app.</p>
       <Button variant="secondary" className="min-h-12" onClick={() => { setResultado(null); setError(null); }}>Corregir mis datos</Button>
     </div> : resultado?.estado === "cuenta_existente" ? <div className="flex flex-col gap-4">
-      <p>Entra con tu número y tu PIN para unirte a {nombreNegocio}.</p>
+      <p>Entra con tu número y tu PIN de acceso (6 dígitos) para unirte a {nombreNegocio}.</p>
       <Button className="min-h-12" onClick={() => iniciarSesion(datos.telefono.replace(/\D/g, ""))}>Iniciar sesión</Button>
-      <Button asChild variant="secondary" className="min-h-12"><Link to="/recuperar" onClick={() => guardarTelefonoPrellenado(datos.telefono)}>Olvidé mi PIN</Link></Button>
+      <Button asChild variant="secondary" className="min-h-12"><Link to="/recuperar" onClick={() => guardarTelefonoPrellenado(datos.telefono)}>Olvidé mi PIN de acceso</Link></Button>
       <Button asChild variant="secondary" className="min-h-12"><Link to="/activar">Nunca activé mi cuenta</Link></Button>
       <p className="text-sm text-muted-foreground">También puedes pedirle al cajero que te registre con tu número.</p>
     </div> : <form noValidate onSubmit={solicitar} className="flex flex-col gap-4">

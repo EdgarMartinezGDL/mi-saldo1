@@ -145,7 +145,7 @@ function Selector({ onCerrar, abierto }: { onCerrar: () => void; abierto: boolea
       switch (err?.codigo) {
         case "requiere_pin":
           setFalta((x) => ({ ...x, pin: true }));
-          setAviso("Escribe tu PIN de acceso para continuar.");
+          setAviso("Escribe tu PIN de acceso (6 dígitos) para continuar.");
           break;
         case "requiere_totp":
           setFalta((x) => ({ ...x, totp: true }));
@@ -153,7 +153,7 @@ function Selector({ onCerrar, abierto }: { onCerrar: () => void; abierto: boolea
           break;
         case "pin_incorrecto":
           setPin("");
-          setAviso(`PIN incorrecto.${intentos}`);
+          setAviso(`PIN de acceso (6 dígitos) incorrecto.${intentos}`);
           break;
         case "codigo_incorrecto":
           setCodigo("");
@@ -202,7 +202,7 @@ function Selector({ onCerrar, abierto }: { onCerrar: () => void; abierto: boolea
         <p className="rounded-xl bg-secondary px-4 py-3 text-base font-semibold">{etiquetaContexto(elegido)}</p>
         {falta.pin && (
           <label className="flex flex-col gap-2 text-base font-medium">
-            Tu PIN de acceso
+            PIN de acceso (6 dígitos)
             <CampoPin
               inputMode="numeric"
               autoComplete="current-password"

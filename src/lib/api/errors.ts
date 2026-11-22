@@ -38,16 +38,16 @@ const MENSAJES: Record<string, string> = {
   codigo_invalido: "El código del cliente no es correcto.",
   // Canjes
   saldo_insuficiente: "El cliente no tiene saldo suficiente.",
-  sin_codigo: "El cliente aún no ha definido su código de canje en la app.",
-  bloqueado: "El código de canje del cliente está bloqueado temporalmente.",
+  sin_codigo: "El cliente aún no ha definido su PIN de canje (4 dígitos) en la app.",
+  bloqueado: "El PIN de canje (4 dígitos) del cliente está bloqueado temporalmente.",
   bloqueado_alerta: "Código bloqueado 24 h por muchos intentos. Le avisamos al cliente.",
-  requiere_cambio: "El cliente debe cambiar su código de canje desde su app.",
+  requiere_cambio: "El cliente debe cambiar su PIN de canje (4 dígitos) desde su app.",
   sin_tarjeta_completa: "El cliente no tiene premios de esta tarjeta por canjear.",
   tarjeta_vencida: "El premio de esta tarjeta ya venció.",
   totp_cancelado: "Acción cancelada: falta confirmar con tu app autenticadora.",
   // Cliente
   solo_cliente: "Esta pantalla es solo para clientes.",
-  pin_incorrecto: "PIN incorrecto.",
+  pin_incorrecto: "PIN de acceso (6 dígitos) incorrecto.",
   modulo_invalido: "Filtro no válido.",
   cursor_invalido: "No se pudo cargar más. Recarga la pantalla.",
   // Dueño
@@ -82,7 +82,7 @@ const MENSAJES: Record<string, string> = {
   cambios_invalidos: "No hay cambios válidos para guardar.",
   // Enlaces de WhatsApp
   enlace_invalido: "El enlace no es válido, venció o ya se usó. Pide al negocio que te lo reenvíe.",
-  pin_debil: "Elige un PIN menos predecible.",
+  pin_debil: "Elige un PIN de acceso (6 dígitos) menos predecible.",
   codigo_trivial: "Ese código es muy fácil de adivinar.",
   ya_activada: "Tu cuenta ya está activa.",
   codigo_agotado: "Usaste todos los intentos de este código. Pide uno nuevo.",
@@ -104,7 +104,7 @@ export function mensajeDeError(
     return min ? `Demasiados intentos. Intenta de nuevo en ${min} min.` : "Demasiados intentos. Espera un momento.";
   }
   if (codigo && MENSAJES[codigo]) return MENSAJES[codigo];
-  if (status === 401) return "Teléfono o PIN incorrectos.";
+  if (status === 401) return "Teléfono o PIN de acceso (6 dígitos) incorrectos.";
   if (status === 400 && Array.isArray(message)) return "Revisa los datos del formulario";
   if (typeof message === "string" && message && message !== codigo) return message;
   return "Algo salió mal. Intenta de nuevo.";

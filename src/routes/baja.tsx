@@ -16,7 +16,7 @@ export const Route = createFileRoute("/baja")({
   head: () => ({
     meta: [
       { title: "Darme de baja · Mi Saldo Vip" },
-      { name: "description", content: "Baja voluntaria de un negocio: revisa lo que pierdes antes de confirmar con tu PIN." },
+      { name: "description", content: "Baja voluntaria de un negocio: revisa lo que pierdes antes de confirmar con tu PIN de acceso (6 dígitos)." },
       { property: "og:title", content: "Darme de baja · Mi Saldo Vip" },
       { property: "og:description", content: "Baja inmediata e irreversible con vista previa de tu saldo y sellos." },
       { property: "og:type", content: "website" },
@@ -99,12 +99,12 @@ function Formulario({ onHecha }: { onHecha: () => void }) {
               {vista.referidos_pendientes > 0 && <li>{plural(vista.referidos_pendientes, "recomendación pendiente", "recomendaciones pendientes")}</li>}
               {vista.cuenta_se_elimina && <li>Tu cuenta de Mi Saldo Vip se elimina por completo.</li>}
             </ul>
-            <p className="mt-4 text-sm text-muted-foreground">Es inmediato y no se puede deshacer. Escribe tu PIN para confirmar.</p>
+            <p className="mt-4 text-sm text-muted-foreground">Es inmediato y no se puede deshacer. Escribe tu PIN de acceso (6 dígitos) para confirmar.</p>
             <CampoPin
               className="mt-2 h-12 text-center font-mono text-xl tracking-[0.4em]"
               inputMode="numeric"
               maxLength={128}
-              placeholder="PIN"
+              placeholder="PIN de acceso (6 dígitos)"
               value={pin}
               onChange={(e) => setPin(e.target.value)}
             />

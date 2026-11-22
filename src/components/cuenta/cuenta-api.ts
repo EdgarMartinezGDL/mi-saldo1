@@ -42,16 +42,28 @@ export interface MisCodigos {
 export const consultarCodigos = (pin: string) =>
   api<MisCodigos>("/api/perfil/codigos/consulta", { method: "POST", body: { pin } });
 
+export const verPinAcumulacion = () =>
+  api<{ codigo_acumulacion: string | null }>("/api/perfil/codigos/acumulacion");
+
+export interface PinCanjeConsultado {
+  codigo_canje: string | null;
+  estado: "disponible" | "sin_codigo" | "sin_copia";
+  codigo_canje_bloqueado_hasta: string | null;
+  codigo_canje_requiere_cambio: boolean;
+}
+export const verPinCanje = (pin: string) =>
+  api<PinCanjeConsultado>("/api/perfil/codigos/canje/consulta", { method: "POST", body: { pin } });
+
 export const cambiarCodigos = (body: { pin: string; codigo_acumulacion?: string; codigo_canje?: string }) =>
   api<{ codigo_acumulacion_actualizado: boolean; codigo_canje_actualizado: boolean; advertencias: string[] }>(
     "/api/perfil/codigos", { method: "PUT", body });
 
 /** Spanish wording for codes these screens add on top of src/lib/api/errors.ts. */
 export const MENSAJES_CUENTA: Record<string, string> = {
-  pin_incorrecto: "PIN incorrecto",
+  pin_incorrecto: "PIN de acceso (6 dígitos) incorrecto",
   codigo_trivial: "Los códigos no pueden ser una secuencia (1234) ni repetir el mismo dígito (1111)",
   pin_debil: "Usa 6 dígitos sin secuencias (123456) ni repetidos (111111).",
-  pin_igual: "El PIN nuevo debe ser distinto al actual.",
+  pin_igual: "El PIN de acceso nuevo (6 dígitos) debe ser distinto al actual.",
   requiere_sesion_con_2fa: "Tienes verificación en dos pasos: haz este cambio desde tu sesión de dueño.",
   mismo_correo: "Ese ya es tu correo.",
   codigo_invalido: "El código del correo no es correcto.",

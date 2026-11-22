@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { useRecargaVisible } from "@/lib/use-recarga-visible";
 import { fechaTarjeta } from "@/lib/fecha-tarjeta";
 import { InvitarInstalar } from "@/components/invitar-instalar";
+import { TusPines } from "@/components/cuenta/tus-pines";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -233,10 +234,12 @@ function ClienteInicio() {
           </section>
         )}
 
+        {sesion?.contexto.rol === "cliente" && <TusPines key={sesion.contexto.negocio_id} telefono={yo?.telefono ?? ""} />}
+
         <section className="rounded-2xl bg-card p-5 ring-1 ring-border">
           <h2 className="text-lg font-semibold tracking-tight">Para usar tu saldo o premio</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Dicta tu código de canje de 4 dígitos al cajero. Nunca lo compartas con nadie más.
+            Dicta tu PIN de canje (4 dígitos) al cajero. Nunca lo compartas con nadie más.
           </p>
           {hayReferidos && <Button size="lg" variant="link" className="mt-2 px-0" asChild>
             <Link to="/referidos">

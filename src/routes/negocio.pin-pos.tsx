@@ -61,7 +61,7 @@ function PinPos({ cfg }: { cfg: ConfiguracionNegocio }) {
       actualizar((c) => ({ ...c, negocio: { ...c.negocio, pin_pos_configurado: true } }));
     } catch (e) {
       if (e instanceof ApiError && e.codigo === "pin_incorrecto") {
-        setErrorPin("Tu PIN de acceso es incorrecto");
+        setErrorPin("Tu PIN de acceso (6 dígitos) es incorrecto");
         const restantes = e.extras["intentos_restantes"];
         setIntentos(typeof restantes === "number" ? restantes : null);
       } else mostrarError(e);
@@ -78,7 +78,7 @@ function PinPos({ cfg }: { cfg: ConfiguracionNegocio }) {
       </p>
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
         <div className="flex flex-col gap-2">
-          <Label htmlFor="pin" className="text-base">Tu PIN de acceso (con el que entras a la app)</Label>
+          <Label htmlFor="pin" className="text-base">PIN de acceso (6 dígitos)</Label>
           <CampoPin id="pin" inputMode="numeric" maxLength={128} value={pin} onChange={(e) => setPin(e.target.value)} className="h-14 text-center font-mono text-xl tracking-[0.4em]" />
           <p className="text-sm text-muted-foreground">Lo pedimos para confirmar que eres tú.</p>
           {errorPin && <div role="alert" className="text-base font-semibold text-destructive"><p>{errorPin}</p>{intentos !== null && <p>{textoIntentos(intentos)}</p>}</div>}

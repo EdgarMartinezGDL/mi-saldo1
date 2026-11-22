@@ -149,7 +149,7 @@ export function PasoAcumular({ telefono, ficha, onVolver, onHecho }: Props) {
           </div>
         )}
         {pideCodigo && (
-          <CampoDigitos botonRef={teclado.codigoRef} tecladoFisico={!ocupado} compacto={teclado.conMouse} etiqueta="Código de acumulación del cliente" ayuda="4 dígitos, lo ve en su app" valor={codigo} onChange={(v) => { if (!ocupado) setCodigo(v); }} largo={4} activo={teclado.conMouse || campo === "codigo" || !porMonto} onActivar={() => setCampo("codigo")} />
+          <CampoDigitos botonRef={teclado.codigoRef} tecladoFisico={!ocupado} compacto={teclado.conMouse} etiqueta="PIN de acumulación del cliente (4 dígitos)" ayuda="4 dígitos, lo ve en su app" valor={codigo} onChange={(v) => { if (!ocupado) setCodigo(v); }} largo={4} activo={teclado.conMouse || campo === "codigo" || !porMonto} onActivar={() => setCampo("codigo")} />
         )}
         {conVigencia && tarjeta && <div className="rounded-xl bg-warning/15 p-3 text-base text-foreground">
           <p>⏳ <strong>Con esta compra, la tarjeta "{tarjeta.nombre}" vence el {vencimientoRenovado(vigencia, zona)} si el cliente no vuelve a comprar.</strong> Cada compra renueva la fecha. Si vence, pierde los sellos y el monto acumulado de esta tarjeta (no su saldo ni otras tarjetas).</p>
@@ -238,7 +238,7 @@ export function PasoCanjear({ telefono, ficha, onVolver, onHecho }: Props) {
         ) : tarjeta ? (
           <p className="text-lg">Premio: <span className="font-semibold">{premio}</span></p>
         ) : null}
-        <CampoDigitos botonRef={teclado.codigoRef} tecladoFisico={!ocupado} compacto={teclado.conMouse} etiqueta="Código de canje del cliente" ayuda="4 dígitos, lo ve en su app" valor={codigo} onChange={(v) => { if (!ocupado) setCodigo(v); }} largo={4} activo={teclado.conMouse || campo === "codigo" || !esMonedero} onActivar={() => setCampo("codigo")} />
+        <CampoDigitos botonRef={teclado.codigoRef} tecladoFisico={!ocupado} compacto={teclado.conMouse} etiqueta="PIN de canje del cliente (4 dígitos)" ayuda="4 dígitos, lo ve en su app" valor={codigo} onChange={(v) => { if (!ocupado) setCodigo(v); }} largo={4} activo={teclado.conMouse || campo === "codigo" || !esMonedero} onActivar={() => setCampo("codigo")} />
         <Button ref={confirmarRef} type="submit" size="lg" className="h-16 w-full scroll-mb-24 text-xl" disabled={!listo || ocupado}>
           <Gift className="size-6" /> Canjear<Tecla>Enter</Tecla>
         </Button>

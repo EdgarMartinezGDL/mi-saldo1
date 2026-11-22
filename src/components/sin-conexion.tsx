@@ -20,10 +20,10 @@ export function PantallaSinConexion() {
           <p className="mt-1 text-sm text-muted-foreground">Actualizado el {instante(copia.actualizado_en)}</p></div>
         <h1 className="text-2xl font-semibold">{copia.nombre}</h1>
         <section className="rounded-xl bg-secondary p-4">
-          <h2 className="text-sm font-medium">Código de acumulación</h2>
+          <h2 className="text-sm font-medium">PIN de acumulación (4 dígitos)</h2>
           {copia.codigo_acumulacion ? <><p className="mt-2 font-mono text-5xl font-bold tabular-nums">{copia.codigo_acumulacion}</p>
             <p className="mt-2 text-sm text-secondary-foreground">Díctalo en caja para sumar saldo o sellos.</p></> :
-            <p className="mt-2 text-sm text-secondary-foreground">Abre «Mis códigos» con conexión para guardarlo en este teléfono.</p>}
+            <p className="mt-2 text-sm text-secondary-foreground">Abre «Mis PINes» con conexión para guardarlo en este teléfono.</p>}
         </section>
         {copia.negocios.map((n) => <article key={n.negocio_id} className="rounded-2xl bg-card p-5 ring-1 ring-border">
           <h2 className="text-lg font-semibold">{n.nombre_comercial}</h2>
@@ -31,7 +31,7 @@ export function PantallaSinConexion() {
           {n.tarjetas.map((t, i) => <div key={i} className="mt-3 border-t border-border pt-3"><p className="font-medium">{t.nombre}</p>
             <p className="text-sm text-muted-foreground">{t.sellos_actuales}/{t.sellos_requeridos} sellos · {plural(t.premios_por_canjear, "premio listo", "premios listos")}</p></div>)}
         </article>)}
-        <p className="text-sm text-muted-foreground">Tu código de canje nunca se guarda en el teléfono. Si lo olvidaste, cámbialo cuando tengas conexión.</p>
+        <p className="text-sm text-muted-foreground">Tu PIN de canje (4 dígitos) nunca se guarda en el teléfono. Si lo olvidaste, cámbialo cuando tengas conexión.</p>
       </> : <p role="status">Sin conexión. Conéctate a internet para entrar.</p>}
       <Button size="lg" disabled={ocupado} onClick={async () => { setOcupado(true); try { await reintentar(); } finally { setOcupado(false); } }}>Reintentar</Button>
     </main>

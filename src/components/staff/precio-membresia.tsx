@@ -25,7 +25,7 @@ const fechaPrecio = (iso: string) => new Intl.DateTimeFormat("es-MX", {
 
 function DatosPrecio({ precio }: { precio: PrecioMembresia }) {
   return <>
-    <p className="text-sm text-muted-foreground">Desde el {fechaPrecio(precio.desde)} · por {precio.staff.nombre} · confirmado con {precio.factor === "totp" ? "autenticador" : "PIN"}</p>
+    <p className="text-sm text-muted-foreground">Desde el {fechaPrecio(precio.desde)} · por {precio.staff.nombre} · confirmado con {precio.factor === "totp" ? "autenticador" : "PIN de acceso (6 dígitos)"}</p>
     <p className="break-words text-sm">“{precio.motivo}”</p>
   </>;
 }
@@ -82,7 +82,7 @@ function DialogoPrecio({ vigente, onCerrar }: { vigente: PrecioMembresia | null;
     const fallo = !valido ? { campo: "precio", mensaje: "Escribe el precio en pesos, de $10.00 a $100,000.00 (ej. 299.99)." }
       : m.length < 5 || m.length > 200 ? { campo: "motivo", mensaje: "Escribe el motivo (mínimo 5 caracteres)." }
       : factor === "totp" && !/^\d{6}$/.test(secreto) ? { campo: "secreto", mensaje: "Escribe los 6 dígitos de tu app autenticadora." }
-      : factor === "pin" && (secreto.length < 4 || secreto.length > 128) ? { campo: "secreto", mensaje: "Escribe tu PIN." } : null;
+      : factor === "pin" && (secreto.length < 4 || secreto.length > 128) ? { campo: "secreto", mensaje: "Escribe tu PIN de acceso (6 dígitos)." } : null;
     if (fallo) {
       setError(fallo.mensaje);
       const campo = formulario.elements.namedItem(fallo.campo);
@@ -120,8 +120,8 @@ function DialogoPrecio({ vigente, onCerrar }: { vigente: PrecioMembresia | null;
             <p className="text-sm text-muted-foreground">{precioValido ? `Los dueños pagarán ${pesos(centavos)} MXN al mes` : "De $10.00 a $100,000.00."}</p></div>
           <div className="flex flex-col gap-1.5"><Label htmlFor="precio-motivo">Motivo del cambio</Label><Textarea id="precio-motivo" name="motivo" autoComplete="off" value={motivo} maxLength={200} placeholder="Precio de lanzamiento" onChange={cambiarMotivo} onInput={cambiarMotivo} /><p className="text-xs text-muted-foreground">{motivo.length}/200 caracteres</p></div>
           <fieldset className="flex flex-col gap-2"><legend className="mb-2 text-sm font-medium">Confirma que eres tú</legend>
-            {([ ["totp", "Código del autenticador"], ["pin", "Mi PIN"] ] as const).map(([f, texto]) => <label key={f} className="flex items-center gap-2 text-sm"><input type="radio" name="precio-factor" value={f} checked={factor === f} onChange={() => { setFactor(f); setSecreto(""); setError(null); }} />{texto}</label>)}
-            <CampoFactor key={factor} factor={factor} name="secreto" aria-label={factor === "totp" ? "Código del autenticador" : "Mi PIN"} inputMode="numeric" autoComplete={factor === "totp" ? "one-time-code" : "off"} data-1p-ignore={factor === "pin" ? "true" : undefined} data-lpignore={factor === "pin" ? "true" : undefined} maxLength={factor === "totp" ? 6 : 128} value={secreto} onChange={cambiarSecreto} onInput={cambiarSecreto} />
+            {([ ["totp", "Código del autenticador"], ["pin", "PIN de acceso (6 dígitos)"] ] as const).map(([f, texto]) => <label key={f} className="flex items-center gap-2 text-sm"><input type="radio" name="precio-factor" value={f} checked={factor === f} onChange={() => { setFactor(f); setSecreto(""); setError(null); }} />{texto}</label>)}
+            <CampoFactor key={factor} factor={factor} name="secreto" aria-label={factor === "totp" ? "Código del autenticador" : "PIN de acceso (6 dígitos)"} inputMode="numeric" autoComplete={factor === "totp" ? "one-time-code" : "off"} data-1p-ignore={factor === "pin" ? "true" : undefined} data-lpignore={factor === "pin" ? "true" : undefined} maxLength={factor === "totp" ? 6 : 128} value={secreto} onChange={cambiarSecreto} onInput={cambiarSecreto} />
           </fieldset>
         </fieldset>
         {precioValido && centavos !== vigente?.precio_mensual_centavos && <p className="text-sm">El precio cambia de {vigente ? `${pesos(vigente.precio_mensual_centavos)} MXN` : "sin precio"} a {pesos(centavos)} MXN. Las órdenes que ya existen conservan su monto.</p>}

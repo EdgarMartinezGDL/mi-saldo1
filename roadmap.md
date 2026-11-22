@@ -209,3 +209,10 @@ Pendiente fuera de alcance: publicar y verificar con sesiones reales (el backend
 - [x] `avisarError` (`components/caja/caja-contexto.tsx`): si el mensaje no cabe en el título (más de 26 caracteres), el título queda "No se pudo completar" y el texto completo va en la descripción (antes se perdía). Se conservan las pistas de intentos y "Disponible".
 - [x] `sin_configuracion` en Caja: título "Falta configurar" y "El dueño debe configurarlo en Negocio antes de usarlo en la Caja." (en la prueba, Nevería sin monedero configurado solo decía "No se pudo completar").
 - [x] Prueba `claude-caja-errores.test.ts` (3 de 4 fallan con el código anterior).
+
+## P46 · Tus PINes
+- [ ] Tarjeta de cliente con consulta al tocar, confirmación y cambio del PIN de canje.
+- [ ] Borrar secretos a los 30 segundos, al ocultar la pestaña, salir o cambiar de negocio.
+- [ ] Unificar nombres de PIN sin cambiar lógica ni campos de API.
+- [ ] Pruebas P46, regresiones y revisión visual/accesibilidad.
+- [ ] Commit; comprobar disponibilidad de sincronización con GitHub.

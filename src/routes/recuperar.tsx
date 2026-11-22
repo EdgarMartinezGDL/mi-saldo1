@@ -18,9 +18,9 @@ import { leerTelefonoPrellenado, olvidarTelefonoPrellenado } from "@/lib/telefon
 export const Route = createFileRoute("/recuperar")({
   head: () => ({
     meta: [
-      { title: "Olvidé mi PIN · Mi Saldo Vip" },
+      { title: "Olvidé mi PIN de acceso · Mi Saldo Vip" },
       { name: "description", content: "Recupera el acceso a Mi Saldo Vip con un código por WhatsApp o correo." },
-      { property: "og:title", content: "Olvidé mi PIN · Mi Saldo Vip" },
+      { property: "og:title", content: "Olvidé mi PIN de acceso · Mi Saldo Vip" },
       { property: "og:description", content: "Verifica tu teléfono y crea un PIN nuevo." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -94,7 +94,7 @@ function Recuperar() {
   });
 
   const errorPin = pin.length === 6 && PIN_SIMPLE(pin) ? "Usa 6 dígitos sin secuencias (123456) ni repetidos (111111)." :
-    pin2.length === 6 && pin !== pin2 ? "Los dos PIN no coinciden." : null;
+    pin2.length === 6 && pin !== pin2 ? "Los dos PIN de acceso (6 dígitos) no coinciden." : null;
 
   const guardar = () => correr(async () => {
     if (!verif) return;
@@ -103,8 +103,8 @@ function Recuperar() {
       pin,
       ...(verif.puede_cambiar_codigo_canje && canje.length === 4 ? { codigo_canje: canje } : {}),
     });
-    toast.success(`Listo: tu PIN se cambió. Cerramos tu sesión en los demás dispositivos (${r.sesiones_cerradas})`);
-    if (r.codigo_canje_restringido_hasta) setNota(`Por seguridad, podrás cambiar tu código de canje después del ${instante(r.codigo_canje_restringido_hasta)}`);
+    toast.success(`Listo: tu PIN de acceso (6 dígitos) se cambió. Cerramos tu sesión en los demás dispositivos (${r.sesiones_cerradas})`);
+    if (r.codigo_canje_restringido_hasta) setNota(`Por seguridad, podrás cambiar tu PIN de canje (4 dígitos) después del ${instante(r.codigo_canje_restringido_hasta)}`);
     else setNota(null);
     setPin(""); setPin2(""); setCanje("");
     setSesionPendiente(r.sesion);
@@ -119,7 +119,7 @@ function Recuperar() {
         <div className="mb-6 flex items-center gap-3">
           <div className="grid size-11 place-items-center rounded-full bg-primary text-primary-foreground"><LifeBuoy className="size-5" /></div>
           <div>
-            <h1 className="text-2xl font-semibold tracking-tight">Olvidé mi PIN</h1>
+            <h1 className="text-2xl font-semibold tracking-tight">Olvidé mi PIN de acceso</h1>
             <p className="text-sm text-muted-foreground">Recupera el acceso to tu cuenta</p>
           </div>
         </div>
@@ -172,27 +172,27 @@ function Recuperar() {
         {paso === "pin" && verif && (
           <form className="flex flex-col gap-4" onSubmit={(e) => { e.preventDefault(); void guardar(); }}>
             <div className="flex flex-col gap-2">
-              <Label htmlFor="p1">PIN nuevo (6 dígitos)</Label>
+              <Label htmlFor="p1">PIN de acceso nuevo (6 dígitos)</Label>
               <CampoPin id="p1" inputMode="numeric" autoComplete="new-password" maxLength={6} className={campo}
                 value={pin} onChange={(e) => setPin(e.target.value.replace(/\D/g, ""))} />
             </div>
             <div className="flex flex-col gap-2">
-              <Label htmlFor="p2">Repite el PIN nuevo</Label>
+              <Label htmlFor="p2">Confirma el PIN de acceso nuevo (6 dígitos)</Label>
               <CampoPin id="p2" inputMode="numeric" autoComplete="new-password" maxLength={6} className={campo}
                 value={pin2} onChange={(e) => setPin2(e.target.value.replace(/\D/g, ""))} />
             </div>
             {verif.puede_cambiar_codigo_canje && (
               <div className="flex flex-col gap-2">
-                <Label htmlFor="canje">Nuevo código de canje (4 dígitos)</Label>
-                <CampoPin etiquetaMostrar="código de canje" id="canje" inputMode="numeric" maxLength={4} className={campo}
+                <Label htmlFor="canje">PIN de canje nuevo (4 dígitos)</Label>
+                <CampoPin etiquetaMostrar="PIN de canje (4 dígitos)" id="canje" inputMode="numeric" maxLength={4} className={campo}
                   value={canje} onChange={(e) => setCanje(e.target.value.replace(/\D/g, ""))} />
-                <p className="text-xs text-muted-foreground">Si también olvidaste tu código de canje, cámbialo aquí</p>
+                <p className="text-xs text-muted-foreground">Si también olvidaste tu PIN de canje (4 dígitos), cámbialo aquí</p>
               </div>
             )}
             {errorPin && <p className="text-sm text-destructive">{errorPin}</p>}
             <Button type="submit" size="lg"
               disabled={ocupado || pin.length !== 6 || pin !== pin2 || !!errorPin || (canje.length > 0 && canje.length !== 4)}>
-              {ocupado ? "Guardando…" : "Guardar PIN nuevo"}
+              {ocupado ? "Guardando…" : "Guardar PIN de acceso (6 dígitos) de acceso nuevo (6 dígitos)"}
             </Button>
           </form>
         )}

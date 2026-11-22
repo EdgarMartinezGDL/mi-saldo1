@@ -113,11 +113,11 @@ export function MisDatos() {
   };
 
   const guardarPin = async () => {
-    if (nuevo !== repite) { toast.error("Los dos PIN nuevos no coinciden."); return; }
+    if (nuevo !== repite) { toast.error("Los dos PIN de acceso nuevos (6 dígitos) no coinciden."); return; }
     setOcupado(true);
     try {
       const r = await conTotp(() => cambiarPin(actual, nuevo));
-      toast.success("PIN actualizado", { description: r.sesiones_cerradas ? "Cerramos tu sesión en los otros dispositivos." : undefined });
+      toast.success("PIN de acceso actual (6 dígitos)izado", { description: r.sesiones_cerradas ? "Cerramos tu sesión en los otros dispositivos." : undefined });
       limpiar();
       setAbierto(null);
     } catch (e) {
@@ -165,11 +165,11 @@ export function MisDatos() {
       {correoSinConfirmar && <p className="mt-2 text-sm text-muted-foreground">Sin confirmar: recibe tus avisos, pero no sirve para recuperar tu acceso. Confírmalo con «Confirmar correo».</p>}
       <p className="mt-2 text-xs text-muted-foreground">Tu nombre lo corrige el negocio o soporte de Mi Saldo Vip.</p>
       <div className="mt-4 grid gap-2 sm:grid-cols-2">
-        <Button variant={abierto === "pin" ? "default" : "secondary"} size="lg" className="h-14 justify-start text-base" onClick={() => { limpiar(); setAbierto(abierto === "pin" ? null : "pin"); }}>
-          <KeyRound className={cn("size-5", abierto !== "pin" && "text-primary-texto")} /> Cambiar PIN
+        <Button variant={abierto === "pin" ? "default" : "secondary"} size="lg" className="h-auto min-h-14 whitespace-normal justify-start text-base" onClick={() => { limpiar(); setAbierto(abierto === "pin" ? null : "pin"); }}>
+          <KeyRound className={cn("size-5", abierto !== "pin" && "text-primary-texto")} /> Cambiar PIN de acceso (6 dígitos)
           {abierto === "pin" ? <ChevronDown className="ml-auto size-5" /> : <ChevronRight className="ml-auto size-5 text-secondary-foreground" />}
         </Button>
-        <Button variant={abierto === "correo" ? "default" : "secondary"} size="lg" className="h-14 justify-start text-base" onClick={() => { limpiar(); if (abierto !== "correo") setCorreo(correoSinConfirmar ?? ""); setAbierto(abierto === "correo" ? null : "correo"); }}>
+        <Button variant={abierto === "correo" ? "default" : "secondary"} size="lg" className="h-auto min-h-14 whitespace-normal justify-start text-base" onClick={() => { limpiar(); if (abierto !== "correo") setCorreo(correoSinConfirmar ?? ""); setAbierto(abierto === "correo" ? null : "correo"); }}>
           <Mail className={cn("size-5", abierto !== "correo" && "text-primary-texto")} /> {data?.correo ? "Cambiar correo" : correoSinConfirmar ? "Confirmar correo" : "Agregar correo"}
           {abierto === "correo" ? <ChevronDown className="ml-auto size-5" /> : <ChevronRight className="ml-auto size-5 text-secondary-foreground" />}
         </Button>
@@ -177,11 +177,11 @@ export function MisDatos() {
 
       {abierto === "pin" && (
         <div ref={refPin} className="mt-4 grid gap-3 border-t border-border pt-4">
-          <label className="grid gap-2 font-medium">PIN actual<CampoPin inputMode="numeric" maxLength={128} value={actual} onChange={(e) => setActual(e.target.value)} className={campoPin} /></label>
-          <label className="grid gap-2 font-medium">PIN nuevo (6 dígitos)<CampoPin inputMode="numeric" maxLength={6} value={nuevo} onChange={(e) => setNuevo(soloDigitos(e.target.value))} className={campoPin} /></label>
-          <label className="grid gap-2 font-medium">Repite el PIN nuevo<CampoPin inputMode="numeric" maxLength={6} value={repite} onChange={(e) => setRepite(soloDigitos(e.target.value))} className={campoPin} /></label>
+          <label className="grid gap-2 font-medium">PIN de acceso actual (6 dígitos)<CampoPin inputMode="numeric" maxLength={128} value={actual} onChange={(e) => setActual(e.target.value)} className={campoPin} /></label>
+          <label className="grid gap-2 font-medium">PIN de acceso nuevo (6 dígitos)<CampoPin inputMode="numeric" maxLength={6} value={nuevo} onChange={(e) => setNuevo(soloDigitos(e.target.value))} className={campoPin} /></label>
+          <label className="grid gap-2 font-medium">Confirma el PIN de acceso nuevo (6 dígitos)<CampoPin inputMode="numeric" maxLength={6} value={repite} onChange={(e) => setRepite(soloDigitos(e.target.value))} className={campoPin} /></label>
           <Button size="lg" className="h-14 text-base" disabled={ocupado || actual.length < 4 || nuevo.length !== 6 || repite.length !== 6} onClick={() => void guardarPin()}>
-            {ocupado ? "Guardando…" : "Guardar PIN nuevo"}
+            {ocupado ? "Guardando…" : "Guardar PIN de acceso (6 dígitos) de acceso nuevo (6 dígitos)"}
           </Button>
         </div>
       )}
@@ -191,7 +191,7 @@ export function MisDatos() {
           {!esperandoCodigo ? (
             <>
               <label className="grid gap-2 font-medium">Correo nuevo<Input type="email" inputMode="email" value={correo} onChange={(e) => setCorreo(e.target.value)} className="h-14 text-base" placeholder="tucorreo@ejemplo.mx" /></label>
-              <label className="grid gap-2 font-medium">Tu PIN<CampoPin inputMode="numeric" maxLength={128} value={actual} onChange={(e) => setActual(e.target.value)} className={campoPin} /></label>
+              <label className="grid gap-2 font-medium">PIN de acceso (6 dígitos)<CampoPin inputMode="numeric" maxLength={128} value={actual} onChange={(e) => setActual(e.target.value)} className={campoPin} /></label>
               <Button size="lg" className="h-14 text-base" disabled={ocupado || !/^\S+@\S+\.\S+$/.test(correo.trim()) || actual.length < 4} onClick={() => void pedirCodigo()}>
                 {ocupado ? "Enviando…" : "Enviar código"}
               </Button>
@@ -281,7 +281,7 @@ export function Seguridad({ staff = false }: { staff?: boolean }) {
 
       {paso === "pin" && (
         <div className="mt-4 grid gap-3">
-          <label className="grid gap-2 font-medium">Tu PIN<CampoPin inputMode="numeric" maxLength={128} value={pin} onChange={(e) => setPin(e.target.value)} className={campoPin} /></label>
+          <label className="grid gap-2 font-medium">PIN de acceso (6 dígitos)<CampoPin inputMode="numeric" maxLength={128} value={pin} onChange={(e) => setPin(e.target.value)} className={campoPin} /></label>
           <div className="flex gap-2">
             <Button variant="outline" size="lg" className="h-14 flex-1" onClick={() => setPaso("nada")}>Cancelar</Button>
             <Button size="lg" className="h-14 flex-1" disabled={ocupado || pin.length < 4} onClick={() => void correr(async () => { setQr(await activarTotp(pin)); setPin(""); setPaso("qr"); })}>
@@ -319,7 +319,7 @@ export function Seguridad({ staff = false }: { staff?: boolean }) {
 
       {paso === "desactivar" && (
         <div className="mt-4 grid gap-3">
-          <label className="grid gap-2 font-medium">Tu PIN<CampoPin inputMode="numeric" maxLength={128} value={pin} onChange={(e) => setPin(e.target.value)} className={campoPin} /></label>
+          <label className="grid gap-2 font-medium">PIN de acceso (6 dígitos)<CampoPin inputMode="numeric" maxLength={128} value={pin} onChange={(e) => setPin(e.target.value)} className={campoPin} /></label>
           <label className="grid gap-2 font-medium">Código de tu app<Input inputMode="numeric" autoComplete="one-time-code" maxLength={6} value={codigo} onChange={(e) => setCodigo(soloDigitos(e.target.value))} className={campoPin} /></label>
           <div className="flex gap-2">
             <Button variant="outline" size="lg" className="h-14 flex-1" onClick={() => setPaso("nada")}>Cancelar</Button>
@@ -448,7 +448,7 @@ export function NotificacionesDispositivo() {
                 <span className="min-w-0 text-base">Vencimientos<span className="mt-1 block text-sm text-secondary-foreground">Antes de que venza tu saldo o una tarjeta de sellos.</span></span>
                 <Switch aria-label="Vencimientos" checked={guardando?.vencimientos ?? preferencias.data.vencimientos} disabled={guardando !== null} onCheckedChange={(v) => void cambiarPreferencia("vencimientos", v)} />
               </label>
-              <p className="text-xs text-muted-foreground">Los avisos de seguridad (tu PIN y tus accesos) siempre llegan por WhatsApp y correo.</p>
+              <p className="text-xs text-muted-foreground">Los avisos de seguridad (tu PIN de acceso (6 dígitos) y tus accesos) siempre llegan por WhatsApp y correo.</p>
             </div>
           )}
           {promo && !promo.acepta_promociones && (

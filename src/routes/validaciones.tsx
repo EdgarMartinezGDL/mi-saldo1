@@ -113,7 +113,7 @@ function Pendiente({ v, onResuelta, onSesionCerrada }: { v: Validacion; onResuel
       if (e instanceof ApiError && e.status === 401) return onSesionCerrada();
       if (e instanceof ApiError && e.codigo === "pin_incorrecto") {
         const n = e.extras["intentos_restantes"];
-        setError(typeof n === "number" ? (n === 1 ? "PIN incorrecto, te queda 1 intento." : `PIN incorrecto, te quedan ${n} intentos.`) : "PIN incorrecto.");
+        setError(typeof n === "number" ? (n === 1 ? "PIN de acceso (6 dígitos) incorrecto, te queda 1 intento." : `PIN de acceso (6 dígitos) incorrecto, te quedan ${n} intentos.`) : "PIN de acceso (6 dígitos) incorrecto.");
         setPin("");
       } else setError(e instanceof ApiError ? e.message : "Algo salió mal. Intenta de nuevo.");
     } finally {
@@ -129,7 +129,7 @@ function Pendiente({ v, onResuelta, onSesionCerrada }: { v: Validacion; onResuel
         {error && <Alerta>{error}</Alerta>}
         {pidiendoPin ? (
           <div ref={refPin} className="flex flex-col gap-3">
-            <CampoDigitos revelable etiqueta="Escribe tu PIN para confirmar" valor={pin} onChange={setPin} largo={6} limite={128} activo onActivar={() => {}} />
+            <CampoDigitos revelable etiqueta="Escribe tu PIN de acceso (6 dígitos) para confirmar" valor={pin} onChange={setPin} largo={6} limite={128} activo onActivar={() => {}} />
             <Button size="lg" disabled={cargando || pin.length < 4 || pin.length > 128}
               onClick={() => void correr(() => confirmarMiValidacion(v.validacion_id, pin))}>
               {cargando ? "Confirmando…" : "Confirmar"}

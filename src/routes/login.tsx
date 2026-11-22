@@ -32,9 +32,9 @@ export const Route = createFileRoute("/login")({
   head: () => ({
     meta: [
       { title: "Entrar · Mi Saldo Vip" },
-      { name: "description", content: "Entra a Mi Saldo Vip con tu teléfono y tu PIN." },
+      { name: "description", content: "Entra a Mi Saldo Vip con tu teléfono y tu PIN de acceso (6 dígitos)." },
       { property: "og:title", content: "Entrar · Mi Saldo Vip" },
-      { property: "og:description", content: "Acceso con teléfono, PIN y verificación en dos pasos." },
+      { property: "og:description", content: "Acceso con teléfono, PIN de acceso (6 dígitos) y verificación en dos pasos." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -68,7 +68,7 @@ function Login() {
   const pedirConfirmacion = (e: FormEvent) => {
     e.preventDefault();
     if (telefono.replace(/\D/g, "").length !== 10) return setError("Escribe los 10 dígitos de tu teléfono.");
-    if (pin.length < 4 || pin.length > 128) return setError("Escribe tu PIN (de 4 a 128 caracteres).");
+    if (pin.length < 4 || pin.length > 128) return setError("Escribe tu PIN de acceso (6 dígitos).");
     setError(null);
     setConfirmando(true);
   };
@@ -155,14 +155,14 @@ function Login() {
                 value={telefono} onChange={(e) => setTelefono(e.target.value.replace(/[^\d ]/g, ""))} />
             </div>
             <div className="flex flex-col gap-2">
-              <Label htmlFor="pin" className="text-lg font-medium">PIN</Label>
+              <Label htmlFor="pin" className="text-lg font-medium">PIN de acceso (6 dígitos)</Label>
               <CampoPin ref={campoPin} id="pin" inputMode="numeric" autoComplete="current-password" maxLength={128} className="h-14 text-xl md:text-xl"
                 value={pin} onChange={(e) => setPin(e.target.value)} />
             </div>
             <Button type="submit" size="lg" className="h-14 w-full text-lg" disabled={cargando}>{cargando ? "Entrando…" : "Entrar"}</Button>
             <Link to="/recuperar" onClick={() => guardarTelefonoPrellenado(telefono)}
               className="inline-flex min-h-11 min-w-11 items-center justify-center text-center text-base font-medium text-primary-texto hover:underline">
-              Olvidé mi PIN
+              Olvidé mi PIN de acceso
             </Link>
           </form>
         )}

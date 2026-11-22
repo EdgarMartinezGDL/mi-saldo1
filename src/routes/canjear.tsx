@@ -14,10 +14,10 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/canjear")({
   head: () => ({
     meta: [
-      { title: "Mis códigos · Mi Saldo Vip" },
-      { name: "description", content: "Tu saldo y tus premios listos para cobrar en caja con tu código de canje." },
-      { property: "og:title", content: "Mis códigos · Mi Saldo Vip" },
-      { property: "og:description", content: "Dicta tu código de canje de 4 dígitos al cajero para usar saldo o premios." },
+      { title: "Mis PINes · Mi Saldo Vip" },
+      { name: "description", content: "Tu saldo y tus premios listos para cobrar en caja con tu PIN de canje (4 dígitos)." },
+      { property: "og:title", content: "Mis PINes · Mi Saldo Vip" },
+      { property: "og:description", content: "Dicta tu PIN de canje (4 dígitos) al cajero para usar saldo o premios." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -41,9 +41,9 @@ function Canjear() {
     <AppShell>
       <div className="flex flex-col gap-6">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Mis códigos</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Mis PINes</h1>
           <p className="mt-1 text-base text-muted-foreground">
-            Dicta estos códigos en caja. Sirven en todos tus negocios. El cajero nunca debe pedirte tu PIN.
+            Dicta tu PIN de acumulación (4 dígitos) o tu PIN de canje (4 dígitos) en caja. Sirven en todos tus negocios. El cajero nunca debe pedirte tu PIN de acceso (6 dígitos).
           </p>
         </div>
         <TarjetaMisCodigos />

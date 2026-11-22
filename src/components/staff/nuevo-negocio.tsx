@@ -121,7 +121,7 @@ export function NuevoNegocio({ abierto, onAbierto, onCreado, onIrWhatsapp }: {
       <SheetContent side={movil ? "bottom" : "right"} className={movil ? "max-h-[92dvh] overflow-y-auto rounded-t-2xl pb-24" : "w-full overflow-y-auto sm:max-w-lg"}>
         <SheetHeader className="text-left">
           <SheetTitle>Nuevo negocio</SheetTitle>
-          <SheetDescription>El dueño recibe una invitación por WhatsApp para definir su PIN.</SheetDescription>
+          <SheetDescription>El dueño recibe una invitación por WhatsApp para definir su PIN de acceso (6 dígitos).</SheetDescription>
         </SheetHeader>
         {listo ? (
           <div className="mt-4 flex flex-col gap-3">
@@ -131,7 +131,7 @@ export function NuevoNegocio({ abierto, onAbierto, onCreado, onIrWhatsapp }: {
             {listo.repetido && <p className="text-sm text-muted-foreground">Esta alta ya se había registrado.</p>}
             <p className="text-sm">
               {listo.invitacion_vence_en
-                ? `Le enviamos una invitación por WhatsApp para definir su PIN; vence el ${instante(listo.invitacion_vence_en)}`
+                ? `Le enviamos una invitación por WhatsApp para definir su PIN de acceso (6 dígitos); vence el ${instante(listo.invitacion_vence_en)}`
                 : "La persona ya tenía cuenta: le avisamos de su negocio nuevo"}
             </p>
             <Button size="lg" onClick={() => onAbierto(false)}>Cerrar</Button>

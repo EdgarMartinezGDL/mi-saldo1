@@ -80,18 +80,18 @@ function Formulario({ token, versionAvisoAceptada, onError, onListo, onYaActiva,
     <form onSubmit={enviar} className="flex flex-col gap-4">
       <div className="rounded-xl bg-secondary p-3 text-sm">
         <p className="font-semibold">Vas a crear 3 claves:</p>
-        <p><strong>PIN de la app:</strong> para entrar a Mi Saldo Vip.</p>
-        <p><strong>Código de acumulación (4 dígitos):</strong> se lo dices al cajero para que te sume saldo o sellos.</p>
-        <p><strong>Código de canje (4 dígitos):</strong> se lo dices al cajero para usar tu saldo o tus premios. No lo compartas.</p>
+        <p><strong>PIN de acceso (6 dígitos):</strong> para entrar a Mi Saldo Vip.</p>
+        <p><strong>PIN de acumulación (4 dígitos):</strong> se lo dices al cajero para que te sume saldo o sellos.</p>
+        <p><strong>PIN de canje (4 dígitos):</strong> se lo dices al cajero para usar tu saldo o tus premios. No lo compartas.</p>
       </div>
-      <CampoDigitos revelable etiqueta="Tu PIN (6 dígitos)" ayuda="Con él entras a la app." valor={pin} onChange={setPin} largo={6}
+      <CampoDigitos revelable etiqueta="PIN de acceso (6 dígitos)" ayuda="Con él entras a la app." valor={pin} onChange={setPin} largo={6}
         activo={campo === "pin"} onActivar={() => setCampo("pin")} />
-      <CampoDigitos revelable etiquetaMostrar="código de acumulación" etiqueta="Código de acumulación (4 dígitos)" ayuda="4 dígitos, por ejemplo 5821. Lo dices en caja para que te acumulen."
+      <CampoDigitos revelable etiquetaMostrar="PIN de acumulación (4 dígitos)" etiqueta="PIN de acumulación (4 dígitos)" ayuda="4 dígitos, por ejemplo 5821. Lo dices en caja para que te acumulen."
         valor={acumulacion} onChange={setAcumulacion} largo={4} activo={campo === "acum"} onActivar={() => setCampo("acum")} />
-      <CampoDigitos revelable etiquetaMostrar="código de canje" etiqueta="Código de canje (4 dígitos)" ayuda="4 dígitos, por ejemplo 7394. Solo tú lo conoces; protege tu saldo."
+      <CampoDigitos revelable etiquetaMostrar="PIN de canje (4 dígitos)" etiqueta="PIN de canje (4 dígitos)" ayuda="4 dígitos, por ejemplo 7394. Solo tú lo conoces; protege tu saldo."
         valor={canje} onChange={setCanje} largo={4} activo={campo === "canje"} onActivar={() => setCampo("canje")} />
       <p className="text-sm text-muted-foreground">Evita secuencias (1234) y números repetidos (0000)</p>
-      {acumulacion.length === 4 && canje === acumulacion && <Alerta tono="aviso">Tus códigos de acumulación y canje son iguales.</Alerta>}
+      {acumulacion.length === 4 && canje === acumulacion && <Alerta tono="aviso">Tus PINes de acumulación (4 dígitos) y de canje (4 dígitos) son iguales.</Alerta>}
       <div className="flex flex-col gap-2">
         <Label htmlFor="correo">Correo (opcional)</Label>
         <Input id="correo" type="email" autoComplete="email" className="h-12 text-lg" value={correo}

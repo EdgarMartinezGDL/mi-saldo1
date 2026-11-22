@@ -9,12 +9,12 @@ import { ConfirmarMotivo, errorStaff } from "./comun";
 import { useDesplazarAlAbrir } from "@/lib/use-desplazar";
 
 const MOTIVOS_PIN: Record<MotivoRestablecimiento, string> = {
-  tiene_correo: "Tiene correo registrado: que use «Olvidé mi PIN».",
+  tiene_correo: "Tiene correo registrado: que use «Olvidé mi PIN de acceso».",
   sin_rol_negocio: "Solo dueños y empleados.",
   cuenta_sin_activar: "La cuenta aún no se activa: reenvía su invitación.",
   es_staff: "Los miembros de Staff no se restablecen aquí.",
   persona_eliminada: "La persona se eliminó.",
-  propio: "Tu propio PIN lo recuperas con «Olvidé mi PIN».",
+  propio: "Tu propio PIN de acceso (6 dígitos) lo recuperas con «Olvidé mi PIN de acceso».",
 };
 const hora = (iso: string) => new Date(iso).toLocaleTimeString("es-MX", { hour: "2-digit", minute: "2-digit" });
 export const motivoPinValido = (m: string) => m.trim().length >= 5 && m.trim().length <= 500;
@@ -41,13 +41,13 @@ export function RestablecerPinStaff({ personaId, nombre, abierto, onAbrir, onCer
     return () => { vigente = false; };
   }, [personaId]);
   return <div className="flex flex-col gap-2">
-    <Button size="sm" variant="secondary" className="self-start" disabled={!estado?.puede} onClick={onAbrir}>Restablecer PIN</Button>
+    <Button size="sm" variant="secondary" className="self-start" disabled={!estado?.puede} onClick={onAbrir}>Restablecer PIN de acceso (6 dígitos)</Button>
     {estado?.motivo && !estado.puede && <p className="text-sm text-muted-foreground">{MOTIVOS_PIN[estado.motivo]}</p>}
     {error && <Button size="sm" variant="ghost" className="self-start" onClick={() => void cargar()}>Volver a revisar</Button>}
     {estado?.enlace_vigente_hasta && <p className="text-sm text-muted-foreground">Hay un enlace vigente hasta las {hora(estado.enlace_vigente_hasta)}; si autorizas otro, el anterior deja de servir.</p>}
     {resultado && <p role="status" className="text-sm">{resultado}</p>}
     {abierto && estado?.puede && <div ref={ref} className="grid gap-3 rounded-xl p-3 ring-1 ring-border">
-      <p className="text-sm text-muted-foreground">Antes de autorizar, verifica su identidad por llamada o identificación. Le llegará un enlace por WhatsApp para que defina su PIN; tú nunca lo ves.</p>
+      <p className="text-sm text-muted-foreground">Antes de autorizar, verifica su identidad por llamada o identificación. Le llegará un enlace por WhatsApp para que defina su PIN de acceso (6 dígitos); tú nunca lo ves.</p>
       <Label htmlFor="pin-motivo">Motivo</Label>
       <Textarea id="pin-motivo" value={motivo} maxLength={500} onChange={(e) => setMotivo(e.target.value)} />
       <div className="flex flex-wrap gap-2"><Button variant="outline" onClick={onCerrar}>Cancelar</Button>

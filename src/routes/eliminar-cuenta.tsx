@@ -87,7 +87,7 @@ function Formulario({ onHecha }: { onHecha: () => void }) {
         setVista((v) => (v ? { ...v, puede_eliminarse: false, otros_roles: Array.isArray(otros) ? (otros as VistaEliminacion["otros_roles"]) : v.otros_roles } : v));
       }
       const r = err?.extras["intentos_restantes"];
-      toast.error(err?.codigo === "pin_incorrecto" ? "PIN incorrecto" : err?.message ?? "No se pudo eliminar tu cuenta.", {
+      toast.error(err?.codigo === "pin_incorrecto" ? "PIN de acceso (6 dígitos) incorrecto" : err?.message ?? "No se pudo eliminar tu cuenta.", {
         description: typeof r === "number" ? `${textoIntentos(r)}.` : undefined,
       });
       setPin("");
@@ -130,7 +130,7 @@ function Formulario({ onHecha }: { onHecha: () => void }) {
               Tu cuenta, tu teléfono y tu correo se borran de Mi Saldo Vip en todos tus negocios. No se puede deshacer.
             </p>
             <CampoPin className="mt-3 h-12 text-center font-mono text-xl tracking-[0.4em]" inputMode="numeric" maxLength={128}
-              placeholder="PIN" aria-label="Tu PIN" value={pin} onChange={(e) => setPin(e.target.value)} />
+              placeholder="PIN de acceso (6 dígitos)" aria-label="PIN de acceso (6 dígitos)" value={pin} onChange={(e) => setPin(e.target.value)} />
             <Button variant="destructive" size="lg" className="mt-4 h-auto min-h-12 w-full whitespace-normal" disabled={pin.length < 4 || enviando} onClick={() => setConfirmar(true)}>
               Sí, eliminar mi cuenta y perder todo
             </Button>

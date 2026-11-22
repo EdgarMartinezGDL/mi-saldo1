@@ -16,7 +16,7 @@ import { Tarjeta, useError } from "./secciones";
 import { escritorCopia } from "@/lib/sin-conexion-sesion";
 
 function CampoCodigo({ tipo, ...props }: Omit<ComponentProps<typeof Input>, "type"> & { tipo: Tipo }) {
-  return tipo === "canje" ? <CampoPin etiquetaMostrar="código de canje" {...props} /> : <Input type="text" {...props} />;
+  return tipo === "canje" ? <CampoPin etiquetaMostrar="PIN de canje (4 dígitos)" {...props} /> : <Input type="text" {...props} />;
 }
 
 const soloDigitos = (v: string) => v.replace(/\D/g, "");
@@ -67,7 +67,7 @@ export function TarjetaMisCodigos() {
   const abrirCambio = (t: Tipo) => { setCambiando(t); setNuevo(""); setRepite(""); };
 
   const validar = () => {
-    if (nuevo !== repite) { toast.error("Los dos códigos no coinciden."); return; }
+    if (nuevo !== repite) { toast.error("Los dos PINes (4 dígitos) no coinciden."); return; }
     if (esTrivial(nuevo)) { toast.error("Los códigos no pueden ser una secuencia (1234) ni repetir el mismo dígito (1111)"); return; }
     setConfirmar(true);
   };
@@ -79,7 +79,7 @@ export function TarjetaMisCodigos() {
     try {
       const body = cambiando === "canje" ? { pin, codigo_canje: nuevo } : { pin, codigo_acumulacion: nuevo };
       const r = await cambiarCodigos(body);
-      toast.success(`Código de ${NOMBRE[cambiando]} actualizado`, { description: [cambiando === "canje" ? "Te avisamos por WhatsApp y correo. Si estaba bloqueado, ya quedó desbloqueado." : "", ...(r.advertencias ?? [])].filter(Boolean).join(" ") || undefined });
+      toast.success(`PIN de ${NOMBRE[cambiando]} (4 dígitos) actualizado`, { description: [cambiando === "canje" ? "Te avisamos por WhatsApp y correo. Si estaba bloqueado, ya quedó desbloqueado." : "", ...(r.advertencias ?? [])].filter(Boolean).join(" ") || undefined });
       setCambiando(null); setNuevo(""); setRepite("");
       await consultar();
     } catch (e) {
@@ -93,51 +93,51 @@ export function TarjetaMisCodigos() {
   const bloqueoFuturo = datos?.codigo_canje_bloqueado_hasta && new Date(datos.codigo_canje_bloqueado_hasta).getTime() > Date.now();
 
   return (
-    <Tarjeta titulo="Mis códigos" icono={<KeyRound className="size-5 text-primary-texto" />}>
+    <Tarjeta titulo="Mis PINes" icono={<KeyRound className="size-5 text-primary-texto" />}>
       {!datos ? (
         <div className="mt-3 grid gap-3">
-          <p className="text-base text-muted-foreground">Escribe tu PIN para ver tu código de acumulación y el estado de tu código de canje.</p>
-          <label className="grid gap-2 font-medium">Tu PIN
+          <p className="text-base text-muted-foreground">Escribe tu PIN de acceso (6 dígitos) para ver tu PIN de acumulación (4 dígitos) y el estado de tu PIN de canje (4 dígitos).</p>
+          <label className="grid gap-2 font-medium">PIN de acceso (6 dígitos)
             <CampoPin inputMode="numeric" maxLength={128} value={pin} onChange={(e) => setPin(e.target.value)} className={campo} />
           </label>
-          <Button size="lg" className="h-14 text-base" disabled={ocupado || pin.length < 4} onClick={() => void ver()}>
-            {ocupado ? "Revisando…" : "Ver mis códigos"}
+          <Button size="lg" className="h-auto min-h-14 whitespace-normal text-base" disabled={ocupado || pin.length < 4} onClick={() => void ver()}>
+            {ocupado ? "Revisando…" : "Ver mis PINes"}
           </Button>
         </div>
       ) : (
         <div ref={refDatos} className="mt-4 grid gap-4">
           <div className="rounded-xl bg-secondary p-4">
-            <p className="text-sm font-medium">Código de acumulación</p>
+            <p className="text-sm font-medium">PIN de acumulación (4 dígitos)</p>
             {datos.codigo_acumulacion ? (
               <p className="mt-1 font-mono text-5xl font-bold tracking-[0.3em] tabular-nums">{datos.codigo_acumulacion}</p>
             ) : (
-              <p className="mt-1 text-base">Aún no tienes código de acumulación</p>
+              <p className="mt-1 text-base">Aún no tienes PIN de acumulación (4 dígitos)</p>
             )}
             <p className="mt-1 text-sm text-secondary-foreground">Para sumar saldo o sellos</p>
           </div>
 
           <div className="rounded-xl bg-secondary p-4">
-            <p className="text-sm font-medium">Código de canje</p>
+            <p className="text-sm font-medium">PIN de canje (4 dígitos)</p>
             {datos.tiene_codigo_canje ? (
               <p className="mt-1 font-mono text-5xl font-bold tracking-[0.3em]" aria-label="Código oculto">••••</p>
             ) : (
-              <p className="mt-1 text-base">Aún no tienes código de canje</p>
+              <p className="mt-1 text-base">Aún no tienes PIN de canje (4 dígitos)</p>
             )}
             <p className="mt-1 text-sm text-secondary-foreground">Para usar tu saldo o cobrar premios. No lo mostramos por seguridad: si lo olvidaste, cámbialo.</p>
             {datos.codigo_canje_requiere_cambio ? (
-              <p className="mt-2 flex gap-2 text-sm font-medium text-warn-texto"><TriangleAlert className="size-4 shrink-0" />Tu código de canje está bloqueado por muchos intentos fallidos. Para desbloquearlo, cámbialo.</p>
+              <p className="mt-2 flex gap-2 text-sm font-medium text-warn-texto"><TriangleAlert className="size-4 shrink-0" />Tu PIN de canje (4 dígitos) está bloqueado por muchos intentos fallidos. Para desbloquearlo, cámbialo.</p>
             ) : bloqueoFuturo ? (
-              <p className="mt-2 flex gap-2 text-sm font-medium text-warn-texto"><TriangleAlert className="size-4 shrink-0" /><span>{`Tu código de canje está bloqueado hasta el ${instante(datos.codigo_canje_bloqueado_hasta)}`} <span>Si no fuiste tú quien lo intentó, cámbialo ahora.</span></span></p>
+              <p className="mt-2 flex gap-2 text-sm font-medium text-warn-texto"><TriangleAlert className="size-4 shrink-0" /><span>{`Tu PIN de canje (4 dígitos) está bloqueado hasta el ${instante(datos.codigo_canje_bloqueado_hasta)}`} <span>Si no fuiste tú quien lo intentó, cámbialo ahora.</span></span></p>
             ) : null}
           </div>
 
           {cambiando ? (
             <div ref={refCambio} className="grid gap-3 border-t border-border pt-4">
-              <p className="font-semibold">Cambiar código de {NOMBRE[cambiando]}</p>
-              <label className="grid gap-2 font-medium">Código nuevo
+              <p className="font-semibold">Cambiar PIN de {NOMBRE[cambiando]} (4 dígitos)</p>
+              <label className="grid gap-2 font-medium">PIN de {NOMBRE[cambiando]} nuevo (4 dígitos)
                 <CampoCodigo tipo={cambiando} inputMode="numeric" maxLength={4} value={nuevo} onChange={(e) => setNuevo(soloDigitos(e.target.value).slice(0, 4))} className={campo} />
               </label>
-              <label className="grid gap-2 font-medium">Repite el código nuevo
+              <label className="grid gap-2 font-medium">Confirma el PIN de {NOMBRE[cambiando]} nuevo (4 dígitos)
                 <CampoCodigo tipo={cambiando} inputMode="numeric" maxLength={4} value={repite} onChange={(e) => setRepite(soloDigitos(e.target.value).slice(0, 4))} className={campo} />
               </label>
               <div className="flex gap-2">
@@ -149,11 +149,11 @@ export function TarjetaMisCodigos() {
             </div>
           ) : (
             <div className="grid gap-2 sm:grid-cols-2">
-              <Button variant="secondary" size="lg" className="h-14 text-base" onClick={() => abrirCambio("acumulacion")}>
-                {datos.codigo_acumulacion ? "Cambiar código de acumulación" : "Crear código de acumulación"}
+              <Button variant="secondary" size="lg" className="h-auto min-h-14 whitespace-normal text-base" onClick={() => abrirCambio("acumulacion")}>
+                {datos.codigo_acumulacion ? "Cambiar PIN de acumulación (4 dígitos)" : "Crear PIN de acumulación (4 dígitos)"}
               </Button>
-              <Button variant="secondary" size="lg" className="h-14 text-base" onClick={() => abrirCambio("canje")}>
-                {datos.tiene_codigo_canje ? "Cambiar código de canje" : "Crear código de canje"}
+              <Button variant="secondary" size="lg" className="h-auto min-h-14 whitespace-normal text-base" onClick={() => abrirCambio("canje")}>
+                {datos.tiene_codigo_canje ? "Cambiar PIN de canje (4 dígitos)" : "Crear PIN de canje (4 dígitos)"}
               </Button>
             </div>
           )}
@@ -164,8 +164,8 @@ export function TarjetaMisCodigos() {
       <AlertDialog open={confirmar} onOpenChange={setConfirmar}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>¿Cambiar tu código de {cambiando ? NOMBRE[cambiando] : ""}?</AlertDialogTitle>
-            <AlertDialogDescription>Desde ahora dictarás el código nuevo en caja.</AlertDialogDescription>
+            <AlertDialogTitle>¿Cambiar tu PIN de {cambiando ? NOMBRE[cambiando] : ""} (4 dígitos)?</AlertDialogTitle>
+            <AlertDialogDescription>Desde ahora dictarás el PIN nuevo (4 dígitos) en caja.</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancelar</AlertDialogCancel>

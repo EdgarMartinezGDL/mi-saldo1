@@ -10,9 +10,9 @@ import { consultarRestablecimiento, completarRestablecimiento } from "@/lib/api/
 
 export const Route = createFileRoute("/restablecer-pin")({
   head: () => ({ meta: [
-    { title: "Restablecer PIN · Mi Saldo Vip" },
+    { title: "Restablecer PIN de acceso (6 dígitos) · Mi Saldo Vip" },
     { name: "description", content: "Define tu nuevo PIN con el enlace autorizado por soporte de Mi Saldo Vip." },
-    { property: "og:title", content: "Restablecer PIN · Mi Saldo Vip" },
+    { property: "og:title", content: "Restablecer PIN de acceso (6 dígitos) · Mi Saldo Vip" },
     { property: "og:description", content: "Restablece tu acceso a Mi Saldo Vip mediante un enlace de un solo uso." },
     { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" },
   ] }),
@@ -48,18 +48,18 @@ function RestablecerPin() {
     } finally { setOcupado(false); }
   };
   const campo = "h-12 text-center font-mono text-xl tracking-[0.3em]";
-  return <TarjetaEnlace titulo={datos && !listo && !invalido ? `Hola ${datos.nombre}` : "Restablecer PIN"} icono={<KeyRound className="size-5" />}>
+  return <TarjetaEnlace titulo={datos && !listo && !invalido ? `Hola ${datos.nombre}` : "Restablecer PIN de acceso (6 dígitos)"} icono={<KeyRound className="size-5" />}>
     {token === null || invalido ? <EnlaceNoValido mensaje={INVALIDO} /> : listo ? <>
-      <Alerta tono="ok">Listo. Tu PIN se cambió y cerramos tus sesiones abiertas.</Alerta>
+      <Alerta tono="ok">Listo. Tu PIN de acceso (6 dígitos) se cambió y cerramos tus sesiones abiertas.</Alerta>
       <Button asChild size="lg" className="w-full"><Link to="/login">Entrar</Link></Button>
     </> : <>
       {error && <Alerta>{error}</Alerta>}
       {!datos ? <>{!error ? <p className="text-muted-foreground">Cargando…</p> : <Button disabled={ocupado} onClick={() => void consultar()}>Reintentar</Button>}</> :
         <form className="grid gap-4" onSubmit={(e) => { e.preventDefault(); void guardar(); }}>
           <p className="text-muted-foreground">Define tu nuevo PIN de acceso (6 dígitos).</p>
-          <div className="grid gap-2"><Label htmlFor="rest-pin">PIN nuevo</Label><CampoPin id="rest-pin" inputMode="numeric" autoComplete="new-password" maxLength={6} className={campo} value={pin} onChange={(e) => setPin(e.target.value.replace(/\D/g, "").slice(0, 6))} /></div>
-          <div className="grid gap-2"><Label htmlFor="rest-repite">Repite el PIN</Label><CampoPin id="rest-repite" inputMode="numeric" autoComplete="new-password" maxLength={6} className={campo} value={repite} onChange={(e) => setRepite(e.target.value.replace(/\D/g, "").slice(0, 6))} /></div>
-          <Button type="submit" size="lg" disabled={ocupado || !pinRestablecimientoValido(pin, repite)}>Guardar PIN</Button>
+          <div className="grid gap-2"><Label htmlFor="rest-pin">PIN de acceso nuevo (6 dígitos)</Label><CampoPin id="rest-pin" inputMode="numeric" autoComplete="new-password" maxLength={6} className={campo} value={pin} onChange={(e) => setPin(e.target.value.replace(/\D/g, "").slice(0, 6))} /></div>
+          <div className="grid gap-2"><Label htmlFor="rest-repite">Confirma el PIN de acceso (6 dígitos)</Label><CampoPin id="rest-repite" inputMode="numeric" autoComplete="new-password" maxLength={6} className={campo} value={repite} onChange={(e) => setRepite(e.target.value.replace(/\D/g, "").slice(0, 6))} /></div>
+          <Button type="submit" size="lg" disabled={ocupado || !pinRestablecimientoValido(pin, repite)}>Guardar PIN de acceso (6 dígitos)</Button>
         </form>}
     </>}
   </TarjetaEnlace>;

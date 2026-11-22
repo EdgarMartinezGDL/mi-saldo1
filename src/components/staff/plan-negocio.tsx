@@ -55,7 +55,7 @@ export function BloqueDueno({ d, admin }: { d: DetalleNegocioStaff; admin: boole
         <Button size="sm" variant="secondary" className="mt-2 self-start" disabled={enviando} onClick={() => setConfirmar(true)}>Reenviar invitación</Button>
       )}
       <ConfirmarMotivo abierto={confirmar} onAbierto={setConfirmar} pideMotivo={false} titulo="¿Reenviar la invitación?"
-        descripcion="El dueño recibe un enlace nuevo por WhatsApp para definir su PIN." boton="Sí, reenviar" accion={reenviar} />
+        descripcion="El dueño recibe un enlace nuevo por WhatsApp para definir su PIN de acceso (6 dígitos)." boton="Sí, reenviar" accion={reenviar} />
     </section>
   );
 }
