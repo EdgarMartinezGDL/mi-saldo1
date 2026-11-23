@@ -89,7 +89,7 @@ describe("P15 teclado de Caja", () => {
     expect(monto).toHaveFocus();
     fireEvent.change(monto, { target: { value: "20" } }); monto.focus();
     fireEvent.keyDown(monto, { key: "Enter" });
-    expect(screen.getByRole("button", { name: /Código de canje del cliente/ })).toHaveFocus();
+    expect(screen.getByRole("button", { name: /PIN de canje del cliente/ })).toHaveFocus();
     escribir("1234"); tecla("Enter");
     expect(screen.getByRole("button", { name: "Sí, canjear" })).toHaveFocus();
   });
@@ -163,7 +163,7 @@ describe("P15 teclado de Caja", () => {
     caja(<PasoCanjear telefono="5512345678" ficha={ficha} onVolver={() => {}} onHecho={() => {}} />);
     const monto = screen.getByLabelText("Saldo a usar"); expect(monto).toHaveFocus();
     fireEvent.change(monto, { target: { value: "20" } }); fireEvent.keyDown(monto, { key: "Enter" });
-    expect(screen.getByRole("button", { name: /Código de canje del cliente/ })).toHaveFocus();
+    expect(screen.getByRole("button", { name: /PIN de canje del cliente/ })).toHaveFocus();
     escribir("1234"); tecla("Enter"); expect(screen.getByRole("alertdialog")).toBeInTheDocument();
   });
   it("CampoDigitos físico respeta cuatro dígitos y las props por omisión no capturan", () => {

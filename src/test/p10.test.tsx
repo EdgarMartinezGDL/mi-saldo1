@@ -141,7 +141,7 @@ describe("P10 PIN", () => {
     mocks.estado.mockResolvedValue({ puede: false, motivo, enlace_vigente_hasta: null });
     render(<RestablecerPinStaff personaId="beto" nombre="Beto" abierto={false} onAbrir={() => {}} onCerrar={() => {}} />);
     await waitFor(() => expect(mocks.estado).toHaveBeenCalledWith("beto"));
-    expect(screen.getByRole("button", { name: "Restablecer PIN" })).toBeDisabled(); expect(mocks.autorizar).not.toHaveBeenCalled();
+    expect(screen.getByRole("button", { name: "Restablecer PIN de acceso (6 dígitos)" })).toBeDisabled(); expect(mocks.autorizar).not.toHaveBeenCalled();
   });
   it("requiere confirmación y TOTP, envía solo motivo y vuelve a consultar", async () => {
     mocks.estado.mockResolvedValue({ puede: true, motivo: null, enlace_vigente_hasta: null });

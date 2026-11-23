@@ -107,12 +107,12 @@ describe("P43 Registro y login", () => {
     expect(sessionStorage.getItem("misaldo.telefono-prellenado")).toBe("5510000021");
     cleanup(); m.search = validar({}); render(<Login />);
     expect(screen.getByLabelText("Teléfono (10 dígitos)")).toHaveValue("5510000021");
-    await waitFor(() => expect(screen.getByLabelText("PIN")).toHaveFocus());
+    await waitFor(() => expect(screen.getByLabelText("PIN de acceso (6 dígitos)")).toHaveFocus());
     expect(sessionStorage.getItem("misaldo.telefono-prellenado")).toBeNull();
   });
   it("telefono inválido se ignora", () => {
     sessionStorage.setItem("misaldo.telefono-prellenado", "123");
     m.search = validar({ telefono: "5510000021" }); expect(m.search).toEqual({}); render(<Login />); // Claude: QR-A8, ?telefono= ya no se lee
-    expect(screen.getByLabelText("Teléfono (10 dígitos)")).toHaveValue(""); expect(screen.getByLabelText("PIN")).not.toHaveFocus();
+    expect(screen.getByLabelText("Teléfono (10 dígitos)")).toHaveValue(""); expect(screen.getByLabelText("PIN de acceso (6 dígitos)")).not.toHaveFocus();
   });
 });

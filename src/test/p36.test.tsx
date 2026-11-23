@@ -85,8 +85,8 @@ describe("P36 registro", () => {
       if (!teclado) throw new Error("No hay teclado numérico abierto");
       for (const d of n) fireEvent.click(within(teclado as HTMLElement).getByRole("button", { name: d }));
     };
-    digitos("582047"); fireEvent.click(screen.getByRole("button", { name: /Código de acumulación \(4 dígitos\)/ })); digitos("5821");
-    fireEvent.click(screen.getByRole("button", { name: /Código de canje \(4 dígitos\)/ })); digitos("7394");
+    digitos("582047"); fireEvent.click(screen.getByRole("button", { name: /^PIN de acumulación \(4 dígitos\)$/ })); digitos("5821");
+    fireEvent.click(screen.getByRole("button", { name: /^PIN de canje \(4 dígitos\)$/ })); digitos("7394");
     fireEvent.click(screen.getByRole("button", { name: "Activar mi cuenta" }));
     await waitFor(() => expect(expirado).toHaveBeenCalledOnce());
     expect(m.completar).toHaveBeenCalledWith({ token_activacion: "activacion", pin: "582047", codigo_acumulacion: "5821", codigo_canje: "7394", correo: null, acepta_aviso_privacidad: true, version_aviso: "v1" });

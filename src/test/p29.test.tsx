@@ -58,7 +58,7 @@ afterEach(() => { cleanup(); clientes.splice(0).forEach((c) => c.clear()); vi.us
 describe("P29 PIN POS", () => {
   function llenar(confirmacion: string) {
     pagina(PinRoute);
-    fireEvent.change(screen.getByLabelText("Tu PIN de acceso (con el que entras a la app)"), { target: { value: "4821" } });
+    fireEvent.change(screen.getByLabelText("PIN de acceso (6 dígitos)"), { target: { value: "4821" } });
     fireEvent.change(screen.getByLabelText("Nuevo PIN POS para abrir las cajas"), { target: { value: "582739" } });
     fireEvent.change(screen.getByLabelText("Confirma el nuevo PIN POS"), { target: { value: confirmacion } });
   }
@@ -69,12 +69,12 @@ describe("P29 PIN POS", () => {
   it("identifica el PIN de acceso incorrecto y los dos intentos restantes", async () => {
     m.pin.mockRejectedValue(new ApiError(400, { codigo: "pin_incorrecto", intentos_restantes: 2 })); llenar("582739");
     fireEvent.click(screen.getByRole("button", { name: "Cambiar PIN POS" }));
-    expect(await screen.findByText("Tu PIN de acceso es incorrecto")).toBeInTheDocument(); expect(screen.getByText("Te quedan 2 intentos")).toBeInTheDocument();
+    expect(await screen.findByText("Tu PIN de acceso (6 dígitos) es incorrecto")).toBeInTheDocument(); expect(screen.getByText("Te quedan 2 intentos")).toBeInTheDocument();
   });
   it("vacía los tres campos tras guardar", async () => {
     llenar("582739"); fireEvent.click(screen.getByRole("button", { name: "Cambiar PIN POS" }));
     await waitFor(() => expect(screen.getByLabelText("Confirma el nuevo PIN POS")).toHaveValue(""));
-    expect(screen.getByLabelText("Nuevo PIN POS para abrir las cajas")).toHaveValue(""); expect(screen.getByLabelText("Tu PIN de acceso (con el que entras a la app)")).toHaveValue("");
+    expect(screen.getByLabelText("Nuevo PIN POS para abrir las cajas")).toHaveValue(""); expect(screen.getByLabelText("PIN de acceso (6 dígitos)")).toHaveValue("");
   });
 });
 describe("P29 vencimiento", () => {

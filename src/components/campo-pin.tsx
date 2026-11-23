@@ -27,7 +27,7 @@ export function OjoSecreto({ visible, onClick, etiqueta = "PIN", controls }: {
 }
 
 export const CampoPin = forwardRef<HTMLInputElement, Omit<ComponentProps<typeof Input>, "type"> & { etiquetaMostrar?: string }>(
-  ({ id, className, etiquetaMostrar = "PIN", ...props }, ref) => {
+  ({ id, className, etiquetaMostrar = "PIN de acceso (6 dígitos)", ...props }, ref) => {
     const generado = useId();
     const campoId = id ?? generado;
     const interno = useRef<HTMLInputElement>(null);

@@ -63,7 +63,7 @@ export function EnlaceNoValido({ mensaje = "Este enlace no es válido." }: { men
 }
 
 /** Digit entry with the existing big numeric keypad. */
-export function CampoDigitos({ etiqueta, ayuda, valor, onChange, largo, limite = largo, activo, onActivar, tecladoFisico = false, compacto = false, botonRef, autoComplete, revelable = false, etiquetaMostrar = "PIN" }: {
+export function CampoDigitos({ etiqueta, ayuda, valor, onChange, largo, limite = largo, activo, onActivar, tecladoFisico = false, compacto = false, botonRef, autoComplete, revelable = false, etiquetaMostrar = "PIN de acceso (6 dígitos)" }: {
   etiqueta: string; ayuda?: string; valor: string; onChange: (v: string) => void; largo: number; limite?: number; activo: boolean; onActivar: () => void;
   tecladoFisico?: boolean; compacto?: boolean; botonRef?: RefObject<HTMLButtonElement | null>; autoComplete?: "one-time-code"; revelable?: boolean; etiquetaMostrar?: string;
 }) {

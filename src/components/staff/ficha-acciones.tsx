@@ -232,7 +232,7 @@ export function AccionesPersona({ f, onCambio }: { f: FichaPersona; onCambio: ()
           if (!cambio) return;
           try {
             await conTotp(() => confirmarTelefono(cambio.cambio_id, codigo));
-            toast.success("Listo: entra con su PIN de siempre");
+            toast.success("Listo: entra con su PIN de acceso (6 dígitos) de siempre");
             setCambio(null); setNum(""); setCodigo("");
             setAbierto(null);
             onCambio();

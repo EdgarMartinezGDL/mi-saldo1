@@ -31,7 +31,7 @@ beforeEach(() => {
 });
 afterEach(() => { cleanup(); qc.clear(); vi.useRealTimers(); vi.restoreAllMocks(); });
 function montar(ui: ReactNode = <TusPines telefono="+525512345678" />) { return render(<QueryClientProvider client={qc}>{ui}</QueryClientProvider>); }
-const abrir = () => fireEvent.click(screen.getByRole("button", { name: "Mostrar PIN de canje", exact: true }));
+const abrir = () => fireEvent.click(screen.getByRole("button", { name: "Mostrar PIN de canje" }));
 const escribirAcceso = (valor = "582739") => fireEvent.change(screen.getByLabelText("PIN de acceso (6 dígitos)", { exact: true }), { target: { value: valor } });
 async function revelar() { abrir(); escribirAcceso(); fireEvent.click(screen.getByRole("button", { name: "Ver mi PIN de canje" })); await act(async () => {}); }
 
@@ -111,7 +111,7 @@ describe("P46 secretos efímeros", () => {
 });
 describe("P46 cambio de canje", () => {
   function cambiar(confirmacion = "9753") {
-    fireEvent.click(screen.getByRole("button", { name: "Cambiar PIN de canje", exact: true })); escribirAcceso();
+    fireEvent.click(screen.getByRole("button", { name: "Cambiar PIN de canje" })); escribirAcceso();
     fireEvent.change(screen.getByLabelText("PIN de canje nuevo (4 dígitos)", { exact: true }), { target: { value: "9753" } });
     fireEvent.change(screen.getByLabelText("Confirma tu PIN de canje nuevo (4 dígitos)", { exact: true }), { target: { value: confirmacion } });
   }

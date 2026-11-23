@@ -27,12 +27,12 @@ describe("P39 secretos", () => {
   const ref = createRef<HTMLInputElement>(); const submit = vi.fn((e) => e.preventDefault());
   const vista = render(<form onSubmit={submit}><CampoPin ref={ref} id="secreto" name="pin" aria-label="PIN" defaultValue="582739" inputMode="numeric" autoComplete="current-password" maxLength={128} data-prueba="conservada" /></form>);
   const input = screen.getByLabelText("PIN"); expect(input).toHaveAttribute("type", "password");
-  input.focus(); fireEvent.click(screen.getByRole("button", { name: "Mostrar PIN" }));
+  input.focus(); fireEvent.click(screen.getByRole("button", { name: "Mostrar PIN de acceso (6 dígitos)" }));
   expect(input).toHaveAttribute("type", "text"); expect(input).toHaveValue("582739"); expect(input).toHaveFocus(); expect(ref.current).toBe(input);
   expect(input).toHaveAttribute("data-prueba", "conservada"); expect(input).toHaveAttribute("inputmode", "numeric"); expect(input).toHaveAttribute("maxlength", "128"); expect(input).toHaveAttribute("autocomplete", "current-password");
-  expect(screen.getByRole("button", { name: "Ocultar PIN" })).toHaveAttribute("aria-controls", "secreto");
-  fireEvent.click(screen.getByRole("button", { name: "Ocultar PIN" })); expect(input).toHaveAttribute("type", "password");
-  fireEvent.click(screen.getByRole("button", { name: "Mostrar PIN" })); const form = input.closest("form"); if (!form) throw new Error("Falta formulario"); fireEvent.submit(form);
+  expect(screen.getByRole("button", { name: "Ocultar PIN de acceso (6 dígitos)" })).toHaveAttribute("aria-controls", "secreto");
+  fireEvent.click(screen.getByRole("button", { name: "Ocultar PIN de acceso (6 dígitos)" })); expect(input).toHaveAttribute("type", "password");
+  fireEvent.click(screen.getByRole("button", { name: "Mostrar PIN de acceso (6 dígitos)" })); const form = input.closest("form"); if (!form) throw new Error("Falta formulario"); fireEvent.submit(form);
   expect(submit).toHaveBeenCalledOnce(); expect(input).toHaveAttribute("type", "password");
   vista.unmount(); render(<CampoPin aria-label="PIN" />); expect(screen.getByLabelText("PIN")).toHaveAttribute("type", "password");
  });
@@ -44,9 +44,9 @@ describe("P39 secretos", () => {
  it("casillas revelables y ocultación al enviar sin exponer el secreto en aria-label", () => {
   render(<form onSubmit={(e) => e.preventDefault()}><CampoDigitos revelable etiqueta="Tu PIN" valor="582739" onChange={() => {}} largo={6} activo={false} onActivar={() => {}} /></form>);
   const slots = screen.getByRole("img"); expect(slots).toHaveAttribute("aria-label", "6 de 6 dígitos"); expect(slots).not.toHaveTextContent("5");
-  fireEvent.click(screen.getByRole("button", { name: "Mostrar PIN" })); expect(slots).toHaveTextContent("582739"); expect(document.querySelector("button button")).toBeNull();
-  fireEvent.click(screen.getByRole("button", { name: "Ocultar PIN" })); expect(slots).not.toHaveTextContent("5");
-  fireEvent.click(screen.getByRole("button", { name: "Mostrar PIN" })); const form = slots.closest("form"); if (!form) throw new Error("Falta formulario"); fireEvent.submit(form); expect(slots).not.toHaveTextContent("5");
+  fireEvent.click(screen.getByRole("button", { name: "Mostrar PIN de acceso (6 dígitos)" })); expect(slots).toHaveTextContent("582739"); expect(document.querySelector("button button")).toBeNull();
+  fireEvent.click(screen.getByRole("button", { name: "Ocultar PIN de acceso (6 dígitos)" })); expect(slots).not.toHaveTextContent("5");
+  fireEvent.click(screen.getByRole("button", { name: "Mostrar PIN de acceso (6 dígitos)" })); const form = slots.closest("form"); if (!form) throw new Error("Falta formulario"); fireEvent.submit(form); expect(slots).not.toHaveTextContent("5");
  });
  it("sin revelable no aparece ojo", () => {
   render(<CampoDigitos etiqueta="Código" valor="5827" onChange={() => {}} largo={4} activo={false} onActivar={() => {}} />); expect(screen.queryByRole("button", { name: /Mostrar/ })).toBeNull();
@@ -60,7 +60,7 @@ describe("P39 secretos", () => {
 });
 describe("P39 Entrada y confirmaciones", () => {
  it("Entrada tiene ojo, logo 176 y teléfono ampliado", () => {
-  const Login = routeComponent(LoginRoute); render(<Login />); expect(screen.getByRole("button", { name: "Mostrar PIN" })).toBeInTheDocument();
+  const Login = routeComponent(LoginRoute); render(<Login />); expect(screen.getByRole("button", { name: "Mostrar PIN de acceso (6 dígitos)" })).toBeInTheDocument();
   expect(screen.getByRole("img", { name: "Mi Saldo Vip" })).toHaveAttribute("width", "176"); expect(screen.getByRole("img", { name: "Mi Saldo Vip" })).toHaveAttribute("height", "176"); expect(screen.getByLabelText("Teléfono (10 dígitos)")).toHaveClass("h-14");
  });
  it("confirmación compartida amplía título y acciones", () => {

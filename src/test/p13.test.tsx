@@ -59,8 +59,8 @@ describe("P13 permisos y validación", () => {
     expect(m.api.mock.calls.some(([, o]) => o?.method === "PUT")).toBe(false);
   });
   it.each([[3, false], [4, true], [128, true], [129, false]])("PIN actual de %i válido=%s", (largo, valido) => {
-    montar(); abrir(); fireEvent.click(screen.getByRole("radio", { name: "Mi PIN" }));
-    fireEvent.change(screen.getByLabelText("Mi PIN", { selector: "input:not([type=radio])" }), { target: { value: "7".repeat(largo) } });
+    montar(); abrir(); fireEvent.click(screen.getByRole("radio", { name: "PIN de acceso (6 dígitos)" }));
+    fireEvent.change(screen.getByLabelText("PIN de acceso (6 dígitos)", { selector: "input:not([type=radio])" }), { target: { value: "7".repeat(largo) } });
     m.api.mockReturnValue(new Promise(() => {})); fireEvent.click(screen.getByRole("button", { name: "Guardar precio" }));
     expect(m.api.mock.calls.some(([, o]) => o?.method === "PUT")).toBe(valido);
   });
@@ -82,12 +82,12 @@ describe("P13 cambio y errores", () => {
   });
   it.each(["totp", "pin"])("422 borra solo %s y conserva datos", async (factor) => {
     montar(); abrir();
-    if (factor === "pin") { fireEvent.click(screen.getByRole("radio", { name: "Mi PIN" })); fireEvent.change(screen.getByLabelText("Mi PIN", { selector: "input:not([type=radio])" }), { target: { value: "730194" } }); }
+    if (factor === "pin") { fireEvent.click(screen.getByRole("radio", { name: "PIN de acceso (6 dígitos)" })); fireEvent.change(screen.getByLabelText("PIN de acceso (6 dígitos)", { selector: "input:not([type=radio])" }), { target: { value: "730194" } }); }
     m.api.mockRejectedValue(new ApiError(422, { codigo: factor === "pin" ? "pin_incorrecto" : "codigo_incorrecto", message: "Confirmación incorrecta", intentos_restantes: 4 }));
     fireEvent.click(screen.getByRole("button", { name: "Guardar precio" }));
     await screen.findByRole("alert"); expect(screen.getByRole("alert").textContent).toContain("4 intentos");
     expect(screen.getByLabelText("Precio mensual (MXN)")).toHaveValue("349.00"); expect(screen.getByLabelText("Motivo del cambio")).toHaveValue("Precio de lanzamiento");
-    expect(screen.getByLabelText(factor === "pin" ? "Mi PIN" : "Código del autenticador", { selector: "input:not([type=radio])" })).toHaveValue("");
+    expect(screen.getByLabelText(factor === "pin" ? "PIN de acceso (6 dígitos)" : "Código del autenticador", { selector: "input:not([type=radio])" })).toHaveValue("");
   });
   it("429 convierte Retry-After 900 segundos a 15 minutos", async () => {
     montar(); abrir(); m.api.mockRejectedValue(new ApiError(429, {}, 900)); fireEvent.click(screen.getByRole("button", { name: "Guardar precio" }));
@@ -102,7 +102,7 @@ describe("P13 cambio y errores", () => {
     await screen.findByRole("alert"); expect(screen.getByRole("dialog")).toBeInTheDocument(); expect(m.api.mock.calls.filter(([, o]) => o?.method === "PUT")).toHaveLength(1);
   });
   it("cerrar borra la confirmación y reabre con autenticador vacío", () => {
-    montar(); abrir(); fireEvent.click(screen.getByRole("radio", { name: "Mi PIN" })); fireEvent.change(screen.getByLabelText("Mi PIN", { selector: "input:not([type=radio])" }), { target: { value: "730194" } });
+    montar(); abrir(); fireEvent.click(screen.getByRole("radio", { name: "PIN de acceso (6 dígitos)" })); fireEvent.change(screen.getByLabelText("PIN de acceso (6 dígitos)", { selector: "input:not([type=radio])" }), { target: { value: "730194" } });
     fireEvent.click(screen.getByRole("button", { name: "Cancelar" })); fireEvent.click(screen.getByRole("button", { name: "Cambiar precio" }));
     expect(screen.getByRole("radio", { name: "Código del autenticador" })).toBeChecked(); expect(screen.getByLabelText("Código del autenticador", { selector: "input:not([type=radio])" })).toHaveValue("");
   });
@@ -121,21 +121,21 @@ describe("P13b envío desde formulario", () => {
   });
   it.each(["totp", "pin"])("lee valores visibles sin eventos con %s", (factor) => {
     montar(); abrir();
-    if (factor === "pin") fireEvent.click(screen.getByRole("radio", { name: "Mi PIN" }));
+    if (factor === "pin") fireEvent.click(screen.getByRole("radio", { name: "PIN de acceso (6 dígitos)" }));
     const asignar = (elemento: HTMLElement, valor: string) => {
       const prototipo = elemento instanceof HTMLTextAreaElement ? HTMLTextAreaElement.prototype : HTMLInputElement.prototype;
       Object.getOwnPropertyDescriptor(prototipo, "value")?.set?.call(elemento, valor);
     };
     asignar(screen.getByLabelText("Precio mensual (MXN)"), "299.99");
     asignar(screen.getByLabelText("Motivo del cambio"), "Cambio desde formulario");
-    asignar(screen.getByLabelText(factor === "pin" ? "Mi PIN" : "Código del autenticador", { selector: "input:not([type=radio])" }), "730194");
+    asignar(screen.getByLabelText(factor === "pin" ? "PIN de acceso (6 dígitos)" : "Código del autenticador", { selector: "input:not([type=radio])" }), "730194");
     m.api.mockReturnValue(new Promise(() => {})); fireEvent.click(screen.getByRole("button", { name: "Guardar precio" }));
     expect(m.api.mock.calls.find(([, o]) => o?.method === "PUT")?.[1].body).toEqual({ precio_mensual_centavos: 29999, motivo: "Cambio desde formulario", ...(factor === "pin" ? { pin: "730194" } : { codigo_totp: "730194" }) });
   });
   it.each(["precio", "motivo", "totp", "pin"])("permite intentar con %s vacío y enfoca el campo", (campo) => {
     montar(); abrir();
-    if (campo === "pin") fireEvent.click(screen.getByRole("radio", { name: "Mi PIN" }));
-    const elemento = screen.getByLabelText(campo === "precio" ? "Precio mensual (MXN)" : campo === "motivo" ? "Motivo del cambio" : campo === "pin" ? "Mi PIN" : "Código del autenticador", { selector: "input:not([type=radio]),textarea" });
+    if (campo === "pin") fireEvent.click(screen.getByRole("radio", { name: "PIN de acceso (6 dígitos)" }));
+    const elemento = screen.getByLabelText(campo === "precio" ? "Precio mensual (MXN)" : campo === "motivo" ? "Motivo del cambio" : campo === "pin" ? "PIN de acceso (6 dígitos)" : "Código del autenticador", { selector: "input:not([type=radio]),textarea" });
     fireEvent.change(elemento, { target: { value: "" } });
     const boton = screen.getByRole("button", { name: "Guardar precio" }); expect(boton).toBeEnabled(); fireEvent.click(boton);
     expect(elemento).toHaveFocus(); expect(m.api.mock.calls.some(([, o]) => o?.method === "PUT")).toBe(false);

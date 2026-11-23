@@ -89,7 +89,7 @@ describe("P9 correo sin confirmar en Cuenta", () => {
     fireEvent.click(screen.getByRole("button", { name: "Confirmar correo" }));
     expect(screen.getByLabelText("Correo nuevo")).toHaveValue("ana@ejemplo.mx");
     fireEvent.change(screen.getByLabelText("Correo nuevo"), { target: { value: "ana.luna@ejemplo.mx" } });
-    fireEvent.change(screen.getByLabelText("Tu PIN"), { target: { value: "4927" } });
+    fireEvent.change(screen.getByLabelText("PIN de acceso (6 dígitos)"), { target: { value: "4927" } });
     fireEvent.click(screen.getByRole("button", { name: "Enviar código" }));
     await waitFor(() => expect(mocks.solicitar).toHaveBeenCalledWith("4927", "ana.luna@ejemplo.mx"));
     const codigo = await screen.findByLabelText("Código del correo");

@@ -12,6 +12,7 @@ import { ApiError } from "@/lib/api/client";
 const m = vi.hoisted(() => ({ ficha: vi.fn(), resumen: vi.fn(), perfil: vi.fn(), referidos: vi.fn(), guardar: vi.fn(), actualizar: vi.fn(), invalidar: vi.fn(), updateBusiness: vi.fn(), error: vi.fn(), negocioId: "10000000-0000-4000-8000-00000000d102" }));
 vi.mock("@tanstack/react-router", () => ({
   createFileRoute: () => (options: object) => ({ options }),
+  useNavigate: () => vi.fn(),
   Link: ({ to, children, ...props }: { to: string; children: ReactNode }) => <a {...props} href={to}>{children}</a>,
 }));
 vi.mock("@/components/app-shell", () => ({ AppShell: ({ children }: { children: ReactNode }) => <>{children}</> }));

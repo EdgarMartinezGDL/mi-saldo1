@@ -50,7 +50,7 @@ describe("P31 intentos", () => {
     m.login.mockRejectedValue(new ApiError(401, { codigo: "pin_incorrecto", intentos_restantes: 1 }));
     pagina(LoginRoute);
     fireEvent.change(screen.getByLabelText("Teléfono (10 dígitos)"), { target: { value: "3312345678" } });
-    fireEvent.change(screen.getByLabelText("PIN"), { target: { value: "4821" } });
+    fireEvent.change(screen.getByLabelText("PIN de acceso (6 dígitos)"), { target: { value: "4821" } });
     fireEvent.click(screen.getByRole("button", { name: /^Entrar$/ }));
     fireEvent.click(screen.getByRole("button", { name: "Sí, iniciar sesión" }));
     expect(await screen.findByRole("alert")).toHaveTextContent("Te queda 1 intento.");
@@ -59,7 +59,7 @@ describe("P31 intentos", () => {
   it("PIN POS del dueño muestra el singular", async () => {
     m.rol = "dueno"; m.pin.mockRejectedValue(new ApiError(400, { codigo: "pin_incorrecto", intentos_restantes: 1 }));
     pagina(PinRoute);
-    fireEvent.change(screen.getByLabelText("Tu PIN de acceso (con el que entras a la app)"), { target: { value: "4821" } });
+    fireEvent.change(screen.getByLabelText("PIN de acceso (6 dígitos)"), { target: { value: "4821" } });
     fireEvent.change(screen.getByLabelText("Nuevo PIN POS para abrir las cajas"), { target: { value: "582739" } });
     fireEvent.change(screen.getByLabelText("Confirma el nuevo PIN POS"), { target: { value: "582739" } });
     fireEvent.click(screen.getByRole("button", { name: "Cambiar PIN POS" }));
