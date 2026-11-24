@@ -19,7 +19,7 @@ import { useRecargaVisible } from "@/lib/use-recarga-visible";
 const m = vi.hoisted(() => ({ pin: vi.fn(), resumen: vi.fn(), config: vi.fn(), sellos: vi.fn(), error: vi.fn(), success: vi.fn(), pendientes: 0, rol: "cliente", id: "a" }));
 vi.mock("@tanstack/react-router", () => ({ createFileRoute: () => (options: object) => ({ options }), useRouterState: () => "/", useNavigate: () => vi.fn(), Link: ({ to, children, ...props }: { to: string; children: ReactNode }) => <a href={to} {...props}>{children}</a> }));
 vi.mock("@/components/auth-provider", () => ({ useAuth: () => ({ estado: "autenticado", conectado: true, sesion: { contexto: { rol: m.rol, negocio_id: m.id, nombre_comercial: `Negocio ${m.id}` } } }) }));
-vi.mock("@/components/mis-negocios", () => ({ useMisNegocios: () => ({ varios: false, dialogo: null }) }));
+vi.mock("@/components/mis-negocios", () => ({ useMisNegocios: () => ({ varios: false, dialogo: null }), NegociosCliente: () => null }));
 vi.mock("@/components/cerrar-sesion", () => ({ useCerrarSesion: () => ({ dialogo: null, pedirConfirmacion: vi.fn() }) }));
 vi.mock("@/components/aviso-pendiente", () => ({ AvisoPendiente: () => null }));
 vi.mock("@/lib/use-mis-validaciones", () => ({ useMisValidaciones: () => ({ data: { validaciones: Array.from({ length: m.pendientes }, () => ({ estado: "pendiente" })) } }) }));

@@ -25,6 +25,7 @@ vi.mock("@/components/continuar-sesion", () => ({ ContinuarSesion: () => null, d
 vi.mock("@/components/cerrar-sesion", () => ({ useCerrarSesion: () => ({ dialogo: null, pedirConfirmacion: vi.fn() }) }));
 vi.mock("@/components/mis-negocios", () => ({ useMisNegocios: () => ({ varios: false, dialogo: null }) }));
 vi.mock("@/components/misaldo-provider", () => ({ useMiSaldo: () => ({ theme: "claro", setTheme: vi.fn() }) }));
+vi.mock("@/components/cuenta/mis-codigos", () => ({ TarjetaMisCodigos: () => null }));
 vi.mock("@/components/cuenta/secciones", () => ({ Encabezado: () => null, MisDatos: () => null, NotificacionesDispositivo: () => null, Promociones: () => null, Seguridad: () => null, Tarjeta: ({ children }: { children: ReactNode }) => <>{children}</> }));
 vi.mock("@/components/negocio/asistente", () => ({ useInvalidarAsistente: () => vi.fn(), validarBusquedaAsistente: () => ({}) }));
 vi.mock("@/components/negocio/comun", () => ({ SeccionNegocio: ({ children }: { children: ReactNode }) => <>{children}</>, ConConfig: ({ children }: { children: (c: object) => ReactNode }) => children({ negocio: { pin_pos_configurado: true } }), useConfigNegocio: () => ({ actualizar: vi.fn() }), mostrarError: vi.fn() }));

@@ -128,7 +128,7 @@ describe("U-11 negocios como botones en Inicio", () => {
 describe("U-12 pestaña Premios y PINes en Cuenta", () => {
   it("la barra del cliente dice Premios (misma ruta /canjear)", () => {
     expect(NAV.cliente.map((i) => i.label)).toEqual(["Inicio", "Premios", "Historial", "Cuenta"]);
-    expect(NAV.cliente[1].to).toBe("/canjear");
+    expect(NAV.cliente[1]?.to).toBe("/canjear");
   });
   it("Premios ya no administra los PIN: lo hace Cuenta, con ancla #mis-pines", () => {
     expect(canjearRaw).toContain("Premios");

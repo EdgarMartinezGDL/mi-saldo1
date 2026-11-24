@@ -99,7 +99,7 @@ describe("P16 Reportes", () => {
     await waitFor(() => expect(m.contar).toHaveBeenCalledWith("cumpleaneros", expect.objectContaining({ incluir_archivados: true })));
     fireEvent.click(await r.findByRole("button", { name: "Descargar Excel" }));
     await waitFor(() => expect(m.descargar).toHaveBeenCalledWith("cumpleaneros", expect.objectContaining({ incluir_archivados: true })));
-    fireEvent.click(r.getByRole("checkbox")); expect(r.queryByRole("button", { name: "Descargar Excel" })).toBeNull();
+    fireEvent.click(r.getByRole("checkbox", { name: "Incluir archivados" })); expect(r.queryByRole("button", { name: "Descargar Excel" })).toBeNull();
     fireEvent.click(r.getByRole("button", { name: "Contar" }));
     await waitFor(() => expect(m.contar).toHaveBeenLastCalledWith("cumpleaneros", expect.objectContaining({ incluir_archivados: false })));
   });
