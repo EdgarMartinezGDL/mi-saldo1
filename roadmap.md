@@ -215,3 +215,4 @@ Pendiente fuera de alcance: publicar y verificar con sesiones reales (el backend
 - [x] Secretos solo en memoria del componente; se borran a los 30 s, al ocultar la pestaña, al salir o cambiar de negocio.
 - [x] Nombres de PIN de acceso/acumulación/canje unificados sin cambiar lógica ni campos de API.
 - [x] Pruebas P46 y textos ajustados; axe sin fallas a 360/1280 px en claro y oscuro.
+- [x] Claude (P46b, 2026-11-23): texto de `bienvenida.tsx` con "PIN de acceso (6 dígitos)" y "PIN de canje (4 dígitos)"; prueba `claude-nombres-pin.test.ts` (ningún texto de `src/` vuelve a decir "código de canje/acumulación").
