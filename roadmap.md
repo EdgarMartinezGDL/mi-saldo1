@@ -211,8 +211,7 @@ Pendiente fuera de alcance: publicar y verificar con sesiones reales (el backend
 - [x] Prueba `claude-caja-errores.test.ts` (3 de 4 fallan con el código anterior).
 
 ## P46 · Tus PINes
-- [ ] Tarjeta de cliente con consulta al tocar, confirmación y cambio del PIN de canje.
-- [ ] Borrar secretos a los 30 segundos, al ocultar la pestaña, salir o cambiar de negocio.
-- [ ] Unificar nombres de PIN sin cambiar lógica ni campos de API.
-- [ ] Pruebas P46, regresiones y revisión visual/accesibilidad.
-- [ ] Commit; comprobar disponibilidad de sincronización con GitHub.
+- [x] Tarjeta "Tus PINes" en Inicio: consulta al tocar, PIN de acceso para ver canje, cambio del PIN de canje.
+- [x] Secretos solo en memoria del componente; se borran a los 30 s, al ocultar la pestaña, al salir o cambiar de negocio.
+- [x] Nombres de PIN de acceso/acumulación/canje unificados sin cambiar lógica ni campos de API.
+- [x] Pruebas P46 y textos ajustados; axe sin fallas a 360/1280 px en claro y oscuro.
