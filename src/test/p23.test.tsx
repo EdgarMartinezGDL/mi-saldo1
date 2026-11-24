@@ -117,7 +117,8 @@ describe("P23 branding", () => {
   });
 
   it('"Canjear" del Inicio es un botón de acción', () => {
-    const boton = inicio.match(/<Button size="lg" className="tap-target" asChild>[\s\S]{0,120}to="\/canjear">Canjear/)?.[0] ?? "";
+    // U-12 (2026-11-23): "Canjear" ya no lleva a /canjear; baja a "Tus PINes" en el mismo Inicio.
+    const boton = inicio.match(/<Button size="lg" className="tap-target" onClick=[\s\S]{0,160}Canjear/)?.[0] ?? "";
     expect(boton).toContain("Canjear");
     expect(buttonUi).toMatch(/default:\s*"btn-accion text-accent-foreground/);
   });

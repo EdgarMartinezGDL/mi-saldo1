@@ -36,7 +36,7 @@ type NavItem = { to: string; label: string; icon: LucideIcon; destacado?: boolea
 export const NAV: Record<Role, NavItem[]> = {
   cliente: [
     { to: "/", label: "Inicio", icon: Home },
-    { to: "/canjear", label: "Mis códigos", icon: Gift },
+    { to: "/canjear", label: "Premios", icon: Gift },
     { to: "/historial", label: "Historial", icon: History },
     { to: "/ajustes", label: "Cuenta", icon: UserRound },
   ],

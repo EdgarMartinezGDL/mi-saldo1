@@ -27,7 +27,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ApiError } from "@/lib/api/client";
-import { instante } from "@/lib/api/formato";
+import { diaMes, instante } from "@/lib/api/formato";
 import {
   enviarPromocion,
   historialPromociones,
@@ -56,10 +56,16 @@ export const Route = createFileRoute("/negocio/promociones")({
 
 const DESTINOS = [
   { ruta: "/", nombre: "Inicio" },
-  { ruta: "/canjear", nombre: "Mis recompensas" },
+  { ruta: "/canjear", nombre: "Premios" },
   { ruta: "/referidos", nombre: "Recomienda y gana" },
 ] as const;
 const nombreDestino = (ruta: string) => DESTINOS.find((d) => d.ruta === ruta)?.nombre ?? "Inicio";
+
+/** P47: "today" on the device as AAAA-MM-DD, plus n days (the server checks the range against the business day). */
+const hoyMas = (dias: number, ahora = new Date()) => {
+  const d = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate() + dias);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+};
 
 export function PromocionesNegocio() {
   const { sesion } = useAuth();
@@ -101,7 +107,7 @@ function Resumen({ r }: { r: ResumenPromociones }) {
         </div>
       </div>
       <p className="mt-4 text-xs text-muted-foreground">
-        Límite: {r.limite.por_dia} promoción al día y {r.limite.por_semana} por semana. Solo llega a clientes con notificaciones y promociones activadas.
+        Límite: {r.limite.por_dia} promoción al día y {r.limite.por_semana} por semana. Tus clientes que aceptan promociones la ven en su Inicio; al celular solo llega a quienes activaron las notificaciones.
       </p>
       {!r.totp_activo && (
         <div className="mt-4 flex items-start gap-3 rounded-xl bg-warning/15 p-4 text-sm">
@@ -116,7 +122,7 @@ function Resumen({ r }: { r: ResumenPromociones }) {
         <EstadoVacio
           icono={BellRing}
           titulo="Aún ningún cliente activó las notificaciones"
-          texto="Pídeles que entren a Cuenta en su app y toquen Activar notificaciones."
+          texto="Puedes publicarla igual: la verán en su Inicio. Para que también les llegue al celular, pídeles que entren a Cuenta y toquen Activar notificaciones."
         />
       )}
     </section>
@@ -129,6 +135,8 @@ function Formulario({ r, negocio }: { r: ResumenPromociones; negocio: string }) 
   const [titulo, setTitulo] = useState("");
   const [cuerpo, setCuerpo] = useState("");
   const [ruta, setRuta] = useState<string>("/");
+  const [hasta, setHasta] = useState(() => hoyMas(7));
+  const [errorHasta, setErrorHasta] = useState<string | null>(null);
   const [abierto, setAbierto] = useState(false);
   const [codigo, setCodigo] = useState("");
   const [enviando, setEnviando] = useState(false);
@@ -137,7 +145,9 @@ function Formulario({ r, negocio }: { r: ResumenPromociones; negocio: string }) 
 
   const tituloValido = titulo.trim().length >= 3 && titulo.length <= 50;
   const cuerpoValido = cuerpo.trim().length >= 5 && cuerpo.length <= 150;
-  const puedeEnviar = tituloValido && cuerpoValido && r.totp_activo && r.puede_enviar && r.destinatarios > 0;
+  const hastaValida = !!hasta && hasta >= hoyMas(0) && hasta <= hoyMas(60);
+  // 0070: con 0 dispositivos también se publica (se ve en el Inicio de los clientes).
+  const puedeEnviar = tituloValido && cuerpoValido && hastaValida && r.totp_activo && r.puede_enviar;
 
   const onKey = (k: string) => {
     if (enviando) return;
@@ -162,13 +172,14 @@ function Formulario({ r, negocio }: { r: ResumenPromociones; negocio: string }) 
     if (enviando || codigo.length !== 6) return;
     setEnviando(true);
     try {
-      const res = await enviarPromocion({ titulo: titulo.trim(), cuerpo: cuerpo.trim(), ruta, codigo });
+      const res = await enviarPromocion({ titulo: titulo.trim(), cuerpo: cuerpo.trim(), ruta, codigo, vigente_hasta: hasta });
       setAbierto(false);
       setTitulo("");
       setCuerpo("");
       setRuta("/");
+      setHasta(hoyMas(7));
       setCodigo("");
-      toast.success(`Promoción enviada a ${res.destinatarios} dispositivos`);
+      toast.success(res.destinatarios > 0 ? `Promoción enviada a ${res.destinatarios} dispositivos` : "Promoción publicada en el Inicio de tus clientes");
       void queryClient.invalidateQueries({ queryKey: ["promociones-resumen"] });
       void queryClient.invalidateQueries({ queryKey: ["promociones-historial"] });
     } catch (e) {
@@ -180,7 +191,9 @@ function Formulario({ r, negocio }: { r: ResumenPromociones; negocio: string }) 
       } else {
         setAbierto(false);
         setCodigo("");
-        if (err?.status === 429 && err.codigo === "limite") {
+        if (err?.status === 400 && err.codigo === "vigencia_invalida") {
+          setErrorHasta("Elige una fecha entre hoy y dentro de 60 días.");
+        } else if (err?.status === 429 && err.codigo === "limite") {
           const d = err.extras["disponible_desde"];
           toast.error(`Ya enviaste el máximo de promociones. Podrás enviar otra el ${typeof d === "string" ? instante(d) : "siguiente día disponible"}.`);
         } else {
@@ -221,6 +234,15 @@ function Formulario({ r, negocio }: { r: ResumenPromociones; negocio: string }) 
           </select>
         </div>
         <div className="flex flex-col gap-2">
+          <Label htmlFor="promo-hasta" className="text-base">Visible para tus clientes hasta</Label>
+          <input id="promo-hasta" type="date" value={hasta} min={hoyMas(0)} max={hoyMas(60)}
+            onChange={(e) => { setHasta(e.target.value); setErrorHasta(null); }}
+            aria-describedby="promo-hasta-ayuda" aria-invalid={!!errorHasta || (!!hasta && !hastaValida)}
+            className="h-12 rounded-xl border border-border bg-card px-3 text-base shadow-soft" />
+          <p id="promo-hasta-ayuda" className="text-sm text-muted-foreground">Tus clientes la verán en su Inicio hasta ese día.</p>
+          {(errorHasta || (hasta && !hastaValida)) && <p className="text-sm text-destructive">{errorHasta ?? "Elige una fecha entre hoy y dentro de 60 días."}</p>}
+        </div>
+        <div className="flex flex-col gap-2">
           <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Así se verá</span>
           <div className="rounded-2xl bg-card p-4 shadow-raised ring-1 ring-border">
             <div className="flex items-start gap-3">
@@ -247,7 +269,10 @@ function Formulario({ r, negocio }: { r: ResumenPromociones; negocio: string }) 
             <DialogHeader>
               <DialogTitle>Confirma con tu app autenticadora</DialogTitle>
               <DialogDescription>
-                Se enviará a {r.destinatarios} dispositivos. Escribe el código de 6 dígitos de tu app.
+                {r.destinatarios > 0
+                  ? `Se enviará a ${r.destinatarios} dispositivos y la verán en su Inicio hasta el ${diaMes(hasta)}.`
+                  : `Ningún cliente tiene las notificaciones activas: la verán en su Inicio hasta el ${diaMes(hasta)}.`}{" "}
+                Escribe el código de 6 dígitos de tu app.
               </DialogDescription>
             </DialogHeader>
             <CasillasDigitos largo={6} llenos={codigo.length} activo={!enviando} grande />
@@ -291,6 +316,10 @@ function Historial() {
               <div className="min-w-0 flex-1">
                 <p className="truncate font-medium">{p.titulo}</p>
                 <p className="text-sm text-muted-foreground">{instante(p.creado_en)} · {nombreDestino(p.ruta)}</p>
+                <p className="text-sm text-muted-foreground">
+                  Visible hasta el {diaMes(p.vigente_hasta)}
+                  {p.vigente_hasta < hoyMas(0) && <span className="pill-badge ml-2 text-secondary-foreground">Vencida</span>}
+                </p>
                 {p.fallidos > 0 && <p className="text-xs text-muted-foreground">{p.fallidos} no llegaron</p>}
               </div>
               <div className="shrink-0 text-right">

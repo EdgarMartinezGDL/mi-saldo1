@@ -74,7 +74,7 @@ export function TusPines({ telefono = "" }: { telefono?: string }) {
           <p id={`${id}-acumulacion`} className="font-mono text-4xl font-bold tabular-nums">{acumulacion ?? "••••"}</p>
           <span aria-busy={ocupado}><OjoSecreto visible={!!acumulacion} etiqueta="PIN de acumulación" controls={`${id}-acumulacion`} onClick={() => { if (!ocupado) void verAcumulacion(); }} /></span>
         </div>
-        {sinAcumulacion && <><p className="text-sm text-muted-foreground">Aún no tienes PIN de acumulación. No es obligatorio.</p><Button asChild variant="link" className="h-auto min-h-11 px-0 whitespace-normal text-left"><Link to="/canjear">Crear PIN de acumulación</Link></Button></>}
+        {sinAcumulacion && <><p className="text-sm text-muted-foreground">Aún no tienes PIN de acumulación. No es obligatorio.</p><Button asChild variant="link" className="h-auto min-h-11 px-0 whitespace-normal text-left"><Link to="/ajustes" hash="mis-pines">Crear PIN de acumulación</Link></Button></>}
       </div>
       <div className="border-t border-border pt-4">
         <p className="font-medium">PIN de canje (4 dígitos)</p>

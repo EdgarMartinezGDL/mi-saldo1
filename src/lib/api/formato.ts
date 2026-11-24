@@ -23,6 +23,15 @@ export const fechaCorta = (f: string | null | undefined) => {
   );
 };
 
+/** P47: business calendar day "AAAA-MM-DD" → "29 de noviembre", without converting time zones. */
+export const diaMes = (f: string | null | undefined) => {
+  if (!f) return "";
+  const [y, m, d] = f.slice(0, 10).split("-").map(Number);
+  return new Intl.DateTimeFormat("es-MX", { day: "numeric", month: "long", timeZone: "UTC" }).format(
+    new Date(Date.UTC(y ?? 1970, (m ?? 1) - 1, d ?? 1)),
+  );
+};
+
 /** ISO instant → "22 oct 2026" in the business time zone. */
 export const diaDeInstante = (iso: string | null | undefined, zona = "America/Mexico_City") =>
   iso ? new Intl.DateTimeFormat("es-MX", { dateStyle: "medium", timeZone: zona }).format(new Date(iso)) : "";

@@ -16,6 +16,8 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { SelectorFondo } from "@/components/selector-fondo";
+import { TarjetaMisCodigos } from "@/components/cuenta/mis-codigos";
+import { DesplazarAlHash } from "@/components/desplazar-al-hash";
 
 export const Route = createFileRoute("/ajustes")({
   head: () => ({
@@ -76,6 +78,8 @@ function Cuenta() {
 
         {rol === "cliente" && (
           <>
+            <div id="mis-pines" className="scroll-mt-24"><TarjetaMisCodigos /></div>
+            <DesplazarAlHash id="mis-pines" />
             <NotificacionesDispositivo />
             <Promociones />
             <div className="flex flex-col gap-2">

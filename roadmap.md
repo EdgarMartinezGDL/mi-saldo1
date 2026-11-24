@@ -216,3 +216,15 @@ Pendiente fuera de alcance: publicar y verificar con sesiones reales (el backend
 - [x] Nombres de PIN de acceso/acumulación/canje unificados sin cambiar lógica ni campos de API.
 - [x] Pruebas P46 y textos ajustados; axe sin fallas a 360/1280 px en claro y oscuro.
 - [x] Claude (P46b, 2026-11-23): texto de `bienvenida.tsx` con "PIN de acceso (6 dígitos)" y "PIN de canje (4 dígitos)"; prueba `claude-nombres-pin.test.ts` (ningún texto de `src/` vuelve a decir "código de canje/acumulación").
+
+## P47 · Promociones en Inicio, aviso de cumpleaños e "Incluirlos otra vez" (Claude, 2026-11-23)
+- [x] Tarjeta "Promociones" en Inicio (`src/components/cliente/promociones-vigentes.tsx`): solo las del negocio actual, "Válida hasta el {d de mes}" sin convertir zona horaria, 3 visibles y "Ver todas (n)", enlace solo a rutas internas, texto plano; si la API falla o no hay, no se muestra.
+- [x] Promociones del dueño: "Visible para tus clientes hasta" (hoy + 7, entre hoy y hoy + 60), `vigencia_invalida` en el campo, "Visible hasta el …" y "Vencida" en el historial.
+- [x] 0070: con 0 dispositivos se puede publicar ("la verán en su Inicio"); sin `sin_destinatarios` en `errors.ts`.
+- [x] "Beneficio de cumpleaños" en "¿De qué te avisamos?" (apagado por omisión, lo dice el servidor).
+- [x] Excel de cumpleañeros: casilla "Incluir a los que ya salieron en otro Excel este año" (`incluir_exportados` en conteo y descarga) y aviso de omitidos.
+- [x] Pruebas `p47.test.tsx` y `p47-pantallas.test.tsx`.
+
+## Usabilidad U-11 y U-12 (Claude, aprobadas por el propietario el 2026-11-23)
+- [x] U-11: sin el buscador "Buscar establecimiento" en Inicio; con 2 o más negocios de cliente, botones con sus negocios (`NegociosCliente` en `mis-negocios.tsx`); si el cambio pide PIN o 2FA, abre "Mis negocios".
+- [x] U-12: la pestaña "Mis códigos" ahora es "Premios" (misma ruta `/canjear`): saldo para usar, premios listos y promociones. "Canjear" en Inicio baja a "Tus PINes" (`#tus-pines`). Crear o cambiar los PIN quedó en Cuenta (`/ajustes#mis-pines`).

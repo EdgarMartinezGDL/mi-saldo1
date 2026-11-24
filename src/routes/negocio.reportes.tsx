@@ -46,6 +46,7 @@ const CONF: Record<Reporte, { titulo: string; icono: LucideIcon; rango: string; 
     titulo: "Cumpleañeros",
     icono: Cake,
     rango: "Cumplen años entre…",
+    ayuda: "Cada cliente sale una vez al año. El mensaje del Excel explica tu beneficio de cumpleaños si lo tienes activado.",
     max: 366,
     maxTexto: "El rango máximo es de 366 días.",
     sugerido: (n) => `en ${n} te deseamos un muy feliz cumpleaños. Ven a visitarnos este mes: tenemos una sorpresa para ti.`,
@@ -76,7 +77,8 @@ function TarjetaReporte({ tipo, negocio }: { tipo: Reporte; negocio: string }) {
   const [[desde, hasta], setRango] = useState(c.rangoInicial);
   const [texto, setTexto] = useState("");
   const [incluir_archivados, setIncluirArchivados] = useState(false);
-  const [conteo, setConteo] = useState<{ conteo: number; excede_limite: boolean } | null>(null);
+  const [incluir_exportados, setIncluirExportados] = useState(false);
+  const [conteo, setConteo] = useState<{ conteo: number; excede_limite: boolean; omitidos_exportados?: number } | null>(null);
   const [ocupado, setOcupado] = useState(false);
   const errorRango = !desde || !hasta ? "Elige las dos fechas." : dias(desde, hasta) < 0 ? "La fecha inicial debe ser antes de la final." : dias(desde, hasta) > c.max ? c.maxTexto : null;
   const MSG = { rango_invalido: "La fecha inicial debe ser antes de la final.", rango_excedido: c.maxTexto, excede_limite: "Son más de 20,000: reduce el rango" };
@@ -84,7 +86,7 @@ function TarjetaReporte({ tipo, negocio }: { tipo: Reporte; negocio: string }) {
   const contar = async () => {
     setOcupado(true);
     try {
-      setConteo(await contarReporte(tipo, { desde, hasta, ...(tipo === "cumpleaneros" ? { incluir_archivados } : {}) }));
+      setConteo(await contarReporte(tipo, { desde, hasta, ...(tipo === "cumpleaneros" ? { incluir_archivados, incluir_exportados } : {}) }));
     } catch (e) {
       errorOperacion(e, undefined, MSG);
     } finally {
@@ -95,7 +97,7 @@ function TarjetaReporte({ tipo, negocio }: { tipo: Reporte; negocio: string }) {
     setOcupado(true);
     try {
       const t = texto.trim();
-      guardarArchivo(await conTotp(() => descargarReporte(tipo, { desde, hasta, ...(tipo === "cumpleaneros" ? { incluir_archivados } : {}), ...(t ? { texto: t } : {}) })));
+      guardarArchivo(await conTotp(() => descargarReporte(tipo, { desde, hasta, ...(tipo === "cumpleaneros" ? { incluir_archivados, incluir_exportados } : {}), ...(t ? { texto: t } : {}) })));
     } catch (e) {
       errorOperacion(e, undefined, MSG);
     } finally {
@@ -119,6 +121,12 @@ function TarjetaReporte({ tipo, negocio }: { tipo: Reporte; negocio: string }) {
           Incluir archivados
         </label>
       )}
+      {tipo === "cumpleaneros" && (
+        <label className="mt-1 flex min-h-11 items-center gap-3 text-sm font-medium">
+          <Checkbox checked={incluir_exportados} onCheckedChange={(v) => { setIncluirExportados(v === true); setConteo(null); }} aria-label="Incluir a los que ya salieron en otro Excel este año" />
+          Incluir a los que ya salieron en otro Excel este año
+        </label>
+      )}
       {c.ayuda && <p className="mt-3 text-sm text-muted-foreground">{c.ayuda}</p>}
       {errorRango && <p className="mt-2 text-sm text-destructive">{errorRango}</p>}
       <div className="mt-4">
@@ -131,11 +139,20 @@ function TarjetaReporte({ tipo, negocio }: { tipo: Reporte; negocio: string }) {
           <Button size="lg" className="tap-target h-12" disabled={ocupado} onClick={() => void descargar()}>Descargar Excel</Button>
         )}
       </div>
-      {conteo && (
-        <p className="mt-3 text-base font-medium">
-          {conteo.excede_limite ? "Son más de 20,000: reduce el rango" : conteo.conteo === 0 ? "No hay clientes en ese rango" : `${conteo.conteo} ${conteo.conteo === 1 ? "cliente" : "clientes"}`}
-        </p>
-      )}
+      {conteo && (() => {
+        const omitidos = !incluir_exportados ? conteo.omitidos_exportados ?? 0 : 0;
+        const textoOmitidos = `${omitidos} ${omitidos === 1 ? "cliente ya salió" : "clientes ya salieron"} en otro Excel este año. Marca la casilla para incluirlos otra vez.`;
+        return (
+          <>
+            {!(conteo.conteo === 0 && omitidos > 0 && !conteo.excede_limite) && (
+              <p className="mt-3 text-base font-medium">
+                {conteo.excede_limite ? "Son más de 20,000: reduce el rango" : conteo.conteo === 0 ? "No hay clientes en ese rango" : `${conteo.conteo} ${conteo.conteo === 1 ? "cliente" : "clientes"}`}
+              </p>
+            )}
+            {omitidos > 0 && <p className="mt-2 text-sm text-muted-foreground">{textoOmitidos}</p>}
+          </>
+        );
+      })()}
     </section>
   );
 }

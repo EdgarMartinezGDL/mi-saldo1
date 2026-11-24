@@ -39,6 +39,66 @@ export function useContextos() {
 
 type Falta = { pin: boolean; totp: boolean };
 
+/**
+ * U-11 (revisión de usabilidad, 2026-11-23): los negocios donde la persona es
+ * cliente, como botones en Inicio. Un toque cambia de negocio; si ese cambio
+ * pide PIN o 2FA, abre "Mis negocios". Solo con 2 o más negocios de cliente.
+ */
+export function NegociosCliente() {
+  const { lista } = useContextos();
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const { updateBusiness } = useMiSaldo();
+  const { abrir, dialogo } = useMisNegocios();
+  const [ocupado, setOcupado] = useState<string | null>(null);
+  const negocios = lista.filter((c) => c.rol === "cliente" && c.negocio_id);
+  if (negocios.length < 2) return null;
+
+  const elegir = async (c: ContextoDisponible) => {
+    if (c.actual || ocupado) return;
+    if (c.requiere_pin || c.requiere_totp) { abrir(); return; }
+    setOcupado(c.negocio_id);
+    try {
+      const s = await cambiarContexto({ rol: c.rol, negocio_id: c.negocio_id });
+      queryClient.clear();
+      updateBusiness({ name: s.contexto.nombre_comercial ?? "Mi Saldo Vip", logo: null });
+      toast.success(`Ahora estás en ${etiquetaContexto(s.contexto)}`);
+      void navigate({ to: "/", replace: true });
+    } catch (e) {
+      const err = e instanceof ApiError ? e : null;
+      if (err?.codigo === "requiere_pin" || err?.codigo === "requiere_totp") abrir();
+      else toast.error(err?.message ?? "No se pudo cambiar de negocio. Intenta de nuevo.");
+    } finally {
+      setOcupado(null);
+    }
+  };
+
+  return (
+    <nav aria-label="Tus negocios" className="-mx-4 overflow-x-auto px-4 md:mx-0 md:px-0">
+      <ul className="flex gap-2 pb-1">
+        {negocios.map((c) => (
+          <li key={c.negocio_id} className="shrink-0">
+            <button
+              type="button"
+              aria-current={c.actual ? "true" : undefined}
+              disabled={ocupado !== null}
+              onClick={() => void elegir(c)}
+              className={cn(
+                "inline-flex min-h-11 items-center gap-1.5 rounded-full px-4 text-sm font-semibold ring-1 transition-colors",
+                c.actual ? "bg-primary text-primary-foreground ring-primary" : "bg-card text-foreground ring-border hover:ring-primary/60",
+              )}
+            >
+              {c.actual && <Check className="size-4" aria-hidden="true" />}
+              {ocupado === c.negocio_id ? "Cambiando…" : c.nombre_comercial}
+            </button>
+          </li>
+        ))}
+      </ul>
+      {dialogo}
+    </nav>
+  );
+}
+
 /** "Mis negocios": Sheet from the bottom on mobile, Dialog on desktop. */
 export function useMisNegocios(): { abrir: () => void; varios: boolean; dialogo: ReactNode } {
   const [abierto, setAbierto] = useState(false);

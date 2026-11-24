@@ -257,7 +257,7 @@ describe("P25 Promociones (dueño)", () => {
   it("el diálogo envía titulo, cuerpo, ruta y codigo; el botón Enviar es primario", async () => {
     montarRuta();
     await abrirDialogoYConfirmar();
-    await waitFor(() => expect(m.enviar).toHaveBeenCalledWith({ titulo: "Dos por uno hoy", cuerpo: "Solo hoy en toda la carta.", ruta: "/", codigo: "123456" }));
+    await waitFor(() => expect(m.enviar).toHaveBeenCalledWith({ titulo: "Dos por uno hoy", cuerpo: "Solo hoy en toda la carta.", ruta: "/", codigo: "123456", vigente_hasta: expect.stringMatching(/^\d{4}-\d{2}-\d{2}$/) }));
     expect(m.toastOk).toHaveBeenCalledWith("Promoción enviada a 5 dispositivos");
   });
   it("un 422 deja el diálogo abierto con los intentos restantes y casillas limpias", async () => {

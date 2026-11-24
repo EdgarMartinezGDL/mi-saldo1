@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, ChevronRight, Gift, History, Search, TriangleAlert } from "lucide-react";
+import { ArrowRight, ChevronRight, Gift, History, TriangleAlert } from "lucide-react";
 import { useEffect, useState } from "react";
 import { AppShell } from "@/components/app-shell";
 import { useAuth } from "@/components/auth-provider";
@@ -14,6 +14,9 @@ import { useRecargaVisible } from "@/lib/use-recarga-visible";
 import { fechaTarjeta } from "@/lib/fecha-tarjeta";
 import { InvitarInstalar } from "@/components/invitar-instalar";
 import { TusPines } from "@/components/cuenta/tus-pines";
+import { PromocionesVigentes } from "@/components/cliente/promociones-vigentes";
+import { NegociosCliente } from "@/components/mis-negocios";
+import { DesplazarAlHash } from "@/components/desplazar-al-hash";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -50,7 +53,6 @@ function ClienteInicio() {
   const datos = consulta.data;
   useRecargaVisible(() => { if (!consulta.isFetching) void consulta.refetch(); }, conectado !== false);
   const [yo, setYo] = useState<Perfil | null>(null);
-  const [query, setQuery] = useState("");
 
   useEffect(() => {
     if (datos) updateBusiness({ name: datos.negocio.nombre_comercial, logo: datos.negocio.logo_url });
@@ -69,27 +71,14 @@ function ClienteInicio() {
   }
 
   const moneda = datos.negocio.moneda;
-  const q = query.trim().toLowerCase();
-  const tarjetas = (datos.tarjetas ?? []).filter(
-    (t) => !q || t.nombre.toLowerCase().includes(q) || datos.negocio.nombre_comercial.toLowerCase().includes(q),
-  );
+  const tarjetas = datos.tarjetas ?? [];
   const premios = (datos.tarjetas ?? []).flatMap((t) => t.premios_por_canjear.map((p) => ({ ...p, tarjeta: t.nombre })));
   const m = datos.monedero;
 
   return (
     <AppShell>
       <div className="flex flex-col gap-6">
-        <label className="relative block">
-          <Search className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" />
-          <input
-            type="search"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Buscar establecimiento..."
-            aria-label="Buscar establecimiento"
-            className="h-12 w-full rounded-xl border border-border bg-card pl-12 pr-4 text-base shadow-soft outline-none transition placeholder:text-muted-foreground focus:border-primary/60 focus:ring-4 focus:ring-primary/15"
-          />
-        </label>
+        <NegociosCliente />
 
         <div className="flex items-end justify-between gap-3">
           <div className="min-w-0">
@@ -144,8 +133,8 @@ function ClienteInicio() {
                       <History className="size-5" /> Historial
                     </Link>
                   </Button>
-                  <Button size="lg" className="tap-target" asChild>
-                    <Link to="/canjear">Canjear</Link>
+                  <Button size="lg" className="tap-target" onClick={() => document.getElementById("tus-pines")?.scrollIntoView({ behavior: "smooth", block: "start" })}>
+                    Canjear
                   </Button>
                 </div>
                 <span className={cn("text-xs", m.vence_pronto || m.vencido ? "rounded-md bg-warn px-2 py-0.5 font-semibold text-background" : "")}>
@@ -180,7 +169,6 @@ function ClienteInicio() {
               <h2 className="text-lg font-semibold tracking-tight">Tus tarjetas de sellos</h2>
               <span className="shrink-0 text-xs text-muted-foreground">Desliza →</span>
             </div>
-            {tarjetas.length === 0 && <p className="text-sm text-muted-foreground">No hay tarjetas que coincidan.</p>}
             <div tabIndex={0} role="region" aria-label="Tus tarjetas de sellos" className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-2 md:mx-0 md:px-0">
               {tarjetas.map((card, index) => {
                 const total = card.en_curso?.sellos_requeridos ?? card.regla.sellos_requeridos;
@@ -234,7 +222,10 @@ function ClienteInicio() {
           </section>
         )}
 
-        {sesion?.contexto.rol === "cliente" && <TusPines key={sesion.contexto.negocio_id} telefono={yo?.telefono ?? ""} />}
+        <PromocionesVigentes />
+        <DesplazarAlHash id="tus-pines" />
+
+        {sesion?.contexto.rol === "cliente" && <div id="tus-pines" className="scroll-mt-24"><TusPines key={sesion.contexto.negocio_id} telefono={yo?.telefono ?? ""} /></div>}
 
         <section className="rounded-2xl bg-card p-5 ring-1 ring-border">
           <h2 className="text-lg font-semibold tracking-tight">Para usar tu saldo o premio</h2>

@@ -1,10 +1,11 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Gift, TriangleAlert } from "lucide-react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { Gift, KeyRound, TriangleAlert } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { AppShell } from "@/components/app-shell";
 import { EstadoVacio } from "@/components/estado-vacio";
-import { TarjetaMisCodigos } from "@/components/cuenta/mis-codigos";
+import { PromocionesVigentes } from "@/components/cliente/promociones-vigentes";
+import { Button } from "@/components/ui/button";
 import { Cargando, RequiereSesion } from "@/components/requiere-sesion";
 import { ApiError } from "@/lib/api/client";
 import { resumen, type Resumen } from "@/lib/api/cliente";
@@ -14,16 +15,16 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/canjear")({
   head: () => ({
     meta: [
-      { title: "Mis PINes · Mi Saldo Vip" },
+      { title: "Premios · Mi Saldo Vip" },
       { name: "description", content: "Tu saldo y tus premios listos para cobrar en caja con tu PIN de canje (4 dígitos)." },
-      { property: "og:title", content: "Mis PINes · Mi Saldo Vip" },
+      { property: "og:title", content: "Premios · Mi Saldo Vip" },
       { property: "og:description", content: "Dicta tu PIN de canje (4 dígitos) al cajero para usar saldo o premios." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: () => (
-    <RequiereSesion titulo="Canjear" roles={["cliente"]}>
+    <RequiereSesion titulo="Premios" roles={["cliente"]}>
       <Canjear />
     </RequiereSesion>
   ),
@@ -41,12 +42,14 @@ function Canjear() {
     <AppShell>
       <div className="flex flex-col gap-6">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Mis PINes</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Premios</h1>
           <p className="mt-1 text-base text-muted-foreground">
-            Dicta tu PIN de acumulación (4 dígitos) o tu PIN de canje (4 dígitos) en caja. Sirven en todos tus negocios. El cajero nunca debe pedirte tu PIN de acceso (6 dígitos).
+            Lo que puedes usar en este negocio. En caja, dicta tu PIN de canje (4 dígitos); el cajero nunca debe pedirte tu PIN de acceso (6 dígitos).
           </p>
+          <Button variant="secondary" size="lg" className="mt-3 min-h-12" asChild>
+            <Link to="/" hash="tus-pines"><KeyRound className="size-5" /> Ver mis PINes</Link>
+          </Button>
         </div>
-        <TarjetaMisCodigos />
         {!datos ? (
           <Cargando />
         ) : (
@@ -80,6 +83,7 @@ function Canjear() {
                 </ul>
               )}
             </section>
+            <PromocionesVigentes />
           </>
         )}
       </div>

@@ -448,6 +448,13 @@ export function NotificacionesDispositivo() {
                 <span className="min-w-0 text-base">Vencimientos<span className="mt-1 block text-sm text-secondary-foreground">Antes de que venza tu saldo o una tarjeta de sellos.</span></span>
                 <Switch aria-label="Vencimientos" checked={guardando?.vencimientos ?? preferencias.data.vencimientos} disabled={guardando !== null} onCheckedChange={(v) => void cambiarPreferencia("vencimientos", v)} />
               </label>
+              <label className="flex min-h-14 items-center justify-between gap-4 rounded-xl bg-secondary px-4 py-3">
+                <span className="min-w-0 text-base">Beneficio de cumpleaños<span className="mt-1 block text-sm text-secondary-foreground">Te avisamos cuando tengas un beneficio disponible en tu cumpleaños. Si lo activas, también te llega por correo.</span></span>
+                <Switch aria-label="Beneficio de cumpleaños" checked={guardando?.cumpleanos ?? preferencias.data.cumpleanos ?? false} disabled={guardando !== null} onCheckedChange={(v) => void cambiarPreferencia("cumpleanos", v)} />
+              </label>
+              {promo && !promo.acepta_promociones && (
+                <p className="-mt-1 text-sm text-muted-foreground">Para recibirlo de este negocio, activa también Promociones aquí abajo.</p>
+              )}
               <p className="text-xs text-muted-foreground">Los avisos de seguridad (tu PIN de acceso (6 dígitos) y tus accesos) siempre llegan por WhatsApp y correo.</p>
             </div>
           )}

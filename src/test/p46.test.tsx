@@ -56,7 +56,7 @@ describe("P46 consulta bajo demanda", () => {
     m.api.mockResolvedValue({ codigo_acumulacion: null }); montar();
     fireEvent.click(screen.getByRole("button", { name: "Mostrar PIN de acumulación" }));
     await screen.findByText("Aún no tienes PIN de acumulación. No es obligatorio.");
-    expect(screen.getByRole("link", { name: "Crear PIN de acumulación" })).toHaveAttribute("href", "/canjear");
+    expect(screen.getByRole("link", { name: "Crear PIN de acumulación" })).toHaveAttribute("href", "/ajustes"); // U-12: los PIN se administran en Cuenta
   });
   it("requiere seis dígitos y hace POST con el PIN de acceso; cuenta 30 segundos", async () => {
     vi.useFakeTimers(); montar(); abrir(); escribirAcceso("58273");

@@ -68,7 +68,8 @@ export const listaReferidos = (p: { estado?: EstadoReferido; limite?: number; an
   );
 
 export type Reporte = "cumpleaneros" | "inactivos";
-export const contarReporte = (r: Reporte, body: { desde: string; hasta: string; incluir_archivados?: boolean }) =>
-  api<{ conteo: number; tope: number; excede_limite: boolean }>(`/api/negocio/exportaciones/${r}`, { method: "POST", body });
-export const descargarReporte = (r: Reporte, body: { desde: string; hasta: string; texto?: string; incluir_archivados?: boolean }) =>
+/** P47 (0066): cumpleañeros cuenta aparte a quienes ya salieron en otro Excel este año (`omitidos_exportados`). */
+export const contarReporte = (r: Reporte, body: { desde: string; hasta: string; incluir_archivados?: boolean; incluir_exportados?: boolean }) =>
+  api<{ conteo: number; tope: number; excede_limite: boolean; omitidos_exportados?: number }>(`/api/negocio/exportaciones/${r}`, { method: "POST", body });
+export const descargarReporte = (r: Reporte, body: { desde: string; hasta: string; texto?: string; incluir_archivados?: boolean; incluir_exportados?: boolean }) =>
   apiArchivo(`/api/negocio/exportaciones/${r}/descarga`, body);
