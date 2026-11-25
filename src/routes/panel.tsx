@@ -1,6 +1,6 @@
 import { PendientesAsistente, useAsistente } from "@/components/negocio/asistente";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { Archive, ChevronRight, Megaphone, MessageSquareWarning, Stamp, TrendingUp, UserCheck, UserPlus, UserRoundPlus, Users, type LucideIcon } from "lucide-react";
+import { ChevronRight, Megaphone, MessageSquareWarning, Stamp, TrendingUp, UserCheck, UserPlus, UserRoundPlus, Users, type LucideIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -98,14 +98,13 @@ function Panel() {
         { label: "Ventas con sellos", value: pesos(hoy.tarjetas!.ventas.monto_compra_centavos), icon: TrendingUp },
       ]
     : [{ label: "Ventas de hoy", value: pesos((hoy.monedero ?? hoy.tarjetas)?.ventas.monto_compra_centavos ?? 0), icon: TrendingUp }];
-  const cards: Array<{ label: string; value: string; icon: LucideIcon; tono: Tono; aviso: boolean; to?: "/clientes" | "/negocio/movimientos" | undefined; search?: { archivados: "solo" } }> = [
+  const cards: Array<{ label: string; value: string; icon: LucideIcon; tono: Tono; aviso: boolean; to?: "/clientes" | "/negocio/movimientos" | undefined }> = [
     // U-07: ventas y atendidos abren Movimientos (que ya filtra a hoy por omisión).
     ...ventasCards.map((c) => ({ ...c, tono: "success" as const, aviso: false, to: "/negocio/movimientos" as const })),
     { label: "Clientes atendidos", value: String(hoy.clientes.atendidos), icon: Users, tono: "primary", aviso: false, to: "/negocio/movimientos" },
     { label: "Clientes nuevos hoy", value: String(hoy.clientes.altas), icon: UserRoundPlus, tono: "success", aviso: false, to: "/clientes" },
-    { label: "Clientes en total", value: String(hoy.clientes.activos_total), icon: Users, tono: "neutro", aviso: false, to: "/clientes" },
-    ...(hoy.clientes.archivados_total > 0 ? [{ label: "Clientes archivados", value: String(hoy.clientes.archivados_total), icon: Archive, tono: "neutro" as const, aviso: false, to: "/clientes" as const, search: { archivados: "solo" as const } }] : []),
-    { label: "Sellos entregados", value: String(hoy.tarjetas?.sellos_otorgados ?? 0), icon: Stamp, tono: "warning", aviso: false, to: undefined },
+    // U-09: "en total" y "archivados" van en el encabezado de Clientes; Sellos solo si el negocio tiene tarjetas.
+    ...(hoy.tarjetas ? [{ label: "Sellos entregados", value: String(hoy.tarjetas.sellos_otorgados), icon: Stamp, tono: "warning" as const, aviso: false, to: undefined }] : []),
   ];
   // U-04: lo pendiente va en la franja "Para atender hoy", solo si hay algo.
   const validacionesPendientes = misValidaciones?.validaciones?.filter((v) => v.estado === "pendiente").length ?? 0;
@@ -191,7 +190,7 @@ function Panel() {
               </>
             );
             return c.to ? (
-              <Link key={c.label} to={c.to} {...(c.search ? { search: c.search } : {})} className={clase}>{cuerpo}</Link>
+              <Link key={c.label} to={c.to} className={clase}>{cuerpo}</Link>
             ) : (
               <div key={c.label} className={clase}>{cuerpo}</div>
             );

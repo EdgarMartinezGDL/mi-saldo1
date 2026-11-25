@@ -55,14 +55,13 @@ describe("P44 disponibilidad de invitaciones", () => {
 });
 
 describe("P44 conteos del servidor", () => {
-  it.each([2, 0])("altas=%s y activos_total=57 enlazan a Clientes", async (altas) => {
+  // Claude (2026-11-25, U-09): "Clientes en total" ya no está en el Panel (se ve en Clientes).
+  it.each([2, 0])("altas=%s enlaza a Clientes", async (altas) => {
     m.altas = altas; montar(<Panel />);
     const nuevos = await screen.findByRole("link", { name: new RegExp(`${altas} Clientes nuevos hoy`) });
     expect(nuevos).toHaveAttribute("href", "/clientes");
     expect(within(nuevos).getByText(String(altas))).toBeInTheDocument();
-    const total = screen.getByRole("link", { name: "57 Clientes en total" });
-    expect(total).toHaveAttribute("href", "/clientes");
-    expect(within(total).getByText("57")).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "57 Clientes en total" })).toBeNull();
   });
 });
 

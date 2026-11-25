@@ -129,9 +129,12 @@ describe("P16 Reportes", () => {
 });
 
 describe("P16 Panel", () => {
+  // Claude (2026-11-25, U-09): "en total" y "archivados" salieron del Panel; se ven en el encabezado de Clientes.
   for (const total of [2, 0]) it(`archivados_total=${total}`, async () => {
     m.dashboard.mockResolvedValue(datos(total)); panel(); await screen.findByRole("heading", { name: "Panel" });
-    const link = screen.queryByRole("link", { name: /Clientes archivados/ });
-    if (total) expect(link).toHaveAttribute("href", "/clientes?archivados=solo"); else expect(link).toBeNull();
+    expect(screen.queryByRole("link", { name: /Clientes archivados/ })).toBeNull();
+    expect(screen.queryByRole("link", { name: /Clientes en total/ })).toBeNull();
+    cleanup(); clientes();
+    await screen.findByText(total ? "1 activo en total · 2 archivados" : "1 activo en total");
   });
 });

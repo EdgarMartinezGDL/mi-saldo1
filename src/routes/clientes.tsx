@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { ApiError } from "@/lib/api/client";
-import { consultarClientes, fichaCliente, type ClienteLista, type FichaCliente, type Siguiente } from "@/lib/api/dueno";
+import { consultarClientes, dashboard, fichaCliente, type ClienteLista, type FichaCliente, type Siguiente } from "@/lib/api/dueno";
 import { diaDeInstante, esClienteNuevo, fechaCorta, instante, nombreCompleto, pesos, telefonoVisible } from "@/lib/api/formato";
 import { plural } from "@/lib/plural";
 import { pedirAbrirEnCaja } from "@/lib/caja-abrir";
@@ -57,6 +57,13 @@ function Clientes() {
     void navigate({ to: "/clientes", search: v === "activos" ? {} : { archivados: v }, replace: true });
   };
   const [q, setQ] = useState("");
+  // U-09: los totales salieron del Panel; se ven aquí, en el encabezado.
+  const [totales, setTotales] = useState<{ activos: number; archivados: number } | null>(null);
+  useEffect(() => {
+    dashboard()
+      .then((d) => setTotales({ activos: d.clientes.activos_total, archivados: d.clientes.archivados_total }))
+      .catch(() => undefined);
+  }, []);
   const [lista, setLista] = useState<ClienteLista[] | null>(null);
   const [total, setTotal] = useState(0);
   const [siguiente, setSiguiente] = useState<Siguiente>(null);
@@ -98,6 +105,12 @@ function Clientes() {
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Clientes</h1>
           <p className="mt-1 text-base text-muted-foreground">{lista ? plural(total, "cliente", "clientes") : "Busca por nombre o teléfono."}</p>
+          {totales && (
+            <p className="mt-1 text-sm text-muted-foreground">
+              {plural(totales.activos, "activo", "activos")} en total
+              {totales.archivados > 0 && ` · ${plural(totales.archivados, "archivado", "archivados")}`}
+            </p>
+          )}
         </div>
         <label className="relative block">
           <Search className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" />
