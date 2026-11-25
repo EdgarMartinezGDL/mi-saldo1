@@ -11,6 +11,8 @@ vi.mock("@/components/auth-provider", () => ({ useAuth: () => ({ sesion: m.sesio
 vi.mock("@/components/app-shell", () => ({ roleHome: (rol: string) => ({ dueno: "/panel", empleado: "/caja", cliente: "/", staff: "/staff" })[rol] }));
 vi.mock("@tanstack/react-router", () => ({ createFileRoute: () => (options: object) => ({ options }), Link: ({ to, children, ...props }: { to: string; children: ReactNode }) => <a href={to} {...props}>{children}</a> }));
 vi.mock("@/components/caja/caja-contexto", () => ({ useCaja: () => ({ moneda: "MXN", ejecutar: (fn: () => unknown) => fn() }), avisarError: vi.fn() }));
+// Claude (2026-11-25, U-03): "Atendidos hace poco" usa React Query; aquí no hace falta.
+vi.mock("@/components/caja/atendidos-recientes", () => ({ AtendidosRecientes: () => null }));
 
 beforeEach(() => { m.nombre = "Tortas Leah"; m.rol = "dueno"; m.sesion = true; history.replaceState(null, "", "/"); });
 afterEach(async () => { cleanup(); await new Promise((resolve) => setTimeout(resolve, 30)); vi.restoreAllMocks(); });

@@ -20,6 +20,8 @@ import { TecladoVisible } from "@/lib/teclado-visible";
 const m = vi.hoisted(() => ({ buscar: vi.fn(), abrir: vi.fn(), acumular: vi.fn(), alta: vi.fn(), referidos: vi.fn() }));
 vi.mock("@/lib/api/caja", async (o) => ({ ...await o<typeof import("@/lib/api/caja")>(), buscarCliente: m.buscar, abrirCaja: m.abrir, acumularMonedero: m.acumular }));
 vi.mock("@/components/caja/caja-extra", async (o) => ({ ...await o<typeof import("@/components/caja/caja-extra")>(), altaCliente: m.alta, configReferidos: m.referidos }));
+// Claude (2026-11-25, U-03): "Atendidos hace poco" usa React Query; las pruebas del teclado no la necesitan.
+vi.mock("@/components/caja/atendidos-recientes", () => ({ AtendidosRecientes: () => null }));
 vi.mock("@tanstack/react-router", async (o) => ({ ...await o<typeof import("@tanstack/react-router")>(), Link: ({ children }: { children: ReactNode }) => <a>{children}</a> }));
 const mediaOriginal = window.matchMedia;
 function mouse(matches = true) {

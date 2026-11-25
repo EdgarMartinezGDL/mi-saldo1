@@ -9,6 +9,7 @@ import type { AltaRespuesta } from "./caja-extra";
 import { toast } from "sonner";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { avisarError, useCaja } from "./caja-contexto";
+import { AtendidosRecientes } from "./atendidos-recientes";
 
 import { Tecla, useConMouse, useDigitos, useFocoCaja, useTecla } from "./teclado";
 
@@ -31,12 +32,12 @@ export function PasoBuscar({ inicial, onEncontrado, onAlta, onAltaHecha }: { ini
   const resultadoRef = useRef<HTMLDivElement>(null);
   useEffect(() => { if (noExiste) resultadoRef.current?.scrollIntoView?.({ behavior: "smooth", block: "start" }); }, [noExiste]);
 
-  const buscar = async () => {
-    if (ocupado || tel.length !== 10) return;
+  const buscar = async (t = tel) => {
+    if (ocupado || t.length !== 10) return;
     setOcupado(true);
     try {
-      const r = await ejecutar(() => buscarCliente(telefonoE164(tel)));
-      if (r.encontrado) onEncontrado(tel, r);
+      const r = await ejecutar(() => buscarCliente(telefonoE164(t)));
+      if (r.encontrado) onEncontrado(t, r);
       else { setSolicitud(r.solicitud_registro ?? null); setNoExiste(true); }
     } catch (e) {
       avisarError(e, moneda);
@@ -105,6 +106,8 @@ export function PasoBuscar({ inicial, onEncontrado, onAlta, onAltaHecha }: { ini
           <Search className="size-5" /> {ocupado ? "Buscando…" : "Buscar"}<Tecla>Enter</Tecla>
         </Button>
       </div>
+      {/* U-03: un toque vuelve a abrir la ficha de quien regresa en la jornada. */}
+      {!noExiste && <AtendidosRecientes deshabilitado={ocupado} onElegir={(d) => { setTel(d); setSolicitud(null); void buscar(d); }} />}
       <BotonQrRegistro onAbiertoChange={setQrAbierto} />
       <BotonQrRegistro sinBoton abierto={qrCelular} onSolicitarCambio={(v) => { setQrCelular(v); if (!v) requestAnimationFrame(() => botonCelular.current?.focus({ preventScroll: true })); }} onAbiertoChange={setQrAbierto} />
       {noExiste && (
