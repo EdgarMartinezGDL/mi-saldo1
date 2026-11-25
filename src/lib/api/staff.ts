@@ -429,3 +429,19 @@ export type CuerpoPrecioMembresia = { precio_mensual_centavos: number; motivo: s
 export const precioMembresia = () => api<RespuestaPrecio>("/api/staff/membresia/precio");
 export const fijarPrecioMembresia = (body: CuerpoPrecioMembresia) =>
   api<{ cambiado: boolean; vigente: PrecioMembresia; anterior: PrecioMembresia | null }>("/api/staff/membresia/precio", { method: "PUT", body });
+
+// staff.md §8e (0072, QR-D3): QR sign-up requests that fill a business's cap of 200.
+export interface NegocioSolicitudesQr { negocio_id: string; nombre_comercial: string; pendientes: number; alerta: boolean; mas_reciente: string | null; ultimo_aviso: string | null }
+export interface SolicitudQrStaff { id: string; telefono: string; nombre: string; apellido_paterno: string | null; apellido_materno: string | null; correo: string | null; creada_en: string; expira_en: string }
+export interface SolicitudesQrNegocio {
+  negocio_id: string; nombre_comercial: string; tope: number; pendientes: number; ultimo_aviso: string | null;
+  por_hora: { hora: string; solicitudes: number }[];
+  solicitudes: SolicitudQrStaff[];
+  siguiente: { despues_de: string; despues_id: string } | null;
+}
+export const negociosSolicitudesQr = () =>
+  api<{ tope: number; negocios: NegocioSolicitudesQr[] }>("/api/staff/registro/negocios?limite=50");
+export const solicitudesQrNegocio = (negocioId: string, cursor?: { despues_de: string; despues_id: string } | null) =>
+  api<SolicitudesQrNegocio>(`/api/staff/negocios/${encodeURIComponent(negocioId)}/solicitudes-registro${query({ limite: 50, ...(cursor ?? {}) })}`);
+export const limpiarSolicitudesQr = (negocioId: string, body: { ids: string[]; motivo: string } | { todas: true; creadas_desde?: string; motivo: string }) =>
+  api<{ borradas: number; pendientes: number }>(`/api/staff/negocios/${encodeURIComponent(negocioId)}/solicitudes-registro/limpieza`, { method: "POST", body });

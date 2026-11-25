@@ -253,3 +253,10 @@ Pendiente fuera de alcance: publicar y verificar con sesiones reales (el backend
 - [x] U-07: "Ventas de hoy" (o ventas con saldo / con sellos) y "Clientes atendidos" del Panel abren Movimientos, que ya filtra a hoy.
 - [x] U-08: Negocio en "Del día" (Reclamaciones, Solicitudes, Promociones, Movimientos), "Configuración" (Empleados, PIN POS, Horarios, Monedero, Datos y marca, Recomienda y gana, Configuración inicial, Cartel) y "Administración" (Membresía, Reportes).
 - [x] Pruebas en p16, p22, p29, p38 y `claude-u01-u04-u05.test.tsx`.
+
+## Usabilidad U-09 y U-03 (Claude, aprobadas por el propietario el 2026-11-23)
+- [x] U-09: el Panel ya no muestra "Clientes en total" ni "Clientes archivados" (pasan al encabezado de Clientes: "N activos en total · M archivados", del dashboard); "Sellos entregados" solo si el negocio tiene tarjetas de sellos (`tarjetas` no es null). Prueba: `claude-u09.test.tsx`, p16 y p44 ajustadas.
+- [x] U-03: "Atendidos hace poco" debajo del teclado de la Caja (`src/components/caja/atendidos-recientes.tsx`): los últimos 5 clientes con acumulación o canje de la jornada, uno por teléfono; el empleado ve los suyos (`/api/historial/mi-jornada`) y el dueño los del negocio (`/api/historial/consulta`, hoy). Muestra nombre, "Termina en" con los últimos 4 dígitos y la hora; un toque busca al cliente. Sin cambios de backend. Prueba: `claude-u03.test.tsx`.
+
+## QR-D3: pantalla de Staff para solicitudes de registro por QR (Claude, orden aprobado por el propietario para el 2026-11-25)
+- [x] Pestaña "Registros QR" en /staff (`src/components/staff/solicitudes-qr.tsx`, API de staff.md §8e, migración 0072): negocios con pendientes (N / 200, ámbar arriba del 80 %), y por negocio las llegadas por hora (24 h) y la lista (teléfono completo, correo enmascarado, con "Cargar más"). Solo admin, con motivo y 2FA reciente: "Borrar seleccionadas", "Borrar todas" y "Borrar desde aquí" (por hora, `creadas_desde`). Soporte solo revisa. Prueba: `claude-staff-solicitudes-qr.test.tsx`.

@@ -31,6 +31,7 @@ import { cn } from "@/lib/utils";
 import { DetalleNegocio, lineaAviso } from "@/components/staff/detalle-negocio";
 import { AjusteStaff } from "@/components/staff/ajuste-staff";
 import { StaffNav, useNivelStaff, type FiltroAuditoria } from "@/components/staff/comun";
+import { PestanaSolicitudesQr } from "@/components/staff/solicitudes-qr";
 import { PestanaAlertas } from "@/components/staff/alertas";
 import { PestanaAuditoria } from "@/components/staff/auditoria";
 import { PestanaNotificaciones } from "@/components/staff/notificaciones";
@@ -75,7 +76,7 @@ const error = (e: unknown) => {
   toast.error(err?.message ?? "Algo salió mal. Intenta de nuevo.");
 };
 function Staff() {
-  type Tab = "negocios" | "personas" | "whatsapp" | "alertas" | "notificaciones" | "auditoria" | "equipo";
+  type Tab = "negocios" | "personas" | "whatsapp" | "alertas" | "registro" | "notificaciones" | "auditoria" | "equipo";
   const [tab, setTab] = useState<Tab>("negocios");
   const { esAdmin } = useNivelStaff();
   const [fichaId, setFichaId] = useState<string | null>(null);
@@ -86,7 +87,7 @@ function Staff() {
     verAuditoria: (f: FiltroAuditoria) => { setFiltroAud(f); setTab("auditoria"); },
   };
   const TABS: [Tab, string][] = [
-    ["negocios", "Negocios"], ["personas", "Personas"], ["whatsapp", "WhatsApp"], ["alertas", "Alertas"], ["notificaciones", "Notificaciones"],
+    ["negocios", "Negocios"], ["personas", "Personas"], ["whatsapp", "WhatsApp"], ["alertas", "Alertas"], ["registro", "Registros QR"], ["notificaciones", "Notificaciones"],
     ...(esAdmin ? [["auditoria", "Auditoría"] as [Tab, string]] : []), ["equipo", "Equipo"],
   ];
   const qc = useQueryClient();
@@ -150,6 +151,7 @@ function Staff() {
           {tab === "personas" && <Personas abrirId={fichaId} onAbierta={() => setFichaId(null)} />}
           {tab === "whatsapp" && <PestanaWhatsapp />}
           {tab === "alertas" && <PestanaAlertas onCambio={cargarResumen} />}
+          {tab === "registro" && <PestanaSolicitudesQr />}
           {tab === "notificaciones" && <PestanaNotificaciones />}
           {tab === "auditoria" && esAdmin && <PestanaAuditoria inicial={filtroAud} />}
           {tab === "equipo" && <PestanaEquipo />}
