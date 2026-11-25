@@ -34,7 +34,7 @@ vi.mock("@/components/negocio/comun", () => ({
 vi.mock("sonner", () => ({ toast: { success: m.toastOk, error: m.toastErr, info: vi.fn() } }));
 
 const RESUMEN = { destinatarios: 5, clientes_con_push: 4, totp_activo: true, puede_enviar: true, disponible_desde: null, limite: { por_dia: 1, por_semana: 3 } };
-// Claude (2026-11-24): Contar se habilita al elegir o mover una fecha; se mueve y se regresa al mismo valor.
+// Claude (2026-11-24): mueve una fecha y la regresa al mismo valor (simula que el dueño la toca).
 function moverFecha(campo: HTMLElement) { const v = (campo as HTMLInputElement).value; fireEvent.change(campo, { target: { value: "2020-01-01" } }); fireEvent.change(campo, { target: { value: v } }); }
 const hoy = (dias = 0) => {
   const d = new Date(); d.setDate(d.getDate() + dias);

@@ -30,7 +30,7 @@ describe("Reportes: Descargar Excel siempre a la vista", () => {
     const c = within(tarjeta("Cumpleañeros"));
     const descargar = c.getByRole("button", { name: /Descargar Excel/ });
     expect(descargar).toBeDisabled();
-    expect(descargar).toHaveAccessibleDescription(/Elige o mueve una fecha para poder contar/);
+    expect(descargar).toHaveAccessibleDescription(/Toca Contar para ver cuántos clientes salen/);
     expect(within(tarjeta("Inactivos")).getByRole("button", { name: /Descargar Excel/ })).toBeDisabled();
   });
   it("con 0 clientes sigue desactivado; con 1 o más se activa y descarga", async () => {
@@ -47,20 +47,23 @@ describe("Reportes: Descargar Excel siempre a la vista", () => {
     fireEvent.click(c.getByRole("button", { name: /Descargar Excel/ }));
     await waitFor(() => expect(m.descargar).toHaveBeenCalledWith("inactivos", expect.any(Object)));
   });
-  it("Contar se habilita solo al elegir o mover una fecha, y ya habilitado tiene relleno de marca", () => {
+  it("Contar está habilitado desde que entras con las fechas predeterminadas, con relleno de marca", () => {
     montar();
     const c = within(tarjeta("Cumpleañeros"));
     const contar = c.getByRole("button", { name: /Contar/ });
-    expect(contar).toBeDisabled();
-    expect(contar).toHaveAccessibleDescription(/Elige o mueve una fecha para poder contar/);
-    const hasta = c.getByLabelText("Hasta") as HTMLInputElement; const valor = hasta.value;
-    fireEvent.change(hasta, { target: { value: "2020-01-01" } }); fireEvent.change(hasta, { target: { value: valor } });
     expect(contar).toBeEnabled();
     expect(contar).toHaveClass("bg-primary", "text-primary-foreground");
     expect(contar).not.toHaveClass("bg-secondary");
-    expect(c.getByText(/Toca Contar para ver cuántos clientes salen/)).toBeInTheDocument();
-    // La otra tarjeta sigue sin fecha elegida.
-    expect(within(tarjeta("Inactivos")).getByRole("button", { name: /Contar/ })).toBeDisabled();
+    expect(within(tarjeta("Inactivos")).getByRole("button", { name: /Contar/ })).toBeEnabled();
+  });
+  it("Contar se desactiva solo con una fecha vacía o un rango inválido", () => {
+    montar();
+    const c = within(tarjeta("Cumpleañeros"));
+    const contar = c.getByRole("button", { name: /Contar/ });
+    fireEvent.change(c.getByLabelText("Desde"), { target: { value: "" } });
+    expect(contar).toBeDisabled(); expect(c.getByText("Elige las dos fechas.")).toBeInTheDocument();
+    fireEvent.change(c.getByLabelText("Desde"), { target: { value: "2030-01-01" } });
+    expect(contar).toBeDisabled(); expect(c.getByText("La fecha inicial debe ser antes de la final.")).toBeInTheDocument();
   });
 });
 
@@ -72,5 +75,18 @@ describe("Mensaje de WhatsApp en celular", () => {
     expect(campo).not.toContain("onFocus");
     expect(campo).toContain("scroll-mb-28");
     expect(campo).toContain("resize-none");
+  });
+});
+
+describe("Salto al deslizar con un campo enfocado", () => {
+  it("al empezar a deslizar fuera del campo se le quita el foco; dentro del campo no", () => {
+    montar();
+    const desde = within(tarjeta("Cumpleañeros")).getByLabelText("Desde");
+    desde.focus(); expect(document.activeElement).toBe(desde);
+    fireEvent.touchStart(desde); expect(document.activeElement).toBe(desde);
+    fireEvent.touchStart(screen.getByRole("heading", { name: "Inactivos" }));
+    expect(document.activeElement).not.toBe(desde);
+    const mensaje = within(tarjeta("Inactivos")).getByLabelText(/Mensaje de WhatsApp/);
+    mensaje.focus(); fireEvent.touchStart(document.body); expect(document.activeElement).not.toBe(mensaje);
   });
 });

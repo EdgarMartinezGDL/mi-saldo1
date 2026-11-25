@@ -3,6 +3,7 @@ import { Cake, Download, UserX, type LucideIcon } from "lucide-react";
 import { useState } from "react";
 import { ConConfig, SeccionNegocio } from "@/components/negocio/comun";
 import { CampoTexto, errorOperacion } from "@/components/negocio/operacion-ui";
+import { useSoltarFocoAlDeslizar } from "@/lib/use-soltar-foco-al-deslizar";
 import { useConTotp } from "@/components/totp-provider";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -21,12 +22,11 @@ export const Route = createFileRoute("/negocio/reportes")({
     ],
   }),
   component: () => (
-    <SeccionNegocio titulo="Reportes" descripcion="Descarga un Excel con un botón de WhatsApp por cliente, ya con tu mensaje: elige o mueve las fechas, toca Contar y luego Descargar Excel.">
+    <SeccionNegocio titulo="Reportes" descripcion="Descarga un Excel con un botón de WhatsApp por cliente, ya con tu mensaje: revisa las fechas, toca Contar y luego Descargar Excel.">
       <ConConfig>
         {(c) => (
           <>
-            <TarjetaReporte tipo="cumpleaneros" negocio={c.negocio.nombre_comercial} />
-            <TarjetaReporte tipo="inactivos" negocio={c.negocio.nombre_comercial} />
+            <Tarjetas negocio={c.negocio.nombre_comercial} />
             <p className="text-sm text-muted-foreground">Solo aparecen los clientes que aceptan promociones y tienen teléfono.</p>
           </>
         )}
@@ -71,6 +71,16 @@ const CONF: Record<Reporte, { titulo: string; icono: LucideIcon; rango: string; 
   },
 };
 
+function Tarjetas({ negocio }: { negocio: string }) {
+  useSoltarFocoAlDeslizar();
+  return (
+    <>
+      <TarjetaReporte tipo="cumpleaneros" negocio={negocio} />
+      <TarjetaReporte tipo="inactivos" negocio={negocio} />
+    </>
+  );
+}
+
 function TarjetaReporte({ tipo, negocio }: { tipo: Reporte; negocio: string }) {
   const c = CONF[tipo];
   const conTotp = useConTotp();
@@ -80,8 +90,6 @@ function TarjetaReporte({ tipo, negocio }: { tipo: Reporte; negocio: string }) {
   const [incluir_exportados, setIncluirExportados] = useState(false);
   const [conteo, setConteo] = useState<{ conteo: number; excede_limite: boolean; omitidos_exportados?: number } | null>(null);
   const [ocupado, setOcupado] = useState(false);
-  // Contar se habilita hasta que el dueño elige o mueve una fecha (pedido del propietario, 2026-11-24).
-  const [fechaElegida, setFechaElegida] = useState(false);
   const errorRango = !desde || !hasta ? "Elige las dos fechas." : dias(desde, hasta) < 0 ? "La fecha inicial debe ser antes de la final." : dias(desde, hasta) > c.max ? c.maxTexto : null;
   const MSG = { rango_invalido: "La fecha inicial debe ser antes de la final.", rango_excedido: c.maxTexto, excede_limite: "Son más de 20,000: reduce el rango" };
 
@@ -113,9 +121,9 @@ function TarjetaReporte({ tipo, negocio }: { tipo: Reporte; negocio: string }) {
       <h2 className="flex items-center gap-2 text-lg font-semibold tracking-tight"><c.icono className="size-5 text-primary-texto" /> {c.titulo}</h2>
       <p className="mt-3 text-base font-medium">{c.rango}</p>
       <div className="mt-2 flex flex-wrap items-center gap-2">
-        <input type="date" aria-label="Desde" max={tipo === "inactivos" ? hoyMx() : undefined} value={desde} onChange={(e) => { setRango([e.target.value, hasta]); setFechaElegida(true); setConteo(null); }} className={fecha} />
+        <input type="date" aria-label="Desde" max={tipo === "inactivos" ? hoyMx() : undefined} value={desde} onChange={(e) => { setRango([e.target.value, hasta]); setConteo(null); }} className={fecha} />
         <span className="text-muted-foreground">y</span>
-        <input type="date" aria-label="Hasta" max={tipo === "inactivos" ? hoyMx() : undefined} value={hasta} onChange={(e) => { setRango([desde, e.target.value]); setFechaElegida(true); setConteo(null); }} className={fecha} />
+        <input type="date" aria-label="Hasta" max={tipo === "inactivos" ? hoyMx() : undefined} value={hasta} onChange={(e) => { setRango([desde, e.target.value]); setConteo(null); }} className={fecha} />
       </div>
       {tipo === "cumpleaneros" && (
         <label className="mt-3 flex min-h-11 items-center gap-3 text-sm font-medium">
@@ -136,10 +144,10 @@ function TarjetaReporte({ tipo, negocio }: { tipo: Reporte; negocio: string }) {
         <p className="mt-1 text-xs text-muted-foreground">Sugerido: {c.sugerido(negocio)}</p>
       </div>
       <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center">
-        <Button variant="primario" size="lg" className="tap-target h-12 text-base" aria-describedby={fechaElegida ? undefined : `${tipo}-paso-descarga`} disabled={!fechaElegida || !!errorRango || ocupado} onClick={() => void contar()}>1. Contar</Button>
+        <Button variant="primario" size="lg" className="tap-target h-12 text-base" disabled={!!errorRango || ocupado} onClick={() => void contar()}>1. Contar</Button>
         <Button size="lg" className="tap-target h-12 text-base" aria-describedby={conteo ? undefined : `${tipo}-paso-descarga`} disabled={ocupado || !conteo || conteo.conteo === 0 || conteo.excede_limite} onClick={() => void descargar()}><Download aria-hidden="true" /> 2. Descargar Excel</Button>
       </div>
-      {!conteo && <p id={`${tipo}-paso-descarga`} className="mt-2 text-sm text-muted-foreground">{fechaElegida ? "Toca Contar para ver cuántos clientes salen; con 1 o más se activa Descargar Excel." : "Elige o mueve una fecha para poder contar; con 1 o más clientes se activa Descargar Excel."}</p>}
+      {!conteo && <p id={`${tipo}-paso-descarga`} className="mt-2 text-sm text-muted-foreground">Toca Contar para ver cuántos clientes salen; con 1 o más se activa Descargar Excel.</p>}
       {conteo && (() => {
         const omitidos = !incluir_exportados ? conteo.omitidos_exportados ?? 0 : 0;
         const textoOmitidos = `${omitidos} ${omitidos === 1 ? "cliente ya salió" : "clientes ya salieron"} en otro Excel este año. Marca la casilla para incluirlos otra vez.`;
