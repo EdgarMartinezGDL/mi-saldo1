@@ -34,6 +34,8 @@ vi.mock("@/components/negocio/comun", () => ({
 vi.mock("sonner", () => ({ toast: { success: m.toastOk, error: m.toastErr, info: vi.fn() } }));
 
 const RESUMEN = { destinatarios: 5, clientes_con_push: 4, totp_activo: true, puede_enviar: true, disponible_desde: null, limite: { por_dia: 1, por_semana: 3 } };
+// Claude (2026-11-24): Contar se habilita al elegir o mover una fecha; se mueve y se regresa al mismo valor.
+function moverFecha(campo: HTMLElement) { const v = (campo as HTMLInputElement).value; fireEvent.change(campo, { target: { value: "2020-01-01" } }); fireEvent.change(campo, { target: { value: v } }); }
 const hoy = (dias = 0) => {
   const d = new Date(); d.setDate(d.getDate() + dias);
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
@@ -120,7 +122,7 @@ describe("P47 Excel de cumpleañeros: incluirlos otra vez", () => {
     m.descargar.mockResolvedValue(new Blob());
     const R = componente(ReportesRoute); montar(<R />);
     fireEvent.click(await screen.findByRole("checkbox", { name: "Incluir a los que ya salieron en otro Excel este año" }));
-    fireEvent.click(screen.getAllByRole("button", { name: /Contar/ })[0]!);
+    moverFecha(screen.getAllByLabelText("Desde")[0]!); fireEvent.click(screen.getAllByRole("button", { name: /Contar/ })[0]!);
     await waitFor(() => expect(m.contar).toHaveBeenCalledWith("cumpleaneros", expect.objectContaining({ incluir_exportados: true })));
     await waitFor(() => expect(screen.getAllByRole("button", { name: /Descargar Excel/ })[0]!).toBeEnabled()); fireEvent.click(screen.getAllByRole("button", { name: /Descargar Excel/ })[0]!);
     await waitFor(() => expect(m.descargar).toHaveBeenCalledWith("cumpleaneros", expect.objectContaining({ incluir_exportados: true })));
@@ -128,7 +130,7 @@ describe("P47 Excel de cumpleañeros: incluirlos otra vez", () => {
   it("conteo 0 con 3 omitidos: explica por qué y no dice 'No hay clientes'", async () => {
     m.contar.mockResolvedValue({ conteo: 0, tope: 20000, excede_limite: false, omitidos_exportados: 3 });
     const R = componente(ReportesRoute); montar(<R />);
-    fireEvent.click((await screen.findAllByRole("button", { name: /Contar/ }))[0]!);
+    moverFecha((await screen.findAllByLabelText("Desde"))[0]!); fireEvent.click(screen.getAllByRole("button", { name: /Contar/ })[0]!);
     expect(await screen.findByText("3 clientes ya salieron en otro Excel este año. Marca la casilla para incluirlos otra vez.")).toBeInTheDocument();
     expect(screen.queryByText("No hay clientes en ese rango")).toBeNull();
     expect(m.contar).toHaveBeenCalledWith("cumpleaneros", expect.objectContaining({ incluir_exportados: false }));

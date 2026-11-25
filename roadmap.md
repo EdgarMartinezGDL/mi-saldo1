@@ -242,3 +242,5 @@ Pendiente fuera de alcance: publicar y verificar con sesiones reales (el backend
 - [x] Reportes: "2. Descargar Excel" siempre visible, desactivado hasta que "1. Contar" dé 1 o más, con la explicación del paso; "Contar" con contorno de marca (ya no parece desactivado); descripción de la sección explica el Excel con botón de WhatsApp.
 - [x] `CampoTexto`: 4 líneas, se puede estirar y al tocarlo se centra para que la barra de abajo no lo tape en celular.
 - [x] Pruebas `claude-revision-celular.test.tsx`; p16, p35, p46 y p47-pantallas al día.
+- [x] Segunda revisión (2026-11-24, noche): "1. Contar" con relleno azul de marca (`primario`) y "2. Descargar Excel" con relleno de acción; "Contar" se habilita solo cuando el dueño elige o mueve una fecha, con la explicación del paso.
+- [x] Salto de scroll en Reportes: lo causaba el `scrollIntoView` con retraso que se añadió a `CampoTexto` (peleaba con el desplazamiento que hace el navegador al abrir el teclado). Quitado; el campo conserva 4 líneas, `scroll-mb-28` para la barra de abajo y ya no se puede estirar (`resize-none`).

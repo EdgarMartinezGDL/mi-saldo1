@@ -94,10 +94,12 @@ describe("P16 Clientes", () => {
   });
 });
 
+// Claude (2026-11-24): Contar se habilita al elegir o mover una fecha; se mueve y se regresa al mismo valor.
+function moverFecha(campo: HTMLElement) { const v = (campo as HTMLInputElement).value; fireEvent.change(campo, { target: { value: "2020-01-01" } }); fireEvent.change(campo, { target: { value: v } }); }
 describe("P16 Reportes", () => {
   it("cumpleañeros incluye el mismo filtro al contar y descargar; cambiarlo descarta el conteo", async () => {
     reportes(); const seccion = screen.getByRole("heading", { name: "Cumpleañeros" }).closest("section"); if (!seccion) throw new Error("Falta reporte");
-    const r = within(seccion); fireEvent.click(r.getByRole("checkbox", { name: "Incluir archivados" })); fireEvent.click(r.getByRole("button", { name: /Contar/ }));
+    const r = within(seccion); moverFecha(r.getByLabelText("Desde")); fireEvent.click(r.getByRole("checkbox", { name: "Incluir archivados" })); fireEvent.click(r.getByRole("button", { name: /Contar/ }));
     await waitFor(() => expect(m.contar).toHaveBeenCalledWith("cumpleaneros", expect.objectContaining({ incluir_archivados: true })));
     await waitFor(() => expect(r.getByRole("button", { name: /Descargar Excel/ })).toBeEnabled()); fireEvent.click(r.getByRole("button", { name: /Descargar Excel/ }));
     await waitFor(() => expect(m.descargar).toHaveBeenCalledWith("cumpleaneros", expect.objectContaining({ incluir_archivados: true })));
@@ -109,7 +111,7 @@ describe("P16 Reportes", () => {
     vi.useFakeTimers({ toFake: ["Date"] }); vi.setSystemTime(new Date("2026-10-22T18:00:00Z")); reportes();
     const seccion = screen.getByRole("heading", { name: "Inactivos" }).closest("section"); if (!seccion) throw new Error("Falta reporte"); const r = within(seccion);
     expect(r.getByLabelText("Desde")).toHaveValue("2025-10-22"); expect(r.getByLabelText("Hasta")).toHaveValue("2026-09-22");
-    fireEvent.click(r.getByRole("button", { name: /Contar/ }));
+    moverFecha(r.getByLabelText("Desde")); fireEvent.click(r.getByRole("button", { name: /Contar/ }));
     await waitFor(() => expect(m.contar).toHaveBeenCalledWith("inactivos", { desde: "2025-10-22", hasta: "2026-09-22" }));
     await waitFor(() => expect(r.getByRole("button", { name: /Descargar Excel/ })).toBeEnabled()); fireEvent.click(r.getByRole("button", { name: /Descargar Excel/ }));
     await waitFor(() => expect(m.descargar).toHaveBeenCalledWith("inactivos", { desde: "2025-10-22", hasta: "2026-09-22" }));

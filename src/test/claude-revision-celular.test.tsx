@@ -30,13 +30,14 @@ describe("Reportes: Descargar Excel siempre a la vista", () => {
     const c = within(tarjeta("Cumpleañeros"));
     const descargar = c.getByRole("button", { name: /Descargar Excel/ });
     expect(descargar).toBeDisabled();
-    expect(descargar).toHaveAccessibleDescription(/Primero toca Contar/);
+    expect(descargar).toHaveAccessibleDescription(/Elige o mueve una fecha para poder contar/);
     expect(within(tarjeta("Inactivos")).getByRole("button", { name: /Descargar Excel/ })).toBeDisabled();
   });
   it("con 0 clientes sigue desactivado; con 1 o más se activa y descarga", async () => {
     m.contar.mockResolvedValueOnce({ conteo: 0, excede_limite: false });
     montar();
     const c = within(tarjeta("Inactivos"));
+    fireEvent.change(c.getByLabelText("Desde"), { target: { value: "2025-06-01" } });
     fireEvent.click(c.getByRole("button", { name: /Contar/ }));
     expect(await c.findByText("No hay clientes en ese rango")).toBeInTheDocument();
     expect(c.getByRole("button", { name: /Descargar Excel/ })).toBeDisabled();
@@ -46,17 +47,30 @@ describe("Reportes: Descargar Excel siempre a la vista", () => {
     fireEvent.click(c.getByRole("button", { name: /Descargar Excel/ }));
     await waitFor(() => expect(m.descargar).toHaveBeenCalledWith("inactivos", expect.any(Object)));
   });
-  it("Contar ya no usa el estilo gris que parecía desactivado", () => {
+  it("Contar se habilita solo al elegir o mover una fecha, y ya habilitado tiene relleno de marca", () => {
     montar();
-    const contar = within(tarjeta("Cumpleañeros")).getByRole("button", { name: /Contar/ });
-    expect(contar).toHaveClass("border-primary");
+    const c = within(tarjeta("Cumpleañeros"));
+    const contar = c.getByRole("button", { name: /Contar/ });
+    expect(contar).toBeDisabled();
+    expect(contar).toHaveAccessibleDescription(/Elige o mueve una fecha para poder contar/);
+    const hasta = c.getByLabelText("Hasta") as HTMLInputElement; const valor = hasta.value;
+    fireEvent.change(hasta, { target: { value: "2020-01-01" } }); fireEvent.change(hasta, { target: { value: valor } });
+    expect(contar).toBeEnabled();
+    expect(contar).toHaveClass("bg-primary", "text-primary-foreground");
     expect(contar).not.toHaveClass("bg-secondary");
+    expect(c.getByText(/Toca Contar para ver cuántos clientes salen/)).toBeInTheDocument();
+    // La otra tarjeta sigue sin fecha elegida.
+    expect(within(tarjeta("Inactivos")).getByRole("button", { name: /Contar/ })).toBeDisabled();
   });
 });
 
 describe("Mensaje de WhatsApp en celular", () => {
-  it("es de 4 líneas y se centra al tocarlo para que la barra de abajo no lo tape", () => {
-    expect(operacion).toContain("rows={4}");
-    expect(operacion).toContain('scrollIntoView?.({ block: "center"');
+  it("es de 4 líneas, no se mueve solo (el salto de scroll lo causaba el desplazamiento por código) y deja margen para la barra", () => {
+    const campo = operacion.slice(operacion.indexOf("export function CampoTexto"), operacion.indexOf("/** Confirmation"));
+    expect(campo).toContain("rows={4}");
+    expect(campo).not.toContain("scrollIntoView");
+    expect(campo).not.toContain("onFocus");
+    expect(campo).toContain("scroll-mb-28");
+    expect(campo).toContain("resize-none");
   });
 });

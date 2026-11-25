@@ -154,9 +154,7 @@ export function CampoTexto({ etiqueta, ayuda, valor, onChange, max = 500 }: { et
         maxLength={max}
         rows={4}
         onChange={(e) => onChange(e.target.value)}
-        // En celular la barra de abajo tapaba el campo: al tocarlo se centra (después de que abre el teclado).
-        onFocus={(e) => { const t = e.currentTarget; setTimeout(() => t.scrollIntoView?.({ block: "center", behavior: "smooth" }), 300); }}
-        className="min-h-28 w-full resize-y scroll-mb-28 rounded-xl border border-border bg-card px-4 py-3 text-base shadow-soft outline-none focus:border-primary/60 focus:ring-4 focus:ring-primary/15"
+        className="min-h-28 w-full resize-none scroll-mb-28 rounded-xl border border-border bg-card px-4 py-3 text-base shadow-soft outline-none focus:border-primary/60 focus:ring-4 focus:ring-primary/15"
       />
       <span className="flex justify-between text-xs text-muted-foreground">
         <span>{ayuda}</span>
