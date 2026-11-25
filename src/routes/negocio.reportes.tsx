@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Cake, UserX, type LucideIcon } from "lucide-react";
+import { Cake, Download, UserX, type LucideIcon } from "lucide-react";
 import { useState } from "react";
 import { ConConfig, SeccionNegocio } from "@/components/negocio/comun";
 import { CampoTexto, errorOperacion } from "@/components/negocio/operacion-ui";
@@ -21,7 +21,7 @@ export const Route = createFileRoute("/negocio/reportes")({
     ],
   }),
   component: () => (
-    <SeccionNegocio titulo="Reportes" descripcion="Cumpleañeros e inactivos en Excel, con enlace de WhatsApp.">
+    <SeccionNegocio titulo="Reportes" descripcion="Descarga un Excel con un botón de WhatsApp por cliente, ya con tu mensaje: elige las fechas, toca Contar y luego Descargar Excel.">
       <ConConfig>
         {(c) => (
           <>
@@ -134,11 +134,10 @@ function TarjetaReporte({ tipo, negocio }: { tipo: Reporte; negocio: string }) {
         <p className="mt-1 text-xs text-muted-foreground">Sugerido: {c.sugerido(negocio)}</p>
       </div>
       <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center">
-        <Button variant="secondary" size="lg" className="tap-target h-12" disabled={!!errorRango || ocupado} onClick={() => void contar()}>Contar</Button>
-        {conteo && conteo.conteo > 0 && !conteo.excede_limite && (
-          <Button size="lg" className="tap-target h-12" disabled={ocupado} onClick={() => void descargar()}>Descargar Excel</Button>
-        )}
+        <Button variant="outline" size="lg" className="tap-target h-12 border-2 border-primary font-semibold text-primary-texto" disabled={!!errorRango || ocupado} onClick={() => void contar()}>1. Contar</Button>
+        <Button size="lg" className="tap-target h-12" aria-describedby={conteo ? undefined : `${tipo}-paso-descarga`} disabled={ocupado || !conteo || conteo.conteo === 0 || conteo.excede_limite} onClick={() => void descargar()}><Download aria-hidden="true" /> 2. Descargar Excel</Button>
       </div>
+      {!conteo && <p id={`${tipo}-paso-descarga`} className="mt-2 text-sm text-muted-foreground">Primero toca Contar para ver cuántos clientes salen; con 1 o más se activa Descargar Excel.</p>}
       {conteo && (() => {
         const omitidos = !incluir_exportados ? conteo.omitidos_exportados ?? 0 : 0;
         const textoOmitidos = `${omitidos} ${omitidos === 1 ? "cliente ya salió" : "clientes ya salieron"} en otro Excel este año. Marca la casilla para incluirlos otra vez.`;

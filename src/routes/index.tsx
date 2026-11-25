@@ -80,14 +80,9 @@ function ClienteInicio() {
       <div className="flex flex-col gap-6">
         <NegociosCliente />
 
-        <div className="flex items-end justify-between gap-3">
-          <div className="min-w-0">
-            <p className="text-xs font-medium uppercase tracking-[0.12em] text-muted-foreground">Hola de nuevo</p>
-            <h1 className="truncate text-2xl font-semibold tracking-tight">{yo?.nombre ?? "Cliente"}</h1>
-          </div>
-          <span className="inline-flex min-h-11 items-center shrink-0 rounded-full border border-accent/40 bg-accent/15 px-3 py-1 text-xs font-semibold">
-            {datos.negocio.nombre_comercial}
-          </span>
+        <div className="min-w-0">
+          <p className="text-xs font-medium uppercase tracking-[0.12em] text-muted-foreground">Hola de nuevo</p>
+          <h1 className="truncate text-2xl font-semibold tracking-tight">{yo?.nombre ?? "Cliente"}</h1>
         </div>
 
         <InvitarInstalar />

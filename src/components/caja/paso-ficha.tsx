@@ -78,34 +78,34 @@ export function PasoFicha({ ficha, onAccion, onVolver, onRefrescar }: { ficha: C
     <div ref={resultadoRef} className="mx-auto flex w-full max-w-xl lg:max-w-none flex-col gap-5">
       <EncabezadoPaso titulo={nombreCliente(c)} subtitulo={c.cuenta_activada ? "Cliente con app activada" : "Aún no activa su app"} onVolver={onVolver} />
 
+      {/* U-01: en celular los botones van justo debajo del nombre; después cumpleaños, saldo y premios; tarjetas y correo al final.
+          En computadora se ve igual que antes (datos a la izquierda, botones a la derecha). */}
       <div className="grid gap-5 lg:gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+      <div className="flex h-fit min-w-0 flex-col gap-3 lg:order-last lg:sticky lg:top-24">
+        <Accion tecla="A" icono={<PlusCircle className="size-8" />} texto="Acumular" disabled={!puedeAcumular(ficha)}
+          ayuda={puedeAcumular(ficha) ? "Saldo o sellos por esta compra" : "Este cliente no puede acumular aquí"} onClick={() => onAccion("acumular")} />
+        <Accion tecla="C" icono={<Gift className="size-8" />} texto="Canjear" disabled={!puedeCanjear(ficha)}
+          ayuda={!c.puede_canjear ? "Debe activar su app para canjear" : puedeCanjear(ficha) ? "Usar saldo o entregar un premio" : "No tiene saldo ni premios"} onClick={() => onAccion("canjear")} />
+        <Accion tecla="R" icono={<FileWarning className="size-8" />} texto="Reclamación: compra no registrada" ayuda="Si no se le sumó saldo o sellos" onClick={() => onAccion("reclamar")} />
+      </div>
       <div className="flex min-w-0 flex-col gap-5">
-      {ficha.cumpleanos && <FranjaCumpleanos cumple={ficha.cumpleanos} nombre={c.nombre} onRefrescar={onRefrescar} />}
-      {c.correo && <div className="flex flex-col gap-3">
-        <div className="flex flex-wrap items-center gap-2 text-sm">
-          <p className={c.correo.estado === "sin_correo" ? "text-warn-texto" : "text-muted-foreground"}>
-            {c.correo.estado === "confirmado" ? "Correo confirmado" : c.correo.estado === "sin_confirmar" ? `Correo: ${c.correo.enmascarado} (sin confirmar)` : "Sin correo: no recibe avisos por correo"}
-          </p>
-          {c.correo.estado !== "confirmado" && !editando && <Button size="sm" variant="secondary" onClick={() => { setCorreo(""); setEditando(true); }}>
-            {c.correo.estado === "sin_correo" ? "Agregar correo" : "Corregir correo"}
-          </Button>}
-        </div>
-        {editando && c.correo.estado !== "confirmado" && <form ref={refCorreo} className="flex flex-col gap-3" noValidate onSubmit={(e) => { e.preventDefault(); void guardar(); }}>
-          <Label htmlFor="ficha-correo">Correo del cliente</Label>
-          <Input id="ficha-correo" type="email" inputMode="email" autoComplete="off" value={correo} disabled={ocupado} onChange={(e) => setCorreo(e.target.value)} />
-          <p className="text-sm text-muted-foreground">Le enviaremos un aviso a ese correo. Solo el cliente puede confirmarlo desde su app.</p>
-          <div className="flex flex-wrap gap-2">
-            <Button type="button" variant="outline" disabled={ocupado} onClick={() => { setEditando(false); setCorreo(""); }}>Cancelar</Button>
-            <Button type="submit" disabled={ocupado || !correoCajaValido(correo)}>Guardar correo</Button>
-          </div>
-        </form>}
-      </div>}
-
+      {ficha.cumpleanos && <div className="lg:-order-2"><FranjaCumpleanos cumple={ficha.cumpleanos} nombre={c.nombre} onRefrescar={onRefrescar} /></div>}
       {ficha.monedero && (
-        <div className="rounded-2xl bg-card p-5 ring-1 ring-border">
+        <div className="flex flex-wrap items-baseline justify-between gap-x-3 rounded-2xl bg-card p-4 ring-1 ring-border lg:block lg:p-5">
           <p className="text-sm uppercase tracking-[0.12em] text-muted-foreground">Saldo</p>
-          <p className="mt-1 font-mono text-4xl font-bold tabular-nums">{pesos(ficha.monedero.saldo_centavos, moneda)}</p>
-          {ficha.monedero.fecha_vencimiento && <p className="mt-1 text-sm font-medium text-warn">Vence el {fechaCorta(ficha.monedero.fecha_vencimiento)}</p>}
+          <p className="font-mono text-3xl font-bold tabular-nums lg:mt-1 lg:text-4xl">{pesos(ficha.monedero.saldo_centavos, moneda)}</p>
+          {ficha.monedero.fecha_vencimiento && <p className="w-full text-sm font-medium text-warn lg:mt-1">Vence el {fechaCorta(ficha.monedero.fecha_vencimiento)}</p>}
+        </div>
+      )}
+
+      {premios.length > 0 && (
+        <div className="rounded-2xl bg-primary/10 p-4 ring-1 ring-primary/40 lg:order-last">
+          <p className="flex items-center gap-2 text-xl font-semibold"><Gift className="size-8 shrink-0" /> ¡Premio listo para canjear!</p>
+          <ul className="mt-2 flex flex-col gap-1">
+            {premios.map((t) => (
+              <li key={t.tarjeta_digital_id} className="text-base">{t.premio_por_canjear ?? t.premio_texto}{t.completas_por_canjear > 1 ? ` (${t.completas_por_canjear})` : ""}</li>
+            ))}
+          </ul>
         </div>
       )}
 
@@ -128,24 +128,25 @@ export function PasoFicha({ ficha, onAccion, onVolver, onRefrescar }: { ficha: C
         </ul>
       )}
 
-      {premios.length > 0 && (
-        <div className="rounded-2xl bg-primary/10 p-4 ring-1 ring-primary/40">
-          <p className="flex items-center gap-2 text-xl font-semibold"><Gift className="size-8 shrink-0" /> ¡Premio listo para canjear!</p>
-          <ul className="mt-2 flex flex-col gap-1">
-            {premios.map((t) => (
-              <li key={t.tarjeta_digital_id} className="text-base">{t.premio_por_canjear ?? t.premio_texto}{t.completas_por_canjear > 1 ? ` (${t.completas_por_canjear})` : ""}</li>
-            ))}
-          </ul>
+      {c.correo && <div className="flex flex-col gap-3 lg:-order-1">
+        <div className="flex flex-wrap items-center gap-2 text-sm">
+          <p className={c.correo.estado === "sin_correo" ? "text-warn-texto" : "text-muted-foreground"}>
+            {c.correo.estado === "confirmado" ? "Correo confirmado" : c.correo.estado === "sin_confirmar" ? `Correo: ${c.correo.enmascarado} (sin confirmar)` : "Sin correo: no recibe avisos por correo"}
+          </p>
+          {c.correo.estado !== "confirmado" && !editando && <Button size="sm" variant="secondary" onClick={() => { setCorreo(""); setEditando(true); }}>
+            {c.correo.estado === "sin_correo" ? "Agregar correo" : "Corregir correo"}
+          </Button>}
         </div>
-      )}
-
-      </div>
-      <div className="flex h-fit min-w-0 flex-col gap-3 lg:sticky lg:top-24">
-        <Accion tecla="A" icono={<PlusCircle className="size-8" />} texto="Acumular" disabled={!puedeAcumular(ficha)}
-          ayuda={puedeAcumular(ficha) ? "Saldo o sellos por esta compra" : "Este cliente no puede acumular aquí"} onClick={() => onAccion("acumular")} />
-        <Accion tecla="C" icono={<Gift className="size-8" />} texto="Canjear" disabled={!puedeCanjear(ficha)}
-          ayuda={!c.puede_canjear ? "Debe activar su app para canjear" : puedeCanjear(ficha) ? "Usar saldo o entregar un premio" : "No tiene saldo ni premios"} onClick={() => onAccion("canjear")} />
-        <Accion tecla="R" icono={<FileWarning className="size-8" />} texto="Reclamación: compra no registrada" ayuda="Si no se le sumó saldo o sellos" onClick={() => onAccion("reclamar")} />
+        {editando && c.correo.estado !== "confirmado" && <form ref={refCorreo} className="flex flex-col gap-3" noValidate onSubmit={(e) => { e.preventDefault(); void guardar(); }}>
+          <Label htmlFor="ficha-correo">Correo del cliente</Label>
+          <Input id="ficha-correo" type="email" inputMode="email" autoComplete="off" value={correo} disabled={ocupado} onChange={(e) => setCorreo(e.target.value)} />
+          <p className="text-sm text-muted-foreground">Le enviaremos un aviso a ese correo. Solo el cliente puede confirmarlo desde su app.</p>
+          <div className="flex flex-wrap gap-2">
+            <Button type="button" variant="outline" disabled={ocupado} onClick={() => { setEditando(false); setCorreo(""); }}>Cancelar</Button>
+            <Button type="submit" disabled={ocupado || !correoCajaValido(correo)}>Guardar correo</Button>
+          </div>
+        </form>}
+      </div>}
       </div>
       </div>
     </div>

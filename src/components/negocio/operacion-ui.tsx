@@ -62,13 +62,15 @@ export function errorOperacion(e: unknown, modulo?: "monedero" | "tarjetas_sello
 }
 
 /** Pending counts for the hub cards (GET /api/dashboard). */
-export function useConteosNegocio() {
+export function useConteosNegocio(activo = true) {
   return useQuery({
     queryKey: ["dashboard-conteos"],
     queryFn: async () => {
       const d = await dashboard();
       return { reclamaciones: d.reclamaciones.pendientes, solicitudes: d.validaciones_alta.pendientes };
     },
+    enabled: activo,
+    staleTime: 30_000,
   });
 }
 export function useRecargarConteos() {
@@ -150,9 +152,11 @@ export function CampoTexto({ etiqueta, ayuda, valor, onChange, max = 500 }: { et
       <textarea
         value={valor}
         maxLength={max}
-        rows={3}
+        rows={4}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-xl border border-border bg-card px-4 py-3 text-base shadow-soft outline-none focus:border-primary/60 focus:ring-4 focus:ring-primary/15"
+        // En celular la barra de abajo tapaba el campo: al tocarlo se centra (después de que abre el teclado).
+        onFocus={(e) => { const t = e.currentTarget; setTimeout(() => t.scrollIntoView?.({ block: "center", behavior: "smooth" }), 300); }}
+        className="min-h-28 w-full resize-y scroll-mb-28 rounded-xl border border-border bg-card px-4 py-3 text-base shadow-soft outline-none focus:border-primary/60 focus:ring-4 focus:ring-primary/15"
       />
       <span className="flex justify-between text-xs text-muted-foreground">
         <span>{ayuda}</span>

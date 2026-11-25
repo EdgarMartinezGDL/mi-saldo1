@@ -378,7 +378,7 @@ export function NotificacionesDispositivo() {
   const { data: promo } = useQuery({ queryKey: ["promociones"], queryFn: promociones });
   const preferencias = useQuery({
     queryKey: ["push-preferencias"], queryFn: () => preferenciasPush(),
-    retry: false, enabled: estado === "activadas",
+    retry: false, enabled: !!estado,
   });
   const [guardando, setGuardando] = useState<Partial<PreferenciasPush> | null>(null);
   const [ocupado, setOcupado] = useState(false);
@@ -398,7 +398,7 @@ export function NotificacionesDispositivo() {
     }
   };
 
-  if (!estado || estado === "no_disponible") return null;
+  if (!estado) return null;
 
   const cambiar = async (activar: boolean) => {
     setOcupado(true);
@@ -437,27 +437,6 @@ export function NotificacionesDispositivo() {
       {estado === "activadas" && (
         <>
           <span className="pill-badge mt-3 inline-block text-success-texto">Activadas en este dispositivo</span>
-          {preferencias.data && (
-            <div className="mt-4 grid gap-3">
-              <h3 className="text-base font-semibold">¿De qué te avisamos?</h3>
-              <label className="flex min-h-14 items-center justify-between gap-4 rounded-xl bg-secondary px-4 py-3">
-                <span className="min-w-0 text-base">Compras y canjes<span className="mt-1 block text-sm text-secondary-foreground">Cuando sumas cashback o usas tu saldo o tus recompensas.</span></span>
-                <Switch aria-label="Compras y canjes" checked={guardando?.movimientos ?? preferencias.data.movimientos} disabled={guardando !== null} onCheckedChange={(v) => void cambiarPreferencia("movimientos", v)} />
-              </label>
-              <label className="flex min-h-14 items-center justify-between gap-4 rounded-xl bg-secondary px-4 py-3">
-                <span className="min-w-0 text-base">Vencimientos<span className="mt-1 block text-sm text-secondary-foreground">Antes de que venza tu saldo o una tarjeta de sellos.</span></span>
-                <Switch aria-label="Vencimientos" checked={guardando?.vencimientos ?? preferencias.data.vencimientos} disabled={guardando !== null} onCheckedChange={(v) => void cambiarPreferencia("vencimientos", v)} />
-              </label>
-              <label className="flex min-h-14 items-center justify-between gap-4 rounded-xl bg-secondary px-4 py-3">
-                <span className="min-w-0 text-base">Beneficio de cumpleaños<span className="mt-1 block text-sm text-secondary-foreground">Te avisamos cuando tengas un beneficio disponible en tu cumpleaños. Si lo activas, también te llega por correo.</span></span>
-                <Switch aria-label="Beneficio de cumpleaños" checked={guardando?.cumpleanos ?? preferencias.data.cumpleanos ?? false} disabled={guardando !== null} onCheckedChange={(v) => void cambiarPreferencia("cumpleanos", v)} />
-              </label>
-              {promo && !promo.acepta_promociones && (
-                <p className="-mt-1 text-sm text-muted-foreground">Para recibirlo de este negocio, activa también Promociones aquí abajo.</p>
-              )}
-              <p className="text-xs text-muted-foreground">Los avisos de seguridad (tu PIN de acceso (6 dígitos) y tus accesos) siempre llegan por WhatsApp y correo.</p>
-            </div>
-          )}
           {promo && !promo.acepta_promociones && (
             <p className="mt-2 text-sm text-muted-foreground">Para recibir las de este negocio, activa también <strong>Promociones</strong> aquí abajo.</p>
           )}
@@ -466,7 +445,30 @@ export function NotificacionesDispositivo() {
           </Button>
         </>
       )}
-      <p className="mt-3 text-xs text-muted-foreground">Al cerrar sesión se desactivan en este dispositivo.</p>
+      {/* Las preferencias son de la persona (servidor), no del celular: se ven aunque aquí estén apagadas. */}
+      {preferencias.data && (
+      <div className="mt-4 grid gap-3">
+        <h3 className="text-base font-semibold">¿De qué te avisamos?</h3>
+        {estado !== "activadas" && <p className="-mt-1 text-sm text-muted-foreground">En este celular las notificaciones están apagadas: aquí solo eliges qué te avisamos. El beneficio de cumpleaños también te llega por correo.</p>}
+        <label className="flex min-h-14 items-center justify-between gap-4 rounded-xl bg-secondary px-4 py-3">
+          <span className="min-w-0 text-base">Compras y canjes<span className="mt-1 block text-sm text-secondary-foreground">Cuando sumas cashback o usas tu saldo o tus recompensas.</span></span>
+          <Switch aria-label="Compras y canjes" checked={guardando?.movimientos ?? preferencias.data.movimientos} disabled={guardando !== null} onCheckedChange={(v) => void cambiarPreferencia("movimientos", v)} />
+        </label>
+        <label className="flex min-h-14 items-center justify-between gap-4 rounded-xl bg-secondary px-4 py-3">
+          <span className="min-w-0 text-base">Vencimientos<span className="mt-1 block text-sm text-secondary-foreground">Antes de que venza tu saldo o una tarjeta de sellos.</span></span>
+          <Switch aria-label="Vencimientos" checked={guardando?.vencimientos ?? preferencias.data.vencimientos} disabled={guardando !== null} onCheckedChange={(v) => void cambiarPreferencia("vencimientos", v)} />
+        </label>
+        <label className="flex min-h-14 items-center justify-between gap-4 rounded-xl bg-secondary px-4 py-3">
+          <span className="min-w-0 text-base">Beneficio de cumpleaños<span className="mt-1 block text-sm text-secondary-foreground">Te avisamos cuando tengas un beneficio disponible en tu cumpleaños. Si lo activas, también te llega por correo.</span></span>
+          <Switch aria-label="Beneficio de cumpleaños" checked={guardando?.cumpleanos ?? preferencias.data.cumpleanos ?? false} disabled={guardando !== null} onCheckedChange={(v) => void cambiarPreferencia("cumpleanos", v)} />
+        </label>
+        {promo && !promo.acepta_promociones && (
+          <p className="-mt-1 text-sm text-muted-foreground">Para recibirlo de este negocio, activa también Promociones aquí abajo.</p>
+        )}
+              <p className="text-xs text-muted-foreground">Los avisos de seguridad (tu PIN de acceso (6 dígitos) y tus accesos) siempre llegan por WhatsApp y correo.</p>
+            </div>
+          )}
+      {estado !== "no_disponible" && <p className="mt-3 text-xs text-muted-foreground">Al cerrar sesión se desactivan en este dispositivo.</p>}
     </Tarjeta>
   );
 }

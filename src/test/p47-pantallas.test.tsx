@@ -120,15 +120,15 @@ describe("P47 Excel de cumpleañeros: incluirlos otra vez", () => {
     m.descargar.mockResolvedValue(new Blob());
     const R = componente(ReportesRoute); montar(<R />);
     fireEvent.click(await screen.findByRole("checkbox", { name: "Incluir a los que ya salieron en otro Excel este año" }));
-    fireEvent.click(screen.getAllByRole("button", { name: "Contar" })[0]!);
+    fireEvent.click(screen.getAllByRole("button", { name: /Contar/ })[0]!);
     await waitFor(() => expect(m.contar).toHaveBeenCalledWith("cumpleaneros", expect.objectContaining({ incluir_exportados: true })));
-    fireEvent.click(await screen.findByRole("button", { name: "Descargar Excel" }));
+    await waitFor(() => expect(screen.getAllByRole("button", { name: /Descargar Excel/ })[0]!).toBeEnabled()); fireEvent.click(screen.getAllByRole("button", { name: /Descargar Excel/ })[0]!);
     await waitFor(() => expect(m.descargar).toHaveBeenCalledWith("cumpleaneros", expect.objectContaining({ incluir_exportados: true })));
   });
   it("conteo 0 con 3 omitidos: explica por qué y no dice 'No hay clientes'", async () => {
     m.contar.mockResolvedValue({ conteo: 0, tope: 20000, excede_limite: false, omitidos_exportados: 3 });
     const R = componente(ReportesRoute); montar(<R />);
-    fireEvent.click((await screen.findAllByRole("button", { name: "Contar" }))[0]!);
+    fireEvent.click((await screen.findAllByRole("button", { name: /Contar/ }))[0]!);
     expect(await screen.findByText("3 clientes ya salieron en otro Excel este año. Marca la casilla para incluirlos otra vez.")).toBeInTheDocument();
     expect(screen.queryByText("No hay clientes en ese rango")).toBeNull();
     expect(m.contar).toHaveBeenCalledWith("cumpleaneros", expect.objectContaining({ incluir_exportados: false }));

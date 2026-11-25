@@ -30,6 +30,7 @@ import { useMisValidaciones } from "@/lib/use-mis-validaciones";
 import type { Role } from "@/lib/misaldo-data";
 import { cn } from "@/lib/utils";
 import { AvisoPendiente } from "@/components/aviso-pendiente";
+import { useConteosNegocio } from "@/components/negocio/operacion-ui";
 
 type NavItem = { to: string; label: string; icon: LucideIcon; destacado?: boolean };
 
@@ -194,6 +195,26 @@ function AppBar() {
   );
 }
 
+/** U-05: pendientes del dueño para el globito de la pestaña Negocio (reclamaciones, solicitudes y PIN POS sin definir). */
+function usePendientesNegocio() {
+  const { sesion, conectado } = useAuth();
+  const esDueno = sesion?.contexto.rol === "dueno" && conectado !== false;
+  const negocioId = sesion?.contexto.negocio_id;
+  const { data: conteos } = useConteosNegocio(esDueno);
+  const config = useQuery({ queryKey: ["caja-configuracion", negocioId, "dueno"], queryFn: configuracion, enabled: esDueno && !!negocioId, retry: false, staleTime: 20_000 });
+  if (!esDueno) return 0;
+  return (conteos?.reclamaciones ?? 0) + (conteos?.solicitudes ?? 0) + (config.data?.negocio?.pin_pos_configurado === false ? 1 : 0);
+}
+
+function Globito({ n, className }: { n: number; className?: string }) {
+  if (n <= 0) return null;
+  return (
+    <span aria-hidden="true" className={cn("grid min-w-5 place-items-center rounded-full bg-destructive px-1 text-[11px] font-bold leading-5 text-destructive-foreground", className)}>
+      {n > 99 ? "99+" : n}
+    </span>
+  );
+}
+
 export function AppShell({ children, volver, volverTexto, amplio = false }: { children: ReactNode; volver?: string; volverTexto?: string; amplio?: boolean }) {
   const { estado, sesion } = useAuth();
   const path = useRouterState({ select: (s) => s.location.pathname });
@@ -204,6 +225,9 @@ export function AppShell({ children, volver, volverTexto, amplio = false }: { ch
   const textoAtras = volverTexto ?? (atras === "/negocio" ? "Negocio" : "Volver");
   const { pedirConfirmacion, dialogo } = useCerrarSesion();
   const autenticado = estado === "autenticado";
+  const pendientesNegocio = usePendientesNegocio();
+  const globito = (item: NavItem) => (item.to === "/negocio" ? pendientesNegocio : 0);
+  const etiqueta = (item: NavItem) => (globito(item) > 0 ? `${item.label}, ${globito(item)} ${globito(item) === 1 ? "pendiente" : "pendientes"}` : undefined);
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -218,6 +242,7 @@ export function AppShell({ children, volver, volverTexto, amplio = false }: { ch
               <Link
                 key={item.to}
                 to={item.to}
+                aria-label={etiqueta(item)}
                 className={cn(
                   "flex items-center gap-3 rounded-xl px-4 py-3 text-base font-medium transition-colors",
                   active
@@ -227,6 +252,7 @@ export function AppShell({ children, volver, volverTexto, amplio = false }: { ch
               >
                 <item.icon className="size-5 shrink-0" />
                 <span className="truncate">{item.label}</span>
+                <Globito n={globito(item)} className="ml-auto" />
               </Link>
             );
           })}
@@ -267,6 +293,7 @@ export function AppShell({ children, volver, volverTexto, amplio = false }: { ch
                 key={item.to}
                 to={item.to}
                 aria-current={active ? "page" : undefined}
+                aria-label={etiqueta(item)}
                 className={cn(
                   "relative flex min-h-[64px] flex-col items-center justify-center gap-1 transition-colors",
                   active ? "text-primary-texto" : "text-secondary-foreground hover:text-foreground",
@@ -281,6 +308,7 @@ export function AppShell({ children, volver, volverTexto, amplio = false }: { ch
                 >
                   <item.icon className={cn("shrink-0", item.destacado ? "size-7" : "size-[22px]")} strokeWidth={active ? 2.2 : 1.7} />
                 </span>
+                <Globito n={globito(item)} className="absolute left-1/2 top-1.5 ml-2" />
                 <span className={cn("text-xs leading-tight whitespace-nowrap", active || item.destacado ? "font-semibold" : "font-medium")}>
                   {item.label}
                 </span>

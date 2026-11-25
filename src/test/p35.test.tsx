@@ -77,12 +77,14 @@ describe("P35 preferencias push", () => {
     expect(m.success).not.toHaveBeenCalled();
   });
 
-  it("no consulta preferencias con push desactivado", async () => {
+  // Claude (2026-11-24): las preferencias son de la persona, no del celular; se ven aunque aquí estén apagadas.
+  it("con push desactivado muestra las preferencias y avisa que en este celular están apagadas", async () => {
     m.estado.mockResolvedValue("desactivadas");
+    m.api.mockResolvedValue({ movimientos: true, vencimientos: false, cumpleanos: false });
     montar();
     await screen.findByRole("button", { name: /Activar notificaciones/ });
-    expect(m.api).not.toHaveBeenCalled();
-    expect(screen.queryByRole("switch")).toBeNull();
+    expect(await screen.findByRole("switch", { name: "Beneficio de cumpleaños" })).toBeInTheDocument();
+    expect(screen.getByText(/En este celular las notificaciones están apagadas/)).toBeInTheDocument();
   });
 
   it("no muestra preferencias mientras GET está pendiente", async () => {

@@ -228,3 +228,17 @@ Pendiente fuera de alcance: publicar y verificar con sesiones reales (el backend
 ## Usabilidad U-11 y U-12 (Claude, aprobadas por el propietario el 2026-11-23)
 - [x] U-11: sin el buscador "Buscar establecimiento" en Inicio; con 2 o más negocios de cliente, botones con sus negocios (`NegociosCliente` en `mis-negocios.tsx`); si el cambio pide PIN o 2FA, abre "Mis negocios".
 - [x] U-12: la pestaña "Mis códigos" ahora es "Premios" (misma ruta `/canjear`): saldo para usar, premios listos y promociones. "Canjear" en Inicio baja a "Tus PINes" (`#tus-pines`). Crear o cambiar los PIN quedó en Cuenta (`/ajustes#mis-pines`).
+
+## Usabilidad U-01, U-04 y U-05 (Claude, aprobadas por el propietario el 2026-11-23)
+- [x] Inicio del cliente: sin la pastilla con el nombre del negocio junto a "Hola de nuevo" (lo repetían los botones de U-11; el nombre sigue en la tarjeta de saldo y en la barra).
+- [x] U-01: en la ficha de Caja (`paso-ficha.tsx`) los botones Acumular / Canjear / Reclamación van primero en el DOM (en celular quedan justo debajo del nombre); luego cumpleaños, saldo en franja compacta y premios; tarjetas y correo al final. En computadora se ve igual que antes con `lg:order-*`.
+- [x] U-04: franja "Para atender hoy" arriba del Panel, solo si hay algo (reclamaciones, solicitudes de alta y solicitudes por confirmar), en ámbar y con enlace a cada lista; se quitan las tarjetas "Reclamaciones pendientes" y "Solicitudes de alta" de las métricas.
+- [x] U-05: globito con el número de pendientes (reclamaciones + solicitudes + PIN POS sin definir) en la pestaña Negocio, en la barra de abajo y en la lateral; solo para el dueño (`useConteosNegocio(activo)` con `staleTime` de 30 s).
+- [x] Prueba `claude-u01-u04-u05.test.tsx`.
+
+## Revisión en el celular del 2026-11-24 (Claude, aprobada por el propietario)
+- [x] Tus PINes: si el servidor responde `sin_copia` o `sin_codigo`, un aviso explica por qué no se puede mostrar (el PIN viejo sigue sirviendo en caja) y ofrece "Crear PIN de canje nuevo"; ya no se cierra en silencio.
+- [x] Cuenta → Notificaciones: "¿De qué te avisamos?" (incluido "Beneficio de cumpleaños") se ve aunque las notificaciones estén apagadas en ese celular; las preferencias son de la persona, no del dispositivo.
+- [x] Reportes: "2. Descargar Excel" siempre visible, desactivado hasta que "1. Contar" dé 1 o más, con la explicación del paso; "Contar" con contorno de marca (ya no parece desactivado); descripción de la sección explica el Excel con botón de WhatsApp.
+- [x] `CampoTexto`: 4 líneas, se puede estirar y al tocarlo se centra para que la barra de abajo no lo tape en celular.
+- [x] Pruebas `claude-revision-celular.test.tsx`; p16, p35, p46 y p47-pantallas al día.

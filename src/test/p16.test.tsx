@@ -22,6 +22,8 @@ vi.mock("@/components/negocio/comun", () => ({ SeccionNegocio: ({ children }: { 
 vi.mock("@/components/totp-provider", () => ({ useConTotp: () => (fn: () => Promise<unknown>) => fn() }));
 vi.mock("@/lib/api/dueno", () => ({ consultarClientes: m.consultar, fichaCliente: m.ficha, dashboard: m.dashboard, membresia: m.membresia }));
 vi.mock("@/lib/api/caja", () => ({ configuracion: m.configuracion }));
+// Claude (2026-11-24, U-04): el Panel lee las solicitudes por confirmar para "Para atender hoy".
+vi.mock("@/lib/use-mis-validaciones", () => ({ useMisValidaciones: () => ({ data: { validaciones: [] } }) }));
 vi.mock("@/lib/api/marketing", () => ({ contarReporte: m.contar, descargarReporte: m.descargar }));
 vi.mock("@/lib/api/client", async (o) => ({ ...await o<typeof import("@/lib/api/client")>(), guardarArchivo: m.guardar }));
 
@@ -34,7 +36,7 @@ function datos(archivados_total: number): Dashboard {
 vi.mock("@/lib/api/cumpleanos", async (o) => ({ ...await o<typeof import("@/lib/api/cumpleanos")>(), fechaCumpleCliente: async () => ({ dia: null, mes: null, propia: false, cambio_disponible: false }) }));
 function clientes() { const Component = ClientesRoute.options.component; if (Component) render(<QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false, gcTime: 0 } } })}><Component /></QueryClientProvider>); }
 function reportes() { const Component = ReportesRoute.options.component; if (Component) render(<Component />); }
-function panel() { const Component = PanelRoute.options.component; if (Component) render(<Component />); }
+function panel() { const Component = PanelRoute.options.component; if (Component) render(<QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false, gcTime: 0 } } })}><Component /></QueryClientProvider>); }
 
 beforeEach(() => {
   vi.clearAllMocks(); m.search = {};
@@ -95,21 +97,21 @@ describe("P16 Clientes", () => {
 describe("P16 Reportes", () => {
   it("cumpleañeros incluye el mismo filtro al contar y descargar; cambiarlo descarta el conteo", async () => {
     reportes(); const seccion = screen.getByRole("heading", { name: "Cumpleañeros" }).closest("section"); if (!seccion) throw new Error("Falta reporte");
-    const r = within(seccion); fireEvent.click(r.getByRole("checkbox", { name: "Incluir archivados" })); fireEvent.click(r.getByRole("button", { name: "Contar" }));
+    const r = within(seccion); fireEvent.click(r.getByRole("checkbox", { name: "Incluir archivados" })); fireEvent.click(r.getByRole("button", { name: /Contar/ }));
     await waitFor(() => expect(m.contar).toHaveBeenCalledWith("cumpleaneros", expect.objectContaining({ incluir_archivados: true })));
-    fireEvent.click(await r.findByRole("button", { name: "Descargar Excel" }));
+    await waitFor(() => expect(r.getByRole("button", { name: /Descargar Excel/ })).toBeEnabled()); fireEvent.click(r.getByRole("button", { name: /Descargar Excel/ }));
     await waitFor(() => expect(m.descargar).toHaveBeenCalledWith("cumpleaneros", expect.objectContaining({ incluir_archivados: true })));
-    fireEvent.click(r.getByRole("checkbox", { name: "Incluir archivados" })); expect(r.queryByRole("button", { name: "Descargar Excel" })).toBeNull();
-    fireEvent.click(r.getByRole("button", { name: "Contar" }));
+    fireEvent.click(r.getByRole("checkbox", { name: "Incluir archivados" })); expect(r.getByRole("button", { name: /Descargar Excel/ })).toBeDisabled();
+    fireEvent.click(r.getByRole("button", { name: /Contar/ }));
     await waitFor(() => expect(m.contar).toHaveBeenLastCalledWith("cumpleaneros", expect.objectContaining({ incluir_archivados: false })));
   });
   it("inactivos usa hace 1 año a 30 días y nunca envía incluir_archivados", async () => {
     vi.useFakeTimers({ toFake: ["Date"] }); vi.setSystemTime(new Date("2026-10-22T18:00:00Z")); reportes();
     const seccion = screen.getByRole("heading", { name: "Inactivos" }).closest("section"); if (!seccion) throw new Error("Falta reporte"); const r = within(seccion);
     expect(r.getByLabelText("Desde")).toHaveValue("2025-10-22"); expect(r.getByLabelText("Hasta")).toHaveValue("2026-09-22");
-    fireEvent.click(r.getByRole("button", { name: "Contar" }));
+    fireEvent.click(r.getByRole("button", { name: /Contar/ }));
     await waitFor(() => expect(m.contar).toHaveBeenCalledWith("inactivos", { desde: "2025-10-22", hasta: "2026-09-22" }));
-    fireEvent.click(await r.findByRole("button", { name: "Descargar Excel" }));
+    await waitFor(() => expect(r.getByRole("button", { name: /Descargar Excel/ })).toBeEnabled()); fireEvent.click(r.getByRole("button", { name: /Descargar Excel/ }));
     await waitFor(() => expect(m.descargar).toHaveBeenCalledWith("inactivos", { desde: "2025-10-22", hasta: "2026-09-22" }));
   });
 });

@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import type { ComponentType, ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { TusPines } from "@/components/cuenta/tus-pines";
@@ -71,7 +71,11 @@ describe("P46 consulta bajo demanda", () => {
   it.each(["sin_codigo", "sin_copia"])("respeta el estado %s del servidor", async (estado) => {
     m.api.mockResolvedValue({ ...disponible, estado, codigo_canje: null }); montar(); await revelar();
     expect(screen.queryByText("9753")).toBeNull();
-    expect(screen.getByRole("button", { name: estado === "sin_codigo" ? "Crear PIN de canje" : "Cambiar PIN de canje" })).toBeInTheDocument();
+    // Claude (2026-11-24): ya no se cierra en silencio; un aviso explica y ofrece crear uno nuevo.
+    const aviso = await screen.findByRole("alertdialog");
+    expect(aviso).toHaveTextContent(estado === "sin_codigo" ? "Aún no tienes PIN de canje" : "No podemos mostrar tu PIN de canje");
+    fireEvent.click(within(aviso).getByRole("button", { name: estado === "sin_codigo" ? "Crear PIN de canje" : "Crear PIN de canje nuevo" }));
+    expect(await screen.findByRole("alertdialog", { name: /Cambiar PIN de canje/ })).toBeInTheDocument();
   });
   it("muestra tres intentos restantes y nunca revela al fallar el acceso", async () => {
     m.api.mockRejectedValue(new ApiError(422, { codigo: "pin_incorrecto", intentos_restantes: 3 })); montar(); await revelar();

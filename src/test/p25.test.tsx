@@ -192,10 +192,12 @@ describe("P25 cerrar sesión desactiva notificaciones", () => {
 });
 
 describe("P25 Cuenta (cliente)", () => {
-  it("no muestra la tarjeta cuando el dispositivo no admite push", async () => {
+  // Claude (2026-11-24): sin push en el dispositivo la tarjeta queda solo con "¿De qué te avisamos?" (las preferencias son de la persona).
+  it("sin push en el dispositivo no ofrece activarlas ni habla del dispositivo", async () => {
     const client = montar(<NotificacionesDispositivo />);
     await waitFor(() => expect(client.getQueryState(["push-estado"])?.status).toBe("success"));
-    expect(screen.queryByText("Notificaciones")).toBeNull();
+    expect(screen.queryByRole("button", { name: /Activar notificaciones/ })).toBeNull();
+    expect(screen.queryByText(/Al cerrar sesión se desactivan en este dispositivo/)).toBeNull();
   });
   it("en desactivadas muestra el botón Activar notificaciones", async () => {
     stubNavegador();

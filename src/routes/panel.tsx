@@ -1,6 +1,6 @@
 import { PendientesAsistente, useAsistente } from "@/components/negocio/asistente";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { Archive, Megaphone, MessageSquareWarning, Printer, Stamp, TrendingUp, UserPlus, UserRoundPlus, Users, type LucideIcon } from "lucide-react";
+import { Archive, ChevronRight, Megaphone, MessageSquareWarning, Printer, Stamp, TrendingUp, UserCheck, UserPlus, UserRoundPlus, Users, type LucideIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -15,6 +15,7 @@ import { ApiError } from "@/lib/api/client";
 import { configuracion } from "@/lib/api/caja";
 import { dashboard, membresia, type Dashboard, type Membresia } from "@/lib/api/dueno";
 import { fechaCorta, pesos } from "@/lib/api/formato";
+import { useMisValidaciones } from "@/lib/use-mis-validaciones";
 
 export const Route = createFileRoute("/panel")({
   head: () => ({
@@ -66,6 +67,7 @@ function Panel() {
   const [memb, setMemb] = useState<Membresia | null>(null);
   const [sinPinPos, setSinPinPos] = useState(false);
   const [vista, setVista] = useState<"saldo" | "sellos">("saldo");
+  const { data: misValidaciones } = useMisValidaciones();
 
   useEffect(() => {
     const err = (e: unknown) => toast.error(e instanceof ApiError ? e.message : "No se pudo cargar el panel.");
@@ -103,9 +105,15 @@ function Panel() {
     { label: "Clientes en total", value: String(hoy.clientes.activos_total), icon: Users, tono: "neutro", aviso: false, to: "/clientes" },
     ...(hoy.clientes.archivados_total > 0 ? [{ label: "Clientes archivados", value: String(hoy.clientes.archivados_total), icon: Archive, tono: "neutro" as const, aviso: false, to: "/clientes" as const, search: { archivados: "solo" as const } }] : []),
     { label: "Sellos entregados", value: String(hoy.tarjetas?.sellos_otorgados ?? 0), icon: Stamp, tono: "warning", aviso: false, to: undefined },
-    { label: "Reclamaciones pendientes", value: String(hoy.reclamaciones.pendientes), icon: MessageSquareWarning, tono: "accent", aviso: false, to: "/negocio/reclamaciones" },
-    { label: "Solicitudes de alta", value: String(hoy.validaciones_alta.pendientes), icon: UserPlus, tono: "primary", aviso: hoy.validaciones_alta.pendientes > 0, to: "/negocio/solicitudes" },
   ];
+  // U-04: lo pendiente va en la franja "Para atender hoy", solo si hay algo.
+  const validacionesPendientes = misValidaciones?.validaciones?.filter((v) => v.estado === "pendiente").length ?? 0;
+  type PorAtender = { n: number; uno: string; varios: string; icon: LucideIcon; to: "/negocio/reclamaciones" | "/negocio/solicitudes" | "/validaciones" };
+  const porAtender = ([
+    { n: hoy.reclamaciones.pendientes, uno: "reclamación por revisar", varios: "reclamaciones por revisar", icon: MessageSquareWarning, to: "/negocio/reclamaciones" },
+    { n: hoy.validaciones_alta.pendientes, uno: "solicitud de alta pendiente", varios: "solicitudes de alta pendientes", icon: UserPlus, to: "/negocio/solicitudes" },
+    { n: validacionesPendientes, uno: "solicitud por confirmar", varios: "solicitudes por confirmar", icon: UserCheck, to: "/validaciones" },
+  ] satisfies PorAtender[]).filter((p) => p.n > 0);
   const usaVentas = !!hoy.monedero && (!hoy.tarjetas || vista === "saldo");
   const serie = (semana?.serie ?? []).map((s) => ({
     fecha: s.fecha,
@@ -146,6 +154,23 @@ function Panel() {
             {sesion?.contexto.rol === "dueno" && <Button variant="secondary" className="min-h-12 text-base" asChild><Link to="/negocio/cartel"><Printer /> Imprimir cartel</Link></Button>}
           </div>
         </div>
+
+        {porAtender.length > 0 && (
+          <section aria-labelledby="para-atender" className="rounded-2xl bg-warn p-4 text-warn-foreground">
+            <h2 id="para-atender" className="text-lg font-semibold tracking-tight">Para atender hoy</h2>
+            <ul className="mt-2 flex flex-col gap-2">
+              {porAtender.map((p) => (
+                <li key={p.to}>
+                  <Link to={p.to} className="flex min-h-12 items-center gap-3 rounded-xl bg-background/15 px-3 py-2 text-base font-semibold transition-colors hover:bg-background/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                    <p.icon aria-hidden="true" className="size-5 shrink-0" />
+                    <span className="min-w-0"><span className="font-mono tabular-nums">{p.n}</span> {p.n === 1 ? p.uno : p.varios}</span>
+                    <ChevronRight aria-hidden="true" className="ml-auto size-5 shrink-0" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
         {sinPinPos && !estadoAsistente?.pendientes_obligatorios.includes("pin_pos") && (
           <Link to="/negocio/pin-pos" className="rounded-xl bg-destructive/10 p-3 text-sm font-medium text-destructive">

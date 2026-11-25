@@ -25,6 +25,7 @@ export function TusPines({ telefono = "" }: { telefono?: string }) {
   const [segundos, setSegundos] = useState(0);
   const [estado, setEstado] = useState<EstadoPin | null>(null);
   const [modo, setModo] = useState<Modo | null>(null);
+  const [aviso, setAviso] = useState<"sin_copia" | "sin_codigo" | null>(null);
   const [ocupado, setOcupado] = useState(false);
   const generacion = useRef(0);
 
@@ -94,7 +95,24 @@ export function TusPines({ telefono = "" }: { telefono?: string }) {
     {modo && <DialogoPin key={modo} modo={modo} telefono={telefono} cerrar={cerrar} vigente={() => generacion.current} completar={(r) => {
       const { codigo_canje, ...publico } = r;
       setEstado(publico); setCanje(r.estado === "disponible" ? codigo_canje : null); setSegundos(r.estado === "disponible" && codigo_canje ? 30 : 0); cerrar();
+      if (r.estado === "sin_copia" || r.estado === "sin_codigo") setAviso(r.estado);
     }} cambiado={() => { setEstado(null); cerrar(); }} />}
+    <AlertDialog open={aviso !== null} onOpenChange={(abierto) => { if (!abierto) setAviso(null); }}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>{aviso === "sin_codigo" ? "Aún no tienes PIN de canje (4 dígitos)" : "No podemos mostrar tu PIN de canje (4 dígitos)"}</AlertDialogTitle>
+          <AlertDialogDescription>
+            {aviso === "sin_codigo"
+              ? "Créalo para poder usar tu saldo y tus premios en caja."
+              : "Lo creaste antes de que se pudiera consultar aquí y por seguridad no guardamos una copia. Tu PIN actual sigue sirviendo en caja. Si no lo recuerdas, crea uno nuevo y desde entonces podrás verlo aquí."}
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <Button type="button" variant="outline" className="min-h-14" onClick={() => setAviso(null)}>Ahora no</Button>
+          <Button type="button" className="min-h-14 whitespace-normal" onClick={() => { setAviso(null); setModo("cambiar"); }}>{aviso === "sin_codigo" ? "Crear PIN de canje" : "Crear PIN de canje nuevo"}</Button>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   </section>;
 }
 
