@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { Search, Users, X } from "lucide-react";
+import { BadgeDollarSign, Search, Users, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { AppShell } from "@/components/app-shell";
@@ -16,6 +16,7 @@ import { ApiError } from "@/lib/api/client";
 import { consultarClientes, fichaCliente, type ClienteLista, type FichaCliente, type Siguiente } from "@/lib/api/dueno";
 import { diaDeInstante, esClienteNuevo, fechaCorta, instante, nombreCompleto, pesos, telefonoVisible } from "@/lib/api/formato";
 import { plural } from "@/lib/plural";
+import { pedirAbrirEnCaja } from "@/lib/caja-abrir";
 import { useDesplazarAlAbrir } from "@/lib/use-desplazar";
 import { CumpleanosCliente } from "@/components/negocio/cumpleanos-cliente";
 
@@ -168,6 +169,11 @@ function Clientes() {
               )}
             </div>
             <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+              {ficha.cliente.telefono && (
+                <Button size="lg" variant="primario" onClick={() => { pedirAbrirEnCaja(ficha.cliente.telefono ?? ""); void navigate({ to: "/caja" }); }}>
+                  <BadgeDollarSign aria-hidden="true" /> Abrir en la Caja
+                </Button>
+              )}
               {ficha.cliente.telefono && (
                 <Button size="lg" onClick={() => setAjustando(true)}>Ajustar saldo o sellos</Button>
               )}

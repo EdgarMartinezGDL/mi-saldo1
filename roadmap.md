@@ -246,3 +246,10 @@ Pendiente fuera de alcance: publicar y verificar con sesiones reales (el backend
 - [x] Salto de scroll en Reportes: lo causaba el `scrollIntoView` con retraso que se añadió a `CampoTexto` (peleaba con el desplazamiento que hace el navegador al abrir el teclado). Quitado; el campo conserva 4 líneas, `scroll-mb-28` para la barra de abajo y ya no se puede estirar (`resize-none`).
 - [x] Tercera revisión (2026-11-24, noche): "1. Contar" habilitado desde que entras con las fechas predeterminadas; solo se desactiva con una fecha vacía o un rango inválido.
 - [x] Salto de scroll al deslizar en Reportes: con una fecha o el mensaje enfocados, el cambio de alto de la ventana al ocultarse/aparecer la barra del navegador regresaba la página a ese campo (207 y 539 px medidos). Nuevo gancho `useSoltarFocoAlDeslizar` (`src/lib/use-soltar-foco-al-deslizar.ts`): al empezar a deslizar fuera del campo enfocado se le quita el foco. Sin scroll anidado, alturas fijas, snap ni sticky propios de la vista.
+
+## Usabilidad U-02, U-06, U-07 y U-08 (Claude, aprobadas por el propietario el 2026-11-23)
+- [x] U-02: botón "Abrir en la Caja" en la ficha de Clientes; el teléfono viaja por sessionStorage (`src/lib/caja-abrir.ts`, no por la URL) y la Caja abre la ficha de ese cliente una sola vez.
+- [x] U-06: "Enviar promoción" en el Panel junto a "Mostrar QR"; "Imprimir cartel" pasó a Negocio → Configuración ("Cartel para imprimir").
+- [x] U-07: "Ventas de hoy" (o ventas con saldo / con sellos) y "Clientes atendidos" del Panel abren Movimientos, que ya filtra a hoy.
+- [x] U-08: Negocio en "Del día" (Reclamaciones, Solicitudes, Promociones, Movimientos), "Configuración" (Empleados, PIN POS, Horarios, Monedero, Datos y marca, Recomienda y gana, Configuración inicial, Cartel) y "Administración" (Membresía, Reportes).
+- [x] Pruebas en p16, p22, p29, p38 y `claude-u01-u04-u05.test.tsx`.

@@ -1,6 +1,6 @@
 import { useAsistente } from "@/components/negocio/asistente";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { BarChart3, ListChecks, Clock, Gift, ChevronRight, CreditCard, History, KeyRound, Megaphone, MessageSquareWarning, Palette, UserPlus, Users, Wallet, type LucideIcon } from "lucide-react";
+import { BarChart3, ListChecks, Clock, Gift, ChevronRight, CreditCard, History, KeyRound, Megaphone, MessageSquareWarning, Palette, Printer, UserPlus, Users, Wallet, type LucideIcon } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { IconoTono, type Tono } from "@/components/fila-lista";
 import { useConfigNegocio } from "@/components/negocio/comun";
@@ -12,7 +12,7 @@ export const Route = createFileRoute("/negocio/")({
   head: () => ({
     meta: [
       { title: "Mi negocio · Mi Saldo Vip" },
-      { name: "description", content: "Centro de administración: operación, marketing y recompensas, y administración de tu negocio." },
+      { name: "description", content: "Centro de administración: lo del día, la configuración y la administración de tu negocio." },
       { property: "og:title", content: "Mi negocio · Mi Saldo Vip" },
       { property: "og:description", content: "Administra la marca, el cashback, el PIN POS, tus empleados y tu membresía." },
       { property: "og:type", content: "website" },
@@ -29,8 +29,8 @@ export const Route = createFileRoute("/negocio/")({
 type Tarjeta = { to: string; titulo: string; texto: string; icono: LucideIcon; alerta?: string };
 
 const TONO_GRUPO: Record<string, Tono> = {
-  Operación: "primary",
-  "Marketing y recompensas": "accent",
+  "Del día": "primary",
+  Configuración: "accent",
   Administración: "success",
 };
 
@@ -60,19 +60,11 @@ export function Centro() {
         icono: ListChecks,
       };
 
+  // U-08: lo de cada día primero; lo que se configura una vez, después; administración al final.
   const secciones: { titulo: string; tarjetas: Tarjeta[] }[] = [
     {
-      titulo: "Operación",
+      titulo: "Del día",
       tarjetas: [
-        { to: "/empleados", titulo: "Empleados", texto: "Da de alta, invita o da de baja a tus cajeros.", icono: Users },
-        {
-          to: "/negocio/pin-pos",
-          titulo: "PIN POS",
-          texto: "El PIN con el que se abre la caja.",
-          icono: KeyRound,
-          ...(sinPin ? { alerta: "Aún no lo defines: nadie puede abrir la caja." } : {}),
-        },
-        { to: "/negocio/horarios", titulo: "Horarios", texto: "Los días y horas en que abres.", icono: Clock },
         {
           to: "/negocio/reclamaciones",
           titulo: "Reclamaciones",
@@ -87,24 +79,34 @@ export function Centro() {
           icono: UserPlus,
           ...(sol > 0 ? { alerta: `${sol} ${sol === 1 ? "pendiente" : "pendientes"}` } : {}),
         },
+        { to: "/negocio/promociones", titulo: "Promociones", texto: "Avisos al celular de tus clientes (1 al día).", icono: Megaphone },
+        { to: "/negocio/movimientos", titulo: "Movimientos", texto: "Todo lo que pasó en tu caja, con filtros y Excel.", icono: History },
       ],
     },
     {
-      titulo: "Marketing y recompensas",
+      titulo: "Configuración",
       tarjetas: [
-        { to: "/negocio/promociones", titulo: "Promociones", texto: "Avisos al celular de tus clientes (1 al día).", icono: Megaphone },
+        { to: "/empleados", titulo: "Empleados", texto: "Da de alta, invita o da de baja a tus cajeros.", icono: Users },
+        {
+          to: "/negocio/pin-pos",
+          titulo: "PIN POS",
+          texto: "El PIN con el que se abre la caja.",
+          icono: KeyRound,
+          ...(sinPin ? { alerta: "Aún no lo defines: nadie puede abrir la caja." } : {}),
+        },
+        { to: "/negocio/horarios", titulo: "Horarios", texto: "Los días y horas en que abres.", icono: Clock },
         { to: "/negocio/monedero", titulo: "Monedero y tarjetas de sellos", texto: "Cashback, vigencia del saldo y tus tarjetas.", icono: Wallet },
         { to: "/negocio/marca", titulo: "Datos y marca", texto: "Nombre, logotipo y color de tu negocio.", icono: Palette },
         { to: "/negocio/referidos", titulo: "Recomienda y gana", texto: "Premia a tus clientes por traer clientes nuevos.", icono: Gift },
         ...(!asistenteIncompleto ? [asistente] : []),
+        { to: "/negocio/cartel", titulo: "Cartel para imprimir", texto: "El QR para que tus clientes se registren solos.", icono: Printer },
       ],
     },
     {
       titulo: "Administración",
       tarjetas: [
         { to: "/negocio/membresia", titulo: "Membresía y pagos", texto: "Estado de tu membresía y cómo pagarla.", icono: CreditCard },
-        { to: "/negocio/movimientos", titulo: "Movimientos", texto: "Todo lo que pasó en tu caja, con filtros y Excel.", icono: History },
-        { to: "/negocio/reportes", titulo: "Reportes", texto: "Cumpleañeros e inactivos en Excel, con enlace de WhatsApp.", icono: BarChart3 },
+        { to: "/negocio/reportes", titulo: "Reportes", texto: "Excel de cumpleañeros e inactivos con botón de WhatsApp.", icono: BarChart3 },
       ],
     },
   ];

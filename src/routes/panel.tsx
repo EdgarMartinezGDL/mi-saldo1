@@ -1,6 +1,6 @@
 import { PendientesAsistente, useAsistente } from "@/components/negocio/asistente";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { Archive, ChevronRight, Megaphone, MessageSquareWarning, Printer, Stamp, TrendingUp, UserCheck, UserPlus, UserRoundPlus, Users, type LucideIcon } from "lucide-react";
+import { Archive, ChevronRight, Megaphone, MessageSquareWarning, Stamp, TrendingUp, UserCheck, UserPlus, UserRoundPlus, Users, type LucideIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -98,9 +98,10 @@ function Panel() {
         { label: "Ventas con sellos", value: pesos(hoy.tarjetas!.ventas.monto_compra_centavos), icon: TrendingUp },
       ]
     : [{ label: "Ventas de hoy", value: pesos((hoy.monedero ?? hoy.tarjetas)?.ventas.monto_compra_centavos ?? 0), icon: TrendingUp }];
-  const cards: Array<{ label: string; value: string; icon: LucideIcon; tono: Tono; aviso: boolean; to?: "/clientes" | "/negocio/reclamaciones" | "/negocio/solicitudes" | undefined; search?: { archivados: "solo" } }> = [
-    ...ventasCards.map((c) => ({ ...c, tono: "success" as const, aviso: false, to: undefined })),
-    { label: "Clientes atendidos", value: String(hoy.clientes.atendidos), icon: Users, tono: "primary", aviso: false, to: undefined },
+  const cards: Array<{ label: string; value: string; icon: LucideIcon; tono: Tono; aviso: boolean; to?: "/clientes" | "/negocio/movimientos" | undefined; search?: { archivados: "solo" } }> = [
+    // U-07: ventas y atendidos abren Movimientos (que ya filtra a hoy por omisión).
+    ...ventasCards.map((c) => ({ ...c, tono: "success" as const, aviso: false, to: "/negocio/movimientos" as const })),
+    { label: "Clientes atendidos", value: String(hoy.clientes.atendidos), icon: Users, tono: "primary", aviso: false, to: "/negocio/movimientos" },
     { label: "Clientes nuevos hoy", value: String(hoy.clientes.altas), icon: UserRoundPlus, tono: "success", aviso: false, to: "/clientes" },
     { label: "Clientes en total", value: String(hoy.clientes.activos_total), icon: Users, tono: "neutro", aviso: false, to: "/clientes" },
     ...(hoy.clientes.archivados_total > 0 ? [{ label: "Clientes archivados", value: String(hoy.clientes.archivados_total), icon: Archive, tono: "neutro" as const, aviso: false, to: "/clientes" as const, search: { archivados: "solo" as const } }] : []),
@@ -151,7 +152,8 @@ function Panel() {
           </div>
           <div className="flex flex-wrap gap-3">
             <BotonQrRegistro />
-            {sesion?.contexto.rol === "dueno" && <Button variant="secondary" className="min-h-12 text-base" asChild><Link to="/negocio/cartel"><Printer /> Imprimir cartel</Link></Button>}
+            {/* U-06: el envío diario de promociones a un toque; el cartel (ocasional) pasó a Negocio → Configuración. */}
+            {sesion?.contexto.rol === "dueno" && <Button variant="secondary" className="min-h-12 text-base" asChild><Link to="/negocio/promociones"><Megaphone /> Enviar promoción</Link></Button>}
           </div>
         </div>
 

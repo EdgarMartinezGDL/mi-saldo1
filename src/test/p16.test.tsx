@@ -7,6 +7,7 @@ import { Route as PanelRoute } from "@/routes/panel";
 import { Route as ReportesRoute } from "@/routes/negocio.reportes";
 import type { ClienteLista, FichaCliente, Dashboard } from "@/lib/api/dueno";
 import { diaDeInstante } from "@/lib/api/formato";
+import { tomarAbrirEnCaja } from "@/lib/caja-abrir";
 
 const m = vi.hoisted(() => ({ search: {} as { archivados?: "incluir" | "solo" }, navigate: vi.fn(), consultar: vi.fn(), ficha: vi.fn(), dashboard: vi.fn(), membresia: vi.fn(), configuracion: vi.fn(), contar: vi.fn(), descargar: vi.fn(), guardar: vi.fn() }));
 vi.mock("@tanstack/react-router", () => ({
@@ -88,13 +89,22 @@ describe("P16 Clientes", () => {
     await waitFor(() => expect(screen.queryByText(/Cliente desde/)).toBeInTheDocument());
     expect(Boolean(screen.queryByText(/Archivado desde/))).toBe(archivado);
   });
+  // Claude (2026-11-24, U-02): "Abrir en la Caja" deja el teléfono (10 dígitos) en sessionStorage y va a /caja.
+  it("U-02 Abrir en la Caja guarda el teléfono una sola vez y navega a la Caja", async () => {
+    sessionStorage.clear(); clientes();
+    fireEvent.click(await screen.findByRole("button", { name: /Teclado Pruebas/ }));
+    fireEvent.click(await screen.findByRole("button", { name: /Abrir en la Caja/ }));
+    expect(m.navigate).toHaveBeenCalledWith({ to: "/caja" });
+    expect(tomarAbrirEnCaja()).toBe("5510000070");
+    expect(tomarAbrirEnCaja()).toBeNull();
+  });
   it("formatea el día en la zona del negocio, no en UTC", () => {
     expect(diaDeInstante("2026-10-23T01:00:00Z")).toBe(diaDeInstante("2026-10-22T12:00:00Z"));
     expect(diaDeInstante(null)).toBe("");
   });
 });
 
-// Claude (2026-11-24): Contar se habilita al elegir o mover una fecha; se mueve y se regresa al mismo valor.
+// Claude (2026-11-24): mueve una fecha y la regresa al mismo valor (simula que el dueño la toca).
 function moverFecha(campo: HTMLElement) { const v = (campo as HTMLInputElement).value; fireEvent.change(campo, { target: { value: "2020-01-01" } }); fireEvent.change(campo, { target: { value: v } }); }
 describe("P16 Reportes", () => {
   it("cumpleañeros incluye el mismo filtro al contar y descargar; cambiarlo descarta el conteo", async () => {

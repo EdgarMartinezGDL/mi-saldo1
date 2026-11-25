@@ -81,6 +81,14 @@ describe("U-04 Para atender hoy", () => {
   });
 });
 
+describe("U-07 ventas y atendidos abren Movimientos", () => {
+  it("las tarjetas de ventas y de clientes atendidos llevan a Movimientos de hoy", async () => {
+    montar(<Panel />);
+    expect(await screen.findByRole("link", { name: /Ventas de hoy/ })).toHaveAttribute("href", "/negocio/movimientos");
+    expect(screen.getByRole("link", { name: /Clientes atendidos/ })).toHaveAttribute("href", "/negocio/movimientos");
+  });
+});
+
 describe("U-05 globito en la pestaña Negocio", () => {
   it("suma reclamaciones, solicitudes y el PIN POS sin definir", async () => {
     m.rec = 1; m.sol = 2; m.sinPin = true; montar(<AppShell>Panel</AppShell>);

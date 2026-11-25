@@ -53,38 +53,35 @@ describe("P22 navegación", () => {
 });
 
 describe("P22 Centro de Negocio", () => {
+  // Claude (2026-11-24, U-08): secciones "Del día", "Configuración" y "Administración".
   it("muestra las 3 secciones con sus tarjetas", () => {
     m.asistente.mockReturnValue({ data: { configuracion_completa: true, pendientes_obligatorios: [] } });
     pagina();
-    const operacion = screen.getByRole("heading", { name: "Operación" });
-    const marketing = screen.getByRole("heading", { name: "Marketing y recompensas" });
+    const dia = screen.getByRole("heading", { name: "Del día" });
+    const config = screen.getByRole("heading", { name: "Configuración" });
     const administracion = screen.getByRole("heading", { name: "Administración" });
-    expect(operacion).toBeInTheDocument();
-    expect(marketing).toBeInTheDocument();
-    expect(administracion).toBeInTheDocument();
-    expect(within(operacion.parentElement!).getByText("Empleados")).toBeInTheDocument();
-    expect(within(operacion.parentElement!).getByText("PIN POS")).toBeInTheDocument();
-    expect(within(marketing.parentElement!).getByText("Monedero y tarjetas de sellos")).toBeInTheDocument();
-    expect(within(administracion.parentElement!).getByText("Membresía y pagos")).toBeInTheDocument();
-    expect(within(administracion.parentElement!).getByText("Movimientos")).toBeInTheDocument();
+    for (const t of ["Reclamaciones", "Solicitudes de alta", "Promociones", "Movimientos"]) expect(within(dia.parentElement!).getByText(t)).toBeInTheDocument();
+    for (const t of ["Empleados", "PIN POS", "Horarios", "Monedero y tarjetas de sellos", "Datos y marca", "Recomienda y gana", "Cartel para imprimir"]) expect(within(config.parentElement!).getByText(t)).toBeInTheDocument();
+    for (const t of ["Membresía y pagos", "Reportes"]) expect(within(administracion.parentElement!).getByText(t)).toBeInTheDocument();
+    expect(within(config.parentElement!).getByText("Cartel para imprimir").closest("a")).toHaveAttribute("href", "/negocio/cartel");
   });
 
-  it("con configuración incompleta, Configuración inicial va antes de Operación con su alerta", () => {
+  it("con configuración incompleta, Configuración inicial va antes de Del día con su alerta", () => {
     m.asistente.mockReturnValue({ data: { configuracion_completa: false, pendientes_obligatorios: ["horarios", "pin"] } });
     const { container } = pagina();
     const inicial = screen.getByText("Configuración inicial");
     expect(screen.getByText("Te faltan 2 pasos obligatorios.")).toBeInTheDocument();
     const posInicial = Array.from(container.querySelectorAll("a, h2")).findIndex((el) => el.textContent?.includes("Configuración inicial"));
-    const posOperacion = Array.from(container.querySelectorAll("a, h2")).findIndex((el) => el.textContent === "Operación");
+    const posOperacion = Array.from(container.querySelectorAll("a, h2")).findIndex((el) => el.textContent === "Del día");
     expect(posInicial).toBeGreaterThanOrEqual(0);
     expect(posOperacion).toBeGreaterThan(posInicial);
     expect(inicial).toBeInTheDocument();
   });
 
-  it("con configuración completa, Configuración inicial va dentro de Marketing y recompensas sin alerta", () => {
+  it("con configuración completa, Configuración inicial va dentro de Configuración sin alerta", () => {
     m.asistente.mockReturnValue({ data: { configuracion_completa: true, pendientes_obligatorios: [] } });
     pagina();
-    const marketing = screen.getByRole("heading", { name: "Marketing y recompensas" }).parentElement!;
+    const marketing = screen.getByRole("heading", { name: "Configuración" }).parentElement!;
     expect(within(marketing).getByText("Configuración inicial")).toBeInTheDocument();
     expect(within(marketing).getByText("Revisa los pasos de configuración de tu negocio.")).toBeInTheDocument();
     expect(screen.queryByText(/Te faltan/)).toBeNull();

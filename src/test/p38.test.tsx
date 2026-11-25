@@ -52,8 +52,10 @@ describe("P38 enlace compartido y cartel", () => {
     m.rol = rol;
     const Panel = (PanelRoute as unknown as { options: { component: ComponentType } }).options.component;
     render(<Panel />, { wrapper }); await screen.findByText("Cómo va tu negocio hoy.");
-    if (rol === "dueno") expect(screen.getByRole("link", { name: "Imprimir cartel" })).toHaveAttribute("href", "/negocio/cartel");
-    else expect(screen.queryByRole("link", { name: "Imprimir cartel" })).toBeNull();
+    // Claude (2026-11-24, U-06): en el Panel va "Enviar promoción"; el cartel pasó a Negocio → Configuración.
+    if (rol === "dueno") expect(screen.getByRole("link", { name: "Enviar promoción" })).toHaveAttribute("href", "/negocio/promociones");
+    else expect(screen.queryByRole("link", { name: "Enviar promoción" })).toBeNull();
+    expect(screen.queryByRole("link", { name: "Imprimir cartel" })).toBeNull();
   });
   it.each([false, true])("cartel comparte destino disponible=%s e imprime", async (registro) => {
     if (registro) m.codigo.mockResolvedValue({ codigo: "ABC123" });

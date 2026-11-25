@@ -16,7 +16,7 @@ import { ApiError } from "@/lib/api/client";
 import type { ClienteCaja, ConfiguracionNegocio } from "@/lib/api/caja";
 import { useRecargaVisible } from "@/lib/use-recarga-visible";
 
-const m = vi.hoisted(() => ({ pin: vi.fn(), resumen: vi.fn(), config: vi.fn(), sellos: vi.fn(), error: vi.fn(), success: vi.fn(), pendientes: 0, rol: "cliente", id: "a" }));
+const m = vi.hoisted(() => ({ buscar: vi.fn(), pin: vi.fn(), resumen: vi.fn(), config: vi.fn(), sellos: vi.fn(), error: vi.fn(), success: vi.fn(), pendientes: 0, rol: "cliente", id: "a" }));
 vi.mock("@tanstack/react-router", () => ({ createFileRoute: () => (options: object) => ({ options }), useRouterState: () => "/", useNavigate: () => vi.fn(), Link: ({ to, children, ...props }: { to: string; children: ReactNode }) => <a href={to} {...props}>{children}</a> }));
 vi.mock("@/components/auth-provider", () => ({ useAuth: () => ({ estado: "autenticado", conectado: true, sesion: { contexto: { rol: m.rol, negocio_id: m.id, nombre_comercial: `Negocio ${m.id}` } } }) }));
 vi.mock("@/components/mis-negocios", () => ({ useMisNegocios: () => ({ varios: false, dialogo: null }), NegociosCliente: () => null }));
@@ -29,7 +29,7 @@ vi.mock("@/components/negocio/asistente", () => ({ useInvalidarAsistente: () => 
 vi.mock("@/components/totp-provider", () => ({ useConTotp: () => (fn: () => Promise<unknown>) => fn() }));
 vi.mock("@/lib/api/dueno", () => ({ cambiarPinPos: m.pin }));
 vi.mock("@/lib/api/cliente", async (original) => ({ ...await original<typeof import("@/lib/api/cliente")>(), resumen: m.resumen, fichaNegocio: async () => null, perfil: async () => ({ nombre: "Ana" }), referidos: async () => ({ programa: null, recomendados: [] }), reclamaciones: async () => ({ reclamaciones: [] }) }));
-vi.mock("@/lib/api/caja", async (original) => ({ ...await original<typeof import("@/lib/api/caja")>(), configuracion: m.config, acumularSellos: m.sellos, estadoPos: async () => ({ desbloqueado: true, pin_pos_configurado: true, en_horario: true, horario_aplica: false, vence_en: null }) }));
+vi.mock("@/lib/api/caja", async (original) => ({ ...await original<typeof import("@/lib/api/caja")>(), configuracion: m.config, acumularSellos: m.sellos, buscarCliente: m.buscar, estadoPos: async () => ({ desbloqueado: true, pin_pos_configurado: true, en_horario: true, horario_aplica: false, vence_en: null }) }));
 vi.mock("sonner", () => ({ toast: { error: m.error, success: m.success } }));
 
 const clientes: QueryClient[] = [];
@@ -104,6 +104,15 @@ describe("P29 vencimiento", () => {
 describe("P29 barra y logo", () => {
   it("sin pendientes muestra logo de marca y no enlace", () => { envolver(<AppShell>Contenido</AppShell>); expect(screen.queryByRole("link", { name: /Solicitudes por confirmar/ })).toBeNull(); expect(screen.getByRole("img", { name: "Mi Saldo Vip" })).toBeInTheDocument(); });
   it("con un pendiente muestra enlace y contador", () => { m.pendientes = 1; envolver(<AppShell>Contenido</AppShell>); expect(screen.getByRole("link", { name: "Solicitudes por confirmar: 1" })).toHaveAttribute("href", "/validaciones"); });
+  // Claude (2026-11-24, U-02): llegar desde "Abrir en la Caja" abre la ficha de ese cliente sin teclear el número.
+  it("U-02 la Caja abre la ficha del cliente pedido desde Clientes", async () => {
+    m.rol = "dueno"; m.buscar.mockResolvedValue({ encontrado: true, ...ficha });
+    sessionStorage.setItem("misaldo-caja-abrir", "5512345678");
+    pagina(CajaRoute);
+    expect(await screen.findByRole("button", { name: /Acumular/ })).toBeInTheDocument();
+    expect(m.buscar).toHaveBeenCalledWith("+525512345678");
+    expect(sessionStorage.getItem("misaldo-caja-abrir")).toBeNull();
+  });
   it("empleado ve logo de configuración", async () => { m.rol = "empleado"; pagina(CajaRoute); expect(await screen.findByRole("img", { name: "Logo de Negocio a" })).toHaveAttribute("src", cfg.negocio.logo_url); });
   it("cliente ve logo nuevo al cambiar contexto y recargar otra ruta", async () => {
     const view = pagina(ClienteRoute); expect(await screen.findByRole("img", { name: "Logo de Negocio a" })).toHaveAttribute("src", "/logo-a.png");

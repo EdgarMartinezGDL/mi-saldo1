@@ -21,6 +21,7 @@ import { PasoReclamar } from "@/components/caja/paso-reclamar";
 import type { AltaRespuesta } from "@/components/caja/caja-extra";
 import { fueraDeHorario, horarioHoy, INTERVALO_POS } from "@/lib/caja-horario";
 import { useMiSaldo } from "@/components/misaldo-provider";
+import { tomarAbrirEnCaja } from "@/lib/caja-abrir";
 
 export const Route = createFileRoute("/caja")({
   head: () => ({
@@ -145,6 +146,20 @@ function Caja() {
   }), [config, rol, ejecutar, cargar]);
 
   const negocio = config?.negocio.nombre_comercial ?? sesion?.contexto.nombre_comercial ?? "tu negocio";
+
+  // U-02: si se llegó con "Abrir en la Caja" desde Clientes, se abre la ficha de ese cliente (una sola vez).
+  useEffect(() => {
+    if (estado !== "abierta" || !ctx) return;
+    const tel = tomarAbrirEnCaja();
+    if (!tel) return;
+    void (async () => {
+      try {
+        const r = await ejecutar(() => buscarCliente(telefonoE164(tel)));
+        setTelefono(tel);
+        if (r.encontrado) { setFicha(r); setPaso("ficha"); }
+      } catch { /* se queda en la búsqueda con el número escrito */ setTelefono(tel); }
+    })();
+  }, [estado, ctx, ejecutar]);
 
   const nuevoCliente = () => { setFicha(null); setTelefono(""); setComprobante(null); setPaso("buscar"); };
   const terminado = (c: Comprobante) => { setComprobante(c); setPaso("comprobante"); void recargarFicha(telefono); };
