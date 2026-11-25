@@ -14,6 +14,15 @@ export function useSoltarFocoAlDeslizar() {
       if (!(activo instanceof HTMLInputElement || activo instanceof HTMLTextAreaElement)) return;
       if (e.target instanceof Node && activo.contains(e.target)) return;
       activo.blur();
+      // En Chrome, blur() no suelta un campo de fecha: se pasa el foco a <main> sin desplazar la página.
+      if (document.activeElement === activo) {
+        const destino = document.querySelector("main");
+        if (destino instanceof HTMLElement) {
+          if (!destino.hasAttribute("tabindex")) destino.setAttribute("tabindex", "-1");
+          destino.style.outline = "none";
+          destino.focus({ preventScroll: true });
+        }
+      }
     };
     document.addEventListener("touchstart", alTocar, { passive: true });
     return () => document.removeEventListener("touchstart", alTocar);

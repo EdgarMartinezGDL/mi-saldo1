@@ -89,4 +89,14 @@ describe("Salto al deslizar con un campo enfocado", () => {
     const mensaje = within(tarjeta("Inactivos")).getByLabelText(/Mensaje de WhatsApp/);
     mensaje.focus(); fireEvent.touchStart(document.body); expect(document.activeElement).not.toBe(mensaje);
   });
+  it("si blur() no suelta el campo (fecha en Chrome), pasa el foco a <main> sin desplazar", () => {
+    render(<main data-testid="principal"><input type="date" aria-label="Fecha" /><p>Texto</p></main>);
+    montar();
+    const fecha = screen.getByLabelText("Fecha");
+    fecha.focus();
+    const blur = vi.spyOn(fecha, "blur").mockImplementation(() => {});
+    fireEvent.touchStart(screen.getByText("Texto"));
+    expect(blur).toHaveBeenCalled();
+    expect(document.activeElement).toBe(screen.getByTestId("principal"));
+  });
 });
