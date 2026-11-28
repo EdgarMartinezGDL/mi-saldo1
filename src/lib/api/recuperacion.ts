@@ -2,6 +2,7 @@
 import { api, setSesion, type Sesion } from "./client";
 import type { RespuestaLogin } from "./auth";
 import { terminarCopia } from "@/lib/sin-conexion-sesion";
+import { sincronizarPush } from "@/lib/push-dispositivo";
 
 export type Canal = "whatsapp" | "correo";
 
@@ -29,7 +30,10 @@ export const completarRecuperacion = (body: { token_recuperacion: string; pin: s
     codigo_canje_restringido_hasta: string | null;
     sesion: RespuestaLogin;
   }>("/api/recuperacion/completar", { method: "POST", body, auth: false }).then((r) => {
-    if (r.sesion.estado === "autenticado") setSesion(r.sesion);
+    if (r.sesion.estado === "autenticado") {
+      setSesion(r.sesion);
+      void sincronizarPush();
+    }
     return r;
   });
 

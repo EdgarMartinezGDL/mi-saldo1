@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ApiError, setSesion, type Sesion } from "@/lib/api/client";
 import { confirmarEnrolamiento, iniciarEnrolamiento } from "@/lib/api/recuperacion";
+import { sincronizarPush } from "@/lib/push-dispositivo";
 
 /** Mandatory Staff authenticator enrolment during sign-in (requiere_enrolamiento_totp). */
 export function EnrolamientoTotp({ token, onReiniciar }: { token: string; onReiniciar: (m: string) => void }) {
@@ -67,6 +68,7 @@ export function EnrolamientoTotp({ token, onReiniciar }: { token: string; onRein
     return (
       <CodigosRespaldo codigos={listo.codigos} boton="Entrar" onListo={() => {
         setSesion(listo.sesion);
+        void sincronizarPush();
         void navigate({ to: "/staff", replace: true });
       }} />
     );

@@ -1,4 +1,4 @@
-import { bajaSuscripcion, llavePublica, registrarSuscripcion } from "@/lib/api/push";
+import { bajaSuscripcion, llavePublica, registrarSuscripcion, sincronizarSuscripcion } from "@/lib/api/push";
 import { esIos, instalada } from "@/lib/instalacion";
 
 export type EstadoPush = "no_disponible" | "instalar_ios" | "bloqueadas" | "desactivadas" | "activadas";
@@ -69,4 +69,24 @@ export async function desactivarPush(): Promise<void> {
   if (!sub) return;
   await sub.unsubscribe();
   await bajaSuscripcion(sub.endpoint).catch(() => undefined);
+}
+
+/**
+ * Claude (0076): notices follow the server session. After signing in, a browser
+ * that was already subscribed re-links its subscription to the new session.
+ * If the server says it isn't this person's (another account on a shared phone)
+ * or it no longer exists, unsubscribe here so "Notificaciones activadas" stays
+ * truthful. Silent: never breaks sign-in.
+ */
+export async function sincronizarPush(): Promise<void> {
+  try {
+    const reg = await registro();
+    if (!reg || Notification.permission !== "granted") return;
+    const sub = await reg.pushManager.getSubscription();
+    if (!sub) return;
+    const { sincronizada } = await sincronizarSuscripcion(sub.endpoint);
+    if (!sincronizada) await sub.unsubscribe();
+  } catch {
+    // Offline or old backend: try again on the next sign-in.
+  }
 }

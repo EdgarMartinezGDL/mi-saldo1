@@ -1,9 +1,13 @@
 import { api, setSesion } from "./client";
 import type { RespuestaLogin } from "./auth";
+import { sincronizarPush } from "@/lib/push-dispositivo";
 
 /** Treat an embedded `sesion` exactly like the login response. */
 function guardar<T extends { sesion?: RespuestaLogin }>(r: T) {
-  if (r.sesion?.estado === "autenticado") setSesion(r.sesion);
+  if (r.sesion?.estado === "autenticado") {
+    setSesion(r.sesion);
+    void sincronizarPush();
+  }
   return r;
 }
 

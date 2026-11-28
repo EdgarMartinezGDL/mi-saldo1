@@ -14,6 +14,10 @@ export const llavePublica = () => api<{ llave_publica: string }>("/api/push/llav
 export const registrarSuscripcion = (s: PushSubscriptionJSON, dispositivo: string) =>
   api<{ suscrito: true; id: string }>("/api/push/suscripciones", { method: "POST", body: { ...s, dispositivo } });
 
+/** 0076: re-links this browser's existing subscription to the new session (false = not this person's, revoked or unknown). */
+export const sincronizarSuscripcion = (endpoint: string) =>
+  api<{ sincronizada: boolean }>("/api/push/suscripciones/sincronizar", { method: "POST", body: { endpoint } });
+
 export const bajaSuscripcion = (endpoint: string) =>
   api<{ eliminada: boolean }>("/api/push/suscripciones/baja", { method: "POST", body: { endpoint } });
 

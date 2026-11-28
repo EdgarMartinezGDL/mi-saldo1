@@ -1,6 +1,6 @@
 import { api, setSesion, type Contexto, type Rol, type Sesion } from "./client";
 import { terminarCopia } from "@/lib/sin-conexion-sesion";
-import { desactivarPush } from "@/lib/push-dispositivo";
+import { desactivarPush, sincronizarPush } from "@/lib/push-dispositivo";
 
 export type RespuestaLogin =
   | ({ estado: "autenticado" } & Sesion)
@@ -9,7 +9,10 @@ export type RespuestaLogin =
   | { estado: "requiere_enrolamiento_totp"; token_enrolamiento: string; expira_en_seg: number };
 
 function guardar(r: RespuestaLogin) {
-  if (r.estado === "autenticado") setSesion(r);
+  if (r.estado === "autenticado") {
+    setSesion(r);
+    void sincronizarPush();
+  }
   return r;
 }
 
