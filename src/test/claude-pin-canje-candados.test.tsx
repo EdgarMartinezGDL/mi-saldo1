@@ -27,16 +27,17 @@ async function consultar(respuesta: object) {
 describe("PIN de canje con candados (0078)", () => {
   it("en espera: explica desde cuándo podrá verlo, que sigue sirviendo en caja y no abre el aviso de 'sin copia'", async () => {
     await consultar({ estado: "en_espera", disponible_desde: "2026-11-29T18:30:00Z" });
-    const texto = screen.getByText(/podrás ver tu PIN de canje a partir del/);
+    const texto = screen.getByText(/podrás verlo aquí a partir del/);
     expect(texto).toHaveTextContent("29 de noviembre");
     expect(texto).toHaveTextContent("sigue sirviendo en caja");
+    expect(texto).not.toHaveTextContent(/\.\.$/); // "p.m." ya trae su punto
     expect(screen.getAllByText("••••")).toHaveLength(2);
     expect(screen.queryByRole("alertdialog")).toBeNull();
   });
 
   it("bloqueado por intentos: muestra la hora del bloqueo y no el PIN", async () => {
     await consultar({ estado: "bloqueado", codigo_canje_bloqueado_hasta: "2026-11-28T20:15:00Z" });
-    expect(screen.getByText(/Tu PIN de canje está bloqueado hasta las/)).toBeInTheDocument();
+    expect(screen.getByText(/Tu PIN de canje está bloqueado hasta las/)).not.toHaveTextContent(/\.\.$/);
     expect(screen.getAllByText("••••")).toHaveLength(2);
   });
 

@@ -14,6 +14,7 @@ import { useError } from "./secciones";
 type EstadoPin = Omit<PinCanjeConsultado, "codigo_canje">;
 type Modo = "ver" | "cambiar";
 const digitos = (v: string, n: number) => v.replace(/\D/g, "").slice(0, n);
+// La hora en es-MX ya termina en "a.m."/"p.m.": los textos no le agregan otro punto.
 const fechaHora = (iso: string) => new Date(iso).toLocaleString("es-MX", { day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" });
 
 /** Secrets are local only; generation guards also discard late responses after hiding. */
@@ -87,9 +88,9 @@ export function TusPines({ telefono = "" }: { telefono?: string }) {
         {canje && <p className="text-sm text-muted-foreground">Se ocultará en {segundos} s</p>}
         {estado?.estado === "sin_copia" && <p className="text-sm text-muted-foreground">Por seguridad no podemos mostrar tu PIN de canje actual. Crea uno nuevo para poder verlo aquí.</p>}
         {estado?.estado === "sin_codigo" && <p className="text-sm text-muted-foreground">Aún no tienes PIN de canje.</p>}
-        {estado?.estado === "en_espera" && estado.disponible_desde && <p className="text-sm text-warn-texto">Por seguridad, como cambiaste o recuperaste tu PIN de acceso hace poco, podrás ver tu PIN de canje a partir del {fechaHora(estado.disponible_desde)}. Tu PIN de canje sigue sirviendo en caja.</p>}
+        {estado?.estado === "en_espera" && estado.disponible_desde && <p className="text-sm text-warn-texto">Tu PIN de canje sigue sirviendo en caja. Por seguridad, como cambiaste o recuperaste tu PIN de acceso hace poco, podrás verlo aquí a partir del {fechaHora(estado.disponible_desde)}</p>}
         {estado?.codigo_canje_requiere_cambio && <p className="text-sm text-warn-texto">Tu PIN de canje se bloqueó por intentos fallidos. Cámbialo para volver a usarlo.</p>}
-        {estado?.estado === "bloqueado" && !estado.codigo_canje_requiere_cambio && estado.codigo_canje_bloqueado_hasta && <p className="text-sm text-warn-texto">Tu PIN de canje está bloqueado hasta las {new Date(estado.codigo_canje_bloqueado_hasta).toLocaleTimeString("es-MX", { hour: "2-digit", minute: "2-digit" })}.</p>}
+        {estado?.estado === "bloqueado" && !estado.codigo_canje_requiere_cambio && estado.codigo_canje_bloqueado_hasta && <p className="text-sm text-warn-texto">Tu PIN de canje está bloqueado hasta las {new Date(estado.codigo_canje_bloqueado_hasta).toLocaleTimeString("es-MX", { hour: "2-digit", minute: "2-digit" })}</p>}
         <Button variant="secondary" className="mt-3 min-h-11 whitespace-normal" onClick={() => { setCanje(null); setSegundos(0); setModo("cambiar"); }}>{estado?.estado === "sin_codigo" ? "Crear PIN de canje" : "Cambiar PIN de canje"}</Button>
       </div>
       <p className="text-sm text-muted-foreground">Te recomendamos cambiar tu PIN de canje (4 dígitos) cada cierto tiempo y dictarlo solo al cajero al cobrar.</p>
