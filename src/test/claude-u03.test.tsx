@@ -41,7 +41,8 @@ describe("U-03 Atendidos hace poco en la Caja", () => {
   it("el empleado ve los suyos, con solo los últimos 4 dígitos; un toque abre la ficha", async () => {
     const onEncontrado = vi.fn();
     montar(<PasoBuscar inicial="" onAlta={vi.fn()} onEncontrado={onEncontrado} />);
-    const juan = await screen.findByRole("button", { name: /Juan/ });
+    // Con la máquina cargada, la consulta tarda más de 1 s (el límite por omisión de findBy).
+    const juan = await screen.findByRole("button", { name: /Juan/ }, { timeout: 5000 });
     expect(screen.getAllByRole("button", { name: /Juan|Nora/ })).toHaveLength(2);
     expect(juan).toHaveTextContent("Termina en 0003");
     expect(screen.queryByText(/55 0000 0003/)).toBeNull();

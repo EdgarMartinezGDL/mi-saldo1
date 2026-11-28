@@ -47,7 +47,9 @@ export const verPinAcumulacion = () =>
 
 export interface PinCanjeConsultado {
   codigo_canje: string | null;
-  estado: "disponible" | "sin_codigo" | "sin_copia";
+  /** 0078: "bloqueado" (intentos o cambio obligatorio) y "en_espera" (24 h tras recuperar o cambiar el PIN de acceso) no traen el PIN. */
+  estado: "disponible" | "sin_codigo" | "sin_copia" | "bloqueado" | "en_espera";
+  disponible_desde: string | null;
   codigo_canje_bloqueado_hasta: string | null;
   codigo_canje_requiere_cambio: boolean;
 }
